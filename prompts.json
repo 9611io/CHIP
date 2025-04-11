@@ -257,182 +257,182 @@
   {
     "id": "qual_02",
     "title": "EcoInsight",
-    "prompt_text": "EcoInsight, an environmental consultancy based in Vancouver, is facing slowing renewal rates among its real estate developer clients. Feedback suggests its sustainability reports are not tied closely enough to business outcomes.\n\nEcoInsight has engaged your consulting firm to strengthen client retention by identifying how clients apply sustainability insights and which reporting features create measurable business value."
+    "prompt_text": "EcoInsight, an environmental consultancy based in Vancouver, is facing slowing renewal rates among its real estate developer clients. Feedback suggests its sustainability reports are not tied closely enough to business outcomes.\n\n EcoInsight has engaged your consulting firm to strengthen client retention by identifying how clients apply sustainability insights and which reporting features create measurable business value."
   },
   {
     "id": "qual_03",
     "title": "HealthNarratives",
-    "prompt_text": "HealthNarratives, a virtual care startup in New York, has plateaued in subscriber growth. Their team is unsure whether pricing, product features, or onboarding flows are limiting adoption.\n\nHealthNarratives has hired your consulting firm to identify which elements of the customer journey most impact subscription decisions and where to focus product and pricing improvements."
+    "prompt_text": "HealthNarratives, a virtual care startup in New York, has plateaued in subscriber growth. Their team is unsure whether pricing, product features, or onboarding flows are limiting adoption.\n\n HealthNarratives has hired your consulting firm to identify which elements of the customer journey most impact subscription decisions and where to focus product and pricing improvements."
   },
   {
     "id": "qual_04",
     "title": "TechTales",
-    "prompt_text": "TechTales, a software company in San Francisco, recently launched a new workflow product for hybrid teams. Despite good reviews, usage is lower than forecasted, particularly among mid-sized teams.\n\nTechTales has brought in your consulting firm to boost adoption by identifying which customer segments are most likely to adopt the new product and the feature combinations they value most."
+    "prompt_text": "TechTales, a software company in San Francisco, recently launched a new workflow product for hybrid teams. Despite good reviews, usage is lower than forecasted, particularly among mid-sized teams.\n\n TechTales has brought in your consulting firm to boost adoption by identifying which customer segments are most likely to adopt the new product and the feature combinations they value most."
   },
   {
     "id": "qual_05",
     "title": "CulinaryChronicles",
-    "prompt_text": "CulinaryChronicles, a food content platform based in Paris, is expanding its revenue model to include paid learning experiences. Their team has noticed uneven conversion across content formats and topics.\n\nCulinaryChronicles has engaged your consulting firm to increase conversion by identifying which topics and content formats drive purchase intent and how to optimize the learning journey for engagement and sales."
+    "prompt_text": "CulinaryChronicles, a food content platform based in Paris, is expanding its revenue model to include paid learning experiences. Their team has noticed uneven conversion across content formats and topics.\n\n CulinaryChronicles has engaged your consulting firm to increase conversion by identifying which topics and content formats drive purchase intent and how to optimize the learning journey for engagement and sales."
   },
   {
     "id": "qual_06",
     "title": "UrbanVoices",
-    "prompt_text": "UrbanVoices, a communications agency specializing in real estate, is seeing fewer RFP wins in the multifamily housing space. They suspect their pitch strategy doesn’t reflect current developer priorities.\n\nUrbanVoices has hired your consulting firm to sharpen its go-to-market messaging by identifying the key purchase drivers for real estate clients and the pitch elements that most impact final selection."
+    "prompt_text": "UrbanVoices, a communications agency specializing in real estate, is seeing fewer RFP wins in the multifamily housing space. They suspect their pitch strategy doesn’t reflect current developer priorities.\n\n UrbanVoices has hired your consulting firm to sharpen its go-to-market messaging by identifying the key purchase drivers for real estate clients and the pitch elements that most impact final selection."
   },
   {
     "id": "qual_07",
     "title": "FashionFutures",
-    "prompt_text": "FashionFutures, a forecasting agency in Milan, has lost several clients to smaller, niche providers. They believe their insights are viewed as too general and not tailored to tactical decisions.\n\nFashionFutures has brought in your consulting firm to reposition its core offering by identifying what types of fashion teams use forecasting, and what level of detail and formats support day-to-day decision-making."
+    "prompt_text": "FashionFutures, a forecasting agency in Milan, has lost several clients to smaller, niche providers. They believe their insights are viewed as too general and not tailored to tactical decisions.\n\n FashionFutures has brought in your consulting firm to reposition its core offering by identifying what types of fashion teams use forecasting, and what level of detail and formats support day-to-day decision-making."
   },
   {
     "id": "qual_08",
     "title": "EduEmpower",
-    "prompt_text": "EduEmpower, a digital learning platform, recently expanded into corporate L&D with limited success. Pilot clients report that courses feel too academic and not job-relevant.\n\nEduEmpower has hired your consulting firm to define a new B2B strategy by identifying the skills most valued in corporate training and aligning content formats with L&D team expectations."
+    "prompt_text": "EduEmpower, a digital learning platform, recently expanded into corporate L&D with limited success. Pilot clients report that courses feel too academic and not job-relevant.\n\n EduEmpower has hired your consulting firm to define a new B2B strategy by identifying the skills most valued in corporate training and aligning content formats with L&D team expectations."
   },
   {
     "id": "qual_09",
     "title": "RetailReimagined",
-    "prompt_text": "RetailReimagined, a boutique CX agency in Berlin, wants to grow its footprint among grocery and convenience store brands. Despite good feedback, they aren’t gaining traction in this vertical.\n\nRetailReimagined has engaged your consulting firm to craft a market entry plan by identifying the unmet CX needs of retailers and the service offerings that resonate with their decision makers."
+    "prompt_text": "RetailReimagined, a boutique CX agency in Berlin, wants to grow its footprint among grocery and convenience store brands. Despite good feedback, they aren’t gaining traction in this vertical.\n\n RetailReimagined has engaged your consulting firm to craft a market entry plan by identifying the unmet CX needs of retailers and the service offerings that resonate with their decision makers."
   },
   {
     "id": "qual_10",
     "title": "TravelTales",
-    "prompt_text": "TravelTales, a specialty travel operator in Barcelona, is seeing declining repeat bookings. Their team believes the issue lies in how post-trip follow-up and loyalty offers are communicated.\n\nTravelTales has hired your consulting firm to improve rebooking rates by identifying the key drivers of customer retention and redesigning the loyalty experience to match traveler motivations."
+    "prompt_text": "TravelTales, a specialty travel operator in Barcelona, is seeing declining repeat bookings. Their team believes the issue lies in how post-trip follow-up and loyalty offers are communicated.\n\n TravelTales has hired your consulting firm to improve rebooking rates by identifying the key drivers of customer retention and redesigning the loyalty experience to match traveler motivations."
   },
   {
     "id": "qual_11",
     "title": "BrandPivot",
-    "prompt_text": "BrandPivot, a boutique creative agency based in Toronto, is seeing declining win rates on competitive RFPs in the financial services sector. Their leadership suspects their proposals lack clear differentiation and alignment with client-specific goals.\n\nBrandPivot has hired your consulting firm to improve RFP performance by identifying the factors driving agency selection and the messaging strategies that resonate most with senior marketing stakeholders in the finance industry."
+    "prompt_text": "BrandPivot, a boutique creative agency based in Toronto, is seeing declining win rates on competitive RFPs in the financial services sector. Their leadership suspects their proposals lack clear differentiation and alignment with client-specific goals.\n\n BrandPivot has hired your consulting firm to improve RFP performance by identifying the factors driving agency selection and the messaging strategies that resonate most with senior marketing stakeholders in the finance industry."
   },
   {
     "id": "qual_12",
     "title": "ApexMetrics",
-    "prompt_text": "ApexMetrics, a B2B SaaS analytics company based in Austin, is struggling to convert free trial users into paying customers. Their team is unsure whether pricing, onboarding experience, or feature adoption is the main obstacle.\n\nApexMetrics has engaged your consulting firm to increase conversion rates by identifying drop-off points in the user funnel and determining which feature sets and messages most influence purchase decisions."
+    "prompt_text": "ApexMetrics, a B2B SaaS analytics company based in Austin, is struggling to convert free trial users into paying customers. Their team is unsure whether pricing, onboarding experience, or feature adoption is the main obstacle.\n\n ApexMetrics has engaged your consulting firm to increase conversion rates by identifying drop-off points in the user funnel and determining which feature sets and messages most influence purchase decisions."
   },
   {
     "id": "qual_13",
     "title": "ClarityWorks",
-    "prompt_text": "ClarityWorks, a workplace learning company based in Chicago, has seen stagnation in repeat sales from corporate clients. Internal teams believe their off-the-shelf training programs are perceived as too generic and disconnected from specific client needs.\n\nClarityWorks has brought in your consulting firm to reposition its product strategy by identifying which content formats and delivery models are most effective in the mid-market and how to tailor offerings to recurring buyer personas."
+    "prompt_text": "ClarityWorks, a workplace learning company based in Chicago, has seen stagnation in repeat sales from corporate clients. Internal teams believe their off-the-shelf training programs are perceived as too generic and disconnected from specific client needs.\n\n ClarityWorks has brought in your consulting firm to reposition its product strategy by identifying which content formats and delivery models are most effective in the mid-market and how to tailor offerings to recurring buyer personas."
   },
   {
     "id": "qual_14",
     "title": "ShiftMotion",
-    "prompt_text": "ShiftMotion, a mobility tech startup based in Berlin, is planning to launch a fleet management platform for small logistics operators. Early interest is strong, but they’re unsure which features are critical for initial adoption and long-term stickiness.\n\nShiftMotion has hired your consulting firm to prioritize product development by identifying the top pain points for target users and the minimum feature set required to drive conversion and reduce churn."
+    "prompt_text": "ShiftMotion, a mobility tech startup based in Berlin, is planning to launch a fleet management platform for small logistics operators. Early interest is strong, but they’re unsure which features are critical for initial adoption and long-term stickiness.\n\n ShiftMotion has hired your consulting firm to prioritize product development by identifying the top pain points for target users and the minimum feature set required to drive conversion and reduce churn."
   },
   {
     "id": "qual_15",
     "title": "NorthPoint",
-    "prompt_text": "NorthPoint, a niche commercial real estate firm based in Denver, is launching a new advisory service focused on mixed-use developments. They are unsure how to position this offering given low awareness and limited differentiation in the market.\n\nNorthPoint has engaged your consulting firm to build a go-to-market strategy by identifying the key decision criteria for developer clients and the messaging that best communicates NorthPoint’s unique value proposition."
+    "prompt_text": "NorthPoint, a niche commercial real estate firm based in Denver, is launching a new advisory service focused on mixed-use developments. They are unsure how to position this offering given low awareness and limited differentiation in the market.\n\n NorthPoint has engaged your consulting firm to build a go-to-market strategy by identifying the key decision criteria for developer clients and the messaging that best communicates NorthPoint’s unique value proposition."
   },
   {
     "id": "qual_16",
     "title": "PathBright",
-    "prompt_text": "PathBright, a career services platform targeting university students, is seeing limited engagement with its employer-facing tools. Early partners report unclear value and difficulty integrating with existing recruitment workflows.\n\nPathBright has hired your consulting firm to reposition its employer solutions by identifying the most compelling use cases and the product capabilities that deliver measurable ROI to recruiting teams."
+    "prompt_text": "PathBright, a career services platform targeting university students, is seeing limited engagement with its employer-facing tools. Early partners report unclear value and difficulty integrating with existing recruitment workflows.\n\n PathBright has hired your consulting firm to reposition its employer solutions by identifying the most compelling use cases and the product capabilities that deliver measurable ROI to recruiting teams."
   },
   {
     "id": "qual_17",
     "title": "FoodLab",
-    "prompt_text": "FoodLab, a culinary R&D firm based in New York, has developed a line of plant-based flavor enhancers. They’re struggling to gain distribution with mid-sized packaged goods manufacturers who question the product’s positioning and value.\n\nFoodLab has engaged your consulting firm to accelerate go-to-market traction by identifying the most attractive customer segments and the claims or proofs that matter most during the buyer decision process."
+    "prompt_text": "FoodLab, a culinary R&D firm based in New York, has developed a line of plant-based flavor enhancers. They’re struggling to gain distribution with mid-sized packaged goods manufacturers who question the product’s positioning and value.\n\n FoodLab has engaged your consulting firm to accelerate go-to-market traction by identifying the most attractive customer segments and the claims or proofs that matter most during the buyer decision process."
   },
   {
     "id": "qual_18",
     "title": "InsightForge",
-    "prompt_text": "InsightForge, a research tech startup in Boston, has launched a DIY research platform for small and mid-sized marketing teams. While interest is high, user activation remains lower than expected.\n\nInsightForge has brought in your consulting firm to improve onboarding and retention by identifying barriers to self-service success and the product education tactics that increase first-week usage."
+    "prompt_text": "InsightForge, a research tech startup in Boston, has launched a DIY research platform for small and mid-sized marketing teams. While interest is high, user activation remains lower than expected.\n\n InsightForge has brought in your consulting firm to improve onboarding and retention by identifying barriers to self-service success and the product education tactics that increase first-week usage."
   },
   {
     "id": "qual_19",
     "title": "Everwise",
-    "prompt_text": "Everwise, a direct-to-consumer supplement brand, is facing low repeat order rates despite strong initial conversions. The team is unsure whether product satisfaction, timing of follow-up campaigns, or pricing are the core issues.\n\nEverwise has engaged your consulting firm to boost retention by identifying key drivers of reorder behavior and testing offers and messages that increase second and third purchase rates."
+    "prompt_text": "Everwise, a direct-to-consumer supplement brand, is facing low repeat order rates despite strong initial conversions. The team is unsure whether product satisfaction, timing of follow-up campaigns, or pricing are the core issues.\n\n Everwise has engaged your consulting firm to boost retention by identifying key drivers of reorder behavior and testing offers and messages that increase second and third purchase rates."
   },
   {
     "id": "qual_20",
     "title": "TradeSpan",
-    "prompt_text": "TradeSpan, a B2B marketplace for construction materials, is struggling to grow seller adoption. Many suppliers create accounts but never list products, citing lack of clarity around pricing expectations and deal flow.\n\nTradeSpan has hired your consulting firm to increase seller participation by identifying onboarding friction points and defining the messaging and product levers that build trust and drive listing activity."
+    "prompt_text": "TradeSpan, a B2B marketplace for construction materials, is struggling to grow seller adoption. Many suppliers create accounts but never list products, citing lack of clarity around pricing expectations and deal flow.\n\n TradeSpan has hired your consulting firm to increase seller participation by identifying onboarding friction points and defining the messaging and product levers that build trust and drive listing activity."
   },
   {
     "id": "qual_21",
     "title": "VisionReach",
-    "prompt_text": "VisionReach, a marketing agency based in San Diego, is launching a new analytics dashboard product aimed at small e-commerce brands. They’re unsure which customer segments will adopt the tool and how to position it alongside existing analytics platforms.\n\nVisionReach has hired your consulting firm to develop a go-to-market strategy by identifying the most promising customer segments and the messaging that best differentiates the new product from competitors."
+    "prompt_text": "VisionReach, a marketing agency based in San Diego, is launching a new analytics dashboard product aimed at small e-commerce brands. They’re unsure which customer segments will adopt the tool and how to position it alongside existing analytics platforms.\n\n VisionReach has hired your consulting firm to develop a go-to-market strategy by identifying the most promising customer segments and the messaging that best differentiates the new product from competitors."
   },
   {
     "id": "qual_22",
     "title": "SyncStage",
-    "prompt_text": "SyncStage, a collaborative tech startup based in Toronto, is facing poor usage retention among enterprise teams. Feedback indicates the product’s core features may not align with how teams actually work.\n\nSyncStage has engaged your consulting firm to improve retention by identifying the key workflows enterprise teams prioritize and the feature gaps preventing continued use."
+    "prompt_text": "SyncStage, a collaborative tech startup based in Toronto, is facing poor usage retention among enterprise teams. Feedback indicates the product’s core features may not align with how teams actually work.\n\n SyncStage has engaged your consulting firm to improve retention by identifying the key workflows enterprise teams prioritize and the feature gaps preventing continued use."
   },
   {
     "id": "qual_23",
     "title": "BrightBank",
-    "prompt_text": "BrightBank, a digital-first bank based in New York, is planning to roll out a premium checking account for freelancers and small businesses. They’re uncertain which benefits will resonate most or how pricing should be structured.\n\nBrightBank has brought in your consulting firm to support the product launch by identifying high-priority customer segments and the account features and pricing that will drive sign-ups."
+    "prompt_text": "BrightBank, a digital-first bank based in New York, is planning to roll out a premium checking account for freelancers and small businesses. They’re uncertain which benefits will resonate most or how pricing should be structured.\n\n BrightBank has brought in your consulting firm to support the product launch by identifying high-priority customer segments and the account features and pricing that will drive sign-ups."
   },
   {
     "id": "qual_24",
     "title": "MarketPilot",
-    "prompt_text": "MarketPilot, a B2B lead generation firm based in Austin, has seen diminishing ROI from paid acquisition channels. Their marketing team suspects inefficiencies in both campaign targeting and messaging.\n\nMarketPilot has hired your consulting firm to optimize paid acquisition by identifying underperforming campaign segments and the ad copy or targeting changes that would improve cost-efficiency."
+    "prompt_text": "MarketPilot, a B2B lead generation firm based in Austin, has seen diminishing ROI from paid acquisition channels. Their marketing team suspects inefficiencies in both campaign targeting and messaging.\n\n MarketPilot has hired your consulting firm to optimize paid acquisition by identifying underperforming campaign segments and the ad copy or targeting changes that would improve cost-efficiency."
   },
   {
     "id": "qual_25",
     "title": "RetailSync",
-    "prompt_text": "RetailSync, an inventory automation startup in Berlin, is trying to enter the convenience retail segment. Their leadership team is unsure how these retailers manage inventory today or what pain points their system would most directly solve.\n\nRetailSync has engaged your consulting firm to shape its market entry plan by identifying current inventory management methods and the product features that would deliver highest value in this segment."
+    "prompt_text": "RetailSync, an inventory automation startup in Berlin, is trying to enter the convenience retail segment. Their leadership team is unsure how these retailers manage inventory today or what pain points their system would most directly solve.\n\n RetailSync has engaged your consulting firm to shape its market entry plan by identifying current inventory management methods and the product features that would deliver highest value in this segment."
   },
   {
     "id": "qual_26",
     "title": "AppMotion",
-    "prompt_text": "AppMotion, a mobile development firm based in Singapore, has launched a new app performance monitoring SDK but is struggling to convert free users to paid plans. Early adopters report the dashboard lacks certain critical integrations.\n\nAppMotion has hired your consulting firm to increase conversion by identifying the technical gaps in the current SDK offering and the integrations developers most need to justify payment."
+    "prompt_text": "AppMotion, a mobile development firm based in Singapore, has launched a new app performance monitoring SDK but is struggling to convert free users to paid plans. Early adopters report the dashboard lacks certain critical integrations.\n\n AppMotion has hired your consulting firm to increase conversion by identifying the technical gaps in the current SDK offering and the integrations developers most need to justify payment."
   },
   {
     "id": "qual_27",
     "title": "LuxRoute",
-    "prompt_text": "LuxRoute, a premium travel operator in Dubai, is redesigning its booking portal after complaints about complexity and lack of personalization. Despite loyal clientele, booking abandonment rates remain high.\n\nLuxRoute has brought in your consulting firm to improve the online experience by identifying usability issues and the personalization features that would reduce abandonment and increase booking completion."
+    "prompt_text": "LuxRoute, a premium travel operator in Dubai, is redesigning its booking portal after complaints about complexity and lack of personalization. Despite loyal clientele, booking abandonment rates remain high.\n\n LuxRoute has brought in your consulting firm to improve the online experience by identifying usability issues and the personalization features that would reduce abandonment and increase booking completion."
   },
   {
     "id": "qual_28",
     "title": "QuickFleet",
-    "prompt_text": "QuickFleet, a vehicle management software provider in Detroit, has plateaued in its sales to municipal fleets. They believe their sales team may not be targeting the right buyers or tailoring demos effectively.\n\nQuickFleet has hired your consulting firm to audit and improve their sales process by identifying the buying personas within municipalities and the demo content that resonates best with each."
+    "prompt_text": "QuickFleet, a vehicle management software provider in Detroit, has plateaued in its sales to municipal fleets. They believe their sales team may not be targeting the right buyers or tailoring demos effectively.\n\n QuickFleet has hired your consulting firm to audit and improve their sales process by identifying the buying personas within municipalities and the demo content that resonates best with each."
   },
   {
     "id": "qual_29",
     "title": "CloudStream",
-    "prompt_text": "CloudStream, a video hosting platform for educators, is facing slow adoption among K-12 school districts. Feedback suggests concerns over pricing and unclear comparisons to legacy tools.\n\nCloudStream has engaged your consulting firm to increase adoption by identifying purchase barriers in the education sector and the decision-making criteria that drive platform selection."
+    "prompt_text": "CloudStream, a video hosting platform for educators, is facing slow adoption among K-12 school districts. Feedback suggests concerns over pricing and unclear comparisons to legacy tools.\n\n CloudStream has engaged your consulting firm to increase adoption by identifying purchase barriers in the education sector and the decision-making criteria that drive platform selection."
   },
   {
     "id": "qual_30",
     "title": "SoundNest",
-    "prompt_text": "SoundNest, a smart speaker brand based in Stockholm, wants to reposition itself from a budget tech gadget to a premium home lifestyle product. Their current marketing strategy and retail channels don’t reflect this ambition.\n\nSoundNest has hired your consulting firm to support the repositioning effort by identifying the messaging, product attributes, and retail partnerships that signal quality to high-end consumers."
+    "prompt_text": "SoundNest, a smart speaker brand based in Stockholm, wants to reposition itself from a budget tech gadget to a premium home lifestyle product. Their current marketing strategy and retail channels don’t reflect this ambition.\n\n SoundNest has hired your consulting firm to support the repositioning effort by identifying the messaging, product attributes, and retail partnerships that signal quality to high-end consumers."
   },
   {
     "id": "qual_31",
     "title": "CulturalCurrents",
-    "prompt_text": "CulturalCurrents, a market research agency based in New York, is trying to reposition its cultural insights product after losing several large CPG clients. Feedback indicates the reports lack clear business relevance and actionability.\n\nCulturalCurrents has engaged your consulting firm to reposition the offering by identifying what brand and innovation teams need from cultural insights and how to deliver it in a format that supports faster decision-making."
+    "prompt_text": "CulturalCurrents, a market research agency based in New York, is trying to reposition its cultural insights product after losing several large CPG clients. Feedback indicates the reports lack clear business relevance and actionability.\n\n CulturalCurrents has engaged your consulting firm to reposition the offering by identifying what brand and innovation teams need from cultural insights and how to deliver it in a format that supports faster decision-making."
   },
   {
     "id": "qual_32",
     "title": "DigitalDialogues",
-    "prompt_text": "DigitalDialogues, a social media startup based in San Francisco, is seeing high bounce rates from its mobile app and low engagement from new users. The product team suspects the value proposition isn’t clear during onboarding.\n\nDigitalDialogues has hired your consulting firm to clarify the early user journey by identifying the moments that drive retention and the content or product features that new users need to experience quickly."
+    "prompt_text": "DigitalDialogues, a social media startup based in San Francisco, is seeing high bounce rates from its mobile app and low engagement from new users. The product team suspects the value proposition isn’t clear during onboarding.\n\n DigitalDialogues has hired your consulting firm to clarify the early user journey by identifying the moments that drive retention and the content or product features that new users need to experience quickly."
   },
   {
     "id": "qual_33",
     "title": "MindScape",
-    "prompt_text": "MindScape, a workplace wellness platform, has seen low adoption rates from employees despite strong HR interest. Managers are struggling to promote usage, and employees don’t seem to connect with the platform’s content.\n\nMindScape has brought in your consulting firm to improve engagement by identifying the employee mindsets and needs that align with digital wellness, and the types of content and nudges that resonate most."
+    "prompt_text": "MindScape, a workplace wellness platform, has seen low adoption rates from employees despite strong HR interest. Managers are struggling to promote usage, and employees don’t seem to connect with the platform’s content.\n\n MindScape has brought in your consulting firm to improve engagement by identifying the employee mindsets and needs that align with digital wellness, and the types of content and nudges that resonate most."
   },
   {
     "id": "qual_34",
     "title": "EcoExperiences",
-    "prompt_text": "EcoExperiences, an adventure travel company based in Seattle, is expanding into younger millennial and Gen Z segments. Their existing trips skew toward older, wealthier travelers and don’t seem to appeal to the new target.\n\nEcoExperiences has engaged your consulting firm to reposition their travel offering by identifying what younger travelers look for in eco-tourism and the trip formats, messaging, and pricing that align best."
+    "prompt_text": "EcoExperiences, an adventure travel company based in Seattle, is expanding into younger millennial and Gen Z segments. Their existing trips skew toward older, wealthier travelers and don’t seem to appeal to the new target.\n\n EcoExperiences has engaged your consulting firm to reposition their travel offering by identifying what younger travelers look for in eco-tourism and the trip formats, messaging, and pricing that align best."
   },
   {
     "id": "qual_35",
     "title": "FutureFlavors",
-    "prompt_text": "FutureFlavors, a food trend forecasting firm based in Tokyo, is losing subscribers to newer, more visual platforms. Their clients say the reports are too academic and not easy to apply in product development.\n\nFutureFlavors has hired your consulting firm to redesign the forecast product by identifying how food innovation teams use trends and what formats and deliverables best support day-to-day product and brand decisions."
+    "prompt_text": "FutureFlavors, a food trend forecasting firm based in Tokyo, is losing subscribers to newer, more visual platforms. Their clients say the reports are too academic and not easy to apply in product development.\n\n FutureFlavors has hired your consulting firm to redesign the forecast product by identifying how food innovation teams use trends and what formats and deliverables best support day-to-day product and brand decisions."
   },
   {
     "id": "qual_36",
     "title": "RuralResonance",
-    "prompt_text": "RuralResonance, a radio broadcast network based in Tennessee, is losing younger listeners across its community radio stations. Its leadership believes the current programming doesn’t reflect the interests or needs of newer audiences.\n\nRuralResonance has brought in your consulting firm to refresh its content strategy by identifying the topics, formats, and voices that could re-engage younger rural listeners and rebuild loyalty."
+    "prompt_text": "RuralResonance, a radio broadcast network based in Tennessee, is losing younger listeners across its community radio stations. Its leadership believes the current programming doesn’t reflect the interests or needs of newer audiences.\n\n RuralResonance has brought in your consulting firm to refresh its content strategy by identifying the topics, formats, and voices that could re-engage younger rural listeners and rebuild loyalty."
   },
   {
     "id": "qual_37",
     "title": "DigitalDiversity",
-    "prompt_text": "DigitalDiversity, a DEI consultancy based in London, has seen flat growth in its core training business. Corporate buyers report low employee follow-through and unclear long-term impact.\n\nDigitalDiversity has hired your consulting firm to reimagine its DEI offering by identifying what drives meaningful behavior change at work and how to evolve their product from one-off training to ongoing learning and support."
+    "prompt_text": "DigitalDiversity, a DEI consultancy based in London, has seen flat growth in its core training business. Corporate buyers report low employee follow-through and unclear long-term impact.\n\n DigitalDiversity has hired your consulting firm to reimagine its DEI offering by identifying what drives meaningful behavior change at work and how to evolve their product from one-off training to ongoing learning and support."
   },
   {
     "id": "qual_38",
@@ -442,61 +442,61 @@
   {
     "id": "qual_39",
     "title": "EcoVoices",
-    "prompt_text": "EcoVoices, a climate-focused media brand, is preparing to launch a podcast network. They are unclear about which climate topics actually build audience loyalty versus those that generate one-time interest.\n\nEcoVoices has brought in your consulting firm to define a launch strategy by identifying which climate narratives resonate deeply with listeners and what formats encourage continued engagement."
+    "prompt_text": "EcoVoices, a climate-focused media brand, is preparing to launch a podcast network. They are unclear about which climate topics actually build audience loyalty versus those that generate one-time interest.\n\n EcoVoices has brought in your consulting firm to define a launch strategy by identifying which climate narratives resonate deeply with listeners and what formats encourage continued engagement."
   },
   {
     "id": "qual_40",
     "title": "MindfulMinds",
-    "prompt_text": "MindfulMinds, a health-tech company based in Australia, is struggling to scale its mindfulness app in corporate settings. HR leaders show initial interest, but few convert after the demo period.\n\nMindfulMinds has hired your consulting firm to strengthen its B2B offering by identifying the specific wellness needs of teams and how to repackage content and reporting features to drive adoption and renewals."
+    "prompt_text": "MindfulMinds, a health-tech company based in Australia, is struggling to scale its mindfulness app in corporate settings. HR leaders show initial interest, but few convert after the demo period.\n\n MindfulMinds has hired your consulting firm to strengthen its B2B offering by identifying the specific wellness needs of teams and how to repackage content and reporting features to drive adoption and renewals."
   },
   {
     "id": "qual_41",
     "title": "UrbanRoots",
-    "prompt_text": "UrbanRoots, a fast-casual restaurant brand based in Chicago, wants to attract more weekday lunch traffic. Their current menu and messaging are focused on evening dining and weekend events.\n\nUrbanRoots has brought in your consulting firm to build a weekday strategy by identifying the behaviors and decision drivers of local lunch-goers and the menu changes and communications that would drive trial."
+    "prompt_text": "UrbanRoots, a fast-casual restaurant brand based in Chicago, wants to attract more weekday lunch traffic. Their current menu and messaging are focused on evening dining and weekend events.\n\n UrbanRoots has brought in your consulting firm to build a weekday strategy by identifying the behaviors and decision drivers of local lunch-goers and the menu changes and communications that would drive trial."
   },
   {
     "id": "qual_42",
     "title": "TechEthnography",
-    "prompt_text": "TechEthnography, a research agency focused on human-centered tech design, is finding it hard to win projects with product teams. Their clients say the insights are interesting but hard to act on.\n\nTechEthnography has engaged your consulting firm to reposition their offer by identifying what makes research actionable to product owners and how to package insights that accelerate development decisions."
+    "prompt_text": "TechEthnography, a research agency focused on human-centered tech design, is finding it hard to win projects with product teams. Their clients say the insights are interesting but hard to act on.\n\n TechEthnography has engaged your consulting firm to reposition their offer by identifying what makes research actionable to product owners and how to package insights that accelerate development decisions."
   },
   {
     "id": "qual_43",
     "title": "StoryWeavers",
-    "prompt_text": "StoryWeavers, a branded storytelling agency, has lost repeat business from several consumer goods clients. Their clients say the stories lack data and don’t drive clear business results.\n\nStoryWeavers has brought in your consulting firm to rework their value proposition by identifying what content marketers need from branded storytelling and the metrics and formats that help prove impact."
+    "prompt_text": "StoryWeavers, a branded storytelling agency, has lost repeat business from several consumer goods clients. Their clients say the stories lack data and don’t drive clear business results.\n\n StoryWeavers has brought in your consulting firm to rework their value proposition by identifying what content marketers need from branded storytelling and the metrics and formats that help prove impact."
   },
   {
     "id": "qual_44",
     "title": "EcoJourneys",
-    "prompt_text": "EcoJourneys, a European train-based travel startup, is seeing high site traffic but low trip bookings. The founders believe the itineraries are too long and not flexible enough for their target traveler.\n\nEcoJourneys has hired your consulting firm to rethink the travel product by identifying the barriers to booking and what formats and price points would drive conversions among curious but non-committed visitors."
+    "prompt_text": "EcoJourneys, a European train-based travel startup, is seeing high site traffic but low trip bookings. The founders believe the itineraries are too long and not flexible enough for their target traveler.\n\n EcoJourneys has hired your consulting firm to rethink the travel product by identifying the barriers to booking and what formats and price points would drive conversions among curious but non-committed visitors."
   },
   {
     "id": "qual_45",
     "title": "HealthHorizons",
-    "prompt_text": "HealthHorizons, a health coaching platform, is experiencing churn from both individual users and enterprise clients. Most drop-off happens within the first month.\n\nHealthHorizons has brought in your consulting firm to increase retention by identifying the activation milestones that correlate with long-term use and the onboarding and coach assignment models that accelerate progress."
+    "prompt_text": "HealthHorizons, a health coaching platform, is experiencing churn from both individual users and enterprise clients. Most drop-off happens within the first month.\n\n HealthHorizons has brought in your consulting firm to increase retention by identifying the activation milestones that correlate with long-term use and the onboarding and coach assignment models that accelerate progress."
   },
   {
     "id": "qual_46",
     "title": "YouthVoices",
-    "prompt_text": "YouthVoices, a civic engagement app for teenagers, is struggling to gain traction in schools. Teachers like the idea, but students are not downloading or participating at scale.\n\nYouthVoices has hired your consulting firm to improve adoption by identifying what students need from civic apps and what in-app experiences and rewards drive participation and sharing."
+    "prompt_text": "YouthVoices, a civic engagement app for teenagers, is struggling to gain traction in schools. Teachers like the idea, but students are not downloading or participating at scale.\n\n YouthVoices has hired your consulting firm to improve adoption by identifying what students need from civic apps and what in-app experiences and rewards drive participation and sharing."
   },
   {
     "id": "qual_47",
     "title": "CraftConnect",
-    "prompt_text": "CraftConnect, a handmade goods platform, is preparing to relaunch with a focus on local sourcing. Their previous model had low seller stickiness and limited shopper awareness of what made the platform unique.\n\nCraftConnect has engaged your consulting firm to define its go-forward strategy by identifying what motivates craft buyers and makers, and how to better reflect local value in the digital experience."
+    "prompt_text": "CraftConnect, a handmade goods platform, is preparing to relaunch with a focus on local sourcing. Their previous model had low seller stickiness and limited shopper awareness of what made the platform unique.\n\n CraftConnect has engaged your consulting firm to define its go-forward strategy by identifying what motivates craft buyers and makers, and how to better reflect local value in the digital experience."
   },
   {
     "id": "qual_48",
     "title": "VoicesInTransit",
-    "prompt_text": "VoicesInTransit, a public policy startup, is trying to get city governments to adopt its transit equity toolkit. They’ve secured some pilots but failed to move to full-scale implementations.\n\nVoicesInTransit has brought in your consulting firm to improve uptake by identifying what matters most to city officials when selecting policy tools and how to present and support the toolkit accordingly."
+    "prompt_text": "VoicesInTransit, a public policy startup, is trying to get city governments to adopt its transit equity toolkit. They’ve secured some pilots but failed to move to full-scale implementations.\n\n VoicesInTransit has brought in your consulting firm to improve uptake by identifying what matters most to city officials when selecting policy tools and how to present and support the toolkit accordingly."
   },
   {
     "id": "qual_49",
     "title": "MediaEcho",
-    "prompt_text": "MediaEcho, a digital media startup, is trying to build credibility in a polarized information landscape. While early growth has been strong, ad buyers remain hesitant to commit budgets.\n\nMediaEcho has hired your consulting firm to establish a trust-building strategy by identifying what signals trust and neutrality to readers and how to translate that into advertiser appeal."
+    "prompt_text": "MediaEcho, a digital media startup, is trying to build credibility in a polarized information landscape. While early growth has been strong, ad buyers remain hesitant to commit budgets.\n\n MediaEcho has hired your consulting firm to establish a trust-building strategy by identifying what signals trust and neutrality to readers and how to translate that into advertiser appeal."
   },
   {
     "id": "qual_50",
     "title": "EduBridge",
-    "prompt_text": "EduBridge, an edtech company supporting non-traditional learners, is struggling to keep students enrolled through course completion. Most drop out before the halfway point.\n\nEduBridge has engaged your consulting firm to improve course retention by identifying what moments drive disengagement and what coaching, content, or pacing strategies could support learner follow-through."
+    "prompt_text": "EduBridge, an edtech company supporting non-traditional learners, is struggling to keep students enrolled through course completion. Most drop out before the halfway point.\n\n EduBridge has engaged your consulting firm to improve course retention by identifying what moments drive disengagement and what coaching, content, or pacing strategies could support learner follow-through."
   }
  ]
