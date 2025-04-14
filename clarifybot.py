@@ -16,14 +16,11 @@ st.set_page_config(
 )
 
 # --- Custom CSS Injection for Styling ---
-# Using distinct backgrounds for messages, default icons styled for visibility, User Right / Assistant Left (Default)
+# Added specific styling for st.tabs
 st.markdown("""
 <style>
     /* --- Overall Dark Theme --- */
-    html, body, [class*="st-"], .main {
-        background-color: #0E1117; /* Streamlit's default dark bg */
-        color: #FAFAFA;
-    }
+
     .main .block-container {
          background-color: #0E1117;
          color: #FAFAFA;
@@ -40,23 +37,7 @@ st.markdown("""
         border-bottom: none;
         margin-bottom: 10px;
     }
-    .skill-focus-badge {
-        display: inline-block;
-        background-color: #2C313A;
-        color: #A0A7B8;
-        padding: 5px 15px;
-        border-radius: 15px;
-        font-size: 0.9em;
-        font-weight: bold;
-        margin-bottom: 30px;
-        text-align: center;
-    }
-    div.block-container > div > div > div > div > div.skill-focus-badge {
-        display: block;
-        margin-left: auto;
-        margin-right: auto;
-        width: fit-content;
-    }
+    /* Removed skill-focus-badge as tabs provide focus */
      h2 { /* Section Headers: Case Prompt, Ask... */
         color: #E0E0E0;
         border-bottom: 1px solid #333;
@@ -126,43 +107,8 @@ st.markdown("""
          padding: 15px;
          margin-bottom: 15px;
     }
-     /* --- Style Chat Message Bubbles --- */
-     .stChatMessage {
-         border-radius: 10px;
-         padding: 12px 18px;
-         margin-bottom: 10px;
-         border: 1px solid #444; /* Keep the border */
-         color: #FAFAFA !important;
-         padding-left: 50px !important; /* Add padding for default icon */
-         position: relative; /* Needed for icon positioning */
-         width: fit-content;
-         max-width: 85%;
-         box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-         min-height: 40px; /* Ensure space for icon */
-         /* Default alignment (User Right, Assistant Left) handled by st.chat_message */
-     }
-     /* Background for User/Interviewee messages */
-     .stChatMessage[data-role="user"] {
-        background-color: #2C313A !important; /* Dark grey/blue */
-     }
-     /* Background for Assistant/Interviewer messages */
-     .stChatMessage[data-role="assistant"] {
-         background-color: #1E2229 !important; /* Slightly different dark shade */
-     }
-     /* Ensure text color inside is light */
-     .stChatMessage p {
-          color: #FAFAFA !important; /* Force light text */
-          line-height: 1.5;
-     }
-     /* --- Style Default Chat Icons --- */
-     .stChatMessage [data-testid="stAvatar"] svg {
-         width: 28px;
-         height: 28px;
-         fill: #FAFAFA !important; /* White/Light fill color for visibility */
-         position: absolute;
-         left: 10px;
-         top: 10px; /* Adjust as needed */
-     }
+     /* --- Style Chat Message Bubbles (Reverted to Default Streamlit) --- */
+     /* Let st.chat_message handle defaults */
 
 
     /* --- Buttons --- */
@@ -229,6 +175,33 @@ st.markdown("""
      div[data-testid="stSuccess"] { background-color: #1E4620; border-left: 5px solid #28A745; color: #D4EDDA; }
      div[data-testid="stWarning"] { background-color: #4D411B; border-left: 5px solid #FFC107; color: #FFF3CD; }
      div[data-testid="stError"] { background-color: #58151C; border-left: 5px solid #DC3545; color: #F8D7DA; }
+
+    /* --- Tab Styling --- */
+    /* Target the tab buttons */
+    button[data-baseweb="tab"] {
+        background-color: #2C313A; /* Dark background for inactive tabs */
+        border-radius: 8px !important; /* Rounded corners */
+        margin: 0 5px 10px 5px !important; /* Add some horizontal and bottom margin */
+        padding: 10px 15px !important; /* Adjust padding */
+        border: 1px solid #444 !important; /* Subtle border */
+        color: #A0A7B8 !important; /* Light grey text */
+        transition: background-color 0.2s ease-in-out;
+    }
+    /* Style the selected tab */
+    button[data-baseweb="tab"][aria-selected="true"] {
+        background-color: #4A90E2 !important; /* Blue background for selected tab */
+        color: white !important; /* White text for selected tab */
+        font-weight: bold;
+    }
+    /* Optional: Hover effect for inactive tabs */
+    button[data-baseweb="tab"]:not([aria-selected="true"]):hover {
+         background-color: #3a414d !important;
+         color: #FAFAFA !important;
+    }
+    /* Remove the default bottom border line from the tab bar */
+     div[data-baseweb="tab-list"] {
+         border-bottom: none !important;
+     }
 
 </style>
 """, unsafe_allow_html=True)
@@ -301,10 +274,11 @@ def init_session_state_key(key, default_value):
     if full_key not in st.session_state:
         st.session_state[full_key] = default_value
 
-# --- REMOVED Placeholder Conversation ---
-# placeholder_conversation = [ ... ]
+# Define available skills
+SKILLS = ["Clarifying Questions", "Framework Development", "Hypothesis Formulation", "Analysis", "Recommendation"]
 
 # Initialize session state keys
+# init_session_state_key('selected_skill', SKILLS[0]) # REMOVED - Tabs handle selection
 init_session_state_key('current_prompt_id', None)
 init_session_state_key('used_prompt_ids', [])
 init_session_state_key('conversation', []) # Initialize as empty
@@ -320,9 +294,40 @@ init_session_state_key('feedback', None)
 init_session_state_key('show_comment_box', False)
 init_session_state_key('feedback_rating_value', None)
 init_session_state_key('show_donation_dialog', False)
-# init_session_state_key('user_input_text', '') # REMOVED
 
 # --- Helper Functions ---
+
+def reset_skill_state():
+    """Resets state variables specific to a practice run within a skill."""
+    prefix = st.session_state.key_prefix
+    # Define keys specific to practice runs that need resetting
+    keys_to_reset = [
+        'current_prompt_id', 'conversation', 'done_asking',
+        'feedback_submitted', 'user_feedback', 'interaction_start_time',
+        'total_time', 'is_typing', 'feedback',
+        'show_comment_box', 'feedback_rating_value',
+    ]
+    print("DEBUG: Resetting state for skill practice:", keys_to_reset)
+    for key in keys_to_reset:
+        full_key = f"{prefix}_{key}"
+        if full_key in st.session_state:
+            try:
+                del st.session_state[full_key]
+            except KeyError:
+                pass
+    # Re-initialize needed keys after deletion
+    init_session_state_key('conversation', [])
+    init_session_state_key('done_asking', False)
+    init_session_state_key('feedback_submitted', False)
+    init_session_state_key('is_typing', False)
+    init_session_state_key('feedback', None)
+    init_session_state_key('show_comment_box', False)
+    init_session_state_key('feedback_rating_value', None)
+    init_session_state_key('interaction_start_time', None)
+    init_session_state_key('total_time', 0.0)
+    init_session_state_key('user_feedback', None)
+    init_session_state_key('current_prompt_id', None) # Ensure prompt is re-selected
+
 # [select_new_prompt, get_prompt_details, parse_interviewer_response, send_question, generate_final_feedback functions remain the same as previous version]
 # ...
 # --- Re-include Helper Functions for completeness ---
@@ -510,9 +515,6 @@ def generate_final_feedback(current_case_prompt_text):
         print("DEBUG: Skipping feedback gen: No conversation history.")
         return None
     # --- REMOVED Placeholder Check ---
-    # if 'placeholder_conversation' in globals() and ...:
-    #    print("DEBUG: Skipping feedback gen: Only placeholder conversation exists.")
-    #    return None
 
 
     with st.spinner("Generating Final Feedback..."):
@@ -594,14 +596,50 @@ def generate_final_feedback(current_case_prompt_text):
 
 
 # --- Main Streamlit Application Function ---
-def clarifying_questions_bot():
-    """Defines the Streamlit UI and application logic."""
-
-    # --- Updated Title ---
+def main_app():
+    """Main function to control skill selection and display."""
     st.title("CHIP")
-    # Display Skill Focus Badge
-    st.markdown('<div class="skill-focus-badge">Skill Focus: Clarifying Questions</div>', unsafe_allow_html=True)
 
+    prefix = st.session_state.key_prefix
+    # REMOVED skill_key definition here as it's handled by tabs
+
+    # --- Skill Selection using st.tabs ---
+    tab_names = SKILLS
+    # Use st.tabs for the selection UI
+    tabs = st.tabs(tab_names)
+
+    # --- Display Selected Skill UI ---
+    # Each skill's content goes within its corresponding 'with' block
+    with tabs[0]: # Corresponds to SKILLS[0] = "Clarifying Questions"
+        clarifying_questions_bot_ui() # Call the UI function for this skill
+
+    with tabs[1]: # Corresponds to SKILLS[1] = "Framework Development"
+        st.header(f"{SKILLS[1]}")
+        st.info("This module is under construction. Check back later!")
+        # framework_bot_ui() # Call function for this skill later
+
+    with tabs[2]: # Corresponds to SKILLS[2] = "Hypothesis Formulation"
+        st.header(f"{SKILLS[2]}")
+        st.info("This module is under construction. Check back later!")
+        # hypothesis_bot_ui()
+
+    with tabs[3]: # Corresponds to SKILLS[3] = "Analysis"
+        st.header(f"{SKILLS[3]}")
+        st.info("This module is under construction. Check back later!")
+        # analysis_bot_ui()
+
+    with tabs[4]: # Corresponds to SKILLS[4] = "Recommendation"
+        st.header(f"{SKILLS[4]}")
+        st.info("This module is under construction. Check back later!")
+        # recommendation_bot_ui()
+
+
+# --- Skill-Specific UI Function (Example for Clarifying Questions) ---
+def clarifying_questions_bot_ui():
+    """Defines the Streamlit UI and logic SPECIFICALLY for the Clarifying Questions skill."""
+
+    # Display Skill Focus Badge (now redundant with tabs, can be removed or kept)
+    # st.markdown('<div class="skill-focus-badge">Skill Focus: Clarifying Questions</div>', unsafe_allow_html=True)
 
     # Define Session State Keys using prefix
     prefix = st.session_state.key_prefix
@@ -614,17 +652,14 @@ def clarifying_questions_bot():
     feedback_submitted_key = f"{prefix}_feedback_submitted"
     user_feedback_key = f"{prefix}_user_feedback"
     current_prompt_id_key = f"{prefix}_current_prompt_id"
-    run_count_key = f"{prefix}_run_count" # Reverted to session state key
-    # run_counted_key = f"{prefix}_run_counted_this_instance" # REMOVED faulty flag
+    run_count_key = f"{prefix}_run_count" # Session state run count
     show_comment_key = f"{prefix}_show_comment_box"
     feedback_rating_value_key = f"{prefix}_feedback_rating_value"
     show_donation_dialog_key = f"{prefix}_show_donation_dialog" # Key for dialog
-    # user_input_key = f"{prefix}_user_input_text" # REMOVED
 
-    # --- Session State Run Count ---
-    current_run_count_display = st.session_state.get(run_count_key, 0) # Read count for display
-    # --- REMOVED Debug Caption ---
-    # st.caption(f"Debug: Total runs completed this session = {current_run_count_display}")
+    # --- Session State Run Count Display ---
+    current_run_count_display = st.session_state.get(run_count_key, 0)
+    # st.caption(f"Debug: Total runs completed this session = {current_run_count_display}") # Removed
 
     # --- Show Donation Dialog ---
     if st.session_state.get(show_donation_dialog_key):
@@ -632,22 +667,20 @@ def clarifying_questions_bot():
         if hasattr(st, 'dialog'):
             @st.dialog("Support CHIP!")
             def show_donation():
-                st.write( # Use st.write for better formatting control inside dialog
+                st.write(
                     "Love CHIP? Your support helps keep this tool free and improving! 🙏\n\n"
                     "Consider making a small donation (suggested $5) to help cover server and API costs."
                 )
-                # Use columns to center button
                 col1, col2, col3 = st.columns([1,2,1])
                 with col2:
                      st.link_button("Donate via Buy Me a Coffee ☕", "https://buymeacoffee.com/9611", type="primary", use_container_width=True) # Updated Link
                 if st.button("Maybe later", use_container_width=True):
-                    st.session_state[show_donation_dialog_key] = False # Reset flag on close
-                    st.rerun() # Close dialog
-
+                    st.session_state[show_donation_dialog_key] = False
+                    st.rerun()
             show_donation()
         else:
-            # Fallback if st.dialog is not available
-            with st.container(border=True): # Add a border for fallback visibility
+            # Fallback
+            with st.container(border=True):
                 st.success(
                     "Love CHIP? Your support helps keep this tool free and improving! 🙏\n\n"
                     "Consider making a small donation (suggested $5) to help cover server and API costs."
@@ -657,6 +690,7 @@ def clarifying_questions_bot():
 
 
     # --- Select and Display Case Prompt ---
+    # Select a new prompt only if one isn't already selected for this skill instance
     if st.session_state.get(current_prompt_id_key) is None:
         selected_id = select_new_prompt()
         if selected_id is None:
@@ -667,7 +701,9 @@ def clarifying_questions_bot():
 
     if not current_prompt:
         st.error("Could not load the current case prompt details. Please try restarting.")
-        if st.button("Restart Practice Session"):
+        # Changed button to use reset function
+        if st.button("Restart This Skill Practice"):
+             reset_skill_state() # Use reset function
              st.rerun()
         st.stop()
 
@@ -679,7 +715,6 @@ def clarifying_questions_bot():
         st.error(case_prompt_text)
         st.stop()
     else:
-        # Use markdown to create the card structure with embedded HTML/CSS classes
         st.markdown(f"""
         <div class="case-prompt-card">
             <div class="title-box">
@@ -707,7 +742,6 @@ def clarifying_questions_bot():
                 else:
                     st.session_state[time_key] = 0.0
                 st.session_state[done_key] = True
-                # typing_placeholder.empty() # Placeholder might not exist yet if button clicked first
 
                 # --- Increment Run Count and Trigger Dialog Check HERE ---
                 current_session_run_count = st.session_state.get(run_count_key, 0)
@@ -726,20 +760,17 @@ def clarifying_questions_bot():
             st.session_state[start_time_key] = time.time()
 
         # Chat history display
-        chat_container = st.container(height=300) # Adjusted height
+        chat_container = st.container(height=300)
         with chat_container:
             conversation_history = st.session_state.get(conv_key, [])
             if isinstance(conversation_history, list):
-                 # Display placeholder or actual conversation
-                 display_messages = conversation_history # or placeholder_conversation if needed initially
-                 for msg in display_messages:
+                 for msg in conversation_history:
                      role = msg.get("role")
                      display_role = "user" if role == "interviewee" else "assistant"
-                     # --- Use Default Icons (Removed Avatar Argument) ---
-                     with st.chat_message(display_role): # Use default icons
+                     with st.chat_message(display_role):
                          st.markdown(msg.get("content", ""))
 
-        # Typing indicator placeholder (below chat container)
+        # Typing indicator placeholder
         typing_placeholder = st.empty()
         if st.session_state.get(is_typing_key):
             typing_placeholder.markdown("_(CHIP is thinking...)_")
@@ -747,51 +778,37 @@ def clarifying_questions_bot():
             typing_placeholder.empty()
 
         # --- Reverted to st.chat_input ---
-        # Positioned after other elements, so it docks at the bottom
         user_question = st.chat_input(
             "Type your question here...",
-            key="chat_input", # Use default key
+            key="chat_input",
             disabled=st.session_state.get(is_typing_key, False)
         )
 
-        # Handle submission from st.chat_input
         if user_question:
-            # Clear typing placeholder immediately if visible
             if st.session_state.get(is_typing_key):
                  typing_placeholder.empty()
-            # --- REMOVED Placeholder Clearing Logic ---
-            # if 'placeholder_conversation' in globals() and ... :
-            #    st.session_state[conv_key] = []
-            #    print("DEBUG: Cleared placeholder conversation.")
             send_question(user_question, case_prompt_text)
-            # Rerun is handled by send_question
-
-        # --- Removed divider and old button placement ---
 
 
     # --- Feedback and Conclusion Area ---
-    # [ Remains the same as previous version ]
     if st.session_state.get(done_key):
 
-        # --- REMOVED st.header("Feedback on Clarifying Questions") ---
-
         final_feedback_content = generate_final_feedback(case_prompt_text)
-        print(f"DEBUG: Result from generate_final_feedback: '{str(final_feedback_content)[:100]}...'") # Debug
+        print(f"DEBUG: Result from generate_final_feedback: '{str(final_feedback_content)[:100]}...'")
 
         feedback_was_generated = final_feedback_content and not final_feedback_content.startswith("Error") and not final_feedback_content.startswith("[Feedback")
 
         if feedback_was_generated:
             st.markdown("---")
             with st.container(border=True):
-                 st.markdown(final_feedback_content) # Display the actual feedback
+                 st.markdown(final_feedback_content)
             st.markdown("---")
 
-            # --- User Feedback Section (Clickable Stars) ---
+            # --- User Feedback Section ---
             st.subheader("Rate this Feedback")
-
             feedback_already_submitted = st.session_state.get(feedback_submitted_key, False)
-
             if feedback_already_submitted:
+                # Display submitted feedback
                 stored_user_feedback = st.session_state.get(user_feedback_key)
                 st.success("Thank you for your feedback!")
                 if stored_user_feedback:
@@ -800,23 +817,18 @@ def clarifying_questions_bot():
                      if stored_user_feedback.get('comment'):
                          st.caption(f"Your comment: {stored_user_feedback.get('comment')}")
             else:
-                # Rating UI only if not submitted
+                # Display rating input
                 st.markdown("**How helpful was the feedback provided above? (Click a star rating)**")
-                st.write(" ") # Add space
-
-                # Use columns for star buttons - centered layout should help spacing
+                st.write(" ")
                 cols = st.columns(5)
                 selected_rating = 0
                 rating_clicked = False
-
                 for i in range(5):
                     with cols[i]:
                         button_label = '★' * (i + 1)
-                        # Make button width adapt? Maybe not needed in centered.
                         if st.button(button_label, key=f"star_{i+1}", help=f"Rate {i+1} star{'s' if i>0 else ''}"):
                             selected_rating = i + 1
                             rating_clicked = True
-
                 if rating_clicked:
                     st.session_state[feedback_rating_value_key] = selected_rating
                     if selected_rating >= 4:
@@ -828,20 +840,15 @@ def clarifying_questions_bot():
                         st.session_state[user_feedback_key] = user_feedback_data
                         st.session_state[feedback_submitted_key] = True
                         st.session_state[show_comment_key] = False
-                        print(f"DEBUG: User Feedback Auto-Submitted: {user_feedback_data}") # Debug/Log
+                        print(f"DEBUG: User Feedback Auto-Submitted: {user_feedback_data}")
                         st.rerun()
                     else:
                         st.session_state[show_comment_key] = True
                         st.rerun()
-
                 if st.session_state.get(show_comment_key, False):
                     st.warning("Please provide a comment for ratings below 4 stars.")
                     current_rating_value = st.session_state.get(feedback_rating_value_key, 0)
-                    if isinstance(current_rating_value, int) and current_rating_value > 0:
-                        rating_display = '★' * current_rating_value
-                    else:
-                        rating_display = "(select rating)"
-
+                    rating_display = ('★' * current_rating_value) if isinstance(current_rating_value, int) and current_rating_value > 0 else "(select rating)"
                     feedback_comment = st.text_area(
                         f"Comment for your {rating_display} rating:",
                         key=f"{prefix}_feedback_comment_input",
@@ -861,17 +868,13 @@ def clarifying_questions_bot():
                             st.session_state[user_feedback_key] = user_feedback_data
                             st.session_state[feedback_submitted_key] = True
                             st.session_state[show_comment_key] = False
-                            print(f"DEBUG: User Feedback Submitted with Comment: {user_feedback_data}") # Debug/Log
+                            print(f"DEBUG: User Feedback Submitted with Comment: {user_feedback_data}")
                             st.rerun()
-            # --- End of User Feedback Section ---
 
-        # Handle cases where feedback generation failed or returned an error string explicitly
         elif final_feedback_content and final_feedback_content.startswith("Error"):
              st.error(f"Could not display feedback: {final_feedback_content}")
-             print(f"DEBUG: Displaying feedback error: {final_feedback_content}") # Debug
-        # Handle case where feedback is None or empty (e.g., skipped generation)
+             print(f"DEBUG: Displaying feedback error: {final_feedback_content}")
         else:
-            # More specific warning based on why feedback might be missing
             if st.session_state.get(feedback_submitted_key):
                  st.warning("Feedback was submitted, but could not be displayed.")
                  print(f"DEBUG: Displaying 'Feedback unavailable' warning, but feedback_submitted is True. Value was: {final_feedback_content}")
@@ -888,34 +891,18 @@ def clarifying_questions_bot():
         total_interaction_time = st.session_state.get(time_key, 0.0)
         st.write(f"You spent **{total_interaction_time:.2f} seconds** in the clarifying questions phase for this case.")
 
-        # --- REMOVED Run count increment logic from here ---
-
-
-        # --- Restart Button ---
-        col_btn_r1, col_btn_r2, col_btn_r3 = st.columns([1, 1.5, 1]) # Center button
+        # --- Restart Button (for the specific skill) ---
+        col_btn_r1, col_btn_r2, col_btn_r3 = st.columns([1, 1.5, 1])
         with col_btn_r2:
-            if st.button("Start New Practice Case", use_container_width=True):
-                # Keys to clear for a full reset of the practice run state
-                keys_to_clear_for_restart = [
-                    'current_prompt_id', 'conversation', 'done_asking',
-                    'feedback_submitted', 'user_feedback', 'interaction_start_time',
-                    'total_time', 'is_typing', 'feedback' , # Removed run_counted_key
-                     show_comment_key, feedback_rating_value_key, show_donation_dialog_key,
-                     # user_input_key # REMOVED
-                ]
-                # Keep 'used_prompt_ids' and 'run_count' (session state version)
-
-                print("DEBUG: Restarting practice session, clearing session keys:", keys_to_clear_for_restart) # Debug
-                print(f"DEBUG: Value of run_count BEFORE clearing keys: {st.session_state.get(run_count_key)}") # Keep this debug print
-                for key in keys_to_clear_for_restart:
-                    full_key = f"{prefix}_{key}"
-                    if full_key in st.session_state:
-                        try: del st.session_state[full_key]
-                        except KeyError: pass
-                print(f"DEBUG: Value of run_count AFTER clearing keys: {st.session_state.get(run_count_key)}") # Keep this debug print
+            # Changed label slightly
+            if st.button("Practice This Skill Again", use_container_width=True):
+                reset_skill_state() # Use reset function
                 st.rerun()
 
 # --- Entry Point ---
 if __name__ == "__main__":
-    clarifying_questions_bot() # Call main function directly
+    # Initialize state prefix first if not present
+    if 'key_prefix' not in st.session_state:
+         st.session_state.key_prefix = f"chip_bot_{uuid.uuid4().hex[:6]}"
+    main_app() # Call the main controller function
 
