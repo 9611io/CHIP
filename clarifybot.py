@@ -16,192 +16,69 @@ st.set_page_config(
 )
 
 # --- Custom CSS Injection for Styling ---
-# Added specific styling for st.tabs
+# Removed all custom chat message CSS. Added style for prompt display box.
 st.markdown("""
 <style>
-    /* --- Overall Dark Theme --- */
-
+    /* --- Overall Theme --- */
+    /* Using Streamlit defaults, add targeted styles below */
     .main .block-container {
-         background-color: #0E1117;
-         color: #FAFAFA;
          padding-top: 2rem;
          padding-bottom: 2rem;
     }
 
     /* --- Headers & Titles --- */
     h1 { /* Main Title: CHIP... */
-        color: #FAFAFA;
         text-align: center;
-        font-weight: bold;
-        font-size: 2.5em;
-        border-bottom: none;
-        margin-bottom: 10px;
     }
-    /* Removed skill-focus-badge as tabs provide focus */
      h2 { /* Section Headers: Case Prompt, Ask... */
-        color: #E0E0E0;
-        border-bottom: 1px solid #333;
+        border-bottom: 1px solid #DDDDDD;
         padding-bottom: 8px;
         margin-top: 40px;
         margin-bottom: 20px;
-        font-size: 1.5em;
     }
      h3 { /* Subheader for Rating */
-        color: #FAFAFA;
         margin-top: 25px;
         margin-bottom: 10px;
-        font-size: 1.2em;
-     }
+    }
 
     /* --- Containers & Cards --- */
-    .stContainer, .stBlock {
-        border-radius: 8px;
-    }
     hr { /* Divider */
-        border-top: 1px solid #333;
+        border-top: 1px solid #DDDDDD;
         margin-top: 30px;
         margin-bottom: 30px;
     }
 
-    /* --- Custom Card for Case Prompt --- */
-    .case-prompt-card {
-        background-color: #161A21;
-        border: 1px solid #333;
-        border-radius: 12px;
-        padding: 25px;
-        margin-bottom: 25px;
-        color: #FAFAFA;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    }
-    .case-prompt-card .title-box { /* Box for icon and title */
-        background-color: #2C313A;
+    /* --- Styling for Prompt Display Box (replaces st.info) --- */
+    .prompt-display-card {
+        background-color: var(--streamlit-secondary-background-color); /* Use theme background */
+        border: 1px solid #CCCCCC; /* Subtle border */
+        border-left: 5px solid #2196F3; /* Accent like st.info */
         border-radius: 8px;
-        padding: 10px 15px;
-        margin-bottom: 20px;
-        display: inline-flex;
-        align-items: center;
-        border: 1px solid #444;
+        padding: 15px 15px 15px 20px; /* Adjust padding */
+        margin-bottom: 25px;
+        color: var(--streamlit-text-color); /* Use theme text color */
     }
-     .case-prompt-card .title-box span.icon {
-         margin-right: 10px;
-         font-size: 1.3em;
-         color: #808A9F;
-     }
-      .case-prompt-card .title-box span.title-text {
-         font-size: 1.1em;
-         font-weight: bold;
-         color: #E0E0E0;
-      }
-     .case-prompt-card p { /* Style text within the card */
+     .prompt-display-card p { /* Ensure paragraphs inside have good spacing */
+         margin-bottom: 0.5rem;
          line-height: 1.6;
-         color: #C0C0C0;
-         margin-bottom: 0;
      }
-
-    /* --- Chat Area --- */
-    /* Container for chat history */
-    div[data-testid="stVerticalBlock"] div[data-testid="stVerticalBlock"] div[data-testid="stVerticalBlock"] div[style*="height: 300px"] {
-         background-color: #161A21;
-         border: 1px solid #333;
-         border-radius: 12px;
-         padding: 15px;
-         margin-bottom: 15px;
-    }
-     /* --- Style Chat Message Bubbles (Reverted to Default Streamlit) --- */
-     /* Let st.chat_message handle defaults */
+      .prompt-display-card strong { /* Make title bold */
+         font-size: 1.1em;
+         display: block;
+         margin-bottom: 0.75rem;
+      }
 
 
     /* --- Buttons --- */
-    div[data-testid="stButton"] > button {
-        border-radius: 8px;
-        padding: 10px 24px;
-        border: none;
-        background-color: #4A90E2; /* Target blue */
-        color: white;
-        font-weight: bold;
-        transition: background-color 0.2s ease-in-out, transform 0.1s ease-in-out;
-        margin-top: 15px; /* Default top margin */
-    }
-    div[data-testid="stButton"] > button:hover {
-        background-color: #357ABD;
-        transform: scale(1.02);
-    }
-     div[data-testid="stButton"] > button:active {
-        background-color: #285A8C;
-        transform: scale(0.98);
-     }
-     div[data-testid="stButton"] > button * {
-        background-color: transparent !important;
-        color: inherit !important;
-     }
-     /* Style star buttons */
-     div[data-testid="stButton"] > button[key*="star_"] {
-        font-size: 1.8em; padding: 0px 5px; color: #ffc107; border: none; background: none !important;
-        box-shadow: none; margin-top: 5px; transition: transform 0.1s ease-in-out;
-     }
-      div[data-testid="stButton"] > button[key*="star_"]:hover { background: none !important; transform: scale(1.1); }
-      div[data-testid="stButton"] > button[key*="star_"]:active { transform: scale(0.95); }
-      div[data-testid="stButton"] > button[key*="star_"] * { background-color: transparent !important; color: inherit !important; }
+    /* Using default button styling now */
 
 
     /* --- Text Area & Chat Input --- */
-    div[data-testid="stTextArea"] textarea { /* Style for feedback comment box */
-        background-color: #161A21;
-        border: 1px solid #333;
-        border-radius: 8px;
-        color: #FAFAFA;
-    }
-     /* Default stChatInput styling */
-     div[data-testid="stChatInput"] {
-         border-top: 1px solid #333;
-         padding-top: 15px;
-         background-color: #0E1117; /* Ensure input bar matches background */
-     }
-      div[data-testid="stChatInput"] textarea {
-          background-color: #1E2229;
-          border: 1px solid #444;
-          border-radius: 8px;
-          color: #FAFAFA;
-      }
+    /* Using default styling */
+
 
     /* --- Other Elements --- */
-    div[data-testid="stInfo"], div[data-testid="stSuccess"], div[data-testid="stWarning"], div[data-testid="stError"] {
-         border-radius: 8px;
-         border: 1px solid #555;
-         padding: 15px;
-         margin-top: 10px;
-         margin-bottom: 10px;
-    }
-     div[data-testid="stSuccess"] { background-color: #1E4620; border-left: 5px solid #28A745; color: #D4EDDA; }
-     div[data-testid="stWarning"] { background-color: #4D411B; border-left: 5px solid #FFC107; color: #FFF3CD; }
-     div[data-testid="stError"] { background-color: #58151C; border-left: 5px solid #DC3545; color: #F8D7DA; }
-
-    /* --- Tab Styling --- */
-    /* Target the tab buttons */
-    button[data-baseweb="tab"] {
-        background-color: #2C313A; /* Dark background for inactive tabs */
-        border-radius: 8px !important; /* Rounded corners */
-        margin: 0 5px 10px 5px !important; /* Add some horizontal and bottom margin */
-        padding: 10px 15px !important; /* Adjust padding */
-        border: 1px solid #444 !important; /* Subtle border */
-        color: #A0A7B8 !important; /* Light grey text */
-        transition: background-color 0.2s ease-in-out;
-    }
-    /* Style the selected tab */
-    button[data-baseweb="tab"][aria-selected="true"] {
-        background-color: #4A90E2 !important; /* Blue background for selected tab */
-        color: white !important; /* White text for selected tab */
-        font-weight: bold;
-    }
-    /* Optional: Hover effect for inactive tabs */
-    button[data-baseweb="tab"]:not([aria-selected="true"]):hover {
-         background-color: #3a414d !important;
-         color: #FAFAFA !important;
-    }
-    /* Remove the default bottom border line from the tab bar */
-     div[data-baseweb="tab-list"] {
-         border-bottom: none !important;
-     }
+    /* Using default styling for alerts */
 
 </style>
 """, unsafe_allow_html=True)
@@ -278,7 +155,7 @@ def init_session_state_key(key, default_value):
 SKILLS = ["Clarifying Questions", "Framework Development", "Hypothesis Formulation", "Analysis", "Recommendation"]
 
 # Initialize session state keys
-# init_session_state_key('selected_skill', SKILLS[0]) # REMOVED - Tabs handle selection
+init_session_state_key('selected_skill', SKILLS[0]) # Default to first skill
 init_session_state_key('current_prompt_id', None)
 init_session_state_key('used_prompt_ids', [])
 init_session_state_key('conversation', []) # Initialize as empty
@@ -300,7 +177,6 @@ init_session_state_key('show_donation_dialog', False)
 def reset_skill_state():
     """Resets state variables specific to a practice run within a skill."""
     prefix = st.session_state.key_prefix
-    # Define keys specific to practice runs that need resetting
     keys_to_reset = [
         'current_prompt_id', 'conversation', 'done_asking',
         'feedback_submitted', 'user_feedback', 'interaction_start_time',
@@ -311,12 +187,10 @@ def reset_skill_state():
     for key in keys_to_reset:
         full_key = f"{prefix}_{key}"
         if full_key in st.session_state:
-            try:
-                del st.session_state[full_key]
-            except KeyError:
-                pass
+            try: del st.session_state[full_key]
+            except KeyError: pass
     # Re-initialize needed keys after deletion
-    init_session_state_key('conversation', [])
+    init_session_state_key('conversation', []) # Reset to empty
     init_session_state_key('done_asking', False)
     init_session_state_key('feedback_submitted', False)
     init_session_state_key('is_typing', False)
@@ -405,9 +279,6 @@ def send_question(question, current_case_prompt_text):
 
     st.session_state[is_typing_key] = True
     # --- REMOVED Placeholder Clearing Logic ---
-    # if 'placeholder_conversation' in globals() and ... :
-    #    st.session_state[conv_key] = []
-    #    print("DEBUG: Cleared placeholder conversation.")
 
     st.session_state.setdefault(conv_key, []).append({"role": "interviewee", "content": question})
 
@@ -540,6 +411,7 @@ def generate_final_feedback(current_case_prompt_text):
 
             history_string = "\n\n".join(formatted_history)
 
+            # --- Updated Feedback Prompt (Score First, Formatting) ---
             feedback_prompt = f"""
             You are an experienced case interview coach providing feedback on the clarifying questions phase ONLY.
 
@@ -550,29 +422,41 @@ def generate_final_feedback(current_case_prompt_text):
             {history_string}
 
             Your Task:
-            Provide detailed, professional, and direct feedback on the interviewee's clarifying questions phase based *only* on the interaction history provided.
+            Provide detailed, professional, and direct feedback on the interviewee's clarifying questions phase based *only* on the interaction history provided. Use markdown formatting effectively, including paragraph breaks for readability.
 
             Structure your feedback precisely as follows using Markdown:
+
+            ## Overall Rating: [1-5]/5
+            *(Provide a brief justification for the rating here, referencing the conversation specifics or assessments. Be very critical and use the full range of scores based on the criteria below)*
+
+            ---
+
             1.  **Overall Summary:** Briefly summarize the interviewee's performance in asking clarifying questions for *this specific case context*.
+
             2.  **Strengths:** Identify 1-2 specific strengths demonstrated (e.g., good initial questions, logical flow, conciseness). Refer to specific question numbers or assessments if possible.
+
             3.  **Areas for Improvement:** Identify 1-2 key areas where the interviewee could improve (e.g., question relevance, depth, avoiding compound questions, structure, digging deeper based on answers). Refer to specific question numbers or assessments.
+
             4.  **Actionable Next Steps:** Provide at least two concrete, actionable steps the interviewee can take to improve their clarifying questions skills *for future cases*.
+
             5.  **Example Questions:** For *each* actionable next step that relates to the *content* or *quality* of the questions asked, provide 1-2 specific *alternative* example questions the interviewee *could have asked* in *this case* to demonstrate improvement in that area.
-            6.  **Overall Rating (1-5):** Rate the interviewee's clarifying question skills based *only* on this interaction. Justify your rating briefly, referencing the conversation specifics or assessments. **Be very critical and use the full range of scores:**
+
+
+            **Rating Criteria Reference:**
                 * 1: **Must use this score** if questions were predominantly vague (like single words), irrelevant, unclear, compound, or demonstrated a fundamental lack of understanding of how to clarify effectively. Added little to no value.
                 * 2: Significant issues remain. Many questions were poor, with only occasional relevant ones, or showed a consistent lack of focus/structure.
                 * 3: A mixed bag. Some decent questions fitting the ideal categories (Objective, Company, Terms, Repetition) but also notable lapses in quality, relevance, or efficiency.
                 * 4: Generally strong performance. Most questions were relevant, clear, targeted, and fit the ideal categories. Good progress made in clarifying the case, with only minor areas for refinement.
                 * 5: Excellent. Consistently high-quality questions that were relevant, concise, targeted, and demonstrated a strong grasp of the ideal clarifying categories. Effectively and efficiently clarified key aspects of the case prompt.
-               **Consider the per-question assessments provided in the history when assigning the overall rating.**
+               *(Remember to consider the per-question assessments provided in the history when assigning the overall rating.)*
 
-            Be constructive and focus *only* on the clarifying questions phase of *this specific case*. Ensure your response does **not** start with a title like "Feedback on Clarifying Questions". Start directly with point 1. Overall Summary using Markdown bolding as shown.
+            Ensure your response does **not** start with any other title. Start directly with the '## Overall Rating:' heading. Use paragraph breaks between sections.
             """
             print("DEBUG: Calling OpenAI API for final feedback...") # Debug
             feedback_response = client.chat.completions.create(
                 model="gpt-4o-mini",
                 messages=[
-                    {"role": "system", "content": "You are an expert case interview coach providing structured feedback, starting directly with the 'Overall Summary'. Evaluate critically based on history and assessments. Do not include a title in your response."},
+                    {"role": "system", "content": "You are an expert case interview coach providing structured feedback. Start directly with the '## Overall Rating:' heading. Evaluate critically based on history and assessments. Use markdown effectively for readability."},
                     {"role": "user", "content": feedback_prompt},
                 ],
                 max_tokens=800,
@@ -601,45 +485,62 @@ def main_app():
     st.title("CHIP")
 
     prefix = st.session_state.key_prefix
-    # REMOVED skill_key definition here as it's handled by tabs
+    skill_key = f"{prefix}_selected_skill" # Define key for selected skill state
 
-    # --- Skill Selection using st.tabs ---
-    tab_names = SKILLS
-    # Use st.tabs for the selection UI
-    tabs = st.tabs(tab_names)
+    st.write("Select Skill to Practice:") # Add label
+
+    # --- Skill Selection using Buttons in 2 Rows ---
+    cols1 = st.columns(3) # First row of 3 skills
+    cols2 = st.columns(3) # Second row (using 3 cols for alignment)
+
+    current_selection = st.session_state.get(skill_key, SKILLS[0])
+
+    button_cols = cols1 + cols2 # Combine column objects
+
+    for i, skill in enumerate(SKILLS):
+        col_index = i % 3 # Determine column index (0, 1, or 2)
+        row_cols = cols1 if i < 3 else cols2 # Choose the correct row's columns
+
+        with row_cols[col_index]:
+            # Use type="primary" for the selected button, "secondary" otherwise
+            button_type = "primary" if skill == current_selection else "secondary"
+            if st.button(skill, key=f"skill_btn_{skill.replace(' ', '_')}", use_container_width=True, type=button_type):
+                # Check if selection actually changed before resetting state
+                if skill != current_selection:
+                    # Update state first
+                    st.session_state[skill_key] = skill
+                    # Then call reset function
+                    reset_skill_state()
+                    # Rerun to reflect the change and load the new skill UI
+                    st.rerun()
+                # If the same button is clicked, do nothing extra
+
+    st.divider()
 
     # --- Display Selected Skill UI ---
-    # Each skill's content goes within its corresponding 'with' block
-    with tabs[0]: # Corresponds to SKILLS[0] = "Clarifying Questions"
+    selected_skill = st.session_state.get(skill_key, SKILLS[0]) # Get current selection
+
+    if selected_skill == "Clarifying Questions":
         clarifying_questions_bot_ui() # Call the UI function for this skill
-
-    with tabs[1]: # Corresponds to SKILLS[1] = "Framework Development"
-        st.header(f"{SKILLS[1]}")
+    elif selected_skill == "Framework Development":
+        st.header("Framework Development")
         st.info("This module is under construction. Check back later!")
-        # framework_bot_ui() # Call function for this skill later
-
-    with tabs[2]: # Corresponds to SKILLS[2] = "Hypothesis Formulation"
-        st.header(f"{SKILLS[2]}")
+    elif selected_skill == "Hypothesis Formulation":
+        st.header("Hypothesis Formulation")
         st.info("This module is under construction. Check back later!")
-        # hypothesis_bot_ui()
-
-    with tabs[3]: # Corresponds to SKILLS[3] = "Analysis"
-        st.header(f"{SKILLS[3]}")
+    elif selected_skill == "Analysis":
+        st.header("Analysis")
         st.info("This module is under construction. Check back later!")
-        # analysis_bot_ui()
-
-    with tabs[4]: # Corresponds to SKILLS[4] = "Recommendation"
-        st.header(f"{SKILLS[4]}")
+    elif selected_skill == "Recommendation":
+        st.header("Recommendation")
         st.info("This module is under construction. Check back later!")
-        # recommendation_bot_ui()
+    else:
+        st.error("Invalid skill selected.")
 
 
 # --- Skill-Specific UI Function (Example for Clarifying Questions) ---
 def clarifying_questions_bot_ui():
     """Defines the Streamlit UI and logic SPECIFICALLY for the Clarifying Questions skill."""
-
-    # Display Skill Focus Badge (now redundant with tabs, can be removed or kept)
-    # st.markdown('<div class="skill-focus-badge">Skill Focus: Clarifying Questions</div>', unsafe_allow_html=True)
 
     # Define Session State Keys using prefix
     prefix = st.session_state.key_prefix
@@ -671,10 +572,13 @@ def clarifying_questions_bot_ui():
                     "Love CHIP? Your support helps keep this tool free and improving! 🙏\n\n"
                     "Consider making a small donation (suggested $5) to help cover server and API costs."
                 )
-                col1, col2, col3 = st.columns([1,2,1])
+                # Use columns to make Donate button wider and style Maybe Later
+                col1, col2, col3 = st.columns([0.5, 2, 0.5]) # Make middle column wider
                 with col2:
-                     st.link_button("Donate via Buy Me a Coffee ☕", "https://buymeacoffee.com/9611", type="primary", use_container_width=True) # Updated Link
-                if st.button("Maybe later", use_container_width=True):
+                     # Ensure primary button style applies (should use general button CSS)
+                     st.link_button("Donate via Buy Me a Coffee ☕", "https://buymeacoffee.com/9611", type="primary", use_container_width=True)
+                # Place Maybe Later button below, centered if possible or just default alignment
+                if st.button("Maybe later", key="maybe_later_btn", use_container_width=True): # Added key
                     st.session_state[show_donation_dialog_key] = False
                     st.rerun()
             show_donation()
@@ -690,7 +594,6 @@ def clarifying_questions_bot_ui():
 
 
     # --- Select and Display Case Prompt ---
-    # Select a new prompt only if one isn't already selected for this skill instance
     if st.session_state.get(current_prompt_id_key) is None:
         selected_id = select_new_prompt()
         if selected_id is None:
@@ -701,9 +604,8 @@ def clarifying_questions_bot_ui():
 
     if not current_prompt:
         st.error("Could not load the current case prompt details. Please try restarting.")
-        # Changed button to use reset function
         if st.button("Restart This Skill Practice"):
-             reset_skill_state() # Use reset function
+             reset_skill_state()
              st.rerun()
         st.stop()
 
@@ -715,15 +617,8 @@ def clarifying_questions_bot_ui():
         st.error(case_prompt_text)
         st.stop()
     else:
-        st.markdown(f"""
-        <div class="case-prompt-card">
-            <div class="title-box">
-                <span class="icon">💼</span>
-                <span class="title-text">{case_title}</span>
-            </div>
-            <p>{case_prompt_text}</p>
-        </div>
-        """, unsafe_allow_html=True)
+        # Revert to st.info for simplicity, remove custom card CSS
+        st.info(f"**{case_title}**\n\n{case_prompt_text}")
 
 
     # --- Main Interaction Area (Clarifying Questions) ---
@@ -734,6 +629,7 @@ def clarifying_questions_bot_ui():
         # --- Moved Button ---
         col_btn1, col_btn2, col_btn3 = st.columns([1, 1.5, 1])
         with col_btn2:
+            # Use default button appearance
             if st.button("End Clarification Questions", use_container_width=True):
                 end_time = time.time()
                 start_time = st.session_state.get(start_time_key)
@@ -760,20 +656,24 @@ def clarifying_questions_bot_ui():
             st.session_state[start_time_key] = time.time()
 
         # Chat history display
-        chat_container = st.container(height=300)
+        # Use default container, removed height limit and custom background CSS
+        chat_container = st.container()
         with chat_container:
             conversation_history = st.session_state.get(conv_key, [])
             if isinstance(conversation_history, list):
                  for msg in conversation_history:
                      role = msg.get("role")
                      display_role = "user" if role == "interviewee" else "assistant"
+                     # --- Use Default Icons and Styling ---
                      with st.chat_message(display_role):
                          st.markdown(msg.get("content", ""))
 
         # Typing indicator placeholder
         typing_placeholder = st.empty()
         if st.session_state.get(is_typing_key):
-            typing_placeholder.markdown("_(CHIP is thinking...)_")
+            # Use default spinner or simpler text
+            typing_placeholder.text("CHIP is thinking...")
+            # typing_placeholder.markdown("_(CHIP is thinking...)_")
         else:
             typing_placeholder.empty()
 
@@ -787,6 +687,12 @@ def clarifying_questions_bot_ui():
         if user_question:
             if st.session_state.get(is_typing_key):
                  typing_placeholder.empty()
+            # If conversation still has placeholders, clear it before sending
+            if 'placeholder_conversation' in globals() and \
+               len(st.session_state.get(conv_key, [])) == len(placeholder_conversation) and \
+               st.session_state.get(conv_key, [])[0]['content'] == placeholder_conversation[0]['content']:
+                st.session_state[conv_key] = []
+                print("DEBUG: Cleared placeholder conversation.")
             send_question(user_question, case_prompt_text)
 
 
@@ -799,12 +705,13 @@ def clarifying_questions_bot_ui():
         feedback_was_generated = final_feedback_content and not final_feedback_content.startswith("Error") and not final_feedback_content.startswith("[Feedback")
 
         if feedback_was_generated:
-            st.markdown("---")
-            with st.container(border=True):
+            st.divider() # Use divider instead of markdown ---
+            # Use default container, removed border=True
+            with st.container():
                  st.markdown(final_feedback_content)
-            st.markdown("---")
+            st.divider() # Use divider instead of markdown ---
 
-            # --- User Feedback Section ---
+            # --- User Feedback Section (Default Buttons) ---
             st.subheader("Rate this Feedback")
             feedback_already_submitted = st.session_state.get(feedback_submitted_key, False)
             if feedback_already_submitted:
@@ -826,6 +733,7 @@ def clarifying_questions_bot_ui():
                 for i in range(5):
                     with cols[i]:
                         button_label = '★' * (i + 1)
+                        # Use default button appearance
                         if st.button(button_label, key=f"star_{i+1}", help=f"Rate {i+1} star{'s' if i>0 else ''}"):
                             selected_rating = i + 1
                             rating_clicked = True
@@ -849,11 +757,13 @@ def clarifying_questions_bot_ui():
                     st.warning("Please provide a comment for ratings below 4 stars.")
                     current_rating_value = st.session_state.get(feedback_rating_value_key, 0)
                     rating_display = ('★' * current_rating_value) if isinstance(current_rating_value, int) and current_rating_value > 0 else "(select rating)"
+                    # Use default text_area
                     feedback_comment = st.text_area(
                         f"Comment for your {rating_display} rating:",
                         key=f"{prefix}_feedback_comment_input",
                         placeholder="e.g., More specific examples, clearer actionable steps..."
                     )
+                    # Use default button
                     if st.button("Submit Rating and Comment", key=f"{prefix}_submit_feedback_button"):
                         if not feedback_comment.strip():
                             st.error("Comment cannot be empty for ratings below 4 stars.")
@@ -891,10 +801,10 @@ def clarifying_questions_bot_ui():
         total_interaction_time = st.session_state.get(time_key, 0.0)
         st.write(f"You spent **{total_interaction_time:.2f} seconds** in the clarifying questions phase for this case.")
 
-        # --- Restart Button (for the specific skill) ---
-        col_btn_r1, col_btn_r2, col_btn_r3 = st.columns([1, 1.5, 1])
+        # --- Restart Button ---
+        col_btn_r1, col_btn_r2, col_btn_r3 = st.columns([1, 1.5, 1]) # Center button
         with col_btn_r2:
-            # Changed label slightly
+            # Use default button
             if st.button("Practice This Skill Again", use_container_width=True):
                 reset_skill_state() # Use reset function
                 st.rerun()
