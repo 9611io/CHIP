@@ -832,10 +832,10 @@ def clarifying_questions_bot_ui():
                 logger.debug(f"Submit button pressed with question: '{question_to_send}'")
                 if st.session_state.get(is_typing_key):
                     typing_placeholder.empty() # Clear indicator if needed
-                # Set input to empty string *before* calling send_question
-                st.session_state[text_input_key] = ""
+                # REMOVED direct state modification causing the error
+                # st.session_state[text_input_key] = ""
                 send_question(question_to_send, case_prompt_text)
-                # No need for rerun here, send_question handles it, and state update clears input
+                # Input clearing might need adjustment later if it doesn't clear reliably on rerun
         # --- End of Input Section Replacement ---
 
 
