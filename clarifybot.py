@@ -91,13 +91,171 @@ st.set_page_config(
 )
 
 # --- Custom CSS ---
-# --- Temporarily Commented Out for Debugging JS Error ---
-# st.markdown("""
-# <style>
-# ... CSS Rules ...
-# </style>
-# """, unsafe_allow_html=True)
-# --- End of Temporarily Commented Out Section ---
+# --- Restored ---
+st.markdown("""
+<style>
+    /* --- Overall Theme --- */
+    /* Using Streamlit defaults, add targeted styles below */
+    .main .block-container {
+         padding-top: 2rem;
+         padding-bottom: 2rem;
+    }
+
+    /* --- Headers & Titles --- */
+    h1 { /* Main Title: CHIP... */
+        text-align: center;
+        font-weight: bold;
+        font-size: 2.5em;
+        margin-bottom: 20px; /* Add more space below title */
+    }
+    /* Removed skill-focus-badge */
+     h2 { /* Section Headers: Case Prompt, Ask... */
+        /* color: #E0E0E0; */ /* Use default theme color */
+        border-bottom: 1px solid #DDDDDD; /* Lighter border for light theme */
+        padding-bottom: 8px;
+        margin-top: 40px;
+        margin-bottom: 20px;
+        font-size: 1.5em;
+    }
+     h3 { /* Subheader for Rating */
+        /* color: #FAFAFA; */ /* Use default theme color */
+        margin-top: 25px;
+        margin-bottom: 10px;
+        font-size: 1.2em;
+     }
+
+    /* --- Containers & Cards --- */
+    .stContainer, .stBlock {
+        border-radius: 8px;
+    }
+    hr { /* Divider */
+        border-top: 1px solid #DDDDDD; /* Lighter divider */
+        margin-top: 30px;
+        margin-bottom: 30px;
+    }
+
+    /* --- Custom Card for Case Prompt --- */
+    /* Reverting to st.info, so removing card styles */
+    /* .case-prompt-card { ... } */
+
+
+    /* --- Chat Area --- */
+    /* Container for chat history - use default styling */
+    /* div[data-testid="stVerticalBlock"] ... { ... } */
+
+    /* --- REMOVED ALL CUSTOM CHAT MESSAGE/ICON CSS --- */
+    /* Let st.chat_message use its defaults for the active theme */
+
+
+    /* --- Buttons --- */
+    div[data-testid="stButton"] > button {
+        border-radius: 8px;
+        padding: 10px 24px;
+        border: 1px solid #CCCCCC; /* Default border */
+        background-color: #F0F0F0; /* Default background */
+        color: #31333F; /* Default text */
+        font-weight: bold;
+        transition: background-color 0.2s ease-in-out, transform 0.1s ease-in-out, border-color 0.2s ease-in-out;
+        margin-top: 15px; /* Default top margin */
+        width: 100%; /* Make buttons fill column width */
+    }
+    /* Style for primary buttons (selected skill, main actions) */
+    div[data-testid="stButton"] > button[kind="primary"] {
+         background-color: #FF4B4B; /* Streamlit primary color */
+         border-color: #FF4B4B;
+         color: white;
+         font-weight: bold;
+    }
+    /* Style for secondary buttons (inactive skill selection) */
+    div[data-testid="stButton"] > button:not([kind="primary"]) {
+         background-color: #FFFFFF; /* White background for inactive */
+         color: #31333F; /* Default text color */
+         border: 1px solid #CCCCCC;
+         font-weight: normal; /* Normal weight for inactive */
+    }
+
+    div[data-testid="stButton"] > button:hover {
+        border-color: #FF4B4B;
+        color: #FF4B4B;
+        transform: scale(1.02);
+    }
+    /* Hover for secondary buttons */
+    div[data-testid="stButton"] > button:not([kind="primary"]):hover {
+         border-color: #FF4B4B;
+         color: #FF4B4B;
+         background-color: #FFFFFF; /* Keep background white on hover */
+    }
+
+     div[data-testid="stButton"] > button:active {
+        transform: scale(0.98);
+     }
+     div[data-testid="stButton"] > button * {
+        background-color: transparent !important;
+        color: inherit !important;
+     }
+     /* Style star buttons */
+     div[data-testid="stButton"] > button[key*="star_"] {
+        font-size: 1.8em; padding: 0px 5px; color: #ffc107; border: none; background: none !important;
+        box-shadow: none; margin-top: 5px; transition: transform 0.1s ease-in-out;
+     }
+      div[data-testid="stButton"] > button[key*="star_"]:hover { background: none !important; transform: scale(1.1); }
+      div[data-testid="stButton"] > button[key*="star_"]:active { transform: scale(0.95); }
+      div[data-testid="stButton"] > button[key*="star_"] * { background-color: transparent !important; color: inherit !important; }
+
+     /* Style for "Maybe later" button in dialog */
+     div[data-testid="stButton"] > button[key*="maybe_later_btn"] { /* Match any maybe later btn */
+         background: none !important;
+         border: none !important;
+         color: #31333F !important; /* Default text color */
+         font-weight: normal !important;
+         box-shadow: none !important;
+         text-decoration: underline !important; /* Make it look like a link */
+         margin-top: 5px !important;
+         padding: 10px 24px !important;
+         width: 100% !important;
+     }
+     div[data-testid="stButton"] > button[key*="maybe_later_btn"]:hover {
+         background: none !important;
+         color: #FF4B4B !important; /* Primary color on hover */
+         text-decoration: underline !important;
+         transform: none !important; /* No scaling */
+     }
+     div[data-testid="stButton"] > button[key*="maybe_later_btn"]:active {
+          background: none !important;
+          transform: none !important; /* No scaling */
+          box-shadow: none !important;
+          border: none !important;
+     }
+
+
+    /* --- Text Area & Chat Input --- */
+    div[data-testid="stTextArea"] textarea { /* Style for feedback comment box */
+        border: 1px solid #D0D0D0;
+        border-radius: 8px;
+    }
+     /* Default stChatInput styling */
+     div[data-testid="stChatInput"] { /* Keep this even if not using st.chat_input now, might be used later */
+         border-top: 1px solid #DDDDDD;
+         padding-top: 15px;
+     }
+      div[data-testid="stChatInput"] textarea {
+          border: 1px solid #CCCCCC;
+          border-radius: 8px;
+      }
+     /* Style for the replacement st.text_input */
+     div[data-testid="stTextInput"] textarea {
+         border: 1px solid #CCCCCC;
+         border-radius: 8px;
+         padding: 0.5rem; /* Adjust padding as needed */
+     }
+
+
+    /* --- Other Elements --- */
+    /* Using default alert box styling */
+
+</style>
+""", unsafe_allow_html=True)
+# --- End of Restored Section ---
 
 
 # --- Configuration (OpenAI, Prompts) ---
@@ -261,7 +419,6 @@ def save_user_feedback(feedback_data):
 
 
 # --- Other Helper Functions (select_new_prompt, get_prompt_details, parse_interviewer_response, send_question, generate_final_feedback) ---
-# [ Remain the same, ensure they use the logger adapter ]
 def select_new_prompt():
     """Selects a new random prompt, avoiding session repeats if possible."""
     prefix = st.session_state.key_prefix
@@ -331,22 +488,37 @@ def send_question(question, current_case_prompt_text):
         history_for_prompt = "\n".join([f"{msg['role'].capitalize()}: {msg['content']}" for msg in st.session_state.get(conv_key, [])[:-1]])
         # --- Define LLM Prompt based on Skill ---
         if selected_skill == "Clarifying Questions":
-            # [ Prompt content remains the same ]
+            # --- Reverted Prompt Instructions ---
             prompt_for_llm = f"""
-            You are a **strict** case interviewer simulator focusing ONLY on the clarifying questions phase...
+            You are a **strict** case interviewer simulator focusing ONLY on the clarifying questions phase. Evaluate questions **rigorously**.
+
             Current Case Prompt Context:
             {current_case_prompt_text}
+
             Conversation History So Far:
             {history_for_prompt}
+
             Interviewee's Latest Question:
             {question}
-            Your Task: ...
+
+            Your Task:
+            1. Provide a concise, helpful answer... [rest of Task 1 remains the same - plausible answers etc.] ...**Crucially, maintain consistency with any previous answers you've given in this conversation.**
+            2. Assess the quality of *this specific question* **rigorously** based on the following categories of effective clarifying questions:
+                * **Objective Clarification:** Does it clarify the case goal/problem statement?
+                * **Company Understanding:** Does it seek relevant info about the client/company structure, situation, or industry context?
+                * **Term Definition:** Does it clarify specific jargon or unfamiliar terms used in the case or prior answers?
+                * **Information Repetition/Confirmation:** Does it concisely ask to repeat or confirm specific crucial information potentially missed?
+                * **Question Quality:** Is the question concise, targeted, and NOT compound (asking multiple things at once)?
+               **Critically evaluate:** If the question is extremely vague (e.g., single words like 'why?', 'what?', 'how?'), generic, irrelevant to the case context, compound, or doesn't clearly fit the positive categories above, **assess it as Poor (1/5)** and state *why* it's poor (e.g., 'Too vague, doesn't specify what information is needed'). Otherwise, rate from 2-5 based on how well it fits the categories and quality criteria. Be brief but justify the assessment clearly.
+            3. Use the following exact format, including the delimiters on separate lines:
+
             ###ANSWER###
             [Your plausible answer here]
             ###ASSESSMENT###
-            [Your brief but rigorous assessment...]
+            [Your brief but rigorous assessment of the question's quality based on the criteria above]
             """
-            system_message = "You are a strict case interview simulator for clarifying questions..."
+            system_message = "You are a strict case interview simulator for clarifying questions. Evaluate questions rigorously based on specific categories (Objective, Company, Terms, Repetition, Quality). Provide plausible answers if needed. Use the specified response format."
+            # --- End of Reverted Prompt ---
 
         elif selected_skill == "Framework Development":
              # [ Prompt content remains the same ]
@@ -431,13 +603,65 @@ def generate_final_feedback(current_case_prompt_text):
             history_string = "\n\n".join(formatted_history)
             # --- Define Feedback Prompt based on Skill ---
             if selected_skill == "Clarifying Questions":
-                feedback_prompt = f"""... [Clarifying Questions Feedback Prompt] ..."""
-                system_message_feedback = "You are an expert case interview coach providing structured feedback on clarifying questions..."
+                # --- Using the original feedback prompt structure ---
+                feedback_prompt = f"""
+                You are an experienced case interview coach providing feedback on the clarifying questions phase ONLY.
+
+                Case Prompt Context for this Session:
+                {current_case_prompt_text}
+
+                Interview Interaction History (User questions, your answers as INTERVIEWER, and your per-question assessments):
+                {history_string}
+
+                Your Task:
+                Provide detailed, professional, and direct feedback on the interviewee's clarifying questions phase based *only* on the interaction history provided. Use markdown formatting effectively, including paragraph breaks for readability.
+
+                Structure your feedback precisely as follows using Markdown:
+
+                ## Overall Rating: [1-5]/5
+                *(Provide a brief justification for the rating here, referencing the conversation specifics or assessments. Be very critical and use the full range of scores based on the criteria below)*
+
+                ---
+
+                1.  **Overall Summary:** Briefly summarize the interviewee's performance in asking clarifying questions for *this specific case context*.
+
+                2.  **Strengths:** Identify 1-2 specific strengths demonstrated (e.g., good initial questions, logical flow, conciseness). Refer to specific question numbers or assessments if possible.
+
+                3.  **Areas for Improvement:** Identify 1-2 key areas where the interviewee could improve (e.g., question relevance, depth, avoiding compound questions, structure, digging deeper based on answers). Refer to specific question numbers or assessments.
+
+                4.  **Actionable Next Steps:** Provide at least two concrete, actionable steps the interviewee can take to improve their clarifying questions skills *for future cases*.
+
+                5.  **Example Questions:** For *each* actionable next step that relates to the *content* or *quality* of the questions asked, provide 1-2 specific *alternative* example questions the interviewee *could have asked* in *this case* to demonstrate improvement in that area.
+
+                **Rating Criteria Reference:**
+                    * 1: **Must use this score** if questions were predominantly vague (like single words), irrelevant, unclear, compound, or demonstrated a fundamental lack of understanding of how to clarify effectively. Added little to no value.
+                    * 2: Significant issues remain. Many questions were poor, with only occasional relevant ones, or showed a consistent lack of focus/structure.
+                    * 3: A mixed bag. Some decent questions fitting the ideal categories (Objective, Company, Terms, Repetition) but also notable lapses in quality, relevance, or efficiency.
+                    * 4: Generally strong performance. Most questions were relevant, clear, targeted, and fit the ideal categories. Good progress made in clarifying the case, with only minor areas for refinement.
+                    * 5: Excellent. Consistently high-quality questions that were relevant, concise, targeted, and demonstrated a strong grasp of the ideal clarifying categories. Effectively and efficiently clarified key aspects of the case prompt.
+                   *(Remember to consider the per-question assessments provided in the history when assigning the overall rating.)*
+
+                Ensure your response does **not** start with any other title. Start directly with the '## Overall Rating:' heading. Use paragraph breaks between sections.
+                """
+                system_message_feedback = "You are an expert case interview coach providing structured feedback on clarifying questions. Start directly with the '## Overall Rating:' heading. Evaluate critically based on history and assessments. Use markdown effectively for readability."
                 max_tokens_feedback = 800
+                # --- End of original feedback prompt ---
+
             elif selected_skill == "Framework Development":
-                 feedback_prompt = f"""... [Framework Development Feedback Prompt] ..."""
+                 # [ Prompt content remains the same ]
+                 feedback_prompt = f"""
+                 You are an experienced case interview coach providing feedback on the framework development phase...
+                 Case Prompt Context for this Session:
+                 {current_case_prompt_text}
+                 Interaction History...:
+                 {history_string}
+                 Your Task: ...
+                 ## Overall Framework Rating: [1-5]/5
+                 ...
+                 """
                  system_message_feedback = "You are an expert case interview coach providing structured feedback on framework development..."
                  max_tokens_feedback = 700
+
             else:
                 logger.error(f"Cannot generate feedback for unhandled skill: {selected_skill}")
                 st.error(f"Feedback generation for '{selected_skill}' is not yet implemented.")
@@ -581,10 +805,11 @@ def clarifying_questions_bot_ui():
         if st.session_state.get(is_typing_key): typing_placeholder.text("CHIP is thinking...")
         else: typing_placeholder.empty()
 
-        # --- Input Section: Replaced st.chat_input with st.text_input + st.button ---
+        # --- Input Section: Using st.text_input + st.button ---
         st.write(" ") # Add some space before input
         input_cols = st.columns([4, 1]) # Column for text input, column for button
         with input_cols[0]:
+            # Use the session state key to make it a controlled component
             user_question = st.text_input(
                 "Type your question here:",
                 key=text_input_key, # Use the state key for controlled component
@@ -601,19 +826,16 @@ def clarifying_questions_bot_ui():
             )
 
         # Process if text submitted (via Enter in text_input or button click)
-        # Check button press OR if text_input has value (Enter key triggers script rerun with value set)
-        # Need careful handling to avoid double submission
-        # Let button press be the primary trigger
         if submit_pressed:
             question_to_send = st.session_state[text_input_key]
             if question_to_send:
                 logger.debug(f"Submit button pressed with question: '{question_to_send}'")
                 if st.session_state.get(is_typing_key):
                     typing_placeholder.empty() # Clear indicator if needed
-                send_question(question_to_send, case_prompt_text)
-                # Clear the input field via state AFTER processing
+                # Set input to empty string *before* calling send_question
                 st.session_state[text_input_key] = ""
-                st.rerun() # Rerun to clear input visually and show new messages
+                send_question(question_to_send, case_prompt_text)
+                # No need for rerun here, send_question handles it, and state update clears input
         # --- End of Input Section Replacement ---
 
 
