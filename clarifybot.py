@@ -408,7 +408,11 @@ def save_user_feedback(feedback_data):
         if e.response is not None:
             try:
                 error_body = e.response.json()
-                error_details = f"{e} - Response: {error_body}"
+                # Check for Supabase Edge Function specific error structure
+                if isinstance(error_body, dict) and 'error' in error_body:
+                     error_details = f"Edge Function Error: {error_body['error']}"
+                else:
+                     error_details = f"{e} - Response: {error_body}"
             except json.JSONDecodeError:
                 error_details = f"{e} - Response: {e.response.text}"
         st.error(f"Error sending feedback: {error_details}")
@@ -746,7 +750,7 @@ def clarifying_questions_bot_ui():
                 )
                 col1, col2, col3 = st.columns([0.5, 3, 0.5])
                 with col2:
-                     st.link_button("Donate via Buy Me a Coffee ☕", "https://buymeacoffee.com/9611", type="primary", use_container_width=True)
+                     st.link_button("Donate via Buy Me a Coffee ☕", "[https://buymeacoffee.com/9611](https://buymeacoffee.com/9611)", type="primary", use_container_width=True)
                 if st.button("Maybe later", key="maybe_later_btn_cq", use_container_width=True): # Unique key
                     logger.info("User clicked 'Maybe later' on donation dialog.")
                     st.session_state[show_donation_dialog_key] = False
@@ -755,7 +759,7 @@ def clarifying_questions_bot_ui():
         else: # Fallback
             with st.container(border=True):
                 st.success("Love CHIP? ...")
-                st.link_button("Donate via Buy Me a Coffee ☕", "https://buymeacoffee.com/9611", type="primary")
+                st.link_button("Donate via Buy Me a Coffee ☕", "[https://buymeacoffee.com/9611](https://buymeacoffee.com/9611)", type="primary")
             st.session_state[show_donation_dialog_key] = False
     # --- End of Restored Section ---
 
@@ -938,7 +942,7 @@ def framework_development_ui():
             def show_donation():
                 st.write("Love CHIP? ...")
                 col1, col2, col3 = st.columns([0.5, 3, 0.5]);
-                with col2: st.link_button("Donate via Buy Me a Coffee ☕", "https://buymeacoffee.com/9611", type="primary", use_container_width=True)
+                with col2: st.link_button("Donate via Buy Me a Coffee ☕", "[https://buymeacoffee.com/9611](https://buymeacoffee.com/9611)", type="primary", use_container_width=True)
                 if st.button("Maybe later", key="maybe_later_btn_fw", use_container_width=True):
                     logger.info("User clicked 'Maybe later' on donation dialog (Framework Dev).")
                     st.session_state[show_donation_dialog_key] = False; st.rerun()
@@ -1078,4 +1082,3 @@ if __name__ == "__main__":
     main_app() # Calls the main_app with skill selection
     logger.info("--- Application Script Execution Finished ---")
 
-```
