@@ -829,10 +829,12 @@ def clarifying_questions_bot_ui():
                  label_visibility="collapsed",
                  placeholder="Type your question..."
              )
+             # --- FIX: Corrected disabled logic for submit button ---
              submitted = st.form_submit_button(
                  "Send",
-                 disabled=st.session_state.get(is_typing_key, False) or not user_question # Disable if no text or typing
+                 disabled=st.session_state.get(is_typing_key, False) # Only disable if AI is typing
              )
+             # --- End of FIX ---
              if submitted and user_question:
                  logger.debug(f"Form submitted with question: '{user_question}'")
                  if st.session_state.get(is_typing_key):
