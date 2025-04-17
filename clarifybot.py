@@ -38,7 +38,7 @@ logger.info("--- Application Started ---")
 
 
 # --- Supabase Connection Function ---
-@st.cache_resource # Cache the Supabase client for efficiency
+# REMOVED @st.cache_resource as a debugging step for the TypeError
 def get_supabase_client() -> Client | None:
     """Initializes and returns the Supabase client using secrets."""
     try:
@@ -689,13 +689,6 @@ def main_app():
 
     # --- REMOVED: Database Table Initialization Check ---
     # We assume the table is created manually in Supabase dashboard.
-    # If needed, you could add a check here to ensure the client connects,
-    # but table existence check via client isn't straightforward.
-    # supabase = get_supabase_client()
-    # if supabase is None:
-    #     st.error("Failed to connect to Supabase. Feedback saving will not work.")
-    #     # Optionally stop the app
-    #     # st.stop()
 
     st.write("Select Skill to Practice:")
     # [ Skill selection buttons remain the same ]
@@ -750,48 +743,49 @@ def main_app():
 
 
 # --- Skill-Specific UI Functions (clarifying_questions_bot_ui, framework_development_ui) ---
-# Ensure these functions call the UPDATED save_user_feedback which now uses Supabase.
-# The internal logic of the UI functions remains the same as the previous version,
-# only the backend function called for saving feedback has changed.
 
 def clarifying_questions_bot_ui():
     logger.info("Loading Clarifying Questions UI.")
     prefix = st.session_state.key_prefix
-    # [ Define keys, initialize state, show donation dialog, select prompt - all same as previous version ]
+    # Define keys
     done_key = f"{prefix}_done_asking"; time_key = f"{prefix}_total_time"; start_time_key = f"{prefix}_interaction_start_time"
     conv_key = f"{prefix}_conversation"; feedback_key = f"{prefix}_feedback"; is_typing_key = f"{prefix}_is_typing"
     feedback_submitted_key = f"{prefix}_feedback_submitted"; user_feedback_key = f"{prefix}_user_feedback"
     current_prompt_id_key = f"{prefix}_current_prompt_id"; run_count_key = f"{prefix}_run_count"
     show_comment_key = f"{prefix}_show_comment_box"; feedback_rating_value_key = f"{prefix}_feedback_rating_value"
     show_donation_dialog_key = f"{prefix}_show_donation_dialog"
+    # Initialize state
     init_session_state_key('conversation', []); init_session_state_key('done_asking', False); init_session_state_key('feedback_submitted', False)
     init_session_state_key('is_typing', False); init_session_state_key('feedback', None); init_session_state_key('show_comment_box', False)
     init_session_state_key('feedback_rating_value', None); init_session_state_key('interaction_start_time', None)
     init_session_state_key('total_time', 0.0); init_session_state_key('user_feedback', None); init_session_state_key('current_prompt_id', None)
 
     # --- Show Donation Dialog ---
-    if st.session_state.get(show_donation_dialog_key):
-        logger.info("Displaying donation dialog.")
-        if hasattr(st, 'dialog'):
-            @st.dialog("Support CHIP!")
-            def show_donation():
-                st.write(
-                    "Love CHIP? Your support helps keep this tool free and improving! 🙏\n\n"
-                    "Consider making a small donation (suggested $5) to help cover server and API costs."
-                )
-                col1, col2, col3 = st.columns([0.5, 3, 0.5])
-                with col2:
-                     st.link_button("Donate via Buy Me a Coffee ☕", "https://buymeacoffee.com/9611", type="primary", use_container_width=True)
-                if st.button("Maybe later", key="maybe_later_btn_cq", use_container_width=True): # Unique key
-                    logger.info("User clicked 'Maybe later' on donation dialog.")
-                    st.session_state[show_donation_dialog_key] = False
-                    st.rerun()
-            show_donation()
-        else: # Fallback
-            with st.container(border=True):
-                st.success("Love CHIP? ...")
-                st.link_button("Donate via Buy Me a Coffee ☕", "https://buymeacoffee.com/9611", type="primary")
-            st.session_state[show_donation_dialog_key] = False
+    # --- Temporarily Commented Out for Debugging JS Error ---
+    # if st.session_state.get(show_donation_dialog_key):
+    #     logger.info("Displaying donation dialog.")
+    #     if hasattr(st, 'dialog'):
+    #         @st.dialog("Support CHIP!")
+    #         def show_donation():
+    #             st.write(
+    #                 "Love CHIP? Your support helps keep this tool free and improving! 🙏\n\n"
+    #                 "Consider making a small donation (suggested $5) to help cover server and API costs."
+    #             )
+    #             col1, col2, col3 = st.columns([0.5, 3, 0.5])
+    #             with col2:
+    #                  st.link_button("Donate via Buy Me a Coffee ☕", "https://buymeacoffee.com/9611", type="primary", use_container_width=True)
+    #             if st.button("Maybe later", key="maybe_later_btn_cq", use_container_width=True): # Unique key
+    #                 logger.info("User clicked 'Maybe later' on donation dialog.")
+    #                 st.session_state[show_donation_dialog_key] = False
+    #                 st.rerun()
+    #         show_donation()
+    #     else: # Fallback
+    #         with st.container(border=True):
+    #             st.success("Love CHIP? ...")
+    #             st.link_button("Donate via Buy Me a Coffee ☕", "https://buymeacoffee.com/9611", type="primary")
+    #         st.session_state[show_donation_dialog_key] = False
+    # --- End of Temporarily Commented Out Section ---
+
 
     # --- Select and Display Case Prompt ---
     if st.session_state.get(current_prompt_id_key) is None:
@@ -808,13 +802,11 @@ def clarifying_questions_bot_ui():
 
     # --- Main Interaction Area ---
     if not st.session_state.get(done_key):
-        # [ Interaction logic remains the same: End button, chat history, chat input ]
-        st.header("Ask Clarifying Questions"); st.caption("...")
+        st.header("Ask Clarifying Questions"); st.caption("Ask questions below. Click 'End Clarification Questions' when finished.")
         col_btn1, col_btn2, col_btn3 = st.columns([1, 1.5, 1])
         with col_btn2:
             if st.button("End Clarification Questions", use_container_width=True):
                 logger.info("User clicked 'End Clarification Questions'.")
-                # [ Time calculation, run count increment, donation check logic remains the same ]
                 end_time = time.time(); start_time = st.session_state.get(start_time_key)
                 if start_time is not None: st.session_state[time_key] = end_time - start_time
                 else: st.session_state[time_key] = 0.0
@@ -822,8 +814,10 @@ def clarifying_questions_bot_ui():
                 current_session_run_count = st.session_state.get(run_count_key, 0) + 1
                 st.session_state[run_count_key] = current_session_run_count
                 logger.info(f"Session run count incremented to: {current_session_run_count}")
+                # Check if donation dialog should be shown (even if commented out above, keep logic)
                 if current_session_run_count == 2 or current_session_run_count == 11:
                      st.session_state[show_donation_dialog_key] = True
+                     logger.info(f"Flag set to show donation dialog for achieving run count {current_session_run_count}")
                 st.rerun()
         if st.session_state.get(start_time_key) is None: st.session_state[start_time_key] = time.time(); logger.info("Interaction timer started.")
         # Chat history display
@@ -840,7 +834,11 @@ def clarifying_questions_bot_ui():
         else: typing_placeholder.empty()
         # Chat input
         user_question = st.chat_input("Type your question here...", key=f"{prefix}_chat_input_cq", disabled=st.session_state.get(is_typing_key, False))
-        if user_question: send_question(user_question, case_prompt_text)
+        if user_question:
+            # Ensure typing indicator is cleared if user submits while it's showing (edge case)
+            if st.session_state.get(is_typing_key):
+                typing_placeholder.empty()
+            send_question(user_question, case_prompt_text)
 
     # --- Feedback and Conclusion Area ---
     if st.session_state.get(done_key):
@@ -911,34 +909,38 @@ def clarifying_questions_bot_ui():
 def framework_development_ui():
     logger.info("Loading Framework Development UI.")
     prefix = st.session_state.key_prefix
-    # [ Define keys, initialize state, show donation dialog, select prompt - all same as previous version ]
+    # Define keys
     done_key = f"{prefix}_done_asking"; time_key = f"{prefix}_total_time"; start_time_key = f"{prefix}_interaction_start_time"
     conv_key = f"{prefix}_conversation"; feedback_key = f"{prefix}_feedback"; is_typing_key = f"{prefix}_is_typing"
     feedback_submitted_key = f"{prefix}_feedback_submitted"; user_feedback_key = f"{prefix}_user_feedback"
     current_prompt_id_key = f"{prefix}_current_prompt_id"; run_count_key = f"{prefix}_run_count"
     show_comment_key = f"{prefix}_show_comment_box"; feedback_rating_value_key = f"{prefix}_feedback_rating_value"
     show_donation_dialog_key = f"{prefix}_show_donation_dialog"
+    # Initialize state
     init_session_state_key('conversation', []); init_session_state_key('done_asking', False); init_session_state_key('feedback_submitted', False)
     init_session_state_key('is_typing', False); init_session_state_key('feedback', None); init_session_state_key('show_comment_box', False)
     init_session_state_key('feedback_rating_value', None); init_session_state_key('interaction_start_time', None)
     init_session_state_key('total_time', 0.0); init_session_state_key('user_feedback', None); init_session_state_key('current_prompt_id', None)
 
     # --- Show Donation Dialog ---
-    if st.session_state.get(show_donation_dialog_key):
-        logger.info("Displaying donation dialog (Framework Dev).")
-        if hasattr(st, 'dialog'):
-            @st.dialog("Support CHIP!") # Duplicated dialog function definition
-            def show_donation(): # Name collision if not careful, but Streamlit handles scope
-                st.write("Love CHIP? ...")
-                col1, col2, col3 = st.columns([0.5, 3, 0.5]);
-                with col2: st.link_button("Donate via Buy Me a Coffee ☕", "https://buymeacoffee.com/9611", type="primary", use_container_width=True)
-                if st.button("Maybe later", key="maybe_later_btn_fw", use_container_width=True): # Unique key
-                    logger.info("User clicked 'Maybe later' on donation dialog (Framework Dev).")
-                    st.session_state[show_donation_dialog_key] = False; st.rerun()
-            show_donation()
-        else: # Fallback
-             with st.container(border=True): st.success("Love CHIP? ..."); st.link_button("Donate...", type="primary")
-             st.session_state[show_donation_dialog_key] = False
+    # --- Temporarily Commented Out for Debugging JS Error ---
+    # if st.session_state.get(show_donation_dialog_key):
+    #     logger.info("Displaying donation dialog (Framework Dev).")
+    #     if hasattr(st, 'dialog'):
+    #         @st.dialog("Support CHIP!") # Duplicated dialog function definition
+    #         def show_donation(): # Name collision if not careful, but Streamlit handles scope
+    #             st.write("Love CHIP? ...")
+    #             col1, col2, col3 = st.columns([0.5, 3, 0.5]);
+    #             with col2: st.link_button("Donate via Buy Me a Coffee ☕", "https://buymeacoffee.com/9611", type="primary", use_container_width=True)
+    #             if st.button("Maybe later", key="maybe_later_btn_fw", use_container_width=True): # Unique key
+    #                 logger.info("User clicked 'Maybe later' on donation dialog (Framework Dev).")
+    #                 st.session_state[show_donation_dialog_key] = False; st.rerun()
+    #         show_donation()
+    #     else: # Fallback
+    #          with st.container(border=True): st.success("Love CHIP? ..."); st.link_button("Donate...", type="primary")
+    #          st.session_state[show_donation_dialog_key] = False
+    # --- End of Temporarily Commented Out Section ---
+
 
     # --- Select and Display Case Prompt ---
     if st.session_state.get(current_prompt_id_key) is None:
@@ -955,8 +957,7 @@ def framework_development_ui():
 
     # --- Main Interaction Area (Framework Development) ---
     if not st.session_state.get(done_key):
-        # [ Interaction logic remains the same: Text area, Submit button, History, Final Feedback button ]
-        st.header("Develop Your Framework"); st.caption("...")
+        st.header("Develop Your Framework"); st.caption("Outline your framework structure below. Click 'Submit Framework' when ready for feedback.")
         framework_input = st.text_area("Enter your framework here:", height=200, key=f"{prefix}_framework_input", placeholder="...", disabled=st.session_state.get(is_typing_key, False))
         col_btn1, col_btn2, col_btn3 = st.columns([1, 1.5, 1])
         with col_btn2:
@@ -985,7 +986,6 @@ def framework_development_ui():
              with col_fbtn2:
                  if st.button("Get Final Summary Feedback", use_container_width=True):
                      logger.info("User requested final framework feedback.")
-                     # [ Time calculation, run count increment, donation check logic remains the same ]
                      end_time = time.time(); start_time = st.session_state.get(start_time_key)
                      if start_time is not None: st.session_state[time_key] = end_time - start_time
                      else: st.session_state[time_key] = 0.0
@@ -993,7 +993,10 @@ def framework_development_ui():
                      current_session_run_count = st.session_state.get(run_count_key, 0) + 1
                      st.session_state[run_count_key] = current_session_run_count
                      logger.info(f"Session run count incremented to: {current_session_run_count} (Framework Dev)")
-                     if current_session_run_count == 2 or current_session_run_count == 11: st.session_state[show_donation_dialog_key] = True
+                     # Check if donation dialog should be shown (even if commented out above, keep logic)
+                     if current_session_run_count == 2 or current_session_run_count == 11:
+                         st.session_state[show_donation_dialog_key] = True
+                         logger.info(f"Flag set to show donation dialog for achieving run count {current_session_run_count} (Framework Dev)")
                      st.rerun()
 
     # --- Feedback and Conclusion Area (Framework Development) ---
