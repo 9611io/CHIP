@@ -761,30 +761,30 @@ def clarifying_questions_bot_ui():
     init_session_state_key('total_time', 0.0); init_session_state_key('user_feedback', None); init_session_state_key('current_prompt_id', None)
 
     # --- Show Donation Dialog ---
-    # --- Temporarily Commented Out for Debugging JS Error ---
-    # if st.session_state.get(show_donation_dialog_key):
-    #     logger.info("Displaying donation dialog.")
-    #     if hasattr(st, 'dialog'):
-    #         @st.dialog("Support CHIP!")
-    #         def show_donation():
-    #             st.write(
-    #                 "Love CHIP? Your support helps keep this tool free and improving! 🙏\n\n"
-    #                 "Consider making a small donation (suggested $5) to help cover server and API costs."
-    #             )
-    #             col1, col2, col3 = st.columns([0.5, 3, 0.5])
-    #             with col2:
-    #                  st.link_button("Donate via Buy Me a Coffee ☕", "https://buymeacoffee.com/9611", type="primary", use_container_width=True)
-    #             if st.button("Maybe later", key="maybe_later_btn_cq", use_container_width=True): # Unique key
-    #                 logger.info("User clicked 'Maybe later' on donation dialog.")
-    #                 st.session_state[show_donation_dialog_key] = False
-    #                 st.rerun()
-    #         show_donation()
-    #     else: # Fallback
-    #         with st.container(border=True):
-    #             st.success("Love CHIP? ...")
-    #             st.link_button("Donate via Buy Me a Coffee ☕", "https://buymeacoffee.com/9611", type="primary")
-    #         st.session_state[show_donation_dialog_key] = False
-    # --- End of Temporarily Commented Out Section ---
+    # --- Restored ---
+    if st.session_state.get(show_donation_dialog_key):
+        logger.info("Displaying donation dialog.")
+        if hasattr(st, 'dialog'):
+            @st.dialog("Support CHIP!")
+            def show_donation():
+                st.write(
+                    "Love CHIP? Your support helps keep this tool free and improving! 🙏\n\n"
+                    "Consider making a small donation (suggested $5) to help cover server and API costs."
+                )
+                col1, col2, col3 = st.columns([0.5, 3, 0.5])
+                with col2:
+                     st.link_button("Donate via Buy Me a Coffee ☕", "https://buymeacoffee.com/9611", type="primary", use_container_width=True)
+                if st.button("Maybe later", key="maybe_later_btn_cq", use_container_width=True): # Unique key
+                    logger.info("User clicked 'Maybe later' on donation dialog.")
+                    st.session_state[show_donation_dialog_key] = False
+                    st.rerun()
+            show_donation()
+        else: # Fallback
+            with st.container(border=True):
+                st.success("Love CHIP? ...")
+                st.link_button("Donate via Buy Me a Coffee ☕", "https://buymeacoffee.com/9611", type="primary")
+            st.session_state[show_donation_dialog_key] = False
+    # --- End of Restored Section ---
 
 
     # --- Select and Display Case Prompt ---
@@ -814,7 +814,7 @@ def clarifying_questions_bot_ui():
                 current_session_run_count = st.session_state.get(run_count_key, 0) + 1
                 st.session_state[run_count_key] = current_session_run_count
                 logger.info(f"Session run count incremented to: {current_session_run_count}")
-                # Check if donation dialog should be shown (even if commented out above, keep logic)
+                # Check if donation dialog should be shown
                 if current_session_run_count == 2 or current_session_run_count == 11:
                      st.session_state[show_donation_dialog_key] = True
                      logger.info(f"Flag set to show donation dialog for achieving run count {current_session_run_count}")
@@ -848,49 +848,52 @@ def clarifying_questions_bot_ui():
 
         if feedback_was_generated:
             st.divider(); st.markdown(final_feedback_content); st.divider()
-            st.subheader("Rate this Feedback")
-            feedback_already_submitted = st.session_state.get(feedback_submitted_key, False)
 
-            if feedback_already_submitted:
-                 # [ Display submitted feedback remains the same ]
-                stored_user_feedback = st.session_state.get(user_feedback_key)
-                st.success("Thank you for your feedback!")
-                if stored_user_feedback:
-                     rating_display = '★' * stored_user_feedback.get('rating', 0); st.caption(f"Your rating: {rating_display}")
-                     if stored_user_feedback.get('comment'): st.caption(f"Your comment: {stored_user_feedback.get('comment')}")
-            else:
-                # --- Feedback Input Logic (Calls updated save_user_feedback) ---
-                st.markdown("**How helpful was the feedback provided above? ...**")
-                cols = st.columns(5); selected_rating = 0; rating_clicked = False
-                for i in range(5):
-                    with cols[i]:
-                        if st.button('★' * (i + 1), key=f"{prefix}_cq_star_{i+1}", help=f"Rate {i+1} star{'s' if i>0 else ''}"):
-                            selected_rating = i + 1; rating_clicked = True; logger.info(f"User clicked rating: {selected_rating} stars.")
+            # --- Temporarily Commented Out Feedback Rating Section ---
+            # st.subheader("Rate this Feedback")
+            # feedback_already_submitted = st.session_state.get(feedback_submitted_key, False)
+            # if feedback_already_submitted:
+            #      # [ Display submitted feedback remains the same ]
+            #     stored_user_feedback = st.session_state.get(user_feedback_key)
+            #     st.success("Thank you for your feedback!")
+            #     if stored_user_feedback:
+            #          rating_display = '★' * stored_user_feedback.get('rating', 0); st.caption(f"Your rating: {rating_display}")
+            #          if stored_user_feedback.get('comment'): st.caption(f"Your comment: {stored_user_feedback.get('comment')}")
+            # else:
+            #     # --- Feedback Input Logic (Calls updated save_user_feedback) ---
+            #     st.markdown("**How helpful was the feedback provided above? ...**")
+            #     cols = st.columns(5); selected_rating = 0; rating_clicked = False
+            #     for i in range(5):
+            #         with cols[i]:
+            #             if st.button('★' * (i + 1), key=f"{prefix}_cq_star_{i+1}", help=f"Rate {i+1} star{'s' if i>0 else ''}"):
+            #                 selected_rating = i + 1; rating_clicked = True; logger.info(f"User clicked rating: {selected_rating} stars.")
 
-                if rating_clicked:
-                    st.session_state[feedback_rating_value_key] = selected_rating
-                    if selected_rating >= 4:
-                        user_feedback_data = {"rating": selected_rating, "comment": "", "prompt_id": st.session_state.get(current_prompt_id_key, "N/A"), "timestamp": time.time()}
-                        st.session_state[user_feedback_key] = user_feedback_data; st.session_state[feedback_submitted_key] = True; st.session_state[show_comment_key] = False
-                        if save_user_feedback(user_feedback_data): logger.info("User Feedback Auto-Submitted (Rating >= 4) and saved.")
-                        else: logger.error("User Feedback Auto-Submitted (Rating >= 4) but FAILED TO SAVE TO DB.")
-                        st.rerun()
-                    else: st.session_state[show_comment_key] = True
+            #     if rating_clicked:
+            #         st.session_state[feedback_rating_value_key] = selected_rating
+            #         if selected_rating >= 4:
+            #             user_feedback_data = {"rating": selected_rating, "comment": "", "prompt_id": st.session_state.get(current_prompt_id_key, "N/A"), "timestamp": time.time()}
+            #             st.session_state[user_feedback_key] = user_feedback_data; st.session_state[feedback_submitted_key] = True; st.session_state[show_comment_key] = False
+            #             if save_user_feedback(user_feedback_data): logger.info("User Feedback Auto-Submitted (Rating >= 4) and saved.")
+            #             else: logger.error("User Feedback Auto-Submitted (Rating >= 4) but FAILED TO SAVE TO DB.")
+            #             st.rerun()
+            #         else: st.session_state[show_comment_key] = True
 
-                if st.session_state.get(show_comment_key, False):
-                    st.warning("Please provide a comment for ratings below 4 stars.")
-                    current_rating_value = st.session_state.get(feedback_rating_value_key, 0)
-                    rating_display = ('★' * current_rating_value) if isinstance(current_rating_value, int) and current_rating_value > 0 else "(select rating)"
-                    feedback_comment = st.text_area(f"Comment for your {rating_display} rating:", key=f"{prefix}_cq_feedback_comment_input", placeholder="...")
-                    if st.button("Submit Rating and Comment", key=f"{prefix}_cq_submit_feedback_button"):
-                        if not feedback_comment.strip(): st.error("Comment cannot be empty...")
-                        elif not isinstance(current_rating_value, int) or current_rating_value <= 0: st.error("Invalid rating selected...")
-                        else:
-                            user_feedback_data = {"rating": current_rating_value, "comment": feedback_comment.strip(), "prompt_id": st.session_state.get(current_prompt_id_key, "N/A"), "timestamp": time.time()}
-                            st.session_state[user_feedback_key] = user_feedback_data; st.session_state[feedback_submitted_key] = True; st.session_state[show_comment_key] = False
-                            if save_user_feedback(user_feedback_data): logger.info("User Feedback Submitted with Comment and saved.")
-                            else: logger.error("User Feedback Submitted with Comment but FAILED TO SAVE TO DB.")
-                            st.rerun()
+            #     if st.session_state.get(show_comment_key, False):
+            #         st.warning("Please provide a comment for ratings below 4 stars.")
+            #         current_rating_value = st.session_state.get(feedback_rating_value_key, 0)
+            #         rating_display = ('★' * current_rating_value) if isinstance(current_rating_value, int) and current_rating_value > 0 else "(select rating)"
+            #         feedback_comment = st.text_area(f"Comment for your {rating_display} rating:", key=f"{prefix}_cq_feedback_comment_input", placeholder="...")
+            #         if st.button("Submit Rating and Comment", key=f"{prefix}_cq_submit_feedback_button"):
+            #             if not feedback_comment.strip(): st.error("Comment cannot be empty...")
+            #             elif not isinstance(current_rating_value, int) or current_rating_value <= 0: st.error("Invalid rating selected...")
+            #             else:
+            #                 user_feedback_data = {"rating": current_rating_value, "comment": feedback_comment.strip(), "prompt_id": st.session_state.get(current_prompt_id_key, "N/A"), "timestamp": time.time()}
+            #                 st.session_state[user_feedback_key] = user_feedback_data; st.session_state[feedback_submitted_key] = True; st.session_state[show_comment_key] = False
+            #                 if save_user_feedback(user_feedback_data): logger.info("User Feedback Submitted with Comment and saved.")
+            #                 else: logger.error("User Feedback Submitted with Comment but FAILED TO SAVE TO DB.")
+            #                 st.rerun()
+            # --- End of Temporarily Commented Out Section ---
+
         # [ Error/Warning display for feedback generation remains the same ]
         elif final_feedback_content and str(final_feedback_content).startswith("Error"): st.error(f"Could not display feedback: {final_feedback_content}")
         else: st.warning("Feedback is currently unavailable...")
@@ -923,23 +926,23 @@ def framework_development_ui():
     init_session_state_key('total_time', 0.0); init_session_state_key('user_feedback', None); init_session_state_key('current_prompt_id', None)
 
     # --- Show Donation Dialog ---
-    # --- Temporarily Commented Out for Debugging JS Error ---
-    # if st.session_state.get(show_donation_dialog_key):
-    #     logger.info("Displaying donation dialog (Framework Dev).")
-    #     if hasattr(st, 'dialog'):
-    #         @st.dialog("Support CHIP!") # Duplicated dialog function definition
-    #         def show_donation(): # Name collision if not careful, but Streamlit handles scope
-    #             st.write("Love CHIP? ...")
-    #             col1, col2, col3 = st.columns([0.5, 3, 0.5]);
-    #             with col2: st.link_button("Donate via Buy Me a Coffee ☕", "https://buymeacoffee.com/9611", type="primary", use_container_width=True)
-    #             if st.button("Maybe later", key="maybe_later_btn_fw", use_container_width=True): # Unique key
-    #                 logger.info("User clicked 'Maybe later' on donation dialog (Framework Dev).")
-    #                 st.session_state[show_donation_dialog_key] = False; st.rerun()
-    #         show_donation()
-    #     else: # Fallback
-    #          with st.container(border=True): st.success("Love CHIP? ..."); st.link_button("Donate...", type="primary")
-    #          st.session_state[show_donation_dialog_key] = False
-    # --- End of Temporarily Commented Out Section ---
+    # --- Restored ---
+    if st.session_state.get(show_donation_dialog_key):
+        logger.info("Displaying donation dialog (Framework Dev).")
+        if hasattr(st, 'dialog'):
+            @st.dialog("Support CHIP!") # Duplicated dialog function definition
+            def show_donation(): # Name collision if not careful, but Streamlit handles scope
+                st.write("Love CHIP? ...")
+                col1, col2, col3 = st.columns([0.5, 3, 0.5]);
+                with col2: st.link_button("Donate via Buy Me a Coffee ☕", "https://buymeacoffee.com/9611", type="primary", use_container_width=True)
+                if st.button("Maybe later", key="maybe_later_btn_fw", use_container_width=True): # Unique key
+                    logger.info("User clicked 'Maybe later' on donation dialog (Framework Dev).")
+                    st.session_state[show_donation_dialog_key] = False; st.rerun()
+            show_donation()
+        else: # Fallback
+             with st.container(border=True): st.success("Love CHIP? ..."); st.link_button("Donate...", type="primary")
+             st.session_state[show_donation_dialog_key] = False
+    # --- End of Restored Section ---
 
 
     # --- Select and Display Case Prompt ---
@@ -993,7 +996,7 @@ def framework_development_ui():
                      current_session_run_count = st.session_state.get(run_count_key, 0) + 1
                      st.session_state[run_count_key] = current_session_run_count
                      logger.info(f"Session run count incremented to: {current_session_run_count} (Framework Dev)")
-                     # Check if donation dialog should be shown (even if commented out above, keep logic)
+                     # Check if donation dialog should be shown
                      if current_session_run_count == 2 or current_session_run_count == 11:
                          st.session_state[show_donation_dialog_key] = True
                          logger.info(f"Flag set to show donation dialog for achieving run count {current_session_run_count} (Framework Dev)")
@@ -1007,49 +1010,52 @@ def framework_development_ui():
 
         if feedback_was_generated:
             st.divider(); st.header("Overall Framework Feedback"); st.markdown(final_feedback_content); st.divider()
-            st.subheader("Rate this Feedback")
-            feedback_already_submitted = st.session_state.get(feedback_submitted_key, False)
 
-            if feedback_already_submitted:
-                 # [ Display submitted feedback remains the same ]
-                stored_user_feedback = st.session_state.get(user_feedback_key)
-                st.success("Thank you for your feedback!")
-                if stored_user_feedback:
-                     rating_display = '★' * stored_user_feedback.get('rating', 0); st.caption(f"Your rating: {rating_display}")
-                     if stored_user_feedback.get('comment'): st.caption(f"Your comment: {stored_user_feedback.get('comment')}")
-            else:
-                # --- Feedback Input Logic (Calls updated save_user_feedback) ---
-                st.markdown("**How helpful was the overall framework feedback? ...**")
-                cols = st.columns(5); selected_rating = 0; rating_clicked = False
-                for i in range(5):
-                    with cols[i]:
-                        if st.button('★' * (i + 1), key=f"{prefix}_fw_star_{i+1}", help=f"Rate {i+1} star{'s' if i>0 else ''}"): # Unique key
-                            selected_rating = i + 1; rating_clicked = True; logger.info(f"User clicked framework feedback rating: {selected_rating} stars.")
+            # --- Temporarily Commented Out Feedback Rating Section ---
+            # st.subheader("Rate this Feedback")
+            # feedback_already_submitted = st.session_state.get(feedback_submitted_key, False)
+            # if feedback_already_submitted:
+            #      # [ Display submitted feedback remains the same ]
+            #     stored_user_feedback = st.session_state.get(user_feedback_key)
+            #     st.success("Thank you for your feedback!")
+            #     if stored_user_feedback:
+            #          rating_display = '★' * stored_user_feedback.get('rating', 0); st.caption(f"Your rating: {rating_display}")
+            #          if stored_user_feedback.get('comment'): st.caption(f"Your comment: {stored_user_feedback.get('comment')}")
+            # else:
+            #     # --- Feedback Input Logic (Calls updated save_user_feedback) ---
+            #     st.markdown("**How helpful was the overall framework feedback? ...**")
+            #     cols = st.columns(5); selected_rating = 0; rating_clicked = False
+            #     for i in range(5):
+            #         with cols[i]:
+            #             if st.button('★' * (i + 1), key=f"{prefix}_fw_star_{i+1}", help=f"Rate {i+1} star{'s' if i>0 else ''}"): # Unique key
+            #                 selected_rating = i + 1; rating_clicked = True; logger.info(f"User clicked framework feedback rating: {selected_rating} stars.")
 
-                if rating_clicked:
-                    st.session_state[feedback_rating_value_key] = selected_rating
-                    if selected_rating >= 4:
-                        user_feedback_data = {"rating": selected_rating, "comment": "", "prompt_id": st.session_state.get(current_prompt_id_key, "N/A"), "timestamp": time.time()}
-                        st.session_state[user_feedback_key] = user_feedback_data; st.session_state[feedback_submitted_key] = True; st.session_state[show_comment_key] = False
-                        if save_user_feedback(user_feedback_data): logger.info("User Framework Feedback Auto-Submitted (Rating >= 4) and saved.")
-                        else: logger.error("User Framework Feedback Auto-Submitted (Rating >= 4) but FAILED TO SAVE TO DB.")
-                        st.rerun()
-                    else: st.session_state[show_comment_key] = True
+            #     if rating_clicked:
+            #         st.session_state[feedback_rating_value_key] = selected_rating
+            #         if selected_rating >= 4:
+            #             user_feedback_data = {"rating": selected_rating, "comment": "", "prompt_id": st.session_state.get(current_prompt_id_key, "N/A"), "timestamp": time.time()}
+            #             st.session_state[user_feedback_key] = user_feedback_data; st.session_state[feedback_submitted_key] = True; st.session_state[show_comment_key] = False
+            #             if save_user_feedback(user_feedback_data): logger.info("User Framework Feedback Auto-Submitted (Rating >= 4) and saved.")
+            #             else: logger.error("User Framework Feedback Auto-Submitted (Rating >= 4) but FAILED TO SAVE TO DB.")
+            #             st.rerun()
+            #         else: st.session_state[show_comment_key] = True
 
-                if st.session_state.get(show_comment_key, False):
-                    st.warning("Please provide a comment for ratings below 4 stars.")
-                    current_rating_value = st.session_state.get(feedback_rating_value_key, 0)
-                    rating_display = ('★' * current_rating_value) if isinstance(current_rating_value, int) and current_rating_value > 0 else "(select rating)"
-                    feedback_comment = st.text_area(f"Comment for your {rating_display} rating:", key=f"{prefix}_fw_feedback_comment_input", placeholder="...") # Unique key
-                    if st.button("Submit Rating and Comment", key=f"{prefix}_fw_submit_feedback_button"): # Unique key
-                        if not feedback_comment.strip(): st.error("Comment cannot be empty...")
-                        elif not isinstance(current_rating_value, int) or current_rating_value <= 0: st.error("Invalid rating selected...")
-                        else:
-                            user_feedback_data = {"rating": current_rating_value, "comment": feedback_comment.strip(), "prompt_id": st.session_state.get(current_prompt_id_key, "N/A"), "timestamp": time.time()}
-                            st.session_state[user_feedback_key] = user_feedback_data; st.session_state[feedback_submitted_key] = True; st.session_state[show_comment_key] = False
-                            if save_user_feedback(user_feedback_data): logger.info("User Framework Feedback Submitted with Comment and saved.")
-                            else: logger.error("User Framework Feedback Submitted with Comment but FAILED TO SAVE TO DB.")
-                            st.rerun()
+            #     if st.session_state.get(show_comment_key, False):
+            #         st.warning("Please provide a comment for ratings below 4 stars.")
+            #         current_rating_value = st.session_state.get(feedback_rating_value_key, 0)
+            #         rating_display = ('★' * current_rating_value) if isinstance(current_rating_value, int) and current_rating_value > 0 else "(select rating)"
+            #         feedback_comment = st.text_area(f"Comment for your {rating_display} rating:", key=f"{prefix}_fw_feedback_comment_input", placeholder="...") # Unique key
+            #         if st.button("Submit Rating and Comment", key=f"{prefix}_fw_submit_feedback_button"): # Unique key
+            #             if not feedback_comment.strip(): st.error("Comment cannot be empty...")
+            #             elif not isinstance(current_rating_value, int) or current_rating_value <= 0: st.error("Invalid rating selected...")
+            #             else:
+            #                 user_feedback_data = {"rating": current_rating_value, "comment": feedback_comment.strip(), "prompt_id": st.session_state.get(current_prompt_id_key, "N/A"), "timestamp": time.time()}
+            #                 st.session_state[user_feedback_key] = user_feedback_data; st.session_state[feedback_submitted_key] = True; st.session_state[show_comment_key] = False
+            #                 if save_user_feedback(user_feedback_data): logger.info("User Framework Feedback Submitted with Comment and saved.")
+            #                 else: logger.error("User Framework Feedback Submitted with Comment but FAILED TO SAVE TO DB.")
+            #                 st.rerun()
+            # --- End of Temporarily Commented Out Section ---
+
         # [ Error/Warning display for feedback generation remains the same ]
         elif final_feedback_content and str(final_feedback_content).startswith("Error"): st.error(f"Could not display feedback: {final_feedback_content}")
         else: st.warning("Feedback is currently unavailable...")
