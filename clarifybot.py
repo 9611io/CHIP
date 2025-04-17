@@ -94,158 +94,7 @@ st.set_page_config(
 # --- Temporarily Commented Out for Debugging JS Error ---
 # st.markdown("""
 # <style>
-#     /* --- Overall Theme --- */
-#     /* Using Streamlit defaults, add targeted styles below */
-#     .main .block-container {
-#          padding-top: 2rem;
-#          padding-bottom: 2rem;
-#     }
-#
-#     /* --- Headers & Titles --- */
-#     h1 { /* Main Title: CHIP... */
-#         text-align: center;
-#         font-weight: bold;
-#         font-size: 2.5em;
-#         margin-bottom: 20px; /* Add more space below title */
-#     }
-#     /* Removed skill-focus-badge */
-#      h2 { /* Section Headers: Case Prompt, Ask... */
-#         /* color: #E0E0E0; */ /* Use default theme color */
-#         border-bottom: 1px solid #DDDDDD; /* Lighter border for light theme */
-#         padding-bottom: 8px;
-#         margin-top: 40px;
-#         margin-bottom: 20px;
-#         font-size: 1.5em;
-#     }
-#      h3 { /* Subheader for Rating */
-#         /* color: #FAFAFA; */ /* Use default theme color */
-#         margin-top: 25px;
-#         margin-bottom: 10px;
-#         font-size: 1.2em;
-#      }
-#
-#     /* --- Containers & Cards --- */
-#     .stContainer, .stBlock {
-#         border-radius: 8px;
-#     }
-#     hr { /* Divider */
-#         border-top: 1px solid #DDDDDD; /* Lighter divider */
-#         margin-top: 30px;
-#         margin-bottom: 30px;
-#     }
-#
-#     /* --- Custom Card for Case Prompt --- */
-#     /* Reverting to st.info, so removing card styles */
-#     /* .case-prompt-card { ... } */
-#
-#
-#     /* --- Chat Area --- */
-#     /* Container for chat history - use default styling */
-#     /* div[data-testid="stVerticalBlock"] ... { ... } */
-#
-#     /* --- REMOVED ALL CUSTOM CHAT MESSAGE/ICON CSS --- */
-#     /* Let st.chat_message use its defaults for the active theme */
-#
-#
-#     /* --- Buttons --- */
-#     div[data-testid="stButton"] > button {
-#         border-radius: 8px;
-#         padding: 10px 24px;
-#         border: 1px solid #CCCCCC; /* Default border */
-#         background-color: #F0F0F0; /* Default background */
-#         color: #31333F; /* Default text */
-#         font-weight: bold;
-#         transition: background-color 0.2s ease-in-out, transform 0.1s ease-in-out, border-color 0.2s ease-in-out;
-#         margin-top: 15px; /* Default top margin */
-#         width: 100%; /* Make buttons fill column width */
-#     }
-#     /* Style for primary buttons (selected skill, main actions) */
-#     div[data-testid="stButton"] > button[kind="primary"] {
-#          background-color: #FF4B4B; /* Streamlit primary color */
-#          border-color: #FF4B4B;
-#          color: white;
-#          font-weight: bold;
-#     }
-#     /* Style for secondary buttons (inactive skill selection) */
-#     div[data-testid="stButton"] > button:not([kind="primary"]) {
-#          background-color: #FFFFFF; /* White background for inactive */
-#          color: #31333F; /* Default text color */
-#          border: 1px solid #CCCCCC;
-#          font-weight: normal; /* Normal weight for inactive */
-#     }
-#
-#     div[data-testid="stButton"] > button:hover {
-#         border-color: #FF4B4B;
-#         color: #FF4B4B;
-#         transform: scale(1.02);
-#     }
-#     /* Hover for secondary buttons */
-#     div[data-testid="stButton"] > button:not([kind="primary"]):hover {
-#          border-color: #FF4B4B;
-#          color: #FF4B4B;
-#          background-color: #FFFFFF; /* Keep background white on hover */
-#     }
-#
-#      div[data-testid="stButton"] > button:active {
-#         transform: scale(0.98);
-#      }
-#      div[data-testid="stButton"] > button * {
-#         background-color: transparent !important;
-#         color: inherit !important;
-#      }
-#      /* Style star buttons */
-#      div[data-testid="stButton"] > button[key*="star_"] {
-#         font-size: 1.8em; padding: 0px 5px; color: #ffc107; border: none; background: none !important;
-#         box-shadow: none; margin-top: 5px; transition: transform 0.1s ease-in-out;
-#      }
-#       div[data-testid="stButton"] > button[key*="star_"]:hover { background: none !important; transform: scale(1.1); }
-#       div[data-testid="stButton"] > button[key*="star_"]:active { transform: scale(0.95); }
-#       div[data-testid="stButton"] > button[key*="star_"] * { background-color: transparent !important; color: inherit !important; }
-#
-#      /* Style for "Maybe later" button in dialog */
-#      div[data-testid="stButton"] > button[key*="maybe_later_btn"] { /* Match any maybe later btn */
-#          background: none !important;
-#          border: none !important;
-#          color: #31333F !important; /* Default text color */
-#          font-weight: normal !important;
-#          box-shadow: none !important;
-#          text-decoration: underline !important; /* Make it look like a link */
-#          margin-top: 5px !important;
-#          padding: 10px 24px !important;
-#          width: 100% !important;
-#      }
-#      div[data-testid="stButton"] > button[key*="maybe_later_btn"]:hover {
-#          background: none !important;
-#          color: #FF4B4B !important; /* Primary color on hover */
-#          text-decoration: underline !important;
-#          transform: none !important; /* No scaling */
-#      }
-#      div[data-testid="stButton"] > button[key*="maybe_later_btn"]:active {
-#           background: none !important;
-#           transform: none !important; /* No scaling */
-#           box-shadow: none !important;
-#           border: none !important;
-#      }
-#
-#
-#     /* --- Text Area & Chat Input --- */
-#     div[data-testid="stTextArea"] textarea { /* Style for feedback comment box */
-#         border: 1px solid #D0D0D0;
-#         border-radius: 8px;
-#     }
-#      /* Default stChatInput styling */
-#      div[data-testid="stChatInput"] {
-#          border-top: 1px solid #DDDDDD;
-#          padding-top: 15px;
-#      }
-#       div[data-testid="stChatInput"] textarea {
-#           border: 1px solid #CCCCCC;
-#           border-radius: 8px;
-#       }
-#
-#     /* --- Other Elements --- */
-#     /* Using default alert box styling */
-#
+# ... CSS Rules ...
 # </style>
 # """, unsafe_allow_html=True)
 # --- End of Temporarily Commented Out Section ---
@@ -326,6 +175,8 @@ def reset_skill_state():
         'feedback_submitted', 'user_feedback', 'interaction_start_time',
         'total_time', 'is_typing', 'feedback',
         'show_comment_box', 'feedback_rating_value',
+        # Add keys specific to the text_input replacement if needed
+        'cq_text_input_value', # Key used in the replacement below
     ]
     logger.info(f"Resetting state keys: {keys_to_reset}")
     for key in keys_to_reset:
@@ -654,6 +505,10 @@ def clarifying_questions_bot_ui():
     init_session_state_key('is_typing', False); init_session_state_key('feedback', None); init_session_state_key('show_comment_box', False)
     init_session_state_key('feedback_rating_value', None); init_session_state_key('interaction_start_time', None)
     init_session_state_key('total_time', 0.0); init_session_state_key('user_feedback', None); init_session_state_key('current_prompt_id', None)
+    # Initialize state for the text input replacement
+    text_input_key = f"{prefix}_cq_text_input_value"
+    init_session_state_key('cq_text_input_value', "") # Key for text_input value
+
 
     # --- Show Donation Dialog ---
     # --- Restored ---
@@ -725,11 +580,42 @@ def clarifying_questions_bot_ui():
         typing_placeholder = st.empty()
         if st.session_state.get(is_typing_key): typing_placeholder.text("CHIP is thinking...")
         else: typing_placeholder.empty()
-        # Chat input
-        user_question = st.chat_input("Type your question here...", key=f"{prefix}_chat_input_cq", disabled=st.session_state.get(is_typing_key, False))
-        if user_question:
-            if st.session_state.get(is_typing_key): typing_placeholder.empty()
-            send_question(user_question, case_prompt_text)
+
+        # --- Input Section: Replaced st.chat_input with st.text_input + st.button ---
+        st.write(" ") # Add some space before input
+        input_cols = st.columns([4, 1]) # Column for text input, column for button
+        with input_cols[0]:
+            user_question = st.text_input(
+                "Type your question here:",
+                key=text_input_key, # Use the state key for controlled component
+                disabled=st.session_state.get(is_typing_key, False),
+                label_visibility="collapsed",
+                placeholder="Type your question..."
+            )
+        with input_cols[1]:
+            submit_pressed = st.button(
+                "Send",
+                key=f"{prefix}_send_btn_cq",
+                disabled=st.session_state.get(is_typing_key, False) or not st.session_state[text_input_key], # Disable if no text
+                use_container_width=True
+            )
+
+        # Process if text submitted (via Enter in text_input or button click)
+        # Check button press OR if text_input has value (Enter key triggers script rerun with value set)
+        # Need careful handling to avoid double submission
+        # Let button press be the primary trigger
+        if submit_pressed:
+            question_to_send = st.session_state[text_input_key]
+            if question_to_send:
+                logger.debug(f"Submit button pressed with question: '{question_to_send}'")
+                if st.session_state.get(is_typing_key):
+                    typing_placeholder.empty() # Clear indicator if needed
+                send_question(question_to_send, case_prompt_text)
+                # Clear the input field via state AFTER processing
+                st.session_state[text_input_key] = ""
+                st.rerun() # Rerun to clear input visually and show new messages
+        # --- End of Input Section Replacement ---
+
 
     # --- Feedback and Conclusion Area ---
     if st.session_state.get(done_key):
@@ -801,6 +687,7 @@ def clarifying_questions_bot_ui():
 
 
 def framework_development_ui():
+    # This function remains unchanged from the previous version where CSS was commented out
     logger.info("Loading Framework Development UI.")
     prefix = st.session_state.key_prefix
     # Define keys
@@ -817,23 +704,21 @@ def framework_development_ui():
     init_session_state_key('total_time', 0.0); init_session_state_key('user_feedback', None); init_session_state_key('current_prompt_id', None)
 
     # --- Show Donation Dialog ---
-    # --- Restored ---
     if st.session_state.get(show_donation_dialog_key):
         logger.info("Displaying donation dialog (Framework Dev).")
         if hasattr(st, 'dialog'):
-            @st.dialog("Support CHIP!") # Duplicated dialog function definition
-            def show_donation(): # Name collision if not careful, but Streamlit handles scope
+            @st.dialog("Support CHIP!")
+            def show_donation():
                 st.write("Love CHIP? ...")
                 col1, col2, col3 = st.columns([0.5, 3, 0.5]);
                 with col2: st.link_button("Donate via Buy Me a Coffee ☕", "https://buymeacoffee.com/9611", type="primary", use_container_width=True)
-                if st.button("Maybe later", key="maybe_later_btn_fw", use_container_width=True): # Unique key
+                if st.button("Maybe later", key="maybe_later_btn_fw", use_container_width=True):
                     logger.info("User clicked 'Maybe later' on donation dialog (Framework Dev).")
                     st.session_state[show_donation_dialog_key] = False; st.rerun()
             show_donation()
         else: # Fallback
              with st.container(border=True): st.success("Love CHIP? ..."); st.link_button("Donate...", type="primary")
              st.session_state[show_donation_dialog_key] = False
-    # --- End of Restored Section ---
 
     # --- Select and Display Case Prompt ---
     if st.session_state.get(current_prompt_id_key) is None:
@@ -886,7 +771,6 @@ def framework_development_ui():
                      current_session_run_count = st.session_state.get(run_count_key, 0) + 1
                      st.session_state[run_count_key] = current_session_run_count
                      logger.info(f"Session run count incremented to: {current_session_run_count} (Framework Dev)")
-                     # Check if donation dialog should be shown
                      if current_session_run_count == 2 or current_session_run_count == 11:
                          st.session_state[show_donation_dialog_key] = True
                          logger.info(f"Flag set to show donation dialog for achieving run count {current_session_run_count} (Framework Dev)")
@@ -897,29 +781,24 @@ def framework_development_ui():
         logger.debug("Entering framework feedback and conclusion area.")
         final_feedback_content = generate_final_feedback(case_prompt_text)
         feedback_was_generated = final_feedback_content and not str(final_feedback_content).startswith("Error") and not str(final_feedback_content).startswith("[Feedback")
-
         if feedback_was_generated:
             st.divider(); st.header("Overall Framework Feedback"); st.markdown(final_feedback_content); st.divider()
-
             # --- Restored Feedback Rating Section ---
             st.subheader("Rate this Feedback")
             feedback_already_submitted = st.session_state.get(feedback_submitted_key, False)
             if feedback_already_submitted:
-                 # [ Display submitted feedback remains the same ]
                 stored_user_feedback = st.session_state.get(user_feedback_key)
                 st.success("Thank you for your feedback!")
                 if stored_user_feedback:
                      rating_display = '★' * stored_user_feedback.get('rating', 0); st.caption(f"Your rating: {rating_display}")
                      if stored_user_feedback.get('comment'): st.caption(f"Your comment: {stored_user_feedback.get('comment')}")
             else:
-                # --- Feedback Input Logic (Calls updated save_user_feedback) ---
                 st.markdown("**How helpful was the overall framework feedback? ...**")
                 cols = st.columns(5); selected_rating = 0; rating_clicked = False
                 for i in range(5):
                     with cols[i]:
-                        if st.button('★' * (i + 1), key=f"{prefix}_fw_star_{i+1}", help=f"Rate {i+1} star{'s' if i>0 else ''}"): # Unique key
+                        if st.button('★' * (i + 1), key=f"{prefix}_fw_star_{i+1}", help=f"Rate {i+1} star{'s' if i>0 else ''}"):
                             selected_rating = i + 1; rating_clicked = True; logger.info(f"User clicked framework feedback rating: {selected_rating} stars.")
-
                 if rating_clicked:
                     st.session_state[feedback_rating_value_key] = selected_rating
                     if selected_rating >= 4:
@@ -929,13 +808,12 @@ def framework_development_ui():
                         else: logger.error("User Framework Feedback Auto-Submitted (Rating >= 4) but FAILED TO SAVE TO DB.")
                         st.rerun()
                     else: st.session_state[show_comment_key] = True
-
                 if st.session_state.get(show_comment_key, False):
                     st.warning("Please provide a comment for ratings below 4 stars.")
                     current_rating_value = st.session_state.get(feedback_rating_value_key, 0)
                     rating_display = ('★' * current_rating_value) if isinstance(current_rating_value, int) and current_rating_value > 0 else "(select rating)"
-                    feedback_comment = st.text_area(f"Comment for your {rating_display} rating:", key=f"{prefix}_fw_feedback_comment_input", placeholder="...") # Unique key
-                    if st.button("Submit Rating and Comment", key=f"{prefix}_fw_submit_feedback_button"): # Unique key
+                    feedback_comment = st.text_area(f"Comment for your {rating_display} rating:", key=f"{prefix}_fw_feedback_comment_input", placeholder="...")
+                    if st.button("Submit Rating and Comment", key=f"{prefix}_fw_submit_feedback_button"):
                         if not feedback_comment.strip(): st.error("Comment cannot be empty...")
                         elif not isinstance(current_rating_value, int) or current_rating_value <= 0: st.error("Invalid rating selected...")
                         else:
@@ -945,22 +823,16 @@ def framework_development_ui():
                             else: logger.error("User Framework Feedback Submitted with Comment but FAILED TO SAVE TO DB.")
                             st.rerun()
             # --- End of Restored Feedback Rating Section ---
-
-
-        # [ Error/Warning display for feedback generation remains the same ]
         elif final_feedback_content and str(final_feedback_content).startswith("Error"): st.error(f"Could not display feedback: {final_feedback_content}")
         else: st.warning("Feedback is currently unavailable...")
-
-        # [ Conclusion display remains the same ]
         st.divider(); st.header("Conclusion")
         total_interaction_time = st.session_state.get(time_key, 0.0)
         st.write(f"You spent **{total_interaction_time:.2f} seconds**...")
         col_btn_r1, col_btn_r2, col_btn_r3 = st.columns([1, 1.5, 1])
         with col_btn_r2:
-            if st.button("Practice This Skill Again", use_container_width=True, key=f"{prefix}_fw_practice_again"): # Unique key
+            if st.button("Practice This Skill Again", use_container_width=True, key=f"{prefix}_fw_practice_again"):
                 logger.info("User clicked 'Practice This Skill Again' for Framework Development.")
                 reset_skill_state(); st.rerun()
-
 
 # --- Entry Point ---
 if __name__ == "__main__":
