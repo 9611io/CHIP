@@ -8,10 +8,10 @@ import json
 import random
 import logging
 import datetime
-import requests # Added for calling Edge Function
-# import psycopg2 # Removed for Supabase
-# from psycopg2 import sql # Removed for Supabase
-# from supabase import create_client, Client # No longer needed for insert
+# import requests # No longer needed for Edge Function
+import gspread # Added for Google Sheets
+from google.oauth2.service_account import Credentials # Added for Google Sheets auth
+# from supabase import create_client, Client # No longer needed
 
 # --- Basic Logging Setup ---
 # [ Logging setup remains the same ]
@@ -38,12 +38,10 @@ logger = SessionLogAdapter(logger_raw, {})
 logger.info("--- Application Started ---")
 
 
-# --- Supabase Connection Function ---
-# REMOVED get_supabase_client as it's no longer needed for feedback insert
-# You might still need it if you plan to READ data later using the anon key.
+# --- REMOVED: Supabase Connection Function ---
 
 # --- REMOVED: Function to Initialize Feedback Table (init_feedback_table) ---
-# Table creation is now handled manually in the Supabase dashboard via SQL Editor.
+# Table creation is now handled manually.
 
 # --- Moved Helper Function Definition Earlier ---
 def init_session_state_key(key, default_value):
@@ -349,10 +347,10 @@ def reset_skill_state():
     init_session_state_key('current_prompt_id', None)
 
 
-# --- UPDATED: Function to Save User Feedback via Edge Function ---
+# --- UPDATED: Function to Save User Feedback via Google Sheets ---
 def save_user_feedback(feedback_data):
     """
-    Saves the user feedback by calling a Supabase Edge Function.
+    Saves the user feedback to the configured Google Sheet.
     """
     prefix = st.session_state.key_prefix
     session_id = st.session_state.get(f"{prefix}_session_id", "N/A")
@@ -360,67 +358,57 @@ def save_user_feedback(feedback_data):
     prompt_id = feedback_data.get("prompt_id", "N/A")
     rating = feedback_data.get("rating")
     comment = feedback_data.get("comment", "")
+    timestamp = datetime.datetime.fromtimestamp(feedback_data.get("timestamp", time.time())).isoformat()
 
     log_message = (
-        f"Attempting to save USER_FEEDBACK via Edge Function :: Skill: {selected_skill}, "
+        f"Attempting to save USER_FEEDBACK via Google Sheets :: Skill: {selected_skill}, "
         f"PromptID: {prompt_id}, Rating: {rating}, Comment: '{comment}'"
     )
     logger.info(log_message)
 
     try:
-        # Get Edge Function URL from secrets
-        edge_function_url = st.secrets["SUPABASE_EDGE_FUNCTION_URL"]
-    except KeyError:
-        logger.error("SUPABASE_EDGE_FUNCTION_URL not found in Streamlit secrets.")
-        st.error("Configuration error: Edge Function URL is missing.")
+        # Get Google Sheet credentials and sheet name from secrets
+        # IMPORTANT: Store your entire service account JSON key file content as a dictionary
+        # or TOML table in secrets.toml, e.g., under [google_credentials]
+        creds_dict = st.secrets["google_credentials"]
+        scopes = ['https://www.googleapis.com/auth/spreadsheets', 'https://www.googleapis.com/auth/drive.file']
+        creds = Credentials.from_service_account_info(creds_dict, scopes=scopes)
+        gc = gspread.authorize(creds)
+
+        sheet_name = st.secrets["GSHEET_NAME"]
+        spreadsheet = gc.open(sheet_name)
+        # Assume data goes into the first worksheet
+        worksheet = spreadsheet.get_worksheet(0)
+
+        # Prepare data row - ORDER MATTERS, must match your sheet columns
+        # Example order: Timestamp, SessionID, Skill, PromptID, Rating, Comment
+        row_to_insert = [
+            timestamp,
+            session_id,
+            selected_skill,
+            prompt_id,
+            rating if rating is not None else "", # Handle potential None rating
+            comment
+        ]
+
+        # Append the row
+        worksheet.append_row(row_to_insert, value_input_option='USER_ENTERED')
+
+        logger.info(f"Successfully saved feedback to Google Sheet '{sheet_name}' for SessionID: {session_id}")
+        return True
+
+    except KeyError as e:
+        logger.error(f"Missing required Google Sheets configuration in Streamlit secrets: {e}")
+        st.error(f"Configuration error: Missing Google Sheets setting '{e}' in secrets.")
         return False
-
-    # Prepare data payload for the Edge Function
-    payload = {
-        "session_id": session_id,
-        "skill": selected_skill,
-        "prompt_id": prompt_id,
-        "rating": rating,
-        "comment": comment
-    }
-
-    success = False
-    try:
-        # Make POST request to the Edge Function
-        response = requests.post(
-            edge_function_url,
-            json=payload,
-            headers={'Content-Type': 'application/json'}
-            # Add Authorization header if your function requires it (e.g., Bearer token)
-            # headers={'Authorization': f'Bearer {st.secrets["EDGE_FUNCTION_AUTH_TOKEN"]}'}
-        )
-
-        # Check if the request was successful (e.g., status code 200-299)
-        response.raise_for_status() # Raises HTTPError for bad responses (4xx or 5xx)
-
-        logger.info(f"Successfully sent feedback to Edge Function for SessionID: {session_id}. Status: {response.status_code}")
-        success = True
-
-    except requests.exceptions.RequestException as e:
-        logger.exception(f"Error calling Edge Function: {e}")
-        # Try to get more details from the response if available
-        error_details = str(e)
-        if e.response is not None:
-            try:
-                error_body = e.response.json()
-                # Check for Supabase Edge Function specific error structure
-                if isinstance(error_body, dict) and 'error' in error_body:
-                     error_details = f"Edge Function Error: {error_body['error']}"
-                else:
-                     error_details = f"{e} - Response: {error_body}"
-            except json.JSONDecodeError:
-                error_details = f"{e} - Response: {e.response.text}"
-        st.error(f"Error sending feedback: {error_details}")
+    except gspread.exceptions.SpreadsheetNotFound:
+        logger.error(f"Google Sheet '{st.secrets.get('GSHEET_NAME', 'MISSING_NAME')}' not found or not shared correctly.")
+        st.error(f"Error saving feedback: Spreadsheet '{st.secrets.get('GSHEET_NAME', 'MISSING_NAME')}' not found. Ensure the name is correct in secrets and the sheet is shared with the service account email.")
+        return False
     except Exception as e:
-        logger.exception(f"Unexpected error sending feedback: {e}")
-        st.error(f"An unexpected error occurred: {e}")
-
-    return success
+        logger.exception(f"Error saving feedback to Google Sheets: {e}")
+        st.error(f"Error saving feedback to Google Sheets: {e}")
+        return False
 
 
 # --- Other Helper Functions (select_new_prompt, get_prompt_details, parse_interviewer_response, send_question, generate_final_feedback) ---
@@ -750,7 +738,7 @@ def clarifying_questions_bot_ui():
                 )
                 col1, col2, col3 = st.columns([0.5, 3, 0.5])
                 with col2:
-                     st.link_button("Donate via Buy Me a Coffee ☕", "[https://buymeacoffee.com/9611](https://buymeacoffee.com/9611)", type="primary", use_container_width=True)
+                     st.link_button("Donate via Buy Me a Coffee ☕", "https://buymeacoffee.com/9611", type="primary", use_container_width=True)
                 if st.button("Maybe later", key="maybe_later_btn_cq", use_container_width=True): # Unique key
                     logger.info("User clicked 'Maybe later' on donation dialog.")
                     st.session_state[show_donation_dialog_key] = False
@@ -759,7 +747,7 @@ def clarifying_questions_bot_ui():
         else: # Fallback
             with st.container(border=True):
                 st.success("Love CHIP? ...")
-                st.link_button("Donate via Buy Me a Coffee ☕", "[https://buymeacoffee.com/9611](https://buymeacoffee.com/9611)", type="primary")
+                st.link_button("Donate via Buy Me a Coffee ☕", "https://buymeacoffee.com/9611", type="primary")
             st.session_state[show_donation_dialog_key] = False
     # --- End of Restored Section ---
 
@@ -876,7 +864,7 @@ def clarifying_questions_bot_ui():
                             logger.info("User Feedback Auto-Submitted (Rating >= 4) and saved.")
                             st.rerun() # Rerun only on success
                         else:
-                            logger.error("User Feedback Auto-Submitted (Rating >= 4) but FAILED TO SAVE TO DB.")
+                            logger.error("User Feedback Auto-Submitted (Rating >= 4) but FAILED TO SAVE.")
                             # Error is displayed within save_user_feedback, no rerun here to let it persist
                         # --- End of Modification ---
                     else: st.session_state[show_comment_key] = True
@@ -897,7 +885,7 @@ def clarifying_questions_bot_ui():
                                 logger.info("User Feedback Submitted with Comment and saved.")
                                 st.rerun() # Rerun only on success
                             else:
-                                logger.error("User Feedback Submitted with Comment but FAILED TO SAVE TO DB.")
+                                logger.error("User Feedback Submitted with Comment but FAILED TO SAVE.")
                                 # Error is displayed within save_user_feedback, no rerun here to let it persist
                             # --- End of Modification ---
             # --- End of Restored Feedback Rating Section ---
@@ -918,7 +906,7 @@ def clarifying_questions_bot_ui():
 
 
 def framework_development_ui():
-    # This function remains unchanged from the previous version where CSS was commented out
+    # This function has the same feedback saving logic, needs modification too
     logger.info("Loading Framework Development UI.")
     prefix = st.session_state.key_prefix
     # Define keys
@@ -942,7 +930,7 @@ def framework_development_ui():
             def show_donation():
                 st.write("Love CHIP? ...")
                 col1, col2, col3 = st.columns([0.5, 3, 0.5]);
-                with col2: st.link_button("Donate via Buy Me a Coffee ☕", "[https://buymeacoffee.com/9611](https://buymeacoffee.com/9611)", type="primary", use_container_width=True)
+                with col2: st.link_button("Donate via Buy Me a Coffee ☕", "https://buymeacoffee.com/9611", type="primary", use_container_width=True)
                 if st.button("Maybe later", key="maybe_later_btn_fw", use_container_width=True):
                     logger.info("User clicked 'Maybe later' on donation dialog (Framework Dev).")
                     st.session_state[show_donation_dialog_key] = False; st.rerun()
@@ -1040,7 +1028,7 @@ def framework_development_ui():
                             logger.info("User Framework Feedback Auto-Submitted (Rating >= 4) and saved.")
                             st.rerun() # Rerun only on success
                         else:
-                            logger.error("User Framework Feedback Auto-Submitted (Rating >= 4) but FAILED TO SAVE TO DB.")
+                            logger.error("User Framework Feedback Auto-Submitted (Rating >= 4) but FAILED TO SAVE.")
                         # --- End of Modification ---
                     else: st.session_state[show_comment_key] = True
                 if st.session_state.get(show_comment_key, False):
@@ -1059,7 +1047,7 @@ def framework_development_ui():
                                 logger.info("User Framework Feedback Submitted with Comment and saved.")
                                 st.rerun() # Rerun only on success
                             else:
-                                logger.error("User Framework Feedback Submitted with Comment but FAILED TO SAVE TO DB.")
+                                logger.error("User Framework Feedback Submitted with Comment but FAILED TO SAVE.")
                             # --- End of Modification ---
             # --- End of Restored Feedback Rating Section ---
         elif final_feedback_content and str(final_feedback_content).startswith("Error"): st.error(f"Could not display feedback: {final_feedback_content}")
