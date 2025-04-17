@@ -8,9 +8,10 @@ import json
 import random
 import logging
 import datetime
+import requests # Added for calling Edge Function
 # import psycopg2 # Removed for Supabase
 # from psycopg2 import sql # Removed for Supabase
-from supabase import create_client, Client # Added for Supabase
+# from supabase import create_client, Client # No longer needed for insert
 
 # --- Basic Logging Setup ---
 # [ Logging setup remains the same ]
@@ -38,24 +39,8 @@ logger.info("--- Application Started ---")
 
 
 # --- Supabase Connection Function ---
-# REMOVED @st.cache_resource as a debugging step for the TypeError
-def get_supabase_client() -> Client | None:
-    """Initializes and returns the Supabase client using secrets."""
-    try:
-        url = st.secrets["SUPABASE_URL"]
-        key = st.secrets["SUPABASE_KEY"]
-        # logger.info("Attempting to create Supabase client.") # Reduce noise during debug
-        client: Client = create_client(url, key)
-        # logger.info("Supabase client created successfully.") # Reduce noise during debug
-        return client
-    except KeyError:
-        logger.error("SUPABASE_URL or SUPABASE_KEY not found in Streamlit secrets.")
-        st.error("Supabase configuration error: URL or Key missing in secrets.")
-        return None
-    except Exception as e:
-        logger.exception(f"Error creating Supabase client: {e}")
-        st.error(f"Error creating Supabase client: {e}")
-        return None
+# REMOVED get_supabase_client as it's no longer needed for feedback insert
+# You might still need it if you plan to READ data later using the anon key.
 
 # --- REMOVED: Function to Initialize Feedback Table (init_feedback_table) ---
 # Table creation is now handled manually in the Supabase dashboard via SQL Editor.
@@ -364,11 +349,10 @@ def reset_skill_state():
     init_session_state_key('current_prompt_id', None)
 
 
-# --- UPDATED: Function to Save User Feedback to Supabase ---
+# --- UPDATED: Function to Save User Feedback via Edge Function ---
 def save_user_feedback(feedback_data):
     """
-    Saves the user feedback to the configured Supabase database.
-    Assumes a table named 'user_feedback' exists with matching columns.
+    Saves the user feedback by calling a Supabase Edge Function.
     """
     prefix = st.session_state.key_prefix
     session_id = st.session_state.get(f"{prefix}_session_id", "N/A")
@@ -376,56 +360,61 @@ def save_user_feedback(feedback_data):
     prompt_id = feedback_data.get("prompt_id", "N/A")
     rating = feedback_data.get("rating")
     comment = feedback_data.get("comment", "")
-    # Supabase handles timestamp automatically if column default is now()
 
     log_message = (
-        f"Attempting to save USER_FEEDBACK via Supabase :: Skill: {selected_skill}, "
+        f"Attempting to save USER_FEEDBACK via Edge Function :: Skill: {selected_skill}, "
         f"PromptID: {prompt_id}, Rating: {rating}, Comment: '{comment}'"
     )
     logger.info(log_message)
 
-    supabase = get_supabase_client()
-    if supabase is None:
-        logger.error("Cannot save feedback, Supabase client failed to initialize.")
-        st.error("Failed to save feedback due to Supabase connection issue.")
+    try:
+        # Get Edge Function URL from secrets
+        edge_function_url = st.secrets["SUPABASE_EDGE_FUNCTION_URL"]
+    except KeyError:
+        logger.error("SUPABASE_EDGE_FUNCTION_URL not found in Streamlit secrets.")
+        st.error("Configuration error: Edge Function URL is missing.")
         return False
+
+    # Prepare data payload for the Edge Function
+    payload = {
+        "session_id": session_id,
+        "skill": selected_skill,
+        "prompt_id": prompt_id,
+        "rating": rating,
+        "comment": comment
+    }
 
     success = False
     try:
-        # Prepare data payload matching table columns (excluding 'id' and 'timestamp' if auto-generated)
-        data_to_insert = {
-            "session_id": session_id,
-            "skill": selected_skill,
-            "prompt_id": prompt_id,
-            "rating": rating,
-            "comment": comment
-            # 'timestamp' is set by default in the database
-        }
-        # Insert data into the 'user_feedback' table
-        response = supabase.table('user_feedback').insert(data_to_insert).execute()
+        # Make POST request to the Edge Function
+        response = requests.post(
+            edge_function_url,
+            json=payload,
+            headers={'Content-Type': 'application/json'}
+            # Add Authorization header if your function requires it (e.g., Bearer token)
+            # headers={'Authorization': f'Bearer {st.secrets["EDGE_FUNCTION_AUTH_TOKEN"]}'}
+        )
 
-        # Check response (Supabase API v1 might return data in response.data)
-        # Check for errors (Supabase client might raise exceptions on failure)
-        # Basic check: assume success if no exception is raised
-        logger.info(f"Successfully saved feedback to Supabase for SessionID: {session_id}. Response: {response}")
+        # Check if the request was successful (e.g., status code 200-299)
+        response.raise_for_status() # Raises HTTPError for bad responses (4xx or 5xx)
+
+        logger.info(f"Successfully sent feedback to Edge Function for SessionID: {session_id}. Status: {response.status_code}")
         success = True
 
-    except Exception as e:
-        logger.exception(f"Supabase error saving feedback: {e}")
-        # Attempt to log more details if available from the exception
+    except requests.exceptions.RequestException as e:
+        logger.exception(f"Error calling Edge Function: {e}")
+        # Try to get more details from the response if available
         error_details = str(e)
-        # Check specifically for postgrest errors which often contain the RLS message
-        if "postgrest.exceptions" in str(type(e)) and hasattr(e, 'message'):
-             error_details = f"Database Policy Error: {e.message}"
-        elif hasattr(e, 'details'):
-            error_details = f"{e} - Details: {e.details}"
-        elif hasattr(e, 'message'):
-             error_details = f"{e} - Message: {e.message}"
-        # Display a more user-friendly message for RLS specifically
-        if "violates row-level security policy" in error_details:
-             st.error("Error saving feedback: Database security policy prevents saving. Please check Supabase RLS settings.")
-        else:
-             st.error(f"Database error saving feedback: {error_details}")
+        if e.response is not None:
+            try:
+                error_body = e.response.json()
+                error_details = f"{e} - Response: {error_body}"
+            except json.JSONDecodeError:
+                error_details = f"{e} - Response: {e.response.text}"
+        st.error(f"Error sending feedback: {error_details}")
+    except Exception as e:
+        logger.exception(f"Unexpected error sending feedback: {e}")
+        st.error(f"An unexpected error occurred: {e}")
 
     return success
 
@@ -1088,4 +1077,110 @@ if __name__ == "__main__":
     init_session_state_key('session_id', str(uuid.uuid4()))
     main_app() # Calls the main_app with skill selection
     logger.info("--- Application Script Execution Finished ---")
+
+```
+
+Now, here is the example code for the Supabase Edge Function. You will need to create this file within your Supabase project structure (typically `supabase/functions/your-function-name/index.ts`) and deploy it using the Supabase CLI.
+
+
+
+```typescript
+// Import necessary libraries. Make sure you have these in your function's import_map.json if needed.
+// Deno/Edge Functions typically have these available or use URL imports.
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2' // Use Supabase JS v2
+import { corsHeaders } from '../_shared/cors.ts' // Assuming standard Supabase CORS setup
+
+console.log('Save Feedback function initializing.')
+
+// Main function handler
+Deno.serve(async (req) => {
+  // Handle CORS preflight requests
+  if (req.method === 'OPTIONS') {
+    return new Response('ok', { headers: corsHeaders })
+  }
+
+  try {
+    // 1. Get data from request body
+    const payload = await req.json()
+    console.log('Received payload:', payload)
+
+    // Basic validation (add more as needed)
+    if (!payload || typeof payload !== 'object') {
+      throw new Error('Invalid request body: Expected JSON object.')
+    }
+    const { session_id, skill, prompt_id, rating, comment } = payload
+    if (rating === undefined || rating === null) {
+         // Allow null ratings, but maybe validate type if present
+         // throw new Error('Missing required field: rating');
+    }
+
+
+    // 2. Create Supabase client using environment variables
+    // IMPORTANT: Use SERVICE_ROLE_KEY here to bypass RLS for insert
+    const supabaseAdmin = createClient(
+      Deno.env.get('SUPABASE_URL') ?? '',
+      Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
+    )
+    console.log('Supabase admin client initialized.')
+
+    // 3. Prepare data for insertion (match table columns)
+    const dataToInsert = {
+      session_id: session_id,
+      skill: skill,
+      prompt_id: prompt_id,
+      rating: rating, // Pass null if that's what you expect
+      comment: comment
+      // timestamp will be set by default in the table
+    }
+    console.log('Data to insert:', dataToInsert)
+
+
+    // 4. Insert data into the 'user_feedback' table
+    const { data, error } = await supabaseAdmin
+      .from('user_feedback')
+      .insert([dataToInsert]) // insert expects an array
+      .select() // Optionally select the inserted row to confirm
+
+    // 5. Handle potential errors during insert
+    if (error) {
+      console.error('Supabase insert error:', error)
+      throw error // Re-throw the error to be caught by the outer catch block
+    }
+
+    console.log('Feedback inserted successfully:', data)
+
+    // 6. Return success response
+    return new Response(JSON.stringify({ success: true, data: data }), {
+      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      status: 200,
+    })
+
+  } catch (error) {
+    // Catch any errors (validation, Supabase client, insert)
+    console.error('Error processing request:', error)
+    return new Response(JSON.stringify({ error: error.message }), {
+      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      status: 400, // Use 400 for client errors, 500 for server errors
+    })
+  }
+})
+
+/*
+Deployment Steps (using Supabase CLI):
+
+1. Ensure Supabase CLI is installed and you are logged in (`supabase login`).
+2. Link your local project (`supabase link --project-ref <your-project-ref>`).
+3. Create the function file: `supabase/functions/save-feedback/index.ts` (paste the code above).
+4. Set necessary secrets (run these in your terminal in the project root):
+   supabase secrets set SUPABASE_URL=<YOUR_PROJECT_URL>
+   supabase secrets set SUPABASE_SERVICE_ROLE_KEY=<YOUR_SERVICE_ROLE_KEY>
+   (Get SERVICE_ROLE_KEY from Project Settings -> API -> Project API Keys - KEEP THIS KEY SECRET!)
+5. Deploy the function:
+   supabase functions deploy save-feedback --no-verify-jwt
+   (Use --no-verify-jwt if calling from Streamlit without Supabase Auth user context)
+6. Get the function's invocation URL (from deployment output or Supabase dashboard: Edge Functions -> your function -> Details).
+7. Add the URL to your Streamlit secrets (`.streamlit/secrets.toml`):
+   SUPABASE_EDGE_FUNCTION_URL = "your-deployed-function-url"
+
+*/
 
