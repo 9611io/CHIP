@@ -60,6 +60,29 @@ def get_supabase_client() -> Client | None:
 # --- REMOVED: Function to Initialize Feedback Table (init_feedback_table) ---
 # Table creation is now handled manually in the Supabase dashboard via SQL Editor.
 
+# --- Moved Helper Function Definition Earlier ---
+def init_session_state_key(key, default_value):
+    """Initializes session state key with prefix if not present."""
+    full_key = f"{st.session_state.key_prefix}_{key}"
+    if full_key not in st.session_state:
+        st.session_state[full_key] = default_value
+
+# --- Session State Initialization ---
+# This section now runs AFTER init_session_state_key is defined.
+if 'key_prefix' not in st.session_state:
+    st.session_state.key_prefix = f"chip_bot_{uuid.uuid4().hex[:6]}"
+    init_session_state_key('session_id', str(uuid.uuid4())) # Now defined
+    logger.info(f"Initialized new session with prefix: {st.session_state.key_prefix} and SessionID: {st.session_state.get(f'{st.session_state.key_prefix}_session_id')}")
+elif f"{st.session_state.key_prefix}_session_id" not in st.session_state:
+     init_session_state_key('session_id', str(uuid.uuid4())) # Now defined
+     logger.info(f"Re-initialized SessionID for existing prefix {st.session_state.key_prefix}: {st.session_state.get(f'{st.session_state.key_prefix}_session_id')}")
+
+SKILLS = ["Clarifying Questions", "Framework Development", "Hypothesis Formulation", "Analysis", "Recommendation"]
+init_session_state_key('selected_skill', SKILLS[0]) # Now defined
+init_session_state_key('run_count', 0) # Now defined
+init_session_state_key('show_donation_dialog', False) # Now defined
+
+
 # --- Page Config ---
 st.set_page_config(
     page_title="CHIP",
@@ -287,29 +310,9 @@ except Exception as e:
     ALL_PROMPTS = [{"id": "default_unknown_error", "title": "Default Prompt (Unknown Error)", "prompt_text": "Error: Unknown error loading prompts."}]
     ALL_PROMPT_IDS = ["default_unknown_error"]
 
-# --- Session State Initialization ---
-# [ Remains the same - session_id initialization handled here ]
-if 'key_prefix' not in st.session_state:
-    st.session_state.key_prefix = f"chip_bot_{uuid.uuid4().hex[:6]}"
-    init_session_state_key('session_id', str(uuid.uuid4()))
-    logger.info(f"Initialized new session with prefix: {st.session_state.key_prefix} and SessionID: {st.session_state.get(f'{st.session_state.key_prefix}_session_id')}")
-elif f"{st.session_state.key_prefix}_session_id" not in st.session_state:
-     init_session_state_key('session_id', str(uuid.uuid4()))
-     logger.info(f"Re-initialized SessionID for existing prefix {st.session_state.key_prefix}: {st.session_state.get(f'{st.session_state.key_prefix}_session_id')}")
-
-def init_session_state_key(key, default_value):
-    """Initializes session state key with prefix if not present."""
-    full_key = f"{st.session_state.key_prefix}_{key}"
-    if full_key not in st.session_state:
-        st.session_state[full_key] = default_value
-
-SKILLS = ["Clarifying Questions", "Framework Development", "Hypothesis Formulation", "Analysis", "Recommendation"]
-init_session_state_key('selected_skill', SKILLS[0])
-init_session_state_key('run_count', 0)
-init_session_state_key('show_donation_dialog', False)
 
 # --- Helper Functions ---
-# [ reset_skill_state remains the same ]
+# [ reset_skill_state definition remains here ]
 def reset_skill_state():
     """Resets state variables specific to a practice run within a skill."""
     prefix = st.session_state.key_prefix
