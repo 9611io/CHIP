@@ -1,4 +1,4 @@
 streamlit
 openai
-supabase
-requests
+gspread
+google-auth
