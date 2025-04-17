@@ -248,6 +248,11 @@ st.markdown("""
          border-radius: 8px;
          padding: 0.5rem; /* Adjust padding as needed */
      }
+     /* Ensure form elements are aligned */
+     form[data-testid="stForm"] {
+         /* border-top: 1px solid #DDDDDD; */ /* Optional: Add border like chat_input */
+         padding-top: 10px; /* Add some padding above the form */
+     }
 
 
     /* --- Other Elements --- */
@@ -334,7 +339,7 @@ def reset_skill_state():
         'total_time', 'is_typing', 'feedback',
         'show_comment_box', 'feedback_rating_value',
         # Add keys specific to the text_input replacement if needed
-        'cq_text_input_value', # Key used in the replacement below
+        # 'cq_text_input_value', # No longer needed with st.form
     ]
     logger.info(f"Resetting state keys: {keys_to_reset}")
     for key in keys_to_reset:
@@ -409,11 +414,18 @@ def save_user_feedback(feedback_data):
         logger.exception(f"Supabase error saving feedback: {e}")
         # Attempt to log more details if available from the exception
         error_details = str(e)
-        if hasattr(e, 'details'):
+        # Check specifically for postgrest errors which often contain the RLS message
+        if "postgrest.exceptions" in str(type(e)) and hasattr(e, 'message'):
+             error_details = f"Database Policy Error: {e.message}"
+        elif hasattr(e, 'details'):
             error_details = f"{e} - Details: {e.details}"
         elif hasattr(e, 'message'):
              error_details = f"{e} - Message: {e.message}"
-        st.error(f"Database error saving feedback: {error_details}")
+        # Display a more user-friendly message for RLS specifically
+        if "violates row-level security policy" in error_details:
+             st.error("Error saving feedback: Database security policy prevents saving. Please check Supabase RLS settings.")
+        else:
+             st.error(f"Database error saving feedback: {error_details}")
 
     return success
 
@@ -729,9 +741,7 @@ def clarifying_questions_bot_ui():
     init_session_state_key('is_typing', False); init_session_state_key('feedback', None); init_session_state_key('show_comment_box', False)
     init_session_state_key('feedback_rating_value', None); init_session_state_key('interaction_start_time', None)
     init_session_state_key('total_time', 0.0); init_session_state_key('user_feedback', None); init_session_state_key('current_prompt_id', None)
-    # Initialize state for the text input replacement
-    text_input_key = f"{prefix}_cq_text_input_value"
-    init_session_state_key('cq_text_input_value', "") # Key for text_input value
+    # text_input_key no longer needed with st.form
 
 
     # --- Show Donation Dialog ---
@@ -775,7 +785,12 @@ def clarifying_questions_bot_ui():
 
     # --- Main Interaction Area ---
     if not st.session_state.get(done_key):
-        st.header("Ask Clarifying Questions"); st.caption("Ask questions below. Click 'End Clarification Questions' when finished.")
+        # --- Updated Header and Instructions ---
+        st.header("Clarifying Questions") # Changed header text
+        # Using markdown for larger font size
+        st.markdown("<span style='font-size: 1.1em;'>Ask questions below. Click 'End Clarification Questions' when finished.</span>", unsafe_allow_html=True)
+        # --- End of Update ---
+
         col_btn1, col_btn2, col_btn3 = st.columns([1, 1.5, 1])
         with col_btn2:
             if st.button("End Clarification Questions", use_container_width=True):
@@ -805,37 +820,26 @@ def clarifying_questions_bot_ui():
         if st.session_state.get(is_typing_key): typing_placeholder.text("CHIP is thinking...")
         else: typing_placeholder.empty()
 
-        # --- Input Section: Using st.text_input + st.button ---
-        st.write(" ") # Add some space before input
-        input_cols = st.columns([4, 1]) # Column for text input, column for button
-        with input_cols[0]:
-            # Use the session state key to make it a controlled component
-            user_question = st.text_input(
-                "Type your question here:",
-                key=text_input_key, # Use the state key for controlled component
-                disabled=st.session_state.get(is_typing_key, False),
-                label_visibility="collapsed",
-                placeholder="Type your question..."
-            )
-        with input_cols[1]:
-            submit_pressed = st.button(
-                "Send",
-                key=f"{prefix}_send_btn_cq",
-                disabled=st.session_state.get(is_typing_key, False) or not st.session_state[text_input_key], # Disable if no text
-                use_container_width=True
-            )
-
-        # Process if text submitted (via Enter in text_input or button click)
-        if submit_pressed:
-            question_to_send = st.session_state[text_input_key]
-            if question_to_send:
-                logger.debug(f"Submit button pressed with question: '{question_to_send}'")
-                if st.session_state.get(is_typing_key):
-                    typing_placeholder.empty() # Clear indicator if needed
-                # REMOVED direct state modification causing the error
-                # st.session_state[text_input_key] = ""
-                send_question(question_to_send, case_prompt_text)
-                # Input clearing might need adjustment later if it doesn't clear reliably on rerun
+        # --- Input Section: Using st.form ---
+        with st.form(key=f"{prefix}_cq_input_form", clear_on_submit=True):
+             user_question = st.text_input(
+                 "Type your question here:",
+                 key=f"{prefix}_cq_form_text_input", # Key for the input *inside* the form
+                 disabled=st.session_state.get(is_typing_key, False),
+                 label_visibility="collapsed",
+                 placeholder="Type your question..."
+             )
+             submitted = st.form_submit_button(
+                 "Send",
+                 disabled=st.session_state.get(is_typing_key, False) or not user_question # Disable if no text or typing
+             )
+             if submitted and user_question:
+                 logger.debug(f"Form submitted with question: '{user_question}'")
+                 if st.session_state.get(is_typing_key):
+                     typing_placeholder.empty() # Clear indicator if needed
+                 send_question(user_question, case_prompt_text)
+                 # No explicit rerun needed here, form submission handles it.
+                 # No need to clear the input manually, clear_on_submit=True does it.
         # --- End of Input Section Replacement ---
 
 
@@ -872,9 +876,14 @@ def clarifying_questions_bot_ui():
                     if selected_rating >= 4:
                         user_feedback_data = {"rating": selected_rating, "comment": "", "prompt_id": st.session_state.get(current_prompt_id_key, "N/A"), "timestamp": time.time()}
                         st.session_state[user_feedback_key] = user_feedback_data; st.session_state[feedback_submitted_key] = True; st.session_state[show_comment_key] = False
-                        if save_user_feedback(user_feedback_data): logger.info("User Feedback Auto-Submitted (Rating >= 4) and saved.")
-                        else: logger.error("User Feedback Auto-Submitted (Rating >= 4) but FAILED TO SAVE TO DB.")
-                        st.rerun()
+                        # --- Modified Rerun Logic ---
+                        if save_user_feedback(user_feedback_data):
+                            logger.info("User Feedback Auto-Submitted (Rating >= 4) and saved.")
+                            st.rerun() # Rerun only on success
+                        else:
+                            logger.error("User Feedback Auto-Submitted (Rating >= 4) but FAILED TO SAVE TO DB.")
+                            # Error is displayed within save_user_feedback, no rerun here to let it persist
+                        # --- End of Modification ---
                     else: st.session_state[show_comment_key] = True
 
                 if st.session_state.get(show_comment_key, False):
@@ -888,9 +897,14 @@ def clarifying_questions_bot_ui():
                         else:
                             user_feedback_data = {"rating": current_rating_value, "comment": feedback_comment.strip(), "prompt_id": st.session_state.get(current_prompt_id_key, "N/A"), "timestamp": time.time()}
                             st.session_state[user_feedback_key] = user_feedback_data; st.session_state[feedback_submitted_key] = True; st.session_state[show_comment_key] = False
-                            if save_user_feedback(user_feedback_data): logger.info("User Feedback Submitted with Comment and saved.")
-                            else: logger.error("User Feedback Submitted with Comment but FAILED TO SAVE TO DB.")
-                            st.rerun()
+                            # --- Modified Rerun Logic ---
+                            if save_user_feedback(user_feedback_data):
+                                logger.info("User Feedback Submitted with Comment and saved.")
+                                st.rerun() # Rerun only on success
+                            else:
+                                logger.error("User Feedback Submitted with Comment but FAILED TO SAVE TO DB.")
+                                # Error is displayed within save_user_feedback, no rerun here to let it persist
+                            # --- End of Modification ---
             # --- End of Restored Feedback Rating Section ---
 
         # [ Error/Warning display for feedback generation remains the same ]
@@ -1026,9 +1040,13 @@ def framework_development_ui():
                     if selected_rating >= 4:
                         user_feedback_data = {"rating": selected_rating, "comment": "", "prompt_id": st.session_state.get(current_prompt_id_key, "N/A"), "timestamp": time.time()}
                         st.session_state[user_feedback_key] = user_feedback_data; st.session_state[feedback_submitted_key] = True; st.session_state[show_comment_key] = False
-                        if save_user_feedback(user_feedback_data): logger.info("User Framework Feedback Auto-Submitted (Rating >= 4) and saved.")
-                        else: logger.error("User Framework Feedback Auto-Submitted (Rating >= 4) but FAILED TO SAVE TO DB.")
-                        st.rerun()
+                        # --- Modified Rerun Logic ---
+                        if save_user_feedback(user_feedback_data):
+                            logger.info("User Framework Feedback Auto-Submitted (Rating >= 4) and saved.")
+                            st.rerun() # Rerun only on success
+                        else:
+                            logger.error("User Framework Feedback Auto-Submitted (Rating >= 4) but FAILED TO SAVE TO DB.")
+                        # --- End of Modification ---
                     else: st.session_state[show_comment_key] = True
                 if st.session_state.get(show_comment_key, False):
                     st.warning("Please provide a comment for ratings below 4 stars.")
@@ -1041,9 +1059,13 @@ def framework_development_ui():
                         else:
                             user_feedback_data = {"rating": current_rating_value, "comment": feedback_comment.strip(), "prompt_id": st.session_state.get(current_prompt_id_key, "N/A"), "timestamp": time.time()}
                             st.session_state[user_feedback_key] = user_feedback_data; st.session_state[feedback_submitted_key] = True; st.session_state[show_comment_key] = False
-                            if save_user_feedback(user_feedback_data): logger.info("User Framework Feedback Submitted with Comment and saved.")
-                            else: logger.error("User Framework Feedback Submitted with Comment but FAILED TO SAVE TO DB.")
-                            st.rerun()
+                            # --- Modified Rerun Logic ---
+                            if save_user_feedback(user_feedback_data):
+                                logger.info("User Framework Feedback Submitted with Comment and saved.")
+                                st.rerun() # Rerun only on success
+                            else:
+                                logger.error("User Framework Feedback Submitted with Comment but FAILED TO SAVE TO DB.")
+                            # --- End of Modification ---
             # --- End of Restored Feedback Rating Section ---
         elif final_feedback_content and str(final_feedback_content).startswith("Error"): st.error(f"Could not display feedback: {final_feedback_content}")
         else: st.warning("Feedback is currently unavailable...")
