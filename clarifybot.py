@@ -1080,10 +1080,12 @@ def framework_development_ui():
                  disabled=st.session_state.get(is_typing_key, False), # Disable if feedback is generating
                  placeholder="e.g.,\n1. Market Analysis\n   a. Market Size...\n2. Competitive Landscape..."
              )
+             # --- FIX: Corrected disabled logic for submit button ---
              submitted = st.form_submit_button(
                  "Submit Framework for Feedback",
-                 disabled=st.session_state.get(is_typing_key, False) or not framework_input # Disable if no text or typing
+                 disabled=st.session_state.get(is_typing_key, False) # Only disable if feedback is generating
              )
+             # --- End of FIX ---
              if submitted and framework_input:
                  logger.info("User submitted framework for final feedback.")
                  # Store the submission minimally for the feedback function
@@ -1110,6 +1112,10 @@ def framework_development_ui():
         typing_placeholder = st.empty()
         # Check done_key as well, indicator should show when feedback is generating
         if st.session_state.get(is_typing_key) or (st.session_state.get(done_key) and not st.session_state.get(feedback_key)):
+             # Set is_typing to True explicitly when starting feedback generation
+             # This might need adjustment if generate_final_feedback takes significant time
+             # For now, rely on the spinner inside generate_final_feedback
+             # st.session_state[is_typing_key] = True # Potentially set here
              typing_placeholder.text("CHIP is analyzing your framework...")
         else:
              typing_placeholder.empty()
@@ -1124,7 +1130,10 @@ def framework_development_ui():
         # st.header("Overall Framework Feedback") # Removed this header
 
         # Generate and display feedback
+        # Set typing indicator before potentially long operation
+        st.session_state[is_typing_key] = True # Set typing true before generation
         final_feedback_content = generate_final_feedback(case_prompt_text) # Uses updated prompt
+        st.session_state[is_typing_key] = False # Set typing false after generation
         feedback_was_generated = final_feedback_content and not str(final_feedback_content).startswith("Error") and not str(final_feedback_content).startswith("[Feedback")
 
         if feedback_was_generated:
