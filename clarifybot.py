@@ -351,6 +351,7 @@ def reset_skill_state():
 def save_user_feedback(feedback_data):
     """
     Saves the user feedback to the configured Google Sheet.
+    Uses Sheet ID for robustness.
     """
     prefix = st.session_state.key_prefix
     session_id = st.session_state.get(f"{prefix}_session_id", "N/A")
@@ -367,16 +368,16 @@ def save_user_feedback(feedback_data):
     logger.info(log_message)
 
     try:
-        # Get Google Sheet credentials and sheet name from secrets
-        # IMPORTANT: Store your entire service account JSON key file content as a dictionary
-        # or TOML table in secrets.toml, e.g., under [google_credentials]
+        # Get Google Sheet credentials and sheet ID from secrets
         creds_dict = st.secrets["google_credentials"]
+        sheet_id = st.secrets["GSHEET_ID"] # Use Sheet ID now
         scopes = ['https://www.googleapis.com/auth/spreadsheets', 'https://www.googleapis.com/auth/drive.file']
         creds = Credentials.from_service_account_info(creds_dict, scopes=scopes)
         gc = gspread.authorize(creds)
 
-        sheet_name = st.secrets["GSHEET_NAME"]
-        spreadsheet = gc.open(sheet_name)
+        # Open the spreadsheet by its unique ID
+        spreadsheet = gc.open_by_key(sheet_id)
+        logger.info(f"Opened Google Sheet with ID: {sheet_id}")
         # Assume data goes into the first worksheet
         worksheet = spreadsheet.get_worksheet(0)
 
@@ -394,16 +395,26 @@ def save_user_feedback(feedback_data):
         # Append the row
         worksheet.append_row(row_to_insert, value_input_option='USER_ENTERED')
 
-        logger.info(f"Successfully saved feedback to Google Sheet '{sheet_name}' for SessionID: {session_id}")
+        logger.info(f"Successfully saved feedback to Google Sheet ID '{sheet_id}' for SessionID: {session_id}")
         return True
 
     except KeyError as e:
         logger.error(f"Missing required Google Sheets configuration in Streamlit secrets: {e}")
-        st.error(f"Configuration error: Missing Google Sheets setting '{e}' in secrets.")
+        st.error(f"Configuration error: Missing Google Sheets setting '{e}' in secrets. Check GSHEET_ID and google_credentials.")
         return False
+    except gspread.exceptions.APIError as e:
+         logger.exception(f"Google API error: {e}")
+         # Try to parse the error response for more details
+         try:
+             error_details = e.response.json()
+             st.error(f"Google API Error saving feedback: {error_details.get('error', {}).get('message', str(e))}")
+         except: # If parsing fails, show the raw error
+             st.error(f"Google API Error saving feedback: {e}")
+         return False
     except gspread.exceptions.SpreadsheetNotFound:
-        logger.error(f"Google Sheet '{st.secrets.get('GSHEET_NAME', 'MISSING_NAME')}' not found or not shared correctly.")
-        st.error(f"Error saving feedback: Spreadsheet '{st.secrets.get('GSHEET_NAME', 'MISSING_NAME')}' not found. Ensure the name is correct in secrets and the sheet is shared with the service account email.")
+        # This error might still occur if the ID is wrong or sharing is incorrect
+        logger.error(f"Google Sheet with ID '{st.secrets.get('GSHEET_ID', 'MISSING_ID')}' not found or not shared correctly.")
+        st.error(f"Error saving feedback: Spreadsheet not found. Ensure the GSHEET_ID in secrets is correct and the sheet is shared with the service account email.")
         return False
     except Exception as e:
         logger.exception(f"Error saving feedback to Google Sheets: {e}")
