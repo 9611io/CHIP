@@ -548,21 +548,37 @@ def send_question(question, current_case_prompt_text):
         expected_format = "structured" # Default
 
         if selected_skill == "Clarifying Questions":
+            # --- Reverted Prompt Instructions ---
             prompt_for_llm = f"""
             You are a **strict** case interviewer simulator focusing ONLY on the clarifying questions phase. Evaluate questions **rigorously**.
-            Current Case Prompt Context: {current_case_prompt_text}
-            Conversation History So Far:\n{history_for_prompt}
-            Interviewee's Latest Question: {latest_input}
+
+            Current Case Prompt Context:
+            {current_case_prompt_text}
+
+            Conversation History So Far:
+            {history_for_prompt}
+
+            Interviewee's Latest Question:
+            {latest_input}
+
             Your Task:
-            1. Provide a concise, helpful answer...
-            2. Assess the quality of *this specific question*...
-            3. Use the following exact format...
+            1. Provide a concise, helpful answer... [rest of Task 1 remains the same - plausible answers etc.] ...**Crucially, maintain consistency with any previous answers you've given in this conversation.**
+            2. Assess the quality of *this specific question* **rigorously** based on the following categories of effective clarifying questions:
+                * **Objective Clarification:** Does it clarify the case goal/problem statement?
+                * **Company Understanding:** Does it seek relevant info about the client/company structure, situation, or industry context?
+                * **Term Definition:** Does it clarify specific jargon or unfamiliar terms used in the case or prior answers?
+                * **Information Repetition/Confirmation:** Does it concisely ask to repeat or confirm specific crucial information potentially missed?
+                * **Question Quality:** Is the question concise, targeted, and NOT compound (asking multiple things at once)?
+               **Critically evaluate:** If the question is extremely vague (e.g., single words like 'why?', 'what?', 'how?'), generic, irrelevant to the case context, compound, or doesn't clearly fit the positive categories above, **assess it as Poor (1/5)** and state *why* it's poor (e.g., 'Too vague, doesn't specify what information is needed'). Otherwise, rate from 2-5 based on how well it fits the categories and quality criteria. Be brief but justify the assessment clearly.
+            3. Use the following exact format, including the delimiters on separate lines:
+
             ###ANSWER###
             [Your plausible answer here]
             ###ASSESSMENT###
-            [Your brief but rigorous assessment...]
+            [Your brief but rigorous assessment of the question's quality based on the criteria above]
             """
-            system_message = "You are a strict case interview simulator for clarifying questions. Evaluate questions rigorously... Use the specified response format."
+            system_message = "You are a strict case interview simulator for clarifying questions. Evaluate questions rigorously based on specific categories (Objective, Company, Terms, Repetition, Quality). Provide plausible answers if needed. Use the specified response format."
+            # --- End of Reverted Prompt ---
             expected_format = "structured"
 
         elif selected_skill == "Framework Development":
@@ -711,7 +727,9 @@ def generate_final_feedback(current_case_prompt_text):
             elif role == 'interviewer':
                 # Response corresponds to the previous hypothesis number
                 h_num = (i // 2) + 1
-                formatted_history.append(f"Interviewer Info Provided after H{h_num}: {content}")
+                # Skip the last auto-message if present
+                if "(Maximum hypotheses reached. Moving to feedback.)" not in content:
+                    formatted_history.append(f"Interviewer Info Provided after H{h_num}: {content}")
          history_string = "\n\n".join(formatted_history)
     else: # For Clarifying Questions (and potentially others later)
         for i, msg in enumerate(conversation_history):
@@ -832,7 +850,7 @@ def main_app():
     # --- Routing to Skill UI Functions ---
     if selected_skill == "Clarifying Questions": clarifying_questions_bot_ui()
     elif selected_skill == "Framework Development": framework_development_ui()
-    elif selected_skill == "Hypothesis Formulation": hypothesis_formulation_ui() # Call new function
+    elif selected_skill == "Hypothesis Formulation": hypothesis_formulation_ui() # CORRECTED: Call the new function
     elif selected_skill == "Analysis": st.header("Analysis"); st.info("Under construction..."); logger.info("Displayed 'Under Construction'...")
     elif selected_skill == "Recommendation": st.header("Recommendation"); st.info("Under construction..."); logger.info("Displayed 'Under Construction'...")
     else: logger.error(f"Invalid skill selected: {selected_skill}"); st.error("Invalid skill selected.")
