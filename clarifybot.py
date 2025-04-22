@@ -597,21 +597,34 @@ def send_question(question, current_case_prompt_text):
              return # Exit early
 
         elif selected_skill == "Hypothesis Formulation":
-            # --- Refined Interaction Prompt ---
+            # --- Refined Interaction Prompt v2 ---
             prompt_for_llm = f"""
             You are playing the role of a case interviewer providing data/information in response to a candidate's hypothesis.
             The candidate is trying to diagnose an issue based on the case prompt.
 
-            Your Task:
-            1. **Evaluate Input:** First, determine if the "Candidate's Latest Hypothesis/Area to Investigate" below is a reasonable, testable hypothesis related to the case context. Is it specific enough to investigate? Is it relevant? Or is it nonsensical, extremely vague (like one word), or completely unrelated to the case?
-            2. **Respond Appropriately:**
-                * **If the input IS a reasonable hypothesis:** Provide a concise (1-2 sentences) piece of plausible (but potentially made-up) information that *contradicts* their line of thinking or suggests it's not the primary driver. Maintain consistency with previous info. Sound like a neutral source of data. **DO NOT** assess the hypothesis quality directly (e.g., don't say "Good hypothesis").
-                * **If the input IS NOT a reasonable hypothesis** (e.g., it's nonsensical like "your mom lol", too vague like "wut", or clearly unrelated): Respond politely that you cannot provide relevant information based on that input and ask them to state a clearer, testable hypothesis related to the case. For example: "I don't have data related to that. Could you propose a specific hypothesis about the potential cause of the issue described in the case?" or "Could you clarify what specific area you'd like to investigate based on the case details?"
+            **Your Primary Task: Evaluate the Candidate's Input FIRST.**
+            Determine if the "Candidate's Latest Hypothesis/Area to Investigate" below is a reasonable, testable hypothesis related to the case context.
+            - Is it specific enough?
+            - Is it relevant to the case prompt ({current_case_prompt_text})?
+            - Or is it nonsensical (like jokes, insults), extremely vague (like one word "why?" or "wut"), or clearly unrelated?
 
-            **CRITICAL:** Do NOT use the ###ANSWER### or ###ASSESSMENT### delimiters in your response for this skill. Just provide the direct response text. Do not ask clarifying questions back.
+            **Based on your evaluation, respond in ONE of the following two ways:**
 
-            Case Prompt Context:
-            {current_case_prompt_text}
+            1.  **If the input IS a reasonable hypothesis:**
+                * Provide a concise (1-2 sentences) piece of plausible information that *contradicts* their line of thinking or suggests it's not the primary driver.
+                * Maintain consistency with previous info provided in the history.
+                * Sound like a neutral source of data.
+                * **DO NOT** assess the hypothesis quality directly (e.g., don't say "Good hypothesis").
+                * **DO NOT** use ###ANSWER### or ###ASSESSMENT### tags.
+
+            2.  **If the input IS NOT a reasonable hypothesis:**
+                * **DO NOT provide contradictory case information.**
+                * Respond politely and neutrally that you cannot provide relevant information based on that input.
+                * Ask them to state a clearer, testable hypothesis related to the case.
+                * Example responses: "I don't have data related to that. Could you propose a specific hypothesis about the potential cause of the issue described in the case?" OR "Could you clarify what specific area you'd like to investigate based on the case details?" OR "Please state a testable hypothesis related to the case."
+                * **DO NOT** use ###ANSWER### or ###ASSESSMENT### tags.
+
+            **CRITICAL:** Your response must be ONLY the text for either option 1 or option 2 above. No extra formatting or explanation.
 
             Conversation History (Previous hypotheses and info provided):
             {history_for_prompt}
@@ -621,10 +634,10 @@ def send_question(question, current_case_prompt_text):
 
             Your Response:
             """
-            system_message = "You are a case interviewer. First, evaluate if the user's input is a reasonable hypothesis for the case. If yes, provide concise, contradictory information without assessment. If no, politely ask for a clearer, relevant hypothesis. Do not use special formatting."
-            # --- End of Refined Prompt ---
+            system_message = "You are a case interviewer. IMPORTANT: First, evaluate if the user's input is a reasonable hypothesis for the case. If yes, provide concise, contradictory information. If no (e.g., nonsensical, vague, unrelated), politely ask for a clearer, relevant hypothesis. Do not assess. Do not use special formatting."
+            # --- End of Refined Prompt v2 ---
             max_tokens = 150
-            temperature = 0.6
+            temperature = 0.4 # Slightly lower temperature
 
         else:
             # Handle other potential skills or errors
