@@ -1021,7 +1021,7 @@ def framework_development_ui():
     init_session_state_key('total_time', 0.0); init_session_state_key('user_feedback', None); init_session_state_key('current_prompt_id', None)
 
     # --- Instructions ---
-    st.markdown("Read the case prompt below. Take some time to think, then outline your framework and proposed approach in the framework area below. When you are satisfied with your framework, press \"Submit Framework for Feedback\".")
+    st.markdown("Read the case prompt below. Take some time to think, then outline your framework and proposed approach in the framework area. When you are satisfied with your framework, press \"Submit Framework for Feedback\".")
     st.divider() # Add divider after instructions
 
     # --- Show Donation Dialog ---
