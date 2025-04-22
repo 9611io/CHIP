@@ -699,7 +699,6 @@ def send_question(question, current_case_prompt_text):
         st.rerun() # Rerun to display new message and potentially the feedback section if done_key was set
 
 def generate_final_feedback(current_case_prompt_text):
-    # [ This function remains unchanged from the previous version ]
     """
     Generates overall feedback markdown based on the conversation history.
     For Framework Dev, expects history to contain the single submitted framework.
@@ -762,6 +761,10 @@ def generate_final_feedback(current_case_prompt_text):
          logger.warning("Skipping feedback gen: Formatted history string is empty.")
          return "[Could not generate feedback: Formatted history is empty]"
 
+    # --- Add Debug Logging ---
+    logger.debug(f"Generating feedback for {selected_skill}. History string:\n{history_string}")
+    # --- End Debug Logging ---
+
     with st.spinner(f"Generating Final Feedback for {selected_skill}..."):
         try:
             # --- Define Feedback Prompt based on Skill ---
@@ -791,9 +794,14 @@ def generate_final_feedback(current_case_prompt_text):
                 return st.session_state[feedback_key]
 
             logger.info("Calling OpenAI API for final feedback...")
+            # --- Add Debug Logging ---
+            logger.debug(f"Feedback Prompt for {selected_skill}:\n{feedback_prompt}")
+            # --- End Debug Logging ---
             feedback_response = client.chat.completions.create(model="gpt-4o-mini", messages=[{"role": "system", "content": system_message_feedback}, {"role": "user", "content": feedback_prompt}], max_tokens=max_tokens_feedback, temperature=0.5)
             feedback = feedback_response.choices[0].message.content.strip()
-            logger.info(f"Feedback received from API (first 100 chars): {feedback[:100]}")
+            # --- Add Debug Logging ---
+            logger.info(f"Raw feedback received from API (first 500 chars): {feedback[:500]}")
+            # --- End Debug Logging ---
             if feedback: st.session_state[feedback_key] = feedback
             else: logger.warning("LLM returned empty feedback."); st.session_state[feedback_key] = "[Feedback generation returned empty]"
             return st.session_state[feedback_key]
@@ -1233,6 +1241,11 @@ def hypothesis_formulation_ui():
         st.session_state[is_typing_key] = False
         feedback_was_generated = final_feedback_content and not str(final_feedback_content).startswith("Error") and not str(final_feedback_content).startswith("[Feedback")
 
+        # --- Add Debug Logging ---
+        logger.debug(f"Feedback content for Hypothesis: {final_feedback_content}")
+        logger.debug(f"Feedback generated flag: {feedback_was_generated}")
+        # --- End Debug Logging ---
+
         if feedback_was_generated:
             st.divider(); st.markdown(final_feedback_content); st.divider()
             # Feedback Rating Section
@@ -1271,8 +1284,13 @@ def hypothesis_formulation_ui():
                             st.session_state[user_feedback_key] = user_feedback_data; st.session_state[feedback_submitted_key] = True; st.session_state[show_comment_key] = False
                             if save_user_feedback(user_feedback_data): logger.info("User Feedback Submitted with Comment and saved."); st.rerun()
                             else: logger.error("User Feedback Submitted with Comment but FAILED TO SAVE.")
-        elif final_feedback_content and str(final_feedback_content).startswith("Error"): st.error(f"Could not display feedback: {final_feedback_content}")
-        else: st.warning("Feedback is currently unavailable...")
+        elif final_feedback_content and str(final_feedback_content).startswith("Error"):
+             st.error(f"Could not display feedback: {final_feedback_content}")
+             logger.error(f"Feedback generation resulted in error message: {final_feedback_content}") # Log error
+        else:
+             st.warning("Feedback is currently unavailable or was not generated correctly.")
+             logger.warning(f"Feedback was not displayed. Content: {final_feedback_content}") # Log non-display
+
         # Conclusion
         st.divider(); st.header("Conclusion")
         total_interaction_time = st.session_state.get(time_key, 0.0)
