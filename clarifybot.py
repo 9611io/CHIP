@@ -807,7 +807,6 @@ def clarifying_questions_bot_ui():
     init_session_state_key('total_time', 0.0); init_session_state_key('user_feedback', None); init_session_state_key('current_prompt_id', None)
     # text_input_key no longer needed with st.form
 
-
     # --- Instructions ---
     st.markdown("Read the prompt below, then enter your clarifying questions one at a time in the chat field at the bottom of the page. Press \"Send\" to submit a clarifying question. When you are satisfied with your questions, press the \"End Clarification Questions\" button.")
     st.divider() # Add divider after instructions
@@ -867,29 +866,10 @@ def clarifying_questions_bot_ui():
 
     # --- Main Interaction Area ---
     if not st.session_state.get(done_key):
-        # --- Fix #4: Updated Header and Instructions ---
         st.header("Clarifying Questions") # Changed header text
-        # Using markdown for larger font size
-        st.markdown("<span style='font-size: 1.1em;'>Ask questions below. Click 'End Clarification Questions' when finished.</span>", unsafe_allow_html=True)
-        # --- End of Fix #4 ---
+        # st.markdown("<span style='font-size: 1.1em;'>Ask questions below. Click 'End Clarification Questions' when finished.</span>", unsafe_allow_html=True) # Removed redundant instruction
 
-        col_btn1, col_btn2, col_btn3 = st.columns([1, 1.5, 1])
-        with col_btn2:
-            if st.button("End Clarification Questions", use_container_width=True):
-                logger.info("User clicked 'End Clarification Questions'.")
-                end_time = time.time(); start_time = st.session_state.get(start_time_key)
-                if start_time is not None: st.session_state[time_key] = end_time - start_time
-                else: st.session_state[time_key] = 0.0
-                st.session_state[done_key] = True
-                current_session_run_count = st.session_state.get(run_count_key, 0) + 1
-                st.session_state[run_count_key] = current_session_run_count
-                logger.info(f"Session run count incremented to: {current_session_run_count}")
-                if current_session_run_count == 2 or current_session_run_count == 11:
-                     st.session_state[show_donation_dialog_key] = True
-                     logger.info(f"Flag set to show donation dialog for achieving run count {current_session_run_count}")
-                st.rerun()
-        if st.session_state.get(start_time_key) is None: st.session_state[start_time_key] = time.time(); logger.info("Interaction timer started.")
-        # Chat history display
+        # Chat history display (Moved before button and input form for better flow)
         chat_container = st.container()
         with chat_container:
             conversation_history = st.session_state.get(conv_key, [])
@@ -902,7 +882,7 @@ def clarifying_questions_bot_ui():
         if st.session_state.get(is_typing_key): typing_placeholder.text("CHIP is thinking...")
         else: typing_placeholder.empty()
 
-        # --- Fix #2 & #3: Input Section Using st.form ---
+        # --- Input Section: Using st.form ---
         with st.form(key=f"{prefix}_cq_input_form", clear_on_submit=True):
              user_question = st.text_input(
                  "Type your question here:",
@@ -922,7 +902,26 @@ def clarifying_questions_bot_ui():
                  send_question(user_question, case_prompt_text)
                  # No explicit rerun needed here, form submission handles it.
                  # No need to clear the input manually, clear_on_submit=True does it.
-        # --- End of Fix #2 & #3 ---
+        # --- End of Input Section Replacement ---
+
+        # --- End Clarification Button (Moved Below Input) ---
+        st.write(" ") # Spacer
+        col_btn1, col_btn2, col_btn3 = st.columns([1, 1.5, 1])
+        with col_btn2:
+            if st.button("End Clarification Questions", use_container_width=True):
+                logger.info("User clicked 'End Clarification Questions'.")
+                end_time = time.time(); start_time = st.session_state.get(start_time_key)
+                if start_time is not None: st.session_state[time_key] = end_time - start_time
+                else: st.session_state[time_key] = 0.0
+                st.session_state[done_key] = True
+                current_session_run_count = st.session_state.get(run_count_key, 0) + 1
+                st.session_state[run_count_key] = current_session_run_count
+                logger.info(f"Session run count incremented to: {current_session_run_count}")
+                if current_session_run_count == 2 or current_session_run_count == 11:
+                     st.session_state[show_donation_dialog_key] = True
+                     logger.info(f"Flag set to show donation dialog for achieving run count {current_session_run_count}")
+                st.rerun()
+        if st.session_state.get(start_time_key) is None: st.session_state[start_time_key] = time.time(); logger.info("Interaction timer started.")
 
 
     # --- Feedback and Conclusion Area ---
@@ -1078,8 +1077,7 @@ def framework_development_ui():
 
     # --- Main Interaction Area (Framework Development - Simplified Flow) ---
     if not st.session_state.get(done_key):
-        st.header("Develop Your Framework"); # Removed caption, added to markdown above
-        # st.caption("Outline your framework structure below and click 'Submit Framework' to get feedback.") # Removed
+        st.header("Develop Your Framework"); # Removed caption
 
         # Use a form for single submission
         with st.form(key=f"{prefix}_fw_input_form", clear_on_submit=False): # Keep text on submit initially
@@ -1090,12 +1088,10 @@ def framework_development_ui():
                  disabled=st.session_state.get(is_typing_key, False), # Disable if feedback is generating
                  placeholder="e.g.,\n1. Market Analysis\n   a. Market Size...\n2. Competitive Landscape..."
              )
-             # --- FIX: Corrected disabled logic for submit button ---
              submitted = st.form_submit_button(
                  "Submit Framework for Feedback",
                  disabled=st.session_state.get(is_typing_key, False) # Only disable if feedback is generating
              )
-             # --- End of FIX ---
              if submitted and framework_input:
                  logger.info("User submitted framework for final feedback.")
                  # Store the submission minimally for the feedback function
@@ -1122,10 +1118,6 @@ def framework_development_ui():
         typing_placeholder = st.empty()
         # Check done_key as well, indicator should show when feedback is generating
         if st.session_state.get(is_typing_key) or (st.session_state.get(done_key) and not st.session_state.get(feedback_key)):
-             # Set is_typing to True explicitly when starting feedback generation
-             # This might need adjustment if generate_final_feedback takes significant time
-             # For now, rely on the spinner inside generate_final_feedback
-             # st.session_state[is_typing_key] = True # Potentially set here
              typing_placeholder.text("CHIP is analyzing your framework...")
         else:
              typing_placeholder.empty()
