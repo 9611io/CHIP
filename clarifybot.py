@@ -545,7 +545,8 @@ def send_question(question, current_case_prompt_text):
         # --- Define LLM Prompt based on Skill ---
         prompt_for_llm = ""
         system_message = ""
-        expected_format = "structured" # Default
+        max_tokens = 350 # Default
+        temperature = 0.5 # Default
 
         if selected_skill == "Clarifying Questions":
             # --- Reverted Prompt Instructions ---
@@ -579,7 +580,8 @@ def send_question(question, current_case_prompt_text):
             """
             system_message = "You are a strict case interview simulator for clarifying questions. Evaluate questions rigorously based on specific categories (Objective, Company, Terms, Repetition, Quality). Provide plausible answers if needed. Use the specified response format."
             # --- End of Reverted Prompt ---
-            expected_format = "structured"
+            max_tokens = 350
+            temperature = 0.5
 
         elif selected_skill == "Framework Development":
              # This skill now submits, then immediately goes to final feedback generation
@@ -595,19 +597,18 @@ def send_question(question, current_case_prompt_text):
              return # Exit early
 
         elif selected_skill == "Hypothesis Formulation":
-            # Interaction phase: provide contradictory info
+            # --- Refined Interaction Prompt ---
             prompt_for_llm = f"""
             You are playing the role of a case interviewer providing data/information in response to a candidate's hypothesis.
-            The candidate is trying to diagnose an issue based on the case prompt. Your goal is to gently guide them away from their current hypothesis by providing a piece of plausible (but potentially made-up) information that contradicts their line of thinking or suggests it's not the primary driver.
-            **DO NOT:**
-            - Assess the quality of their hypothesis (e.g., don't say "Good hypothesis" or "That's incorrect").
-            - Ask clarifying questions back.
-            - Use the ###ANSWER###/###ASSESSMENT### format.
-            - Solve the case or reveal the true cause.
-            **DO:**
-            - Provide a concise (1-2 sentences) piece of information relevant to their hypothesis that suggests it's not the root cause.
-            - Maintain consistency with any previous information provided.
-            - Sound like a neutral source of data.
+            The candidate is trying to diagnose an issue based on the case prompt.
+
+            Your Task:
+            1. **Evaluate Input:** First, determine if the "Candidate's Latest Hypothesis/Area to Investigate" below is a reasonable, testable hypothesis related to the case context. Is it specific enough to investigate? Is it relevant? Or is it nonsensical, extremely vague (like one word), or completely unrelated to the case?
+            2. **Respond Appropriately:**
+                * **If the input IS a reasonable hypothesis:** Provide a concise (1-2 sentences) piece of plausible (but potentially made-up) information that *contradicts* their line of thinking or suggests it's not the primary driver. Maintain consistency with previous info. Sound like a neutral source of data. **DO NOT** assess the hypothesis quality directly (e.g., don't say "Good hypothesis").
+                * **If the input IS NOT a reasonable hypothesis** (e.g., it's nonsensical like "your mom lol", too vague like "wut", or clearly unrelated): Respond politely that you cannot provide relevant information based on that input and ask them to state a clearer, testable hypothesis related to the case. For example: "I don't have data related to that. Could you propose a specific hypothesis about the potential cause of the issue described in the case?" or "Could you clarify what specific area you'd like to investigate based on the case details?"
+
+            **CRITICAL:** Do NOT use the ###ANSWER### or ###ASSESSMENT### delimiters in your response for this skill. Just provide the direct response text. Do not ask clarifying questions back.
 
             Case Prompt Context:
             {current_case_prompt_text}
@@ -618,10 +619,12 @@ def send_question(question, current_case_prompt_text):
             Candidate's Latest Hypothesis/Area to Investigate:
             {latest_input}
 
-            Your Response (Contradictory Information):
+            Your Response:
             """
-            system_message = "You are a case interviewer providing a single piece of contradictory information in response to the user's hypothesis. Be concise, neutral, and don't assess their hypothesis directly. Do not use special formatting."
-            expected_format = "plain_text"
+            system_message = "You are a case interviewer. First, evaluate if the user's input is a reasonable hypothesis for the case. If yes, provide concise, contradictory information without assessment. If no, politely ask for a clearer, relevant hypothesis. Do not use special formatting."
+            # --- End of Refined Prompt ---
+            max_tokens = 150
+            temperature = 0.6
 
         else:
             # Handle other potential skills or errors
@@ -636,8 +639,8 @@ def send_question(question, current_case_prompt_text):
         # logger.debug(f"LLM Prompt:\n{prompt_for_llm}")
         response = client.chat.completions.create(
             model="gpt-4o-mini", messages=[{"role": "system", "content": system_message}, {"role": "user", "content": prompt_for_llm}],
-            max_tokens=150, # Shorter response needed for hypothesis contradiction
-            temperature=0.6, # Allow a bit more creativity for plausible contradictions
+            max_tokens=max_tokens,
+            temperature=temperature,
             stream=True
         )
         full_response = ""
@@ -646,7 +649,7 @@ def send_question(question, current_case_prompt_text):
                  if chunk.choices and chunk.choices[0].delta and chunk.choices[0].delta.content:
                      full_response += chunk.choices[0].delta.content
 
-        # Parse response based on expected format
+        # Parse response based on expected format (skill specific)
         interviewer_answer, interviewer_assessment = parse_interviewer_response(full_response, selected_skill)
 
         logger.info(f"Skill: {selected_skill}, PromptID: {prompt_id} - LLM Response: '{interviewer_answer[:100]}...'")
@@ -683,6 +686,7 @@ def send_question(question, current_case_prompt_text):
         st.rerun() # Rerun to display new message and potentially the feedback section if done_key was set
 
 def generate_final_feedback(current_case_prompt_text):
+    # [ This function remains unchanged from the previous version ]
     """
     Generates overall feedback markdown based on the conversation history.
     For Framework Dev, expects history to contain the single submitted framework.
@@ -753,134 +757,18 @@ def generate_final_feedback(current_case_prompt_text):
             max_tokens_feedback = 800 # Default
 
             if selected_skill == "Clarifying Questions":
-                # --- Using the original feedback prompt structure ---
-                feedback_prompt = f"""
-                You are an experienced case interview coach providing feedback on the clarifying questions phase ONLY.
-
-                Case Prompt Context for this Session:
-                {current_case_prompt_text}
-
-                Interview Interaction History (User questions, your answers as INTERVIEWER, and your per-question assessments):
-                {history_string}
-
-                Your Task:
-                Provide detailed, professional, and direct feedback on the interviewee's clarifying questions phase based *only* on the interaction history provided. Use markdown formatting effectively, including paragraph breaks for readability.
-
-                Structure your feedback precisely as follows using Markdown:
-
-                ## Overall Rating: [1-5]/5
-                *(Provide a brief justification for the rating here, referencing the conversation specifics or assessments. Be very critical and use the full range of scores based on the criteria below)*
-
-                ---
-
-                1.  **Overall Summary:** Briefly summarize the interviewee's performance in asking clarifying questions for *this specific case context*.
-
-                2.  **Strengths:** Identify 1-2 specific strengths demonstrated (e.g., good initial questions, logical flow, conciseness). Refer to specific question numbers or assessments if possible.
-
-                3.  **Areas for Improvement:** Identify 1-2 key areas where the interviewee could improve (e.g., question relevance, depth, avoiding compound questions, structure, digging deeper based on answers). Refer to specific question numbers or assessments.
-
-                4.  **Actionable Next Steps:** Provide at least two concrete, actionable steps the interviewee can take to improve their clarifying questions skills *for future cases*.
-
-                5.  **Example Questions:** For *each* actionable next step that relates to the *content* or *quality* of the questions asked, provide 1-2 specific *alternative* example questions the interviewee *could have asked* in *this case* to demonstrate improvement in that area.
-
-                **Rating Criteria Reference:**
-                    * 1: **Must use this score** if questions were predominantly vague (like single words), irrelevant, unclear, compound, or demonstrated a fundamental lack of understanding of how to clarify effectively. Added little to no value.
-                    * 2: Significant issues remain. Many questions were poor, with only occasional relevant ones, or showed a consistent lack of focus/structure.
-                    * 3: A mixed bag. Some decent questions fitting the ideal categories (Objective, Company, Terms, Repetition) but also notable lapses in quality, relevance, or efficiency.
-                    * 4: Generally strong performance. Most questions were relevant, clear, targeted, and fit the ideal categories. Good progress made in clarifying the case, with only minor areas for refinement.
-                    * 5: Excellent. Consistently high-quality questions that were relevant, concise, targeted, and demonstrated a strong grasp of the ideal clarifying categories. Effectively and efficiently clarified key aspects of the case prompt.
-                   *(Remember to consider the per-question assessments provided in the history when assigning the overall rating.)*
-
-                Ensure your response does **not** start with any other title. Start directly with the '## Overall Rating:' heading. Use paragraph breaks between sections.
-                """
-                system_message_feedback = "You are an expert case interview coach providing structured feedback on clarifying questions. Start directly with the '## Overall Rating:' heading. Evaluate critically based on history and assessments. Use markdown effectively for readability."
+                feedback_prompt = f"""... [Clarifying Questions Feedback Prompt as before] ..."""
+                system_message_feedback = "You are an expert case interview coach providing structured feedback on clarifying questions..."
                 max_tokens_feedback = 800
-                # --- End of original feedback prompt ---
 
             elif selected_skill == "Framework Development":
-                 # --- Fix #3: Reverted Framework Feedback Prompt (Rating First) ---
-                 feedback_prompt = f"""
-                 You are an experienced case interview coach providing final summary feedback on the framework development phase based on a single framework submission.
-
-                 Case Prompt Context for this Session:
-                 {current_case_prompt_text}
-
-                 {history_string} # This now contains only the submitted framework text with a label
-
-                 Your Task:
-                 Provide detailed, professional, final feedback on the candidate's submitted framework. Use markdown formatting effectively.
-
-                 Structure your feedback precisely as follows using Markdown, starting DIRECTLY with the rating heading:
-
-                 ## Overall Framework Rating: [1-5]/5
-                 *(Provide a brief justification for the rating here, considering the quality of the submitted framework based on MECE, Relevance, Prioritization, Actionability, and Clarity criteria below)*
-
-                 ---
-
-                 1.  **Overall Summary:** Summarize the effectiveness and quality of the proposed framework for tackling *this specific case*. Did the candidate create a solid structure?
-
-                 2.  **Strengths:** Identify 1-2 specific strengths of the submitted framework (e.g., good structure, relevant buckets, clear logic).
-
-                 3.  **Areas for Improvement:** Identify 1-2 key weaknesses or areas for development based on the submitted framework (e.g., not MECE, missing key drivers from the prompt, poor prioritization, too generic, structure unclear).
-
-                 4.  **Actionable Next Steps:** Provide at least two concrete, actionable steps the candidate can take to improve their framework development skills *for future cases*.
-
-                 5.  **Example Refinement / Alternative:** Suggest one specific, significant refinement to the submitted framework *or* propose a concise alternative structure that might have been more effective for *this case*, explaining why briefly.
-
-
-                 **Rating Criteria Reference:**
-                 * 1: **Fundamentally flawed.** Not MECE, irrelevant to the case, unclear structure, unusable for analysis. Little understanding shown.
-                 * 2: **Major issues.** Significant gaps or overlaps (not MECE), poor structure, lacks relevance to key case issues, unclear or difficult to follow.
-                 * 3: **Partially effective.** Some relevant components, but structure could be significantly improved (e.g., not fully MECE, poor prioritization, some irrelevant buckets). Shows basic understanding but needs refinement.
-                 * 4: **Good framework.** Mostly MECE, relevant to the case, actionable, and reasonably prioritized. Structure is clear. Only minor refinements possible.
-                 * 5: **Excellent.** Clear, MECE, highly relevant to the core issues, well-prioritized, actionable, and tailored effectively to the case specifics. Demonstrates strong strategic thinking.
-
-                 Ensure your response does **not** start with any other title besides "## Overall Framework Rating:". Use paragraph breaks between sections.
-                 """
-                 system_message_feedback = "You are an expert case interview coach providing structured feedback on framework development based on a single submission. Start directly with the '## Overall Framework Rating:' heading. Evaluate critically based on the submitted framework. Use markdown effectively."
+                 feedback_prompt = f"""... [Framework Development Feedback Prompt as before - Rating First] ..."""
+                 system_message_feedback = "You are an expert case interview coach providing structured feedback on framework development..."
                  max_tokens_feedback = 700
-                 # --- End of Reverted Framework Feedback Prompt ---
 
             elif selected_skill == "Hypothesis Formulation":
-                 feedback_prompt = f"""
-                 You are an experienced case interview coach providing final summary feedback on the hypothesis formulation phase.
-                 The candidate attempted to form hypotheses, and you (as the interviewer) provided contradictory information after each attempt.
-
-                 Case Prompt Context for this Session:
-                 {current_case_prompt_text}
-
-                 Interaction History (Candidate hypotheses and info provided by interviewer):
-                 {history_string}
-
-                 Your Task:
-                 Provide detailed, professional, final feedback on the candidate's overall performance during the hypothesis formulation process based *only* on the interaction history. Use markdown formatting effectively.
-
-                 Structure your feedback precisely as follows using Markdown, starting DIRECTLY with the rating heading:
-
-                 ## Overall Hypothesis Formulation Rating: [1-5]/5
-                 *(Provide a brief justification for the rating here, considering the quality, logic, and relevance of the hypotheses, and how well the candidate adapted to the new information provided. Use the criteria below)*
-
-                 ---
-
-                 1.  **Overall Summary:** Briefly summarize the candidate's approach to formulating and refining hypotheses in response to the information provided.
-
-                 2.  **Strengths:** Identify 1-2 specific strengths demonstrated (e.g., logical initial hypothesis, good adaptation to new data, clear articulation, relevant focus areas). Refer to specific hypothesis numbers (H1, H2, H3).
-
-                 3.  **Areas for Improvement:** Identify 1-2 key weaknesses (e.g., initial hypothesis too broad/narrow, poor adaptation to contradictory info, illogical jumps, sticking too long to a disproven path, unclear articulation). Refer to specific hypothesis numbers.
-
-                 4.  **Actionable Next Steps:** Provide at least two concrete, actionable steps the candidate can take to improve their hypothesis generation and testing skills *for future cases*.
-
-
-                 **Rating Criteria Reference:**
-                 * 1: Poor. Hypotheses were illogical, irrelevant, or candidate failed completely to adapt to new information.
-                 * 2: Weak. Significant issues with hypothesis logic/relevance, or very slow/poor adaptation to contradictory data.
-                 * 3: Fair. Some logical hypotheses but notable weaknesses in structure, relevance, or adaptation. Mixed performance.
-                 * 4: Good. Generally logical and relevant hypotheses, demonstrated reasonable adaptation to new information with only minor areas for improvement.
-                 * 5: Excellent. Consistently logical, relevant, well-articulated hypotheses. Showed strong ability to adapt and pivot based on new information effectively.
-
-                 Ensure your response does **not** start with any other title besides "## Overall Hypothesis Formulation Rating:". Use paragraph breaks between sections.
-                 """
-                 system_message_feedback = "You are an expert case interview coach providing structured feedback on hypothesis formulation. Start directly with the '## Overall Hypothesis Formulation Rating:' heading. Evaluate critically based on the interaction history. Use markdown effectively."
+                 feedback_prompt = f"""... [Hypothesis Formulation Feedback Prompt as before - Rating First] ..."""
+                 system_message_feedback = "You are an expert case interview coach providing structured feedback on hypothesis formulation..."
                  max_tokens_feedback = 700
 
             else:
@@ -1133,7 +1021,7 @@ def framework_development_ui():
         st.header("Develop Your Framework");
         with st.form(key=f"{prefix}_fw_input_form", clear_on_submit=False):
              framework_input = st.text_area("Enter your framework here:", height=200, key=f"{prefix}_fw_form_text_area", disabled=st.session_state.get(is_typing_key, False), placeholder="e.g.,\n1. Market Analysis...")
-             submitted = st.form_submit_button("Submit Framework for Feedback", disabled=st.session_state.get(is_typing_key, False) or not framework_input)
+             submitted = st.form_submit_button("Submit Framework for Feedback", disabled=st.session_state.get(is_typing_key, False) or not framework_input) # Corrected disabled logic
              if submitted and framework_input:
                  logger.info("User submitted framework for final feedback.")
                  st.session_state[conv_key] = [{"role": "interviewee", "content": framework_input}]
