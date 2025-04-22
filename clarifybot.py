@@ -753,14 +753,93 @@ def generate_final_feedback(current_case_prompt_text):
             max_tokens_feedback = 800 # Default
 
             if selected_skill == "Clarifying Questions":
-                feedback_prompt = f"""... [Clarifying Questions Feedback Prompt as before] ..."""
-                system_message_feedback = "You are an expert case interview coach providing structured feedback on clarifying questions..."
+                # --- Using the original feedback prompt structure ---
+                feedback_prompt = f"""
+                You are an experienced case interview coach providing feedback on the clarifying questions phase ONLY.
+
+                Case Prompt Context for this Session:
+                {current_case_prompt_text}
+
+                Interview Interaction History (User questions, your answers as INTERVIEWER, and your per-question assessments):
+                {history_string}
+
+                Your Task:
+                Provide detailed, professional, and direct feedback on the interviewee's clarifying questions phase based *only* on the interaction history provided. Use markdown formatting effectively, including paragraph breaks for readability.
+
+                Structure your feedback precisely as follows using Markdown:
+
+                ## Overall Rating: [1-5]/5
+                *(Provide a brief justification for the rating here, referencing the conversation specifics or assessments. Be very critical and use the full range of scores based on the criteria below)*
+
+                ---
+
+                1.  **Overall Summary:** Briefly summarize the interviewee's performance in asking clarifying questions for *this specific case context*.
+
+                2.  **Strengths:** Identify 1-2 specific strengths demonstrated (e.g., good initial questions, logical flow, conciseness). Refer to specific question numbers or assessments if possible.
+
+                3.  **Areas for Improvement:** Identify 1-2 key areas where the interviewee could improve (e.g., question relevance, depth, avoiding compound questions, structure, digging deeper based on answers). Refer to specific question numbers or assessments.
+
+                4.  **Actionable Next Steps:** Provide at least two concrete, actionable steps the interviewee can take to improve their clarifying questions skills *for future cases*.
+
+                5.  **Example Questions:** For *each* actionable next step that relates to the *content* or *quality* of the questions asked, provide 1-2 specific *alternative* example questions the interviewee *could have asked* in *this case* to demonstrate improvement in that area.
+
+                **Rating Criteria Reference:**
+                    * 1: **Must use this score** if questions were predominantly vague (like single words), irrelevant, unclear, compound, or demonstrated a fundamental lack of understanding of how to clarify effectively. Added little to no value.
+                    * 2: Significant issues remain. Many questions were poor, with only occasional relevant ones, or showed a consistent lack of focus/structure.
+                    * 3: A mixed bag. Some decent questions fitting the ideal categories (Objective, Company, Terms, Repetition) but also notable lapses in quality, relevance, or efficiency.
+                    * 4: Generally strong performance. Most questions were relevant, clear, targeted, and fit the ideal categories. Good progress made in clarifying the case, with only minor areas for refinement.
+                    * 5: Excellent. Consistently high-quality questions that were relevant, concise, targeted, and demonstrated a strong grasp of the ideal clarifying categories. Effectively and efficiently clarified key aspects of the case prompt.
+                   *(Remember to consider the per-question assessments provided in the history when assigning the overall rating.)*
+
+                Ensure your response does **not** start with any other title. Start directly with the '## Overall Rating:' heading. Use paragraph breaks between sections.
+                """
+                system_message_feedback = "You are an expert case interview coach providing structured feedback on clarifying questions. Start directly with the '## Overall Rating:' heading. Evaluate critically based on history and assessments. Use markdown effectively for readability."
                 max_tokens_feedback = 800
+                # --- End of original feedback prompt ---
 
             elif selected_skill == "Framework Development":
-                 feedback_prompt = f"""... [Framework Development Feedback Prompt as before - Rating First] ..."""
-                 system_message_feedback = "You are an expert case interview coach providing structured feedback on framework development..."
+                 # --- Fix #3: Reverted Framework Feedback Prompt (Rating First) ---
+                 feedback_prompt = f"""
+                 You are an experienced case interview coach providing final summary feedback on the framework development phase based on a single framework submission.
+
+                 Case Prompt Context for this Session:
+                 {current_case_prompt_text}
+
+                 {history_string} # This now contains only the submitted framework text with a label
+
+                 Your Task:
+                 Provide detailed, professional, final feedback on the candidate's submitted framework. Use markdown formatting effectively.
+
+                 Structure your feedback precisely as follows using Markdown, starting DIRECTLY with the rating heading:
+
+                 ## Overall Framework Rating: [1-5]/5
+                 *(Provide a brief justification for the rating here, considering the quality of the submitted framework based on MECE, Relevance, Prioritization, Actionability, and Clarity criteria below)*
+
+                 ---
+
+                 1.  **Overall Summary:** Summarize the effectiveness and quality of the proposed framework for tackling *this specific case*. Did the candidate create a solid structure?
+
+                 2.  **Strengths:** Identify 1-2 specific strengths of the submitted framework (e.g., good structure, relevant buckets, clear logic).
+
+                 3.  **Areas for Improvement:** Identify 1-2 key weaknesses or areas for development based on the submitted framework (e.g., not MECE, missing key drivers from the prompt, poor prioritization, too generic, structure unclear).
+
+                 4.  **Actionable Next Steps:** Provide at least two concrete, actionable steps the candidate can take to improve their framework development skills *for future cases*.
+
+                 5.  **Example Refinement / Alternative:** Suggest one specific, significant refinement to the submitted framework *or* propose a concise alternative structure that might have been more effective for *this case*, explaining why briefly.
+
+
+                 **Rating Criteria Reference:**
+                 * 1: **Fundamentally flawed.** Not MECE, irrelevant to the case, unclear structure, unusable for analysis. Little understanding shown.
+                 * 2: **Major issues.** Significant gaps or overlaps (not MECE), poor structure, lacks relevance to key case issues, unclear or difficult to follow.
+                 * 3: **Partially effective.** Some relevant components, but structure could be significantly improved (e.g., not fully MECE, poor prioritization, some irrelevant buckets). Shows basic understanding but needs refinement.
+                 * 4: **Good framework.** Mostly MECE, relevant to the case, actionable, and reasonably prioritized. Structure is clear. Only minor refinements possible.
+                 * 5: **Excellent.** Clear, MECE, highly relevant to the core issues, well-prioritized, actionable, and tailored effectively to the case specifics. Demonstrates strong strategic thinking.
+
+                 Ensure your response does **not** start with any other title besides "## Overall Framework Rating:". Use paragraph breaks between sections.
+                 """
+                 system_message_feedback = "You are an expert case interview coach providing structured feedback on framework development based on a single submission. Start directly with the '## Overall Framework Rating:' heading. Evaluate critically based on the submitted framework. Use markdown effectively."
                  max_tokens_feedback = 700
+                 # --- End of Reverted Framework Feedback Prompt ---
 
             elif selected_skill == "Hypothesis Formulation":
                  feedback_prompt = f"""
