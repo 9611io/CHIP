@@ -773,18 +773,96 @@ def generate_final_feedback(current_case_prompt_text):
             max_tokens_feedback = 800 # Default
 
             if selected_skill == "Clarifying Questions":
-                feedback_prompt = f"""... [Clarifying Questions Feedback Prompt as before] ..."""
-                system_message_feedback = "You are an expert case interview coach providing structured feedback on clarifying questions..."
+                feedback_prompt = f"""
+                You are an experienced case interview coach providing feedback on the clarifying questions phase ONLY.
+                Case Prompt Context for this Session:
+                {current_case_prompt_text}
+                Interview Interaction History (User questions, your answers as INTERVIEWER, and your per-question assessments):
+                {history_string}
+                Your Task:
+                Provide detailed, professional, and direct feedback on the interviewee's clarifying questions phase based *only* on the interaction history provided. Use markdown formatting effectively, including paragraph breaks for readability.
+                Structure your feedback precisely as follows using Markdown:
+                ## Overall Rating: [1-5]/5
+                *(Provide a brief justification for the rating here...)*
+                ---
+                1.  **Overall Summary:** ...
+                2.  **Strengths:** ...
+                3.  **Areas for Improvement:** ...
+                4.  **Actionable Next Steps:** ...
+                5.  **Example Questions:** ...
+                **Rating Criteria Reference:** ...
+                Ensure your response does **not** start with any other title. Start directly with the '## Overall Rating:' heading. Use paragraph breaks between sections.
+                """
+                system_message_feedback = "You are an expert case interview coach providing structured feedback on clarifying questions. Start directly with the '## Overall Rating:' heading. Evaluate critically based on history and assessments. Use markdown effectively for readability."
                 max_tokens_feedback = 800
 
             elif selected_skill == "Framework Development":
-                 feedback_prompt = f"""... [Framework Development Feedback Prompt as before - Rating First] ..."""
-                 system_message_feedback = "You are an expert case interview coach providing structured feedback on framework development..."
+                 feedback_prompt = f"""
+                 You are an experienced case interview coach providing final summary feedback on the framework development phase based on a single framework submission.
+                 Case Prompt Context for this Session:
+                 {current_case_prompt_text}
+                 {history_string} # This now contains only the submitted framework text with a label
+                 Your Task:
+                 Provide detailed, professional, final feedback on the candidate's submitted framework. Use markdown formatting effectively.
+                 Structure your feedback precisely as follows using Markdown, starting DIRECTLY with the rating heading:
+                 ## Overall Framework Rating: [1-5]/5
+                 *(Provide a brief justification for the rating here...)*
+                 ---
+                 1.  **Overall Summary:** ...
+                 2.  **Strengths:** ...
+                 3.  **Areas for Improvement:** ...
+                 4.  **Actionable Next Steps:** ...
+                 5.  **Example Refinement / Alternative:** ...
+                 **Rating Criteria Reference:** ...
+                 Ensure your response does **not** start with any other title besides "## Overall Framework Rating:". Use paragraph breaks between sections.
+                 """
+                 system_message_feedback = "You are an expert case interview coach providing structured feedback on framework development based on a single submission. Start directly with the '## Overall Framework Rating:' heading. Evaluate critically based on the submitted framework. Use markdown effectively."
                  max_tokens_feedback = 700
 
             elif selected_skill == "Hypothesis Formulation":
-                 feedback_prompt = f"""... [Hypothesis Formulation Feedback Prompt as before - Rating First] ..."""
-                 system_message_feedback = "You are an expert case interview coach providing structured feedback on hypothesis formulation..."
+                 # --- Refined Final Feedback Prompt for Hypothesis ---
+                 feedback_prompt = f"""
+                 You are an experienced case interview coach providing final summary feedback on the hypothesis formulation phase.
+                 The candidate attempted to form hypotheses, and you (as the interviewer) provided contradictory information after each attempt.
+
+                 Case Prompt Context for this Session:
+                 {current_case_prompt_text}
+
+                 Interaction History (Candidate hypotheses and info provided by interviewer):
+                 {history_string}
+
+                 Your Task:
+                 Provide detailed, professional, final feedback on the candidate's overall performance during the hypothesis formulation process based *only* on the interaction history. Use markdown formatting effectively.
+
+                 **IMPORTANT:** Your response MUST start *directly* with the "## Overall Hypothesis Formulation Rating:" heading on the first line, followed by the rating and justification. Do not include any introductory phrases like "Sure, here's the feedback..." or any text before the heading.
+
+                 Structure your feedback precisely as follows using Markdown:
+
+                 ## Overall Hypothesis Formulation Rating: [1-5]/5
+                 *(Provide a brief justification for the rating here, considering the quality, logic, and relevance of the hypotheses, and how well the candidate adapted to the new information provided. Use the criteria below)*
+
+                 ---
+
+                 1.  **Overall Summary:** Briefly summarize the candidate's approach to formulating and refining hypotheses in response to the information provided.
+
+                 2.  **Strengths:** Identify 1-2 specific strengths demonstrated (e.g., logical initial hypothesis, good adaptation to new data, clear articulation, relevant focus areas). Refer to specific hypothesis numbers (H1, H2, H3).
+
+                 3.  **Areas for Improvement:** Identify 1-2 key weaknesses (e.g., initial hypothesis too broad/narrow, poor adaptation to contradictory info, illogical jumps, sticking too long to a disproven path, unclear articulation). Refer to specific hypothesis numbers.
+
+                 4.  **Actionable Next Steps:** Provide at least two concrete, actionable steps the candidate can take to improve their hypothesis generation and testing skills *for future cases*.
+
+
+                 **Rating Criteria Reference:**
+                 * 1: Poor. Hypotheses were illogical, irrelevant, or candidate failed completely to adapt to new information.
+                 * 2: Weak. Significant issues with hypothesis logic/relevance, or very slow/poor adaptation to contradictory data.
+                 * 3: Fair. Some logical hypotheses but notable weaknesses in structure, relevance, or adaptation. Mixed performance.
+                 * 4: Good. Generally logical and relevant hypotheses, demonstrated reasonable adaptation to new information with only minor areas for improvement.
+                 * 5: Excellent. Consistently logical, relevant, well-articulated hypotheses. Showed strong ability to adapt and pivot based on new information effectively.
+
+                 Ensure your response does **not** start with any other title besides "## Overall Hypothesis Formulation Rating:". Use paragraph breaks between sections.
+                 """
+                 system_message_feedback = "You are an expert case interview coach providing structured feedback on hypothesis formulation. IMPORTANT: Start your response *directly* with the '## Overall Hypothesis Formulation Rating:' heading. Evaluate critically based on the interaction history. Use markdown effectively."
+                 # --- End of Refined Final Feedback Prompt ---
                  max_tokens_feedback = 700
 
             else:
@@ -1239,11 +1317,18 @@ def hypothesis_formulation_ui():
         st.session_state[is_typing_key] = True # Indicate feedback generation
         final_feedback_content = generate_final_feedback(case_prompt_text)
         st.session_state[is_typing_key] = False
-        feedback_was_generated = final_feedback_content and not str(final_feedback_content).startswith("Error") and not str(final_feedback_content).startswith("[Feedback")
 
         # --- Add Debug Logging ---
-        logger.debug(f"Feedback content for Hypothesis: {final_feedback_content}")
-        logger.debug(f"Feedback generated flag: {feedback_was_generated}")
+        logger.debug(f"Value returned by generate_final_feedback: '{final_feedback_content}'")
+        # --- End Debug Logging ---
+
+        # More robust check for valid feedback structure
+        feedback_was_generated = final_feedback_content and \
+                                 isinstance(final_feedback_content, str) and \
+                                 final_feedback_content.strip().startswith("## Overall Hypothesis Formulation Rating:")
+
+        # --- Add Debug Logging ---
+        logger.debug(f"Feedback generated flag evaluated as: {feedback_was_generated}")
         # --- End Debug Logging ---
 
         if feedback_was_generated:
