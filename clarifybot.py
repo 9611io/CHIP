@@ -695,7 +695,7 @@ def generate_final_feedback(current_case_prompt_text):
                 # --- End of original feedback prompt ---
 
             elif selected_skill == "Framework Development":
-                 # --- Updated Framework Feedback Prompt (Summary First) ---
+                 # --- Fix #3: Reverted Framework Feedback Prompt (Rating First) ---
                  feedback_prompt = f"""
                  You are an experienced case interview coach providing final summary feedback on the framework development phase based on a single framework submission.
 
@@ -707,21 +707,22 @@ def generate_final_feedback(current_case_prompt_text):
                  Your Task:
                  Provide detailed, professional, final feedback on the candidate's submitted framework. Use markdown formatting effectively.
 
-                 Structure your feedback precisely as follows using Markdown, starting DIRECTLY with the summary:
+                 Structure your feedback precisely as follows using Markdown, starting DIRECTLY with the rating heading:
 
-                 ## Feedback Summary
-                 *(Summarize the effectiveness and quality of the proposed framework for tackling *this specific case*. Did the candidate create a solid structure? Follow this summary immediately with the rating on the next line.)*
-                 **Overall Rating: [1-5]/5** *(Justify briefly here, considering MECE, Relevance, Prioritization, Actionability, and Clarity criteria below)*
+                 ## Overall Framework Rating: [1-5]/5
+                 *(Provide a brief justification for the rating here, considering the quality of the submitted framework based on MECE, Relevance, Prioritization, Actionability, and Clarity criteria below)*
 
                  ---
 
-                 1.  **Strengths:** Identify 1-2 specific strengths of the submitted framework (e.g., good structure, relevant buckets, clear logic).
+                 1.  **Overall Summary:** Summarize the effectiveness and quality of the proposed framework for tackling *this specific case*. Did the candidate create a solid structure?
 
-                 2.  **Areas for Improvement:** Identify 1-2 key weaknesses or areas for development based on the submitted framework (e.g., not MECE, missing key drivers from the prompt, poor prioritization, too generic, structure unclear).
+                 2.  **Strengths:** Identify 1-2 specific strengths of the submitted framework (e.g., good structure, relevant buckets, clear logic).
 
-                 3.  **Actionable Next Steps:** Provide at least two concrete, actionable steps the candidate can take to improve their framework development skills *for future cases*.
+                 3.  **Areas for Improvement:** Identify 1-2 key weaknesses or areas for development based on the submitted framework (e.g., not MECE, missing key drivers from the prompt, poor prioritization, too generic, structure unclear).
 
-                 4.  **Example Refinement / Alternative:** Suggest one specific, significant refinement to the submitted framework *or* propose a concise alternative structure that might have been more effective for *this case*, explaining why briefly.
+                 4.  **Actionable Next Steps:** Provide at least two concrete, actionable steps the candidate can take to improve their framework development skills *for future cases*.
+
+                 5.  **Example Refinement / Alternative:** Suggest one specific, significant refinement to the submitted framework *or* propose a concise alternative structure that might have been more effective for *this case*, explaining why briefly.
 
 
                  **Rating Criteria Reference:**
@@ -731,11 +732,11 @@ def generate_final_feedback(current_case_prompt_text):
                  * 4: **Good framework.** Mostly MECE, relevant to the case, actionable, and reasonably prioritized. Structure is clear. Only minor refinements possible.
                  * 5: **Excellent.** Clear, MECE, highly relevant to the core issues, well-prioritized, actionable, and tailored effectively to the case specifics. Demonstrates strong strategic thinking.
 
-                 Ensure your response does **not** start with any other title besides "## Feedback Summary". Use paragraph breaks between sections.
+                 Ensure your response does **not** start with any other title besides "## Overall Framework Rating:". Use paragraph breaks between sections.
                  """
-                 system_message_feedback = "You are an expert case interview coach providing structured feedback on framework development based on a single submission. Start directly with the '## Feedback Summary' heading, followed by the rating. Evaluate critically based on the submitted framework. Use markdown effectively."
+                 system_message_feedback = "You are an expert case interview coach providing structured feedback on framework development based on a single submission. Start directly with the '## Overall Framework Rating:' heading. Evaluate critically based on the submitted framework. Use markdown effectively."
                  max_tokens_feedback = 700
-                 # --- End of Updated Framework Feedback Prompt ---
+                 # --- End of Reverted Framework Feedback Prompt ---
 
             else:
                 logger.error(f"Cannot generate feedback for unhandled skill: {selected_skill}")
@@ -806,6 +807,10 @@ def clarifying_questions_bot_ui():
     init_session_state_key('total_time', 0.0); init_session_state_key('user_feedback', None); init_session_state_key('current_prompt_id', None)
     # text_input_key no longer needed with st.form
 
+
+    # --- Instructions ---
+    st.markdown("Read the prompt below, then enter your clarifying questions one at a time in the chat field at the bottom of the page. Press \"Send\" to submit a clarifying question. When you are satisfied with your questions, press the \"End Clarification Questions\" button.")
+    st.divider() # Add divider after instructions
 
     # --- Show Donation Dialog ---
     # --- Restored ---
@@ -1016,6 +1021,10 @@ def framework_development_ui():
     init_session_state_key('feedback_rating_value', None); init_session_state_key('interaction_start_time', None)
     init_session_state_key('total_time', 0.0); init_session_state_key('user_feedback', None); init_session_state_key('current_prompt_id', None)
 
+    # --- Instructions ---
+    st.markdown("Read the case prompt below. Take some time to think, then outline your framework and proposed approach in the framework area below. When you are satisfied with your framework, press \"Submit Framework for Feedback\".")
+    st.divider() # Add divider after instructions
+
     # --- Show Donation Dialog ---
     if st.session_state.get(show_donation_dialog_key):
         logger.info("Displaying donation dialog (Framework Dev).")
@@ -1069,7 +1078,8 @@ def framework_development_ui():
 
     # --- Main Interaction Area (Framework Development - Simplified Flow) ---
     if not st.session_state.get(done_key):
-        st.header("Develop Your Framework"); st.caption("Outline your framework structure below and click 'Submit Framework' to get feedback.")
+        st.header("Develop Your Framework"); # Removed caption, added to markdown above
+        # st.caption("Outline your framework structure below and click 'Submit Framework' to get feedback.") # Removed
 
         # Use a form for single submission
         with st.form(key=f"{prefix}_fw_input_form", clear_on_submit=False): # Keep text on submit initially
@@ -1138,7 +1148,7 @@ def framework_development_ui():
 
         if feedback_was_generated:
             st.divider()
-            st.markdown(final_feedback_content) # Displays feedback starting with "## Feedback Summary"
+            st.markdown(final_feedback_content) # Displays feedback starting with "## Overall Framework Rating:"
             st.divider()
             # --- Restored Feedback Rating Section ---
             st.subheader("Rate this Feedback")
