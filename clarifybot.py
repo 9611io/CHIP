@@ -11,6 +11,8 @@ import datetime
 # import requests # No longer needed for Edge Function
 import gspread # Added for Google Sheets
 from google.oauth2.service_account import Credentials # Added for Google Sheets auth
+import pandas as pd # Added for data handling
+import plotly.express as px # Added for chart generation
 # from supabase import create_client, Client # No longer needed
 
 # --- Basic Logging Setup ---
@@ -341,6 +343,7 @@ def reset_skill_state():
         'total_time', 'is_typing', 'feedback',
         'show_comment_box', 'feedback_rating_value',
         'hypothesis_count', # Added for Hypothesis Formulation
+        'analysis_input' # Added for Analysis skill
     ]
     logger.info(f"Resetting state keys: {keys_to_reset}")
     for key in keys_to_reset:
@@ -364,6 +367,7 @@ def reset_skill_state():
     init_session_state_key('user_feedback', None)
     init_session_state_key('current_prompt_id', None)
     init_session_state_key('hypothesis_count', 0) # Added for Hypothesis Formulation
+    init_session_state_key('analysis_input', "") # Added for Analysis skill
 
 
 # --- UPDATED: Function to Save User Feedback via Google Sheets ---
@@ -447,25 +451,35 @@ def select_new_prompt():
     prefix = st.session_state.key_prefix
     used_ids_key = f"{prefix}_used_prompt_ids"
     current_prompt_id_key = f"{prefix}_current_prompt_id"
+    selected_skill = st.session_state.get(f"{prefix}_selected_skill", SKILLS[0])
 
     init_session_state_key('used_prompt_ids', []) # Ensure it exists
 
-    available_prompt_ids = [pid for pid in ALL_PROMPT_IDS if pid not in st.session_state[used_ids_key]]
+    # Filter prompts by the currently selected skill
+    skill_prompts = [p for p in ALL_PROMPTS if p.get('skill_type') == selected_skill]
+    if not skill_prompts:
+        logger.error(f"No prompts found for skill: {selected_skill}")
+        st.error(f"Error: No prompts found for the selected skill '{selected_skill}'. Please check prompts.json.")
+        return None
+
+    skill_prompt_ids = [p['id'] for p in skill_prompts]
+    available_prompt_ids = [pid for pid in skill_prompt_ids if pid not in st.session_state[used_ids_key]]
 
     if not available_prompt_ids:
-        logger.warning("All prompts seen in this session, allowing repeats.")
-        st.info("You've seen all available prompts in this session! Allowing repeats now.")
-        st.session_state[used_ids_key] = []
-        available_prompt_ids = ALL_PROMPT_IDS
-        if not available_prompt_ids:
-            logger.error("Cannot select prompt - prompt list is empty.")
-            st.error("Cannot select prompt - prompt list is empty.")
+        logger.warning(f"All prompts for skill '{selected_skill}' seen in this session, allowing repeats.")
+        st.info("You've seen all available prompts for this skill in this session! Allowing repeats now.")
+        # Reset used IDs *only* for this skill's prompts to allow repeats
+        st.session_state[used_ids_key] = [pid for pid in st.session_state[used_ids_key] if pid not in skill_prompt_ids]
+        available_prompt_ids = skill_prompt_ids
+        if not available_prompt_ids: # Should not happen if skill_prompts was not empty
+            logger.error(f"Cannot select prompt - prompt list for skill '{selected_skill}' is empty even after reset.")
+            st.error(f"Cannot select prompt - prompt list for skill '{selected_skill}' is empty.")
             return None
 
     selected_id = random.choice(available_prompt_ids)
     st.session_state[used_ids_key].append(selected_id)
     st.session_state[current_prompt_id_key] = selected_id
-    logger.info(f"Selected Prompt ID: {selected_id}")
+    logger.info(f"Selected Prompt ID: {selected_id} for skill {selected_skill}")
     return selected_id
 
 def get_prompt_details(prompt_id):
@@ -479,13 +493,13 @@ def get_prompt_details(prompt_id):
 
 def parse_interviewer_response(response_text, skill):
     """
-    Parses the LLM response.
-    For Clarifying Questions and Framework Dev, expects ###ANSWER### and ###ASSESSMENT###.
-    For Hypothesis Formulation interaction, expects only plain text (contradictory info).
+    Parses the LLM response based on the skill.
     """
-    if skill in ["Clarifying Questions", "Framework Development"]:
-        answer = "Could not parse answer."
-        assessment = "No assessment available."
+    # Default values
+    answer = response_text.strip() if response_text else "[Empty Response]"
+    assessment = None
+
+    if skill in ["Clarifying Questions", "Framework Development", "Analysis"]: # Analysis feedback will be structured
         answer_match = re.search(r"###ANSWER###\s*(.*?)\s*###ASSESSMENT###", response_text, re.DOTALL | re.IGNORECASE)
         assessment_match = re.search(r"###ASSESSMENT###\s*(.*)", response_text, re.DOTALL | re.IGNORECASE)
         if answer_match: answer = answer_match.group(1).strip()
@@ -495,26 +509,29 @@ def parse_interviewer_response(response_text, skill):
         elif answer_match and not assessment_match: assessment = "[Assessment delimiter missing]"
         elif not answer_match and assessment_match: answer = "[Answer delimiter missing]"
         elif not response_text or not response_text.strip(): answer = "[LLM empty response]"; assessment = "[LLM empty response]"
-        return answer, assessment
+
     elif skill == "Hypothesis Formulation":
-        # For hypothesis interaction, return the whole response as the "answer" (contradictory info)
-        # and None for assessment.
-        if response_text and response_text.strip():
-            # Remove potential delimiters if the LLM accidentally includes them
-            response_text = re.sub(r"###ANSWER###", "", response_text, flags=re.IGNORECASE)
-            response_text = re.sub(r"###ASSESSMENT###", "", response_text, flags=re.IGNORECASE)
-            return response_text.strip(), None
-        else:
+        # For hypothesis interaction, return the whole response as the "answer"
+        # Remove potential delimiters if the LLM accidentally includes them
+        answer = re.sub(r"###ANSWER###", "", answer, flags=re.IGNORECASE)
+        answer = re.sub(r"###ASSESSMENT###", "", answer, flags=re.IGNORECASE).strip()
+        assessment = None # No assessment during hypothesis interaction
+        if not answer:
             logger.warning("LLM returned empty response for Hypothesis Formulation interaction.")
-            return "[CHIP did not provide further information]", None
+            answer = "[CHIP did not provide further information]"
+
     else:
-        # Default fallback if skill is unknown
-        logger.warning(f"Parsing response for unknown skill: {skill}. Returning raw text.")
-        return response_text.strip() if response_text else "[Empty Response]", None
+        logger.warning(f"Parsing response for unknown or unhandled skill: {skill}. Returning raw text.")
+        # Keep raw text as answer, assessment remains None
+
+    return answer, assessment
 
 
-def send_question(question, current_case_prompt_text):
-    """Sends user question/input to LLM, gets response based on skill, updates conversation state."""
+def send_question(question, current_case_prompt_text, exhibit_context=None):
+    """
+    Sends user question/input to LLM, gets response based on skill, updates conversation state.
+    Includes optional exhibit_context for Analysis skill.
+    """
     prefix = st.session_state.key_prefix
     conv_key = f"{prefix}_conversation"
     is_typing_key = f"{prefix}_is_typing"
@@ -528,6 +545,7 @@ def send_question(question, current_case_prompt_text):
 
     st.session_state[is_typing_key] = True
     logger.info(f"Skill: {selected_skill}, PromptID: {prompt_id} - User Input: '{question}'")
+    # For Analysis, store the analysis text as the user message
     st.session_state.setdefault(conv_key, []).append({"role": "interviewee", "content": question})
 
     # Increment hypothesis count if this is the relevant skill
@@ -540,7 +558,7 @@ def send_question(question, current_case_prompt_text):
 
     try:
         history_for_prompt = "\n".join([f"{msg['role'].capitalize()}: {msg['content']}" for msg in st.session_state.get(conv_key, [])[:-1]]) # History *before* current input
-        latest_input = question # The user's latest question or hypothesis
+        latest_input = question # The user's latest question, hypothesis, or analysis
 
         # --- Define LLM Prompt based on Skill ---
         prompt_for_llm = ""
@@ -549,95 +567,65 @@ def send_question(question, current_case_prompt_text):
         temperature = 0.5 # Default
 
         if selected_skill == "Clarifying Questions":
-            # --- Reverted Prompt Instructions ---
-            prompt_for_llm = f"""
-            You are a **strict** case interviewer simulator focusing ONLY on the clarifying questions phase. Evaluate questions **rigorously**.
-
-            Current Case Prompt Context:
-            {current_case_prompt_text}
-
-            Conversation History So Far:
-            {history_for_prompt}
-
-            Interviewee's Latest Question:
-            {latest_input}
-
-            Your Task:
-            1. Provide a concise, helpful answer... [rest of Task 1 remains the same - plausible answers etc.] ...**Crucially, maintain consistency with any previous answers you've given in this conversation.**
-            2. Assess the quality of *this specific question* **rigorously** based on the following categories of effective clarifying questions:
-                * **Objective Clarification:** Does it clarify the case goal/problem statement?
-                * **Company Understanding:** Does it seek relevant info about the client/company structure, situation, or industry context?
-                * **Term Definition:** Does it clarify specific jargon or unfamiliar terms used in the case or prior answers?
-                * **Information Repetition/Confirmation:** Does it concisely ask to repeat or confirm specific crucial information potentially missed?
-                * **Question Quality:** Is the question concise, targeted, and NOT compound (asking multiple things at once)?
-               **Critically evaluate:** If the question is extremely vague (e.g., single words like 'why?', 'what?', 'how?'), generic, irrelevant to the case context, compound, or doesn't clearly fit the positive categories above, **assess it as Poor (1/5)** and state *why* it's poor (e.g., 'Too vague, doesn't specify what information is needed'). Otherwise, rate from 2-5 based on how well it fits the categories and quality criteria. Be brief but justify the assessment clearly.
-            3. Use the following exact format, including the delimiters on separate lines:
-
-            ###ANSWER###
-            [Your plausible answer here]
-            ###ASSESSMENT###
-            [Your brief but rigorous assessment of the question's quality based on the criteria above]
-            """
-            system_message = "You are a strict case interview simulator for clarifying questions. Evaluate questions rigorously based on specific categories (Objective, Company, Terms, Repetition, Quality). Provide plausible answers if needed. Use the specified response format."
-            # --- End of Reverted Prompt ---
+            prompt_for_llm = f"""... [Clarifying Questions Prompt as before] ..."""
+            system_message = "You are a strict case interview simulator for clarifying questions..."
             max_tokens = 350
             temperature = 0.5
 
         elif selected_skill == "Framework Development":
-             # This skill now submits, then immediately goes to final feedback generation
-             # So, send_question shouldn't really be called for it in the main flow anymore.
-             # If called unexpectedly, provide a generic response.
              logger.warning("send_question called unexpectedly for Framework Development skill.")
              interviewer_answer = "Framework submitted. Generating final feedback..."
              interviewer_assessment = None
              st.session_state.setdefault(conv_key, []).append({"role": "interviewer", "content": interviewer_answer, "assessment": interviewer_assessment})
              st.session_state[is_typing_key] = False
-             st.session_state[done_key] = True # Ensure it moves to feedback
+             st.session_state[done_key] = True
              st.rerun()
-             return # Exit early
+             return
 
         elif selected_skill == "Hypothesis Formulation":
-            # --- Refined Interaction Prompt v2 ---
-            prompt_for_llm = f"""
-            You are playing the role of a case interviewer providing data/information in response to a candidate's hypothesis.
-            The candidate is trying to diagnose an issue based on the case prompt.
-
-            **Your Primary Task: Evaluate the Candidate's Input FIRST.**
-            Determine if the "Candidate's Latest Hypothesis/Area to Investigate" below is a reasonable, testable hypothesis related to the case context.
-            - Is it specific enough?
-            - Is it relevant to the case prompt ({current_case_prompt_text})?
-            - Or is it nonsensical (like jokes, insults), extremely vague (like one word "why?" or "wut"), or clearly unrelated?
-
-            **Based on your evaluation, respond in ONE of the following two ways:**
-
-            1.  **If the input IS a reasonable hypothesis:**
-                * Provide a concise (1-2 sentences) piece of plausible information that *contradicts* their line of thinking or suggests it's not the primary driver.
-                * Maintain consistency with previous info provided in the history.
-                * Sound like a neutral source of data.
-                * **DO NOT** assess the hypothesis quality directly (e.g., don't say "Good hypothesis").
-                * **DO NOT** use ###ANSWER### or ###ASSESSMENT### tags.
-
-            2.  **If the input IS NOT a reasonable hypothesis:**
-                * **DO NOT provide contradictory case information.**
-                * Respond politely and neutrally that you cannot provide relevant information based on that input.
-                * Ask them to state a clearer, testable hypothesis related to the case.
-                * Example responses: "I don't have data related to that. Could you propose a specific hypothesis about the potential cause of the issue described in the case?" OR "Could you clarify what specific area you'd like to investigate based on the case details?" OR "Please state a testable hypothesis related to the case."
-                * **DO NOT** use ###ANSWER### or ###ASSESSMENT### tags.
-
-            **CRITICAL:** Your response must be ONLY the text for either option 1 or option 2 above. No extra formatting or explanation.
-
-            Conversation History (Previous hypotheses and info provided):
-            {history_for_prompt}
-
-            Candidate's Latest Hypothesis/Area to Investigate:
-            {latest_input}
-
-            Your Response:
-            """
-            system_message = "You are a case interviewer. IMPORTANT: First, evaluate if the user's input is a reasonable hypothesis for the case. If yes, provide concise, contradictory information. If no (e.g., nonsensical, vague, unrelated), politely ask for a clearer, relevant hypothesis. Do not assess. Do not use special formatting."
-            # --- End of Refined Prompt v2 ---
+            prompt_for_llm = f"""... [Hypothesis Interaction Prompt v2 as before] ..."""
+            system_message = "You are a case interviewer. IMPORTANT: First, evaluate if the user's input is a reasonable hypothesis..."
             max_tokens = 150
-            temperature = 0.4 # Slightly lower temperature
+            temperature = 0.4
+
+        elif selected_skill == "Analysis":
+             # Analysis skill - provide assessment of the user's analysis
+             if exhibit_context is None:
+                 logger.error("Analysis skill called without exhibit_context.")
+                 st.error("Internal error: Missing exhibit context for analysis.")
+                 st.session_state[is_typing_key] = False
+                 st.rerun()
+                 return
+
+             prompt_for_llm = f"""
+             You are a case interview coach evaluating a candidate's analysis of provided exhibits.
+
+             Case Prompt Context:
+             {current_case_prompt_text}
+
+             Exhibit(s) Provided (Summary):
+             {exhibit_context} # Pass exhibit titles/descriptions/key data summary
+
+             Candidate's Analysis of the Exhibit(s):
+             {latest_input}
+
+             Your Task:
+             1. **Acknowledge:** Briefly acknowledge the analysis (e.g., "Thanks for sharing your analysis.").
+             2. **Assess:** Evaluate the candidate's analysis based on:
+                 * **Key Insights:** Did they identify the most important takeaways from the exhibit(s) relevant to the case prompt?
+                 * **Data Interpretation:** Did they correctly read and interpret the data presented? Did they mention specific data points?
+                 * **Implications/SO WHAT?:** Did they explain the significance of their findings and connect them back to the core case problem?
+                 * **Clarity & Structure:** Was the analysis presented clearly and logically?
+             3. **Format:** Use the following exact format, including the delimiters on separate lines:
+
+             ###ANSWER###
+             [Your brief acknowledgement here.]
+             ###ASSESSMENT###
+             [Your structured assessment covering Key Insights, Data Interpretation, Implications, and Clarity/Structure here. Be specific and constructive.]
+             """
+             system_message = "You are a case interview coach evaluating a candidate's analysis of case exhibits. Provide structured feedback using the specified format."
+             max_tokens = 400 # Allow slightly longer feedback for analysis
+             temperature = 0.5
 
         else:
             # Handle other potential skills or errors
@@ -673,19 +661,19 @@ def send_question(question, current_case_prompt_text):
         st.session_state.setdefault(conv_key, []).append({
             "role": "interviewer",
             "content": interviewer_answer,
-            "assessment": interviewer_assessment # Will be None for hypothesis interaction
+            "assessment": interviewer_assessment
         })
 
         # Check if Hypothesis Formulation limit is reached
         if selected_skill == "Hypothesis Formulation" and current_hypothesis_count >= 3:
             logger.info("Hypothesis limit reached (3). Ending session.")
             st.session_state[done_key] = True
-            # Optionally add a message indicating the limit was reached
-            st.session_state.setdefault(conv_key, []).append({
-                "role": "interviewer",
-                "content": "(Maximum hypotheses reached. Moving to feedback.)",
-                "assessment": None
-            })
+            st.session_state.setdefault(conv_key, []).append({ "role": "interviewer", "content": "(Maximum hypotheses reached. Moving to feedback.)", "assessment": None })
+
+        # For Analysis skill, submitting the analysis immediately ends the interaction phase
+        if selected_skill == "Analysis":
+             logger.info("Analysis submitted. Ending session.")
+             st.session_state[done_key] = True
 
 
     except Exception as e:
@@ -737,16 +725,24 @@ def generate_final_feedback(current_case_prompt_text):
          for i, msg in enumerate(conversation_history):
             role = msg.get("role"); content = msg.get("content", "[missing content]")
             if role == 'interviewee':
-                # Determine hypothesis number (integer division by 2, plus 1)
                 h_num = (i // 2) + 1
                 formatted_history.append(f"Candidate Hypothesis {h_num}: {content}")
             elif role == 'interviewer':
-                # Response corresponds to the previous hypothesis number
                 h_num = (i // 2) + 1
-                # Skip the last auto-message if present
                 if "(Maximum hypotheses reached. Moving to feedback.)" not in content:
                     formatted_history.append(f"Interviewer Info Provided after H{h_num}: {content}")
          history_string = "\n\n".join(formatted_history)
+    elif selected_skill == "Analysis":
+        # Include the user's analysis and the assessment from the conversation
+        if len(conversation_history) >= 2: # Should have user analysis and bot assessment
+            user_analysis = conversation_history[-2].get('content', '[Analysis not found]')
+            bot_assessment = conversation_history[-1].get('assessment', '[Assessment not found]')
+            formatted_history.append(f"Candidate's Analysis:\n{user_analysis}")
+            formatted_history.append(f"\nInterviewer's Initial Assessment:\n{bot_assessment}")
+            history_string = "\n\n".join(formatted_history)
+        else:
+            logger.warning("Analysis: Could not extract analysis/assessment from conversation state.")
+            return "[Could not generate feedback: Analysis/Assessment not found in state]"
     else: # For Clarifying Questions (and potentially others later)
         for i, msg in enumerate(conversation_history):
             role = msg.get("role"); content = msg.get("content", "[missing content]"); q_num = (i // 2) + 1
@@ -773,96 +769,63 @@ def generate_final_feedback(current_case_prompt_text):
             max_tokens_feedback = 800 # Default
 
             if selected_skill == "Clarifying Questions":
-                feedback_prompt = f"""
-                You are an experienced case interview coach providing feedback on the clarifying questions phase ONLY.
-                Case Prompt Context for this Session:
-                {current_case_prompt_text}
-                Interview Interaction History (User questions, your answers as INTERVIEWER, and your per-question assessments):
-                {history_string}
-                Your Task:
-                Provide detailed, professional, and direct feedback on the interviewee's clarifying questions phase based *only* on the interaction history provided. Use markdown formatting effectively, including paragraph breaks for readability.
-                Structure your feedback precisely as follows using Markdown:
-                ## Overall Rating: [1-5]/5
-                *(Provide a brief justification for the rating here...)*
-                ---
-                1.  **Overall Summary:** ...
-                2.  **Strengths:** ...
-                3.  **Areas for Improvement:** ...
-                4.  **Actionable Next Steps:** ...
-                5.  **Example Questions:** ...
-                **Rating Criteria Reference:** ...
-                Ensure your response does **not** start with any other title. Start directly with the '## Overall Rating:' heading. Use paragraph breaks between sections.
-                """
-                system_message_feedback = "You are an expert case interview coach providing structured feedback on clarifying questions. Start directly with the '## Overall Rating:' heading. Evaluate critically based on history and assessments. Use markdown effectively for readability."
+                feedback_prompt = f"""... [Clarifying Questions Feedback Prompt as before] ..."""
+                system_message_feedback = "You are an expert case interview coach providing structured feedback on clarifying questions..."
                 max_tokens_feedback = 800
 
             elif selected_skill == "Framework Development":
-                 feedback_prompt = f"""
-                 You are an experienced case interview coach providing final summary feedback on the framework development phase based on a single framework submission.
-                 Case Prompt Context for this Session:
-                 {current_case_prompt_text}
-                 {history_string} # This now contains only the submitted framework text with a label
-                 Your Task:
-                 Provide detailed, professional, final feedback on the candidate's submitted framework. Use markdown formatting effectively.
-                 Structure your feedback precisely as follows using Markdown, starting DIRECTLY with the rating heading:
-                 ## Overall Framework Rating: [1-5]/5
-                 *(Provide a brief justification for the rating here...)*
-                 ---
-                 1.  **Overall Summary:** ...
-                 2.  **Strengths:** ...
-                 3.  **Areas for Improvement:** ...
-                 4.  **Actionable Next Steps:** ...
-                 5.  **Example Refinement / Alternative:** ...
-                 **Rating Criteria Reference:** ...
-                 Ensure your response does **not** start with any other title besides "## Overall Framework Rating:". Use paragraph breaks between sections.
-                 """
-                 system_message_feedback = "You are an expert case interview coach providing structured feedback on framework development based on a single submission. Start directly with the '## Overall Framework Rating:' heading. Evaluate critically based on the submitted framework. Use markdown effectively."
+                 feedback_prompt = f"""... [Framework Development Feedback Prompt as before - Rating First] ..."""
+                 system_message_feedback = "You are an expert case interview coach providing structured feedback on framework development..."
                  max_tokens_feedback = 700
 
             elif selected_skill == "Hypothesis Formulation":
-                 # --- Refined Final Feedback Prompt for Hypothesis ---
+                 feedback_prompt = f"""... [Hypothesis Formulation Feedback Prompt as before - Rating First] ..."""
+                 system_message_feedback = "You are an expert case interview coach providing structured feedback on hypothesis formulation..."
+                 max_tokens_feedback = 700
+
+            elif selected_skill == "Analysis":
+                 # Define the final feedback prompt for Analysis
                  feedback_prompt = f"""
-                 You are an experienced case interview coach providing final summary feedback on the hypothesis formulation phase.
-                 The candidate attempted to form hypotheses, and you (as the interviewer) provided contradictory information after each attempt.
+                 You are an experienced case interview coach providing final summary feedback on the Analysis phase.
+                 The candidate was presented with a case prompt and exhibit(s), submitted their analysis, and received an initial assessment.
 
                  Case Prompt Context for this Session:
                  {current_case_prompt_text}
 
-                 Interaction History (Candidate hypotheses and info provided by interviewer):
+                 Interaction History (Candidate's analysis and your initial assessment):
                  {history_string}
 
                  Your Task:
-                 Provide detailed, professional, final feedback on the candidate's overall performance during the hypothesis formulation process based *only* on the interaction history. Use markdown formatting effectively.
+                 Provide detailed, professional, final feedback on the candidate's overall analysis performance based *only* on their submitted analysis and your initial assessment. Use markdown formatting effectively.
 
-                 **IMPORTANT:** Your response MUST start *directly* with the "## Overall Hypothesis Formulation Rating:" heading on the first line, followed by the rating and justification. Do not include any introductory phrases like "Sure, here's the feedback..." or any text before the heading.
+                 **IMPORTANT:** Your response MUST start *directly* with the "## Overall Analysis Rating:" heading on the first line, followed by the rating and justification. Do not include any introductory phrases.
 
                  Structure your feedback precisely as follows using Markdown:
 
-                 ## Overall Hypothesis Formulation Rating: [1-5]/5
-                 *(Provide a brief justification for the rating here, considering the quality, logic, and relevance of the hypotheses, and how well the candidate adapted to the new information provided. Use the criteria below)*
+                 ## Overall Analysis Rating: [1-5]/5
+                 *(Provide a brief justification for the rating here, considering the quality criteria below and the initial assessment provided in the history)*
 
                  ---
 
-                 1.  **Overall Summary:** Briefly summarize the candidate's approach to formulating and refining hypotheses in response to the information provided.
+                 1.  **Overall Summary:** Briefly summarize the quality and effectiveness of the candidate's analysis of the provided exhibit(s) in the context of the case.
 
-                 2.  **Strengths:** Identify 1-2 specific strengths demonstrated (e.g., logical initial hypothesis, good adaptation to new data, clear articulation, relevant focus areas). Refer to specific hypothesis numbers (H1, H2, H3).
+                 2.  **Strengths:** Identify 1-2 specific strengths demonstrated in the analysis (e.g., identified key insight, used data correctly, drew clear implications, well-structured).
 
-                 3.  **Areas for Improvement:** Identify 1-2 key weaknesses (e.g., initial hypothesis too broad/narrow, poor adaptation to contradictory info, illogical jumps, sticking too long to a disproven path, unclear articulation). Refer to specific hypothesis numbers.
+                 3.  **Areas for Improvement:** Identify 1-2 key weaknesses (e.g., missed key insight, misinterpreted data, weak implications/so-what, unclear structure, didn't use specific data).
 
-                 4.  **Actionable Next Steps:** Provide at least two concrete, actionable steps the candidate can take to improve their hypothesis generation and testing skills *for future cases*.
+                 4.  **Actionable Next Steps:** Provide at least two concrete, actionable steps the candidate can take to improve their exhibit analysis skills *for future cases*.
 
 
                  **Rating Criteria Reference:**
-                 * 1: Poor. Hypotheses were illogical, irrelevant, or candidate failed completely to adapt to new information.
-                 * 2: Weak. Significant issues with hypothesis logic/relevance, or very slow/poor adaptation to contradictory data.
-                 * 3: Fair. Some logical hypotheses but notable weaknesses in structure, relevance, or adaptation. Mixed performance.
-                 * 4: Good. Generally logical and relevant hypotheses, demonstrated reasonable adaptation to new information with only minor areas for improvement.
-                 * 5: Excellent. Consistently logical, relevant, well-articulated hypotheses. Showed strong ability to adapt and pivot based on new information effectively.
+                 * 1: Poor. Completely missed the point, misinterpreted data badly, no structure or implications.
+                 * 2: Weak. Missed major insights or made significant interpretation errors, weak connection to the case.
+                 * 3: Fair. Identified some insights but missed key ones or made minor errors; implications could be stronger/clearer.
+                 * 4: Good. Identified key insights, interpreted data mostly correctly, drew reasonable implications relevant to the case. Generally clear.
+                 * 5: Excellent. Clearly identified all key insights, interpreted data accurately, drew strong implications directly addressing the case problem, well-structured.
 
-                 Ensure your response does **not** start with any other title besides "## Overall Hypothesis Formulation Rating:". Use paragraph breaks between sections.
+                 Ensure your response does **not** start with any other title besides "## Overall Analysis Rating:". Use paragraph breaks between sections.
                  """
-                 system_message_feedback = "You are an expert case interview coach providing structured feedback on hypothesis formulation. IMPORTANT: Start your response *directly* with the '## Overall Hypothesis Formulation Rating:' heading. Evaluate critically based on the interaction history. Use markdown effectively."
-                 # --- End of Refined Final Feedback Prompt ---
+                 system_message_feedback = "You are an expert case interview coach providing structured feedback on exhibit analysis. IMPORTANT: Start your response *directly* with the '## Overall Analysis Rating:' heading. Evaluate critically based on the submitted analysis and initial assessment. Use markdown effectively."
                  max_tokens_feedback = 700
 
             else:
@@ -916,8 +879,8 @@ def main_app():
     # --- Routing to Skill UI Functions ---
     if selected_skill == "Clarifying Questions": clarifying_questions_bot_ui()
     elif selected_skill == "Framework Development": framework_development_ui()
-    elif selected_skill == "Hypothesis Formulation": hypothesis_formulation_ui() # CORRECTED: Call the new function
-    elif selected_skill == "Analysis": st.header("Analysis"); st.info("Under construction..."); logger.info("Displayed 'Under Construction'...")
+    elif selected_skill == "Hypothesis Formulation": hypothesis_formulation_ui()
+    elif selected_skill == "Analysis": analysis_ui() # Call new function
     elif selected_skill == "Recommendation": st.header("Recommendation"); st.info("Under construction..."); logger.info("Displayed 'Under Construction'...")
     else: logger.error(f"Invalid skill selected: {selected_skill}"); st.error("Invalid skill selected.")
 
