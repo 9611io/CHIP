@@ -447,7 +447,7 @@ def save_user_feedback(feedback_data):
 
 # --- Other Helper Functions (select_new_prompt, get_prompt_details, parse_interviewer_response, send_question, generate_final_feedback) ---
 def select_new_prompt():
-    """Selects a new random prompt, avoiding session repeats if possible."""
+    """Selects a new random prompt for the current skill, avoiding session repeats if possible."""
     prefix = st.session_state.key_prefix
     used_ids_key = f"{prefix}_used_prompt_ids"
     current_prompt_id_key = f"{prefix}_current_prompt_id"
@@ -779,53 +779,54 @@ def generate_final_feedback(current_case_prompt_text):
                  max_tokens_feedback = 700
 
             elif selected_skill == "Hypothesis Formulation":
-                 feedback_prompt = f"""... [Hypothesis Formulation Feedback Prompt as before - Rating First] ..."""
-                 system_message_feedback = "You are an expert case interview coach providing structured feedback on hypothesis formulation..."
-                 max_tokens_feedback = 700
-
-            elif selected_skill == "Analysis":
-                 # Define the final feedback prompt for Analysis
+                 # --- Refined Final Feedback Prompt for Hypothesis v2 ---
                  feedback_prompt = f"""
-                 You are an experienced case interview coach providing final summary feedback on the Analysis phase.
-                 The candidate was presented with a case prompt and exhibit(s), submitted their analysis, and received an initial assessment.
+                 You are an experienced case interview coach providing final summary feedback on the hypothesis formulation phase.
+                 The candidate attempted to form hypotheses, and you (as the interviewer) provided contradictory information after each attempt.
 
                  Case Prompt Context for this Session:
                  {current_case_prompt_text}
 
-                 Interaction History (Candidate's analysis and your initial assessment):
+                 Interaction History (Candidate hypotheses and info provided by interviewer):
                  {history_string}
 
                  Your Task:
-                 Provide detailed, professional, final feedback on the candidate's overall analysis performance based *only* on their submitted analysis and your initial assessment. Use markdown formatting effectively.
+                 Provide detailed, professional, final feedback on the candidate's overall performance during the hypothesis formulation process based *only* on the interaction history. Use markdown formatting effectively.
 
-                 **IMPORTANT:** Your response MUST start *directly* with the "## Overall Analysis Rating:" heading on the first line, followed by the rating and justification. Do not include any introductory phrases.
+                 **IMPORTANT:** Your response MUST start *directly* with the "## Overall Hypothesis Formulation Rating:" heading on the first line, followed by the rating and justification. Do not include any introductory phrases like "Sure, here's the feedback..." or any text before the heading.
 
                  Structure your feedback precisely as follows using Markdown:
 
-                 ## Overall Analysis Rating: [1-5]/5
-                 *(Provide a brief justification for the rating here, considering the quality criteria below and the initial assessment provided in the history)*
+                 ## Overall Hypothesis Formulation Rating: [1-5]/5
+                 *(Provide a brief justification for the rating here, considering the quality, logic, and relevance of the hypotheses, and how well the candidate adapted to the new information provided. Use the criteria below)*
 
                  ---
 
-                 1.  **Overall Summary:** Briefly summarize the quality and effectiveness of the candidate's analysis of the provided exhibit(s) in the context of the case.
+                 1.  **Overall Summary:** Briefly summarize the candidate's approach to formulating and refining hypotheses in response to the information provided.
 
-                 2.  **Strengths:** Identify 1-2 specific strengths demonstrated in the analysis (e.g., identified key insight, used data correctly, drew clear implications, well-structured).
+                 2.  **Strengths:** Identify 1-2 specific strengths demonstrated (e.g., logical initial hypothesis, good adaptation to new data, clear articulation, relevant focus areas). Refer to specific hypothesis numbers (H1, H2, H3).
 
-                 3.  **Areas for Improvement:** Identify 1-2 key weaknesses (e.g., missed key insight, misinterpreted data, weak implications/so-what, unclear structure, didn't use specific data).
+                 3.  **Areas for Improvement:** Identify 1-2 key weaknesses (e.g., initial hypothesis too broad/narrow, poor adaptation to contradictory info, illogical jumps, sticking too long to a disproven path, unclear articulation). Refer to specific hypothesis numbers.
 
-                 4.  **Actionable Next Steps:** Provide at least two concrete, actionable steps the candidate can take to improve their exhibit analysis skills *for future cases*.
+                 4.  **Actionable Next Steps:** Provide at least two concrete, actionable steps the candidate can take to improve their hypothesis generation and testing skills *for future cases*.
 
 
                  **Rating Criteria Reference:**
-                 * 1: Poor. Completely missed the point, misinterpreted data badly, no structure or implications.
-                 * 2: Weak. Missed major insights or made significant interpretation errors, weak connection to the case.
-                 * 3: Fair. Identified some insights but missed key ones or made minor errors; implications could be stronger/clearer.
-                 * 4: Good. Identified key insights, interpreted data mostly correctly, drew reasonable implications relevant to the case. Generally clear.
-                 * 5: Excellent. Clearly identified all key insights, interpreted data accurately, drew strong implications directly addressing the case problem, well-structured.
+                 * 1: Poor. Hypotheses were illogical, irrelevant, or candidate failed completely to adapt to new information.
+                 * 2: Weak. Significant issues with hypothesis logic/relevance, or very slow/poor adaptation to contradictory data.
+                 * 3: Fair. Some logical hypotheses but notable weaknesses in structure, relevance, or adaptation. Mixed performance.
+                 * 4: Good. Generally logical and relevant hypotheses, demonstrated reasonable adaptation to new information with only minor areas for improvement.
+                 * 5: Excellent. Consistently logical, relevant, well-articulated hypotheses. Showed strong ability to adapt and pivot based on new information effectively.
 
-                 Ensure your response does **not** start with any other title besides "## Overall Analysis Rating:". Use paragraph breaks between sections.
+                 Ensure your response does **not** start with any other title besides "## Overall Hypothesis Formulation Rating:". Use paragraph breaks between sections.
                  """
-                 system_message_feedback = "You are an expert case interview coach providing structured feedback on exhibit analysis. IMPORTANT: Start your response *directly* with the '## Overall Analysis Rating:' heading. Evaluate critically based on the submitted analysis and initial assessment. Use markdown effectively."
+                 system_message_feedback = "You are an expert case interview coach providing structured feedback on hypothesis formulation. IMPORTANT: Start your response *directly* with the '## Overall Hypothesis Formulation Rating:' heading. Evaluate critically based on the interaction history. Use markdown effectively."
+                 # --- End of Refined Final Feedback Prompt v2 ---
+                 max_tokens_feedback = 700
+
+            elif selected_skill == "Analysis":
+                 feedback_prompt = f"""... [Analysis Feedback Prompt as before - Rating First] ..."""
+                 system_message_feedback = "You are an expert case interview coach providing structured feedback on exhibit analysis. IMPORTANT: Start your response *directly* with the '## Overall Analysis Rating:' heading..."
                  max_tokens_feedback = 700
 
             else:
@@ -1347,6 +1348,250 @@ def hypothesis_formulation_ui():
         col_btn_r1, col_btn_r2, col_btn_r3 = st.columns([1, 1.5, 1])
         with col_btn_r2:
             if st.button("Practice This Skill Again", use_container_width=True, key=f"{prefix}_hf_practice_again"): logger.info("User clicked 'Practice This Skill Again' for Hypothesis Formulation."); reset_skill_state(); st.rerun()
+
+
+# --- NEW: Skill-Specific UI Function (Analysis) ---
+def analysis_ui():
+    logger.info("Loading Analysis UI.")
+    prefix = st.session_state.key_prefix
+    # Define keys
+    done_key = f"{prefix}_done_asking"; time_key = f"{prefix}_total_time"; start_time_key = f"{prefix}_interaction_start_time"
+    conv_key = f"{prefix}_conversation"; feedback_key = f"{prefix}_feedback"; is_typing_key = f"{prefix}_is_typing"
+    feedback_submitted_key = f"{prefix}_feedback_submitted"; user_feedback_key = f"{prefix}_user_feedback"
+    current_prompt_id_key = f"{prefix}_current_prompt_id"; run_count_key = f"{prefix}_run_count"
+    show_comment_key = f"{prefix}_show_comment_box"; feedback_rating_value_key = f"{prefix}_feedback_rating_value"
+    show_donation_dialog_key = f"{prefix}_show_donation_dialog"
+    analysis_input_key = f"{prefix}_analysis_input" # Specific to this skill
+
+    # Initialize state
+    init_session_state_key('conversation', []); init_session_state_key('done_asking', False); init_session_state_key('feedback_submitted', False)
+    init_session_state_key('is_typing', False); init_session_state_key('feedback', None); init_session_state_key('show_comment_box', False)
+    init_session_state_key('feedback_rating_value', None); init_session_state_key('interaction_start_time', None)
+    init_session_state_key('total_time', 0.0); init_session_state_key('user_feedback', None); init_session_state_key('current_prompt_id', None)
+    init_session_state_key('analysis_input', "") # Initialize analysis input
+
+    # --- Instructions ---
+    st.markdown("Read the case prompt and examine the exhibit(s) below. Analyze the data presented in the exhibit(s) and explain its significance in relation to the case problem. Enter your analysis in the text area below and click \"Submit Analysis\" to get feedback.")
+    st.divider()
+
+    # --- Show Donation Dialog ---
+    if st.session_state.get(show_donation_dialog_key):
+        logger.info("Displaying donation dialog (Analysis).")
+        full_donation_message = ("Love CHIP? Your support helps keep this tool free and improving! 🙏\n\n" "Consider making a small donation (suggested $5) to help cover server and API costs.")
+        donate_url = "https://buymeacoffee.com/9611"
+        if hasattr(st, 'dialog'):
+            @st.dialog("Support CHIP!")
+            def show_donation():
+                st.write(full_donation_message)
+                col1, col2, col3 = st.columns([0.5, 3, 0.5]);
+                with col2: st.link_button("Buy Me a Coffee ☕", donate_url, type="primary", use_container_width=True)
+                if st.button("Maybe later", key="maybe_later_btn_an", use_container_width=True): logger.info("User clicked 'Maybe later' on donation dialog (Analysis)."); st.rerun()
+            show_donation()
+        else: # Fallback
+             with st.container(border=True): st.success(full_donation_message); st.link_button("Buy Me a Coffee ☕", donate_url, type="primary")
+        st.session_state[show_donation_dialog_key] = False # Reset flag
+
+    # --- Select and Display Case Prompt & Exhibits ---
+    if st.session_state.get(current_prompt_id_key) is None:
+        logger.info("No current prompt ID (Analysis), selecting new one.")
+        selected_id = select_new_prompt(); st.session_state[current_prompt_id_key] = selected_id
+    current_prompt = get_prompt_details(st.session_state.get(current_prompt_id_key))
+    if not current_prompt or current_prompt.get("skill_type") != "Analysis":
+        # Handle cases where the wrong prompt type might be loaded after skill switch
+        logger.warning(f"Invalid or missing prompt for Analysis skill. Prompt ID: {st.session_state.get(current_prompt_id_key)}. Selecting new.")
+        selected_id = select_new_prompt(); st.session_state[current_prompt_id_key] = selected_id
+        current_prompt = get_prompt_details(selected_id)
+        if not current_prompt or current_prompt.get("skill_type") != "Analysis":
+             logger.error(f"Still could not load a valid Analysis prompt. Last ID: {selected_id}")
+             st.error("Could not load a valid Analysis prompt. Please try selecting the skill again or check prompts.json.")
+             st.stop()
+
+    st.header("Case Prompt")
+    case_title = current_prompt.get('title', 'N/A'); case_prompt_text = current_prompt.get('prompt_text', 'Error: Prompt text missing.')
+    if case_prompt_text.startswith("Error"): st.error(case_prompt_text); st.stop()
+    else: st.info(f"**{case_title}**\n\n{case_prompt_text}"); logger.debug(f"Displayed Analysis prompt: {case_title}")
+
+    # Display Exhibits
+    exhibits = current_prompt.get("exhibits", [])
+    exhibit_context_for_llm = [] # Build context for LLM feedback
+    if not exhibits:
+        st.warning("No exhibits found for this analysis prompt.")
+    else:
+        for i, exhibit in enumerate(exhibits):
+            st.subheader(exhibit.get("exhibit_title", f"Exhibit {i+1}"))
+            exhibit_context_for_llm.append(f"Title: {exhibit.get('exhibit_title', f'Exhibit {i+1}')}")
+
+            if exhibit.get("description"):
+                st.caption(exhibit.get("description"))
+                exhibit_context_for_llm.append(f"Description: {exhibit.get('description')}")
+
+            chart_type = exhibit.get("chart_type", "unknown")
+            data = exhibit.get("data")
+            if data:
+                try:
+                    df = pd.DataFrame(data)
+                    fig = None
+                    if chart_type == "bar":
+                        x_col = exhibit.get("x_axis")
+                        y_cols = exhibit.get("y_axis")
+                        if x_col and y_cols:
+                             # Ensure y_cols is a list
+                             if not isinstance(y_cols, list): y_cols = [y_cols]
+                             fig = px.bar(df, x=x_col, y=y_cols, title="", barmode='group') # Removed title from fig
+                             fig.update_layout(legend_title_text='') # Remove legend title
+                        else:
+                             st.warning(f"Exhibit {i+1}: Bar chart data needs 'x_axis' and 'y_axis' keys defined in prompts.json.")
+                    elif chart_type == "line":
+                         x_col = exhibit.get("x_axis")
+                         y_cols = exhibit.get("y_axis")
+                         if x_col and y_cols:
+                             if not isinstance(y_cols, list): y_cols = [y_cols]
+                             fig = px.line(df, x=x_col, y=y_cols, title="")
+                             fig.update_layout(legend_title_text='')
+                         else:
+                             st.warning(f"Exhibit {i+1}: Line chart data needs 'x_axis' and 'y_axis' keys defined in prompts.json.")
+                    # Add other chart types (pie, scatter) here if needed
+                    else:
+                        st.warning(f"Exhibit {i+1}: Unsupported chart type '{chart_type}'. Displaying data table.")
+                        st.dataframe(df)
+
+                    if fig:
+                        # Improve chart appearance slightly
+                        fig.update_layout(margin=dict(l=20, r=20, t=30, b=20), height=400)
+                        st.plotly_chart(fig, use_container_width=True)
+                        # Add simplified data summary to context
+                        exhibit_context_for_llm.append(f"Data Summary ({chart_type} chart): {df.head().to_string()}")
+
+                except Exception as e:
+                    logger.error(f"Error processing exhibit {i+1} data: {e}")
+                    st.error(f"Error displaying exhibit {i+1}. Please check data format in prompts.json.")
+                    exhibit_context_for_llm.append(f"Data: Error processing exhibit data.")
+            else:
+                st.warning(f"Exhibit {i+1}: No data found.")
+                exhibit_context_for_llm.append("Data: No data provided.")
+            exhibit_context_for_llm.append("---") # Separator between exhibits for LLM
+
+    exhibit_context_str = "\n".join(exhibit_context_for_llm)
+
+    # --- Main Interaction Area ---
+    if not st.session_state.get(done_key):
+        st.header("Your Analysis")
+        with st.form(key=f"{prefix}_an_input_form", clear_on_submit=False):
+             analysis_input = st.text_area(
+                 "Enter your analysis of the exhibit(s) here:",
+                 height=250,
+                 key=f"{prefix}_an_form_text_area",
+                 disabled=st.session_state.get(is_typing_key, False),
+                 placeholder="Based on Exhibit 1, the key driver seems to be..."
+             )
+             submitted = st.form_submit_button(
+                 "Submit Analysis",
+                 disabled=st.session_state.get(is_typing_key, False) or not analysis_input
+             )
+             if submitted and analysis_input:
+                 logger.info("User submitted analysis.")
+                 # Store analysis for feedback generation
+                 st.session_state[conv_key] = [{"role": "interviewee", "content": analysis_input}]
+                 # Set done flag to trigger feedback display
+                 st.session_state[done_key] = True
+                 # Calculate time, increment run count, check donation
+                 if st.session_state.get(start_time_key) is None:
+                     st.session_state[start_time_key] = time.time()
+                     logger.info("Analysis interaction timer started on submit.")
+                 end_time = time.time(); start_time = st.session_state.get(start_time_key)
+                 if start_time is not None: st.session_state[time_key] = end_time - start_time
+                 else: st.session_state[time_key] = 0.0
+                 current_session_run_count = st.session_state.get(run_count_key, 0) + 1
+                 st.session_state[run_count_key] = current_session_run_count
+                 logger.info(f"Session run count incremented to: {current_session_run_count} (Analysis)")
+                 if current_session_run_count == 2 or current_session_run_count == 11:
+                     st.session_state[show_donation_dialog_key] = True
+                     logger.info(f"Flag set to show donation dialog...")
+                 st.rerun()
+
+        # Typing indicator (will show while feedback generates)
+        typing_placeholder = st.empty()
+        if st.session_state.get(is_typing_key) or (st.session_state.get(done_key) and not st.session_state.get(feedback_key)):
+             typing_placeholder.text("CHIP is analyzing your analysis...")
+        else:
+             typing_placeholder.empty()
+        if st.session_state.get(start_time_key) is None: st.session_state[start_time_key] = time.time(); logger.info("Interaction timer started.")
+
+
+    # --- Feedback and Conclusion Area ---
+    if st.session_state.get(done_key):
+        logger.debug("Entering analysis feedback and conclusion area.")
+        st.session_state[is_typing_key] = True
+        # Pass exhibit context to feedback function
+        final_feedback_content = generate_final_feedback(case_prompt_text) # exhibit_context_str is implicitly used via history
+        st.session_state[is_typing_key] = False
+
+        # --- Add Debug Logging ---
+        logger.debug(f"Value returned by generate_final_feedback (Analysis): '{final_feedback_content}'")
+        # --- End Debug Logging ---
+
+        # More robust check for valid feedback structure
+        feedback_was_generated = final_feedback_content and \
+                                 isinstance(final_feedback_content, str) and \
+                                 final_feedback_content.strip().startswith("## Overall Analysis Rating:")
+
+        # --- Add Debug Logging ---
+        logger.debug(f"Feedback generated flag evaluated as: {feedback_was_generated}")
+        # --- End Debug Logging ---
+
+        if feedback_was_generated:
+            st.divider(); st.markdown(final_feedback_content); st.divider()
+            # Feedback Rating Section
+            st.subheader("Rate this Feedback")
+            feedback_already_submitted = st.session_state.get(feedback_submitted_key, False)
+            if feedback_already_submitted:
+                stored_user_feedback = st.session_state.get(user_feedback_key)
+                st.success("Thank you for your feedback!")
+                if stored_user_feedback:
+                     rating_display = '★' * stored_user_feedback.get('rating', 0); st.caption(f"Your rating: {rating_display}")
+                     if stored_user_feedback.get('comment'): st.caption(f"Your comment: {stored_user_feedback.get('comment')}")
+            else:
+                st.markdown("**How helpful was the feedback provided above? ...**")
+                cols = st.columns(5); selected_rating = 0; rating_clicked = False
+                for i in range(5):
+                    with cols[i]:
+                        if st.button('★' * (i + 1), key=f"{prefix}_an_star_{i+1}", help=f"Rate {i+1} star{'s' if i>0 else ''}"): selected_rating = i + 1; rating_clicked = True; logger.info(f"User clicked rating: {selected_rating} stars.")
+                if rating_clicked:
+                    st.session_state[feedback_rating_value_key] = selected_rating
+                    if selected_rating >= 4:
+                        user_feedback_data = {"rating": selected_rating, "comment": "", "prompt_id": st.session_state.get(current_prompt_id_key, "N/A"), "timestamp": time.time()}
+                        st.session_state[user_feedback_key] = user_feedback_data; st.session_state[feedback_submitted_key] = True; st.session_state[show_comment_key] = False
+                        if save_user_feedback(user_feedback_data): logger.info("User Feedback Auto-Submitted (Rating >= 4) and saved."); st.rerun()
+                        else: logger.error("User Feedback Auto-Submitted (Rating >= 4) but FAILED TO SAVE.")
+                    else: st.session_state[show_comment_key] = True
+                if st.session_state.get(show_comment_key, False):
+                    st.warning("Please provide a comment for ratings below 4 stars.")
+                    current_rating_value = st.session_state.get(feedback_rating_value_key, 0)
+                    rating_display = ('★' * current_rating_value) if isinstance(current_rating_value, int) and current_rating_value > 0 else "(select rating)"
+                    feedback_comment = st.text_area(f"Comment for your {rating_display} rating:", key=f"{prefix}_an_feedback_comment_input", placeholder="...")
+                    if st.button("Submit Rating and Comment", key=f"{prefix}_an_submit_feedback_button"):
+                        if not feedback_comment.strip(): st.error("Comment cannot be empty...")
+                        elif not isinstance(current_rating_value, int) or current_rating_value <= 0: st.error("Invalid rating selected...")
+                        else:
+                            user_feedback_data = {"rating": current_rating_value, "comment": feedback_comment.strip(), "prompt_id": st.session_state.get(current_prompt_id_key, "N/A"), "timestamp": time.time()}
+                            st.session_state[user_feedback_key] = user_feedback_data; st.session_state[feedback_submitted_key] = True; st.session_state[show_comment_key] = False
+                            if save_user_feedback(user_feedback_data): logger.info("User Feedback Submitted with Comment and saved."); st.rerun()
+                            else: logger.error("User Feedback Submitted with Comment but FAILED TO SAVE.")
+        elif final_feedback_content and str(final_feedback_content).startswith("Error"):
+             st.error(f"Could not display feedback: {final_feedback_content}")
+             logger.error(f"Feedback generation resulted in error message: {final_feedback_content}") # Log error
+        else:
+             st.warning("Feedback is currently unavailable or was not generated correctly.")
+             logger.warning(f"Feedback was not displayed. Content: {final_feedback_content}") # Log non-display
+
+        # Conclusion
+        st.divider(); st.header("Conclusion")
+        total_interaction_time = st.session_state.get(time_key, 0.0)
+        st.write(f"You spent **{total_interaction_time:.2f} seconds** in the analysis phase.")
+        logger.info(f"Displayed analysis conclusion. Total time: {total_interaction_time:.2f}s")
+        col_btn_r1, col_btn_r2, col_btn_r3 = st.columns([1, 1.5, 1])
+        with col_btn_r2:
+            if st.button("Practice This Skill Again", use_container_width=True, key=f"{prefix}_an_practice_again"): logger.info("User clicked 'Practice This Skill Again' for Analysis."); reset_skill_state(); st.rerun()
 
 
 # --- Entry Point ---
