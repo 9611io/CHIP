@@ -65,14 +65,15 @@ elif f"{st.session_state.key_prefix}_session_id" not in st.session_state:
 SKILLS = ["Clarifying Questions", "Framework Development", "Hypothesis Formulation", "Analysis", "Recommendation"]
 init_session_state_key('selected_skill', SKILLS[0]) # Now defined
 init_session_state_key('run_count', 0) # Now defined
-init_session_state_key('show_donation_dialog', False) # Now defined
+# init_session_state_key('show_donation_dialog', False) # REMOVED - No longer needed
 
 
 # --- Page Config ---
 st.set_page_config(
     page_title="CHIP", # Restored title
     page_icon="🤖",
-    layout="centered"
+    layout="centered", # Keep centered layout for main content
+    initial_sidebar_state="expanded" # Keep sidebar open initially
 )
 
 # --- Custom CSS ---
@@ -212,23 +213,26 @@ st.markdown("""
           border: none !important;
      }
 
-     /* --- Fix #5: Style for Donation Link Button --- */
-     /* Target the link button specifically within the dialog/container context */
-     /* This might be brittle depending on Streamlit's internal structure */
-     div[data-testid="stDialog"] a[data-testid="stLinkButton"],
-     div.stAlert a[data-testid="stLinkButton"] /* Target fallback too */
-     {
+     /* --- Style for Donation Link Button (Now in Sidebar) --- */
+     /* Target link buttons within the sidebar */
+     [data-testid="stSidebar"] a[data-testid="stLinkButton"] {
         background-color: #28a745 !important; /* Green background */
         border-color: #28a745 !important; /* Green border */
         color: white !important; /* White text */
         transition: background-color 0.2s ease-in-out, border-color 0.2s ease-in-out;
+        width: 100%; /* Make button fill sidebar width */
+        text-align: center; /* Center text */
+        margin-top: 10px; /* Add some space above */
+        display: inline-block; /* Needed for width/padding */
+        padding: 10px 0px !important; /* Adjust padding */
+        border-radius: 8px;
+        text-decoration: none; /* Remove underline */
      }
-     div[data-testid="stDialog"] a[data-testid="stLinkButton"]:hover,
-     div.stAlert a[data-testid="stLinkButton"]:hover
-     {
+     [data-testid="stSidebar"] a[data-testid="stLinkButton"]:hover {
          background-color: #218838 !important; /* Darker green on hover */
          border-color: #1e7e34 !important;
          color: white !important;
+         text-decoration: none; /* Remove underline */
      }
 
 
@@ -583,10 +587,47 @@ def send_question(question, current_case_prompt_text, exhibit_context=None):
              return
 
         elif selected_skill == "Hypothesis Formulation":
-            prompt_for_llm = f"""... [Hypothesis Interaction Prompt v2 as before] ..."""
-            system_message = "You are a case interviewer. IMPORTANT: First, evaluate if the user's input is a reasonable hypothesis..."
+            # --- Refined Interaction Prompt v2 ---
+            prompt_for_llm = f"""
+            You are playing the role of a case interviewer providing data/information in response to a candidate's hypothesis.
+            The candidate is trying to diagnose an issue based on the case prompt.
+
+            **Your Primary Task: Evaluate the Candidate's Input FIRST.**
+            Determine if the "Candidate's Latest Hypothesis/Area to Investigate" below is a reasonable, testable hypothesis related to the case context.
+            - Is it specific enough?
+            - Is it relevant to the case prompt ({current_case_prompt_text})?
+            - Or is it nonsensical (like jokes, insults), extremely vague (like one word "why?" or "wut"), or clearly unrelated?
+
+            **Based on your evaluation, respond in ONE of the following two ways:**
+
+            1.  **If the input IS a reasonable hypothesis:**
+                * Provide a concise (1-2 sentences) piece of plausible information that *contradicts* their line of thinking or suggests it's not the primary driver.
+                * Maintain consistency with previous info provided in the history.
+                * Sound like a neutral source of data.
+                * **DO NOT** assess the hypothesis quality directly (e.g., don't say "Good hypothesis").
+                * **DO NOT** use ###ANSWER### or ###ASSESSMENT### tags.
+
+            2.  **If the input IS NOT a reasonable hypothesis:**
+                * **DO NOT provide contradictory case information.**
+                * Respond politely and neutrally that you cannot provide relevant information based on that input.
+                * Ask them to state a clearer, testable hypothesis related to the case.
+                * Example responses: "I don't have data related to that. Could you propose a specific hypothesis about the potential cause of the issue described in the case?" OR "Could you clarify what specific area you'd like to investigate based on the case details?" OR "Please state a testable hypothesis related to the case."
+                * **DO NOT** use ###ANSWER### or ###ASSESSMENT### tags.
+
+            **CRITICAL:** Your response must be ONLY the text for either option 1 or option 2 above. No extra formatting or explanation.
+
+            Conversation History (Previous hypotheses and info provided):
+            {history_for_prompt}
+
+            Candidate's Latest Hypothesis/Area to Investigate:
+            {latest_input}
+
+            Your Response:
+            """
+            system_message = "You are a case interviewer. IMPORTANT: First, evaluate if the user's input is a reasonable hypothesis for the case. If yes, provide concise, contradictory information. If no (e.g., nonsensical, vague, unrelated), politely ask for a clearer, relevant hypothesis. Do not assess. Do not use special formatting."
+            # --- End of Refined Prompt v2 ---
             max_tokens = 150
-            temperature = 0.4
+            temperature = 0.4 # Slightly lower temperature
 
         elif selected_skill == "Analysis":
              # Analysis skill - provide assessment of the user's analysis
@@ -860,6 +901,19 @@ def main_app():
     logger.info("Main application UI rendered.")
     prefix = st.session_state.key_prefix
     skill_key = f"{prefix}_selected_skill"
+
+    # --- Sidebar Donation CTA ---
+    with st.sidebar:
+        st.subheader("Support CHIP!")
+        st.markdown(
+            "Love CHIP? Your support helps keep this tool free and improving! 🙏\n\n"
+            "Consider making a small donation (suggested $5) to help cover server and API costs."
+        )
+        donate_url = "https://buymeacoffee.com/9611"
+        st.link_button("Buy Me a Coffee ☕", donate_url) # Uses CSS for styling
+        st.divider() # Add a divider below donation section
+    # --- End Sidebar ---
+
     st.write("Select Skill to Practice:")
     cols_row1 = st.columns(3); cols_row2 = st.columns(3)
     current_selection = st.session_state.get(skill_key, SKILLS[0])
@@ -881,7 +935,7 @@ def main_app():
     if selected_skill == "Clarifying Questions": clarifying_questions_bot_ui()
     elif selected_skill == "Framework Development": framework_development_ui()
     elif selected_skill == "Hypothesis Formulation": hypothesis_formulation_ui()
-    elif selected_skill == "Analysis": analysis_ui() # Call new function
+    elif selected_skill == "Analysis": analysis_ui()
     elif selected_skill == "Recommendation": st.header("Recommendation"); st.info("Under construction..."); logger.info("Displayed 'Under Construction'...")
     else: logger.error(f"Invalid skill selected: {selected_skill}"); st.error("Invalid skill selected.")
 
@@ -897,7 +951,7 @@ def clarifying_questions_bot_ui():
     feedback_submitted_key = f"{prefix}_feedback_submitted"; user_feedback_key = f"{prefix}_user_feedback"
     current_prompt_id_key = f"{prefix}_current_prompt_id"; run_count_key = f"{prefix}_run_count"
     show_comment_key = f"{prefix}_show_comment_box"; feedback_rating_value_key = f"{prefix}_feedback_rating_value"
-    show_donation_dialog_key = f"{prefix}_show_donation_dialog"
+    # show_donation_dialog_key = f"{prefix}_show_donation_dialog" # REMOVED
     # Initialize state
     init_session_state_key('conversation', []); init_session_state_key('done_asking', False); init_session_state_key('feedback_submitted', False)
     init_session_state_key('is_typing', False); init_session_state_key('feedback', None); init_session_state_key('show_comment_box', False)
@@ -908,22 +962,7 @@ def clarifying_questions_bot_ui():
     st.markdown("Read the prompt below, then enter your clarifying questions one at a time in the chat field at the bottom of the page. Press \"Send\" to submit a clarifying question. When you are satisfied with your questions, press the \"End Clarification Questions\" button.")
     st.divider() # Add divider after instructions
 
-    # --- Show Donation Dialog ---
-    if st.session_state.get(show_donation_dialog_key):
-        logger.info("Displaying donation dialog.")
-        full_donation_message = ("Love CHIP? Your support helps keep this tool free and improving! 🙏\n\n" "Consider making a small donation (suggested $5) to help cover server and API costs.")
-        donate_url = "https://buymeacoffee.com/9611"
-        if hasattr(st, 'dialog'):
-            @st.dialog("Support CHIP!")
-            def show_donation():
-                st.write(full_donation_message)
-                col1, col2, col3 = st.columns([0.5, 3, 0.5])
-                with col2: st.link_button("Buy Me a Coffee ☕", donate_url, type="primary", use_container_width=True)
-                if st.button("Maybe later", key="maybe_later_btn_cq", use_container_width=True): logger.info("User clicked 'Maybe later' on donation dialog."); st.rerun()
-            show_donation()
-        else: # Fallback
-            with st.container(border=True): st.success(full_donation_message); st.link_button("Buy Me a Coffee ☕", donate_url, type="primary")
-        st.session_state[show_donation_dialog_key] = False # Reset flag
+    # --- REMOVED Donation Dialog Logic ---
 
     # --- Select and Display Case Prompt ---
     if st.session_state.get(current_prompt_id_key) is None:
@@ -972,7 +1011,7 @@ def clarifying_questions_bot_ui():
                 current_session_run_count = st.session_state.get(run_count_key, 0) + 1
                 st.session_state[run_count_key] = current_session_run_count
                 logger.info(f"Session run count incremented to: {current_session_run_count}")
-                if current_session_run_count == 2 or current_session_run_count == 11: st.session_state[show_donation_dialog_key] = True; logger.info(f"Flag set to show donation dialog...")
+                # REMOVED Donation Dialog trigger logic
                 st.rerun()
         if st.session_state.get(start_time_key) is None: st.session_state[start_time_key] = time.time(); logger.info("Interaction timer started.")
 
@@ -1031,7 +1070,7 @@ def clarifying_questions_bot_ui():
 
 
 def framework_development_ui():
-    # [ This function remains unchanged from the previous version ]
+    # [ This function remains largely unchanged, but donation dialog logic removed ]
     logger.info("Loading Framework Development UI.")
     prefix = st.session_state.key_prefix
     # Define keys
@@ -1040,7 +1079,7 @@ def framework_development_ui():
     feedback_submitted_key = f"{prefix}_feedback_submitted"; user_feedback_key = f"{prefix}_user_feedback"
     current_prompt_id_key = f"{prefix}_current_prompt_id"; run_count_key = f"{prefix}_run_count"
     show_comment_key = f"{prefix}_show_comment_box"; feedback_rating_value_key = f"{prefix}_feedback_rating_value"
-    show_donation_dialog_key = f"{prefix}_show_donation_dialog"
+    # show_donation_dialog_key = f"{prefix}_show_donation_dialog" # REMOVED
     # Initialize state
     init_session_state_key('conversation', []); init_session_state_key('done_asking', False); init_session_state_key('feedback_submitted', False)
     init_session_state_key('is_typing', False); init_session_state_key('feedback', None); init_session_state_key('show_comment_box', False)
@@ -1051,22 +1090,7 @@ def framework_development_ui():
     st.markdown("Read the case prompt below. Take some time to think, then outline your framework and proposed approach in the framework area below. When you are satisfied with your framework, press \"Submit Framework for Feedback\".")
     st.divider() # Add divider after instructions
 
-    # --- Show Donation Dialog ---
-    if st.session_state.get(show_donation_dialog_key):
-        logger.info("Displaying donation dialog (Framework Dev).")
-        full_donation_message = ("Love CHIP? Your support helps keep this tool free and improving! 🙏\n\n" "Consider making a small donation (suggested $5) to help cover server and API costs.")
-        donate_url = "https://buymeacoffee.com/9611"
-        if hasattr(st, 'dialog'):
-            @st.dialog("Support CHIP!")
-            def show_donation():
-                st.write(full_donation_message)
-                col1, col2, col3 = st.columns([0.5, 3, 0.5]);
-                with col2: st.link_button("Buy Me a Coffee ☕", donate_url, type="primary", use_container_width=True)
-                if st.button("Maybe later", key="maybe_later_btn_fw", use_container_width=True): logger.info("User clicked 'Maybe later' on donation dialog (Framework Dev)."); st.rerun()
-            show_donation()
-        else: # Fallback
-             with st.container(border=True): st.success(full_donation_message); st.link_button("Buy Me a Coffee ☕", donate_url, type="primary")
-        st.session_state[show_donation_dialog_key] = False # Reset flag
+    # --- REMOVED Donation Dialog Logic ---
 
     # --- Select and Display Case Prompt ---
     if st.session_state.get(current_prompt_id_key) is None:
@@ -1096,7 +1120,7 @@ def framework_development_ui():
                  current_session_run_count = st.session_state.get(run_count_key, 0) + 1
                  st.session_state[run_count_key] = current_session_run_count
                  logger.info(f"Session run count incremented to: {current_session_run_count} (Framework Dev)")
-                 if current_session_run_count == 2 or current_session_run_count == 11: st.session_state[show_donation_dialog_key] = True; logger.info(f"Flag set to show donation dialog...")
+                 # REMOVED Donation Dialog trigger logic
                  st.rerun()
         typing_placeholder = st.empty()
         if st.session_state.get(is_typing_key) or (st.session_state.get(done_key) and not st.session_state.get(feedback_key)): typing_placeholder.text("CHIP is analyzing your framework...")
@@ -1169,7 +1193,7 @@ def hypothesis_formulation_ui():
     feedback_submitted_key = f"{prefix}_feedback_submitted"; user_feedback_key = f"{prefix}_user_feedback"
     current_prompt_id_key = f"{prefix}_current_prompt_id"; run_count_key = f"{prefix}_run_count"
     show_comment_key = f"{prefix}_show_comment_box"; feedback_rating_value_key = f"{prefix}_feedback_rating_value"
-    show_donation_dialog_key = f"{prefix}_show_donation_dialog"
+    # show_donation_dialog_key = f"{prefix}_show_donation_dialog" # REMOVED
     hypothesis_count_key = f"{prefix}_hypothesis_count" # Specific to this skill
     # Initialize state
     init_session_state_key('conversation', []); init_session_state_key('done_asking', False); init_session_state_key('feedback_submitted', False)
@@ -1182,22 +1206,7 @@ def hypothesis_formulation_ui():
     st.markdown("Read the case prompt below. Formulate an initial hypothesis about the core issue and state what you'd like to investigate first. Enter it in the text field below and press \"Send\". CHIP will provide information based on your hypothesis. Refine your hypothesis based on the information provided (up to 3 hypotheses total). Click \"End Hypothesis Formulation\" when finished.")
     st.divider()
 
-    # --- Show Donation Dialog ---
-    if st.session_state.get(show_donation_dialog_key):
-        logger.info("Displaying donation dialog (Hypothesis Formulation).")
-        full_donation_message = ("Love CHIP? Your support helps keep this tool free and improving! 🙏\n\n" "Consider making a small donation (suggested $5) to help cover server and API costs.")
-        donate_url = "https://buymeacoffee.com/9611"
-        if hasattr(st, 'dialog'):
-            @st.dialog("Support CHIP!")
-            def show_donation():
-                st.write(full_donation_message)
-                col1, col2, col3 = st.columns([0.5, 3, 0.5]);
-                with col2: st.link_button("Buy Me a Coffee ☕", donate_url, type="primary", use_container_width=True)
-                if st.button("Maybe later", key="maybe_later_btn_hf", use_container_width=True): logger.info("User clicked 'Maybe later' on donation dialog (Hypothesis)."); st.rerun()
-            show_donation()
-        else: # Fallback
-             with st.container(border=True): st.success(full_donation_message); st.link_button("Buy Me a Coffee ☕", donate_url, type="primary")
-        st.session_state[show_donation_dialog_key] = False # Reset flag
+    # --- REMOVED Donation Dialog Logic ---
 
     # --- Select and Display Case Prompt ---
     if st.session_state.get(current_prompt_id_key) is None:
@@ -1268,9 +1277,7 @@ def hypothesis_formulation_ui():
                 current_session_run_count = st.session_state.get(run_count_key, 0) + 1
                 st.session_state[run_count_key] = current_session_run_count
                 logger.info(f"Session run count incremented to: {current_session_run_count} (Hypothesis)")
-                if current_session_run_count == 2 or current_session_run_count == 11:
-                     st.session_state[show_donation_dialog_key] = True
-                     logger.info(f"Flag set to show donation dialog...")
+                # REMOVED Donation Dialog trigger logic
                 st.rerun()
         if st.session_state.get(start_time_key) is None: st.session_state[start_time_key] = time.time(); logger.info("Interaction timer started.")
 
@@ -1360,7 +1367,7 @@ def analysis_ui():
     feedback_submitted_key = f"{prefix}_feedback_submitted"; user_feedback_key = f"{prefix}_user_feedback"
     current_prompt_id_key = f"{prefix}_current_prompt_id"; run_count_key = f"{prefix}_run_count"
     show_comment_key = f"{prefix}_show_comment_box"; feedback_rating_value_key = f"{prefix}_feedback_rating_value"
-    show_donation_dialog_key = f"{prefix}_show_donation_dialog"
+    # show_donation_dialog_key = f"{prefix}_show_donation_dialog" # REMOVED
     analysis_input_key = f"{prefix}_analysis_input" # Specific to this skill
 
     # Initialize state
@@ -1374,22 +1381,7 @@ def analysis_ui():
     st.markdown("Read the case prompt and examine the exhibit(s) below. Analyze the data presented in the exhibit(s) and explain its significance in relation to the case problem. Enter your analysis in the text area below and click \"Submit Analysis\" to get feedback.")
     st.divider()
 
-    # --- Show Donation Dialog ---
-    if st.session_state.get(show_donation_dialog_key):
-        logger.info("Displaying donation dialog (Analysis).")
-        full_donation_message = ("Love CHIP? Your support helps keep this tool free and improving! 🙏\n\n" "Consider making a small donation (suggested $5) to help cover server and API costs.")
-        donate_url = "https://buymeacoffee.com/9611"
-        if hasattr(st, 'dialog'):
-            @st.dialog("Support CHIP!")
-            def show_donation():
-                st.write(full_donation_message)
-                col1, col2, col3 = st.columns([0.5, 3, 0.5]);
-                with col2: st.link_button("Buy Me a Coffee ☕", donate_url, type="primary", use_container_width=True)
-                if st.button("Maybe later", key="maybe_later_btn_an", use_container_width=True): logger.info("User clicked 'Maybe later' on donation dialog (Analysis)."); st.rerun()
-            show_donation()
-        else: # Fallback
-             with st.container(border=True): st.success(full_donation_message); st.link_button("Buy Me a Coffee ☕", donate_url, type="primary")
-        st.session_state[show_donation_dialog_key] = False # Reset flag
+    # --- REMOVED Donation Dialog Logic ---
 
     # --- Select and Display Case Prompt & Exhibits ---
     if st.session_state.get(current_prompt_id_key) is None:
@@ -1397,7 +1389,6 @@ def analysis_ui():
         selected_id = select_new_prompt(); st.session_state[current_prompt_id_key] = selected_id
     current_prompt = get_prompt_details(st.session_state.get(current_prompt_id_key))
     if not current_prompt or current_prompt.get("skill_type") != "Analysis":
-        # Handle cases where the wrong prompt type might be loaded after skill switch
         logger.warning(f"Invalid or missing prompt for Analysis skill. Prompt ID: {st.session_state.get(current_prompt_id_key)}. Selecting new.")
         selected_id = select_new_prompt(); st.session_state[current_prompt_id_key] = selected_id
         current_prompt = get_prompt_details(selected_id)
@@ -1435,12 +1426,10 @@ def analysis_ui():
                         x_col = exhibit.get("x_axis")
                         y_cols = exhibit.get("y_axis")
                         if x_col and y_cols:
-                             # Ensure y_cols is a list
                              if not isinstance(y_cols, list): y_cols = [y_cols]
-                             fig = px.bar(df, x=x_col, y=y_cols, title="", barmode='group') # Removed title from fig
-                             fig.update_layout(legend_title_text='') # Remove legend title
-                        else:
-                             st.warning(f"Exhibit {i+1}: Bar chart data needs 'x_axis' and 'y_axis' keys defined in prompts.json.")
+                             fig = px.bar(df, x=x_col, y=y_cols, title="", barmode='group')
+                             fig.update_layout(legend_title_text='')
+                        else: st.warning(f"Exhibit {i+1}: Bar chart data needs 'x_axis' and 'y_axis' keys defined in prompts.json.")
                     elif chart_type == "line":
                          x_col = exhibit.get("x_axis")
                          y_cols = exhibit.get("y_axis")
@@ -1448,18 +1437,12 @@ def analysis_ui():
                              if not isinstance(y_cols, list): y_cols = [y_cols]
                              fig = px.line(df, x=x_col, y=y_cols, title="")
                              fig.update_layout(legend_title_text='')
-                         else:
-                             st.warning(f"Exhibit {i+1}: Line chart data needs 'x_axis' and 'y_axis' keys defined in prompts.json.")
-                    # Add other chart types (pie, scatter) here if needed
-                    else:
-                        st.warning(f"Exhibit {i+1}: Unsupported chart type '{chart_type}'. Displaying data table.")
-                        st.dataframe(df)
+                         else: st.warning(f"Exhibit {i+1}: Line chart data needs 'x_axis' and 'y_axis' keys defined in prompts.json.")
+                    else: st.warning(f"Exhibit {i+1}: Unsupported chart type '{chart_type}'. Displaying data table."); st.dataframe(df)
 
                     if fig:
-                        # Improve chart appearance slightly
                         fig.update_layout(margin=dict(l=20, r=20, t=30, b=20), height=400)
                         st.plotly_chart(fig, use_container_width=True)
-                        # Add simplified data summary to context
                         exhibit_context_for_llm.append(f"Data Summary ({chart_type} chart): {df.head().to_string()}")
 
                 except Exception as e:
@@ -1490,24 +1473,9 @@ def analysis_ui():
              )
              if submitted and analysis_input:
                  logger.info("User submitted analysis.")
-                 # Store analysis for feedback generation
-                 st.session_state[conv_key] = [{"role": "interviewee", "content": analysis_input}]
-                 # Set done flag to trigger feedback display
-                 st.session_state[done_key] = True
-                 # Calculate time, increment run count, check donation
-                 if st.session_state.get(start_time_key) is None:
-                     st.session_state[start_time_key] = time.time()
-                     logger.info("Analysis interaction timer started on submit.")
-                 end_time = time.time(); start_time = st.session_state.get(start_time_key)
-                 if start_time is not None: st.session_state[time_key] = end_time - start_time
-                 else: st.session_state[time_key] = 0.0
-                 current_session_run_count = st.session_state.get(run_count_key, 0) + 1
-                 st.session_state[run_count_key] = current_session_run_count
-                 logger.info(f"Session run count incremented to: {current_session_run_count} (Analysis)")
-                 if current_session_run_count == 2 or current_session_run_count == 11:
-                     st.session_state[show_donation_dialog_key] = True
-                     logger.info(f"Flag set to show donation dialog...")
-                 st.rerun()
+                 # Call send_question to get initial assessment (will also set done_key=True)
+                 send_question(analysis_input, case_prompt_text, exhibit_context=exhibit_context_str)
+                 # Rerun is handled by send_question
 
         # Typing indicator (will show while feedback generates)
         typing_placeholder = st.empty()
@@ -1522,7 +1490,6 @@ def analysis_ui():
     if st.session_state.get(done_key):
         logger.debug("Entering analysis feedback and conclusion area.")
         st.session_state[is_typing_key] = True
-        # Pass exhibit context to feedback function
         final_feedback_content = generate_final_feedback(case_prompt_text) # exhibit_context_str is implicitly used via history
         st.session_state[is_typing_key] = False
 
