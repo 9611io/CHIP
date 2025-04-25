@@ -907,7 +907,7 @@ def main_app():
         st.subheader("Support CHIP!")
         st.markdown(
             "Love CHIP? Your support helps keep this tool free and improving! 🙏\n\n"
-            "Consider making a small donation (suggested $5) to help cover server and API costs."
+            "Consider making a small donation - $5 gives one hard-working human unlimited access to CHIP."
         )
         donate_url = "https://buymeacoffee.com/9611"
         st.link_button("Buy Me a Coffee ☕", donate_url) # Uses CSS for styling
