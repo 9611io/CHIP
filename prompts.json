@@ -1608,4 +1608,35 @@
         }
       ]
     }
+,
+  {
+    "id": "analysis_02",
+    "title": "Urban Bean Coffee Shop Profitability",
+    "skill_type": "Analysis",
+    "prompt_text": "Urban Bean operates 5 coffee shops across Metro City. Analyze the exhibits below and recommend which location to invest in next and how to optimize costs.",
+    "exhibits": [
+      {
+        "exhibit_title": "Exhibit 1: Monthly Revenue by Location",
+        "chart_type": "bar",
+        "description": "Revenue in thousands of USD",
+        "data": {
+          "Location": ["Downtown", "Uptown", "Midtown", "Suburbs"],
+          "Revenue": [120, 95, 110, 80]
+        },
+        "x_axis": "Location",
+        "y_axis": ["Revenue"]
+      },
+      {
+        "exhibit_title": "Exhibit 2: Cost Breakdown for Downtown Shop",
+        "chart_type": "pie",
+        "description": "Cost distribution",
+        "data": {
+          "Category": ["Rent", "Labor", "COGS", "Utilities", "Marketing"],
+          "Cost": [30, 25, 20, 10, 15]
+        },
+        "labels": "Category",
+        "values": "Cost"
+      }
+    ]
+  }
 ]
