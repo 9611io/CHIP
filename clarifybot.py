@@ -63,7 +63,7 @@ elif f"{st.session_state.key_prefix}_session_id" not in st.session_state:
      logger.info(f"Re-initialized SessionID for existing prefix {st.session_state.key_prefix}: {st.session_state.get(f'{st.session_state.key_prefix}_session_id')}")
 
 # --- Updated Skill List ---
-SKILLS = ["Clarifying", "Hypothesis", "Frameworks", "Analysis", "Recommendation"]
+SKILLS = ["clarifying", "hypothesis", "frameworks", "analysis", "recommendation"]
 # --- End Update ---
 
 init_session_state_key('selected_skill', SKILLS[0]) # Now defined
