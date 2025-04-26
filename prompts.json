@@ -1634,7 +1634,7 @@
           "Category": ["Rent", "Labor", "COGS", "Utilities", "Marketing"],
           "Cost": [30, 25, 20, 10, 15]
         },
-        "labels": "Category",
+        "names": "Category",
         "values": "Cost"
       }
     ]
