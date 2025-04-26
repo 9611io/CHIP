@@ -585,10 +585,46 @@ def send_question(question, current_case_prompt_text, exhibit_context=None):
             temperature = 0.5
 
         elif selected_skill == "Hypothesis": # Use new skill name
-            prompt_for_llm = f"""... [Hypothesis Interaction Prompt v2 as before] ..."""
-            system_message = "You are a case interviewer. IMPORTANT: First, evaluate if the user's input is a reasonable hypothesis..."
+            # --- Refined Interaction Prompt v2 ---
+            prompt_for_llm = f"""
+            You are playing the role of a case interviewer providing data/information in response to a candidate's hypothesis.
+            The candidate is trying to diagnose an issue based on the case prompt.
+
+            **Your Primary Task: Evaluate the Candidate's Input FIRST.**
+            Determine if the "Candidate's Latest Hypothesis/Area to Investigate" below is a reasonable, testable hypothesis related to the case context ({current_case_prompt_text}).
+            - Is it specific enough? Is it relevant?
+            - Or is it nonsensical (like jokes, insults), extremely vague (like one word "why?" or "wut"), or clearly unrelated?
+
+            **Based on your evaluation, respond in ONE of the following two ways:**
+
+            1.  **If the input IS a reasonable hypothesis:**
+                * Provide a concise (1-2 sentences) piece of plausible information that *contradicts* their line of thinking or suggests it's not the primary driver.
+                * Maintain consistency with previous info provided in the history.
+                * Sound like a neutral source of data.
+                * **DO NOT** assess the hypothesis quality directly (e.g., don't say "Good hypothesis").
+                * **DO NOT** use ###ANSWER### or ###ASSESSMENT### tags.
+
+            2.  **If the input IS NOT a reasonable hypothesis:**
+                * **DO NOT provide contradictory case information.**
+                * Respond politely and neutrally that you cannot provide relevant information based on that input.
+                * Ask them to state a clearer, testable hypothesis related to the case.
+                * Example responses: "I don't have data related to that. Could you propose a specific hypothesis about the potential cause of the issue described in the case?" OR "Could you clarify what specific area you'd like to investigate based on the case details?" OR "Please state a testable hypothesis related to the case."
+                * **DO NOT** use ###ANSWER### or ###ASSESSMENT### tags.
+
+            **CRITICAL:** Your response must be ONLY the text for either option 1 or option 2 above. No extra formatting or explanation.
+
+            Conversation History (Previous hypotheses and info provided):
+            {history_for_prompt}
+
+            Candidate's Latest Hypothesis/Area to Investigate:
+            {latest_input}
+
+            Your Response:
+            """
+            system_message = "You are a case interviewer. IMPORTANT: First, evaluate if the user's input is a reasonable hypothesis for the case. If yes, provide concise, contradictory information. If no (e.g., nonsensical, vague, unrelated), politely ask for a clearer, relevant hypothesis. Do not assess. Do not use special formatting."
+            # --- End of Refined Prompt v2 ---
             max_tokens = 150
-            temperature = 0.4
+            temperature = 0.4 # Slightly lower temperature
 
         # Analysis and Framework Dev now handle their primary interaction outside send_question
         elif selected_skill in ["Frameworks", "Analysis"]:
@@ -706,6 +742,7 @@ def generate_final_feedback(current_case_prompt_text):
         exhibit_index = 0
         for i, msg in enumerate(conversation_history):
              if msg.get("role") == "interviewee":
+                 # Add exhibit number context to the analysis for the LLM
                  analysis_parts.append(f"Candidate's Analysis for Exhibit {exhibit_index + 1}:\n{msg.get('content', '[Analysis not found]')}")
                  exhibit_index += 1
         history_string = "\n\n---\n\n".join(analysis_parts) # Separate analyses clearly
@@ -1012,7 +1049,7 @@ def clarifying_questions_bot_ui():
 
 
 def framework_development_ui():
-    # [ This function remains largely unchanged, but donation dialog logic removed ]
+    # [ This function remains unchanged from the previous version ]
     logger.info("Loading Framework Development UI.")
     prefix = st.session_state.key_prefix
     # Define keys
@@ -1398,7 +1435,7 @@ def analysis_ui():
                         fig = px.scatter(df, x=x_col, y=y_col, title="", color=color_col, size=size_col)
                     else: st.warning(f"Exhibit {current_index + 1}: Scatter chart data needs 'x_axis' and 'y_axis' keys.")
                 elif chart_type == "table": st.dataframe(df); fig = None
-                else: st.warning(f"Exhibit {current_index + 1}: Unsupported chart type '{chart_type}'. Displaying table."); st.dataframe(df); fig = None
+                else: st.warning(f"Exhibit {current_index + 1}: Unsupported or unspecified chart type '{chart_type}'. Displaying table."); st.dataframe(df); fig = None
 
                 if fig: fig.update_layout(margin=dict(l=20, r=20, t=30, b=20), height=400); st.plotly_chart(fig, use_container_width=True)
 
@@ -1410,7 +1447,7 @@ def analysis_ui():
 
         # Input form for the current exhibit's analysis
         st.header(f"Your Analysis (Exhibit {current_index + 1})")
-        with st.form(key=f"{prefix}_an_input_form_{current_index}", clear_on_submit=True): # Unique key per exhibit
+        with st.form(key=f"{prefix}_an_input_form_{current_index}", clear_on_submit=True): # Set clear_on_submit=True
              analysis_input = st.text_area(
                  f"Enter your analysis for Exhibit {current_index + 1}:",
                  height=200,
@@ -1422,7 +1459,7 @@ def analysis_ui():
              button_label = "Submit Analysis & Next Exhibit" if current_index < total_exhibits - 1 else "Submit Final Analysis & Get Feedback"
              submitted = st.form_submit_button(
                  button_label,
-                 disabled=st.session_state.get(is_typing_key, False) or not analysis_input
+                 disabled=st.session_state.get(is_typing_key, False) # Corrected disabled logic
              )
              if submitted and analysis_input:
                  logger.info(f"User submitted analysis for exhibit {current_index + 1}.")
