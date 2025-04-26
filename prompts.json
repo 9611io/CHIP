@@ -1204,367 +1204,367 @@
     {
       "id": "qual_40",
       "title": "MindfulMinds",
-      "skill_type": "hypothesis",
+      "skill_type": "Hypothesis",
       "prompt_text": "MindfulMinds, a health-tech company based in Australia, is struggling to scale its mindfulness app in corporate settings. HR leaders show initial interest, but few convert after the demo period.\n\nMindfulMinds has hired your consulting firm to strengthen its B2B offering by identifying the specific wellness needs of teams and how to repackage content and reporting features to drive adoption and renewals."
     },
     {
       "id": "qual_41",
       "title": "UrbanRoots",
-      "skill_type": "hypothesis",
+      "skill_type": "Hypothesis",
       "prompt_text": "UrbanRoots, a fast-casual restaurant brand based in Chicago, wants to attract more weekday lunch traffic. Their current menu and messaging are focused on evening dining and weekend events.\n\nUrbanRoots has brought in your consulting firm to build a weekday strategy by identifying the behaviors and decision drivers of local lunch-goers and the menu changes and communications that would drive trial."
     },
     {
       "id": "qual_42",
       "title": "TechEthnography",
-      "skill_type": "hypothesis",
+      "skill_type": "Hypothesis",
       "prompt_text": "TechEthnography, a research agency focused on human-centered tech design, is finding it hard to win projects with product teams. Their clients say the insights are interesting but hard to act on.\n\nTechEthnography has engaged your consulting firm to reposition their offer by identifying what makes research actionable to product owners and how to package insights that accelerate development decisions."
     },
     {
       "id": "qual_43",
       "title": "StoryWeavers",
-      "skill_type": "hypothesis",
+      "skill_type": "Hypothesis",
       "prompt_text": "StoryWeavers, a branded storytelling agency, has lost repeat business from several consumer goods clients. Their clients say the stories lack data and don’t drive clear business results.\n\nStoryWeavers has brought in your consulting firm to rework their value proposition by identifying what content marketers need from branded storytelling and the metrics and formats that help prove impact."
     },
     {
       "id": "qual_44",
       "title": "EcoJourneys",
-      "skill_type": "hypothesis",
+      "skill_type": "Hypothesis",
       "prompt_text": "EcoJourneys, a European train-based travel startup, is seeing high site traffic but low trip bookings. The founders believe the itineraries are too long and not flexible enough for their target traveler.\n\nEcoJourneys has hired your consulting firm to rethink the travel product by identifying the barriers to booking and what formats and price points would drive conversions among curious but non-committed visitors."
     },
     {
       "id": "qual_45",
       "title": "HealthHorizons",
-      "skill_type": "hypothesis",
+      "skill_type": "Hypothesis",
       "prompt_text": "HealthHorizons, a health coaching platform, is experiencing churn from both individual users and enterprise clients. Most drop-off happens within the first month.\n\nHealthHorizons has brought in your consulting firm to increase retention by identifying the activation milestones that correlate with long-term use and the onboarding and coach assignment models that accelerate progress."
     },
     {
       "id": "qual_46",
       "title": "YouthVoices",
-      "skill_type": "hypothesis",
+      "skill_type": "Hypothesis",
       "prompt_text": "YouthVoices, a civic engagement app for teenagers, is struggling to gain traction in schools. Teachers like the idea, but students are not downloading or participating at scale.\n\nYouthVoices has hired your consulting firm to improve adoption by identifying what students need from civic apps and what in-app experiences and rewards drive participation and sharing."
     },
     {
       "id": "qual_47",
       "title": "CraftConnect",
-      "skill_type": "hypothesis",
+      "skill_type": "Hypothesis",
       "prompt_text": "CraftConnect, a handmade goods platform, is preparing to relaunch with a focus on local sourcing. Their previous model had low seller stickiness and limited shopper awareness of what made the platform unique.\n\nCraftConnect has engaged your consulting firm to define its go-forward strategy by identifying what motivates craft buyers and makers, and how to better reflect local value in the digital experience."
     },
     {
       "id": "qual_48",
       "title": "VoicesInTransit",
-      "skill_type": "hypothesis",
+      "skill_type": "Hypothesis",
       "prompt_text": "VoicesInTransit, a public policy startup, is trying to get city governments to adopt its transit equity toolkit. They’ve secured some pilots but failed to move to full-scale implementations.\n\nVoicesInTransit has brought in your consulting firm to improve uptake by identifying what matters most to city officials when selecting policy tools and how to present and support the toolkit accordingly."
     },
     {
       "id": "qual_49",
       "title": "MediaEcho",
-      "skill_type": "hypothesis",
+      "skill_type": "Hypothesis",
       "prompt_text": "MediaEcho, a digital media startup, is trying to build credibility in a polarized information landscape. While early growth has been strong, ad buyers remain hesitant to commit budgets.\n\nMediaEcho has hired your consulting firm to establish a trust-building strategy by identifying what signals trust and neutrality to readers and how to translate that into advertiser appeal."
     },
     {
       "id": "qual_50",
       "title": "EduBridge",
-      "skill_type": "hypothesis",
+      "skill_type": "Hypothesis",
       "prompt_text": "EduBridge, an edtech company supporting non-traditional learners, is struggling to keep students enrolled through course completion. Most drop out before the halfway point.\n\nEduBridge has engaged your consulting firm to improve course retention by identifying what moments drive disengagement and what coaching, content, or pacing strategies could support learner follow-through."
     }
 ,    {
       "id": "quant_01",
       "title": "GreenGardens",
-      "skill_type": "hypothesis",
+      "skill_type": "Hypothesis",
       "prompt_text": "GreenGardens Organics, a family-owned organic produce farm based in Southern Ontario, seeks to expand its operations into the Northeastern United States. The company wishes to identify the most attractive state for expansion in 2025 and determine the potential market share value they could capture upon entering this new market. Additionally, GreenGardens Organics needs an analysis to identify the break-even quantities for each type of organic produce offered and how many total units they must sell to achieve a target profit of $30 million, assuming all produce items are sold in equal quantities.\n\nGreenGardens Organics has hired your consulting firm to provide detailed strategic advice and quantitative analysis to support their expansion strategy. Your task is to help GreenGardens Organics assess potential market values, calculate break-even sales volumes for each product type, and determine the overall sales volume needed to reach the targeted profit of $30 million."
     },
     {
       "id": "quant_02",
       "title": "TechWave",
-      "skill_type": "hypothesis",
+      "skill_type": "Hypothesis",
       "prompt_text": "TechWave, a software development company based in California, is preparing to launch a new mobile application targeting the fitness industry. The company is currently analyzing the competitive landscape and estimating the potential user base to determine the viability of their product launch in 2025. They face challenges in understanding consumer preferences and market dynamics specific to the fitness sector.\n\nTo address these challenges, TechWave has engaged your consulting firm to conduct a comprehensive market analysis. Your deliverables should include an assessment of the competitive landscape, detailed user demographic analysis, and a financial projection that includes the break-even point for development costs. Additionally, TechWave requires recommendations on pricing strategies aimed at achieving a profit margin of 25% within the first year of the product launch."
     },
     {
       "id": "quant_03",
       "title": "EcoPack",
-      "skill_type": "hypothesis",
+      "skill_type": "Hypothesis",
       "prompt_text": "EcoPack, a sustainable packaging company located in New York, is contemplating entering the European market to expand its reach. The company is currently facing challenges with understanding the regulatory environment and market demand for eco-friendly packaging solutions in Europe. They aim to develop a strategy that aligns with local regulations while catering to the growing demand for sustainable products.\n\nTo facilitate this expansion, EcoPack has contracted your consulting firm to perform an in-depth analysis of the European market. Your tasks will include identifying the regulatory challenges, estimating market demand, and calculating the break-even volumes for their products. Additionally, EcoPack seeks to determine the sales needed to achieve a profit target of $5 million within the first two years of operation, ensuring a well-informed entry strategy."
     },
     {
       "id": "quant_04",
       "title": "HealthPlus",
-      "skill_type": "hypothesis",
+      "skill_type": "Hypothesis",
       "prompt_text": "HealthPlus, a health supplement company based in Texas, is currently experiencing a decline in profitability due to increased competition in the market. The company is looking to identify new product opportunities and potential partnerships to revitalize its brand and product offerings. They aim to conduct a thorough market analysis that will provide insights into consumer preferences and emerging trends in the health supplement sector.\n\nTo support these efforts, HealthPlus has engaged your consulting firm to deliver a comprehensive market analysis report. This report should include an evaluation of new product opportunities, an analysis of potential partnerships, and calculations of break-even sales volumes for their existing products. Furthermore, HealthPlus requires a projection of the total sales needed to return to a profit margin of 20%, helping them regain their competitive edge in the market."
     },
     {
       "id": "quant_05",
       "title": "FashionForward",
-      "skill_type": "hypothesis",
+      "skill_type": "Hypothesis",
       "prompt_text": "FashionForward, an online clothing retailer based in Florida, is planning to launch a new line of eco-friendly apparel as part of its commitment to sustainability. The company is currently assessing the target market demographics and estimating the market share they could capture within the first year of the new product line. They are keen to understand consumer attitudes towards eco-friendly products and the competitive landscape in the fashion industry.\n\nIn light of these objectives, FashionForward has sought the expertise of your consulting firm to conduct a thorough market analysis. Your deliverables should include an assessment of target market demographics, an estimation of potential market share, and calculations of break-even quantities for each product in the new line. Additionally, FashionForward requires an overall sales projection needed to achieve a profit of $10 million, ensuring a successful launch of their eco-friendly apparel line."
     },
     {
       "id": "quant_06",
       "title": "HomeTech",
-      "skill_type": "hypothesis",
+      "skill_type": "Hypothesis",
       "prompt_text": "HomeTech, a smart home device manufacturer located in Illinois, is looking to expand its product line to capitalize on the growing demand for smart home technology. The company is currently analyzing consumer trends to identify the most promising new products for launch. They face challenges in determining which product features resonate most with consumers and how to position their new offerings in a competitive market.\n\nTo assist with this expansion, HomeTech has engaged your consulting firm to conduct an in-depth analysis of consumer trends and preferences. Your deliverables should include a detailed market analysis identifying the most promising product opportunities, calculations of break-even sales volumes for the new devices, and an overall sales projection required to achieve a profit of $15 million within the first year. This analysis will be critical in guiding HomeTech's product development and marketing strategies."
     },
     {
       "id": "quant_07",
       "title": "AutoRevive",
-      "skill_type": "hypothesis",
+      "skill_type": "Hypothesis",
       "prompt_text": "AutoRevive, a car repair service based in Michigan, is currently facing declining customer retention rates, which has prompted the need for a thorough analysis of customer feedback and market trends. The company is looking to identify areas for improvement in their service offerings and customer experience. They aim to enhance customer satisfaction and loyalty to improve their overall profitability.\n\nTo support these goals, AutoRevive has contracted your consulting firm to conduct a comprehensive analysis of customer feedback and market trends. Your deliverables should include an evaluation of customer satisfaction metrics, identification of service improvement opportunities, and calculations of the break-even point for their service packages. Additionally, AutoRevive requires a projection of the total sales needed to improve profitability by 30% over the next year, enabling them to implement effective strategies for customer retention."
     },
     {
       "id": "quant_08",
       "title": "EduSmart",
-      "skill_type": "hypothesis",
+      "skill_type": "Hypothesis",
       "prompt_text": "EduSmart, an online education platform based in Washington, is planning to introduce new courses in emerging technologies to meet the evolving needs of learners. The company is currently assessing market demand and competition in this rapidly changing educational landscape. They aim to develop a strategic approach that ensures the successful launch of these new courses while maximizing enrollment and revenue.\n\nTo aid in this endeavor, EduSmart has engaged your consulting firm for a comprehensive market analysis. Your deliverables should include an assessment of market demand for the new courses, a competitive analysis, and calculations of break-even enrollment numbers for the new offerings. Furthermore, EduSmart requires a projection of the total enrollments needed to achieve a profit of $2 million in the first year, ensuring a successful introduction of their new courses."
     },
     {
       "id": "quant_09",
       "title": "TravelNest",
-      "skill_type": "hypothesis",
+      "skill_type": "Hypothesis",
       "prompt_text": "TravelNest, a travel agency based in Nevada, is looking to expand its services to include eco-tourism packages in response to growing consumer interest in sustainable travel options. The company is currently analyzing the market potential and identifying key customer segments that are most likely to engage with eco-tourism offerings. They aim to create attractive packages that resonate with environmentally conscious travelers.\n\nTo facilitate this expansion, TravelNest has contracted your consulting firm to conduct a thorough market analysis. Your deliverables should include an assessment of market potential for eco-tourism packages, identification of key customer segments, and calculations of break-even sales volumes for the new offerings. Additionally, TravelNest requires an overall sales projection needed to achieve a profit of $1 million in the first year, ensuring a successful launch of their eco-tourism services."
     },
     {
       "id": "quant_10",
       "title": "GourmetBites",
-      "skill_type": "hypothesis",
+      "skill_type": "Hypothesis",
       "prompt_text": "GourmetBites, a gourmet food delivery service based in New Jersey, is considering entering the corporate catering market to diversify its service offerings. The company is currently assessing the competitive landscape and estimating potential demand for catering services among businesses. They aim to develop a strategic approach that positions them effectively in this new market segment.\n\nTo support this initiative, GourmetBites has engaged your consulting firm to perform a comprehensive market analysis. Your deliverables should include an assessment of the competitive landscape for corporate catering, an estimation of potential demand, and calculations of break-even quantities for their catering services. Furthermore, GourmetBites requires a projection of the total sales needed to achieve a profit of $3 million within the first year, ensuring a successful entry into the corporate catering market."
     },
     {
       "id": "quant_11",
       "title": "PetPal",
-      "skill_type": "hypothesis",
+      "skill_type": "Hypothesis",
       "prompt_text": "PetPal, a pet care service provider based in Colorado, is planning to expand its service offerings to include a subscription model for pet food delivery. The company aims to identify the most suitable market segments for this new service and estimate the potential revenue it could generate in the first year. They are particularly interested in understanding consumer behavior regarding pet food purchases and subscription services.\n\nTo assist with this initiative, PetPal has engaged your consulting firm to conduct a detailed market analysis. Your deliverables should include an assessment of target market segments, an estimation of potential subscription uptake, and calculations of break-even sales volumes for the new service. Additionally, PetPal requires projections of total sales needed to achieve a profit of $500,000 in the first year."
     },
     {
       "id": "quant_12",
       "title": "UrbanGardens",
-      "skill_type": "hypothesis",
+      "skill_type": "Hypothesis",
       "prompt_text": "UrbanGardens, a vertical farming startup based in New York City, is exploring opportunities to expand its operations into urban areas across the United States. The company aims to assess the demand for locally grown produce in metropolitan markets and identify potential partnerships with grocery stores and restaurants. They are focused on establishing a sustainable business model that meets the growing consumer demand for fresh, organic produce.\n\nTo support this expansion, UrbanGardens has contracted your consulting firm to perform a comprehensive market analysis. Your deliverables should include an assessment of market demand for urban-grown produce, identification of potential partnerships, and calculations of break-even volumes for their operations. Furthermore, UrbanGardens seeks a projection of total sales needed to achieve a profit of $1 million within the first year of operations."
     },
     {
       "id": "quant_13",
       "title": "SmartHealth",
-      "skill_type": "hypothesis",
+      "skill_type": "Hypothesis",
       "prompt_text": "SmartHealth, a health technology company based in Massachusetts, is preparing to launch a new wearable device aimed at monitoring chronic health conditions. The company is currently evaluating the competitive landscape and estimating the potential user base for their product. They are particularly interested in understanding the regulatory requirements and consumer preferences in the health technology sector.\n\nTo facilitate this product launch, SmartHealth has engaged your consulting firm to conduct an in-depth market analysis. Your deliverables should include an assessment of the competitive landscape, a detailed analysis of user demographics, and calculations of the break-even point for development costs. Additionally, SmartHealth requires recommendations on marketing strategies to achieve a profit margin of 30% within the first year."
     },
     {
       "id": "quant_14",
       "title": "CleanWave",
-      "skill_type": "hypothesis",
+      "skill_type": "Hypothesis",
       "prompt_text": "CleanWave, a cleaning products manufacturer based in Oregon, is considering launching a new line of eco-friendly cleaning supplies. The company aims to understand market demand and consumer preferences for sustainable products while navigating the competitive landscape. They are focused on establishing a strong brand presence in the eco-friendly segment of the cleaning industry.\n\nTo support this initiative, CleanWave has contracted your consulting firm to perform a comprehensive market analysis. Your deliverables should include an assessment of market demand for eco-friendly cleaning products, a competitive analysis, and calculations of break-even sales volumes for the new product line. Furthermore, CleanWave requires projections of total sales needed to achieve a profit of $750,000 in the first year."
     },
     {
       "id": "quant_15",
       "title": "FitTrack",
-      "skill_type": "hypothesis",
+      "skill_type": "Hypothesis",
       "prompt_text": "FitTrack, a fitness technology company based in Texas, is planning to launch a new fitness tracker that integrates with health apps to provide users with personalized fitness plans. The company is currently analyzing the competitive landscape and estimating the potential market share for this product. They aim to develop a pricing strategy that maximizes profitability while remaining competitive in the market.\n\nTo aid in this endeavor, FitTrack has engaged your consulting firm to conduct a detailed market analysis. Your deliverables should include an assessment of the competitive landscape, an estimation of potential market share, and calculations of break-even quantities for the new fitness tracker. Additionally, FitTrack requires an overall sales projection needed to achieve a profit of $2 million within the first year of the product launch."
     },
     {
       "id": "quant_16",
       "title": "TasteBuds",
-      "skill_type": "hypothesis",
+      "skill_type": "Hypothesis",
       "prompt_text": "TasteBuds, a meal kit delivery service based in California, is exploring opportunities to expand its offerings to include vegan meal options. The company aims to understand the demand for vegan meal kits and identify target demographics that are most likely to subscribe. They are focused on establishing a sustainable business model that caters to the growing interest in plant-based diets.\n\nTo support this initiative, TasteBuds has contracted your consulting firm to conduct a comprehensive market analysis. Your deliverables should include an assessment of market demand for vegan meal kits, identification of target demographics, and calculations of break-even sales volumes for the new offerings. Furthermore, TasteBuds seeks a projection of total sales needed to achieve a profit of $1.5 million within the first year."
     },
     {
       "id": "quant_17",
       "title": "TechNest",
-      "skill_type": "hypothesis",
+      "skill_type": "Hypothesis",
       "prompt_text": "TechNest, a tech startup based in Illinois, is preparing to launch a new smart home security system that utilizes AI technology. The company is currently assessing the competitive landscape and estimating the potential user base for their product. They are focused on understanding consumer concerns regarding home security and the features that resonate most with potential customers.\n\nTo facilitate this product launch, TechNest has engaged your consulting firm to conduct a detailed market analysis. Your deliverables should include an assessment of the competitive landscape, a user demographic analysis, and calculations of the break-even point for development costs. Additionally, TechNest requires recommendations on marketing strategies to achieve a profit margin of 25% within the first year."
     },
     {
       "id": "quant_18",
       "title": "GreenWave",
-      "skill_type": "hypothesis",
+      "skill_type": "Hypothesis",
       "prompt_text": "GreenWave, a renewable energy company based in Washington, is exploring opportunities to expand its solar power solutions into the residential market. The company aims to assess consumer interest in solar installations and identify potential partnerships with home builders and real estate developers. They are focused on establishing a competitive pricing strategy that maximizes market penetration while ensuring profitability.\n\nTo support this initiative, GreenWave has contracted your consulting firm to perform a comprehensive market analysis. Your deliverables should include an assessment of market demand for residential solar solutions, identification of potential partnerships, and calculations of break-even sales volumes for new installations. Furthermore, GreenWave seeks a projection of total sales needed to achieve a profit of $4 million within the first year."
     },
     {
       "id": "quant_19",
       "title": "FreshBrew",
-      "skill_type": "hypothesis",
+      "skill_type": "Hypothesis",
       "prompt_text": "FreshBrew, a specialty coffee brand based in New York, is considering launching a new line of organic coffee blends. The company aims to understand market demand for organic products and identify key customer segments that are likely to purchase their new offerings. They are focused on establishing a strong brand identity in the competitive coffee market while maximizing profitability.\n\nTo support this initiative, FreshBrew has contracted your consulting firm to conduct a comprehensive market analysis. Your deliverables should include an assessment of market demand for organic coffee, a competitive analysis, and calculations of break-even sales volumes for the new product line. Furthermore, FreshBrew requires projections of total sales needed to achieve a profit of $2 million in the first year."
     },
     {
       "id": "quant_20",
       "title": "HomeStyle",
-      "skill_type": "hypothesis",
+      "skill_type": "Hypothesis",
       "prompt_text": "HomeStyle, a home decor retailer based in Florida, is planning to expand its product line to include smart home accessories. The company aims to identify market trends and consumer preferences for smart home products while analyzing the competitive landscape. They are particularly interested in establishing a pricing strategy that maximizes sales while ensuring a healthy profit margin.\n\nTo assist with this initiative, HomeStyle has engaged your consulting firm to conduct a detailed market analysis. Your deliverables should include an assessment of market demand for smart home accessories, a competitive landscape analysis, and calculations of break-even quantities for the new product line. Additionally, HomeStyle requires projections of total sales needed to achieve a profit of $1 million within the first year."
     },
     {
       "id": "quant_21",
       "title": "AquaPure",
-      "skill_type": "hypothesis",
+      "skill_type": "Hypothesis",
       "prompt_text": "AquaPure, a water purification technology company based in Arizona, is planning to introduce a new line of eco-friendly water filters. The company is focused on assessing market demand in regions with high water contamination issues and identifying key regulatory challenges. They aim to develop a product that not only meets strict environmental standards but also offers superior performance compared to competitors.\n\nTo support this endeavor, AquaPure has engaged your consulting firm to conduct a comprehensive market analysis. Your deliverables should include an evaluation of regional water quality data, an assessment of regulatory requirements, and calculations of break-even sales volumes for the new water filter line. Additionally, AquaPure requires a projection of total sales needed to achieve a profit target of $2.5 million within the first year."
     },
     {
       "id": "quant_22",
       "title": "SolarSync",
-      "skill_type": "hypothesis",
+      "skill_type": "Hypothesis",
       "prompt_text": "SolarSync, a solar energy startup located in Nevada, is preparing to launch a new series of smart solar panels designed for residential use. The company is focused on understanding consumer adoption rates and the impact of government incentives on renewable energy investments. They aim to position their product as a cost-effective solution for homeowners seeking to reduce their energy bills.\n\nTo facilitate this launch, SolarSync has commissioned your consulting firm to perform an in-depth market analysis. Your deliverables should include an assessment of consumer adoption trends, an analysis of available government incentives, and calculations of break-even installation numbers. Furthermore, SolarSync requires a projection of total installations needed to achieve a profit of $3 million in the first year."
     },
     {
       "id": "quant_23",
       "title": "MediCore",
-      "skill_type": "hypothesis",
+      "skill_type": "Hypothesis",
       "prompt_text": "MediCore, a medical device manufacturer based in Minnesota, is set to introduce an innovative diagnostic tool aimed at early detection of chronic diseases. The company is evaluating market demand among hospitals and private clinics and is keen to understand the competitive landscape within the healthcare technology sector. They aim to position their diagnostic tool as a cutting-edge solution that enhances patient outcomes.\n\nTo support this initiative, MediCore has engaged your consulting firm to conduct a detailed market analysis. Your deliverables should include an assessment of market demand across healthcare facilities, a competitive analysis, and calculations of break-even production volumes. Additionally, MediCore requires a projection of total sales needed to achieve a profit of $4 million within the first year."
     },
     {
       "id": "quant_24",
       "title": "AgriNext",
-      "skill_type": "hypothesis",
+      "skill_type": "Hypothesis",
       "prompt_text": "AgriNext, an agri-tech company based in Iowa, is planning to launch a new precision farming system that leverages IoT sensors and data analytics. The company is focused on understanding the adoption rate of smart farming technologies among large-scale farms and the potential cost savings associated with precision agriculture. They aim to offer a solution that significantly improves crop yields while reducing resource consumption.\n\nTo assist with this project, AgriNext has contracted your consulting firm to perform a comprehensive market analysis. Your deliverables should include an evaluation of the adoption rates of smart farming technologies, an analysis of cost-saving potentials, and calculations of break-even sales volumes for the new system. Furthermore, AgriNext requires a projection of total sales needed to achieve a profit of $5 million within the first year."
     },
     {
       "id": "quant_25",
       "title": "CyberShield",
-      "skill_type": "hypothesis",
+      "skill_type": "Hypothesis",
       "prompt_text": "CyberShield, a cybersecurity firm based in Washington D.C., is preparing to launch a new suite of threat detection software aimed at small and medium-sized enterprises. The company is focused on understanding the cybersecurity needs of its target market and the competitive landscape in the rapidly evolving tech security sector. They aim to provide a solution that offers robust protection while remaining affordable for smaller businesses.\n\nTo support this product launch, CyberShield has engaged your consulting firm to conduct an extensive market analysis. Your deliverables should include an assessment of market demand for cybersecurity solutions among SMEs, a competitive analysis, and calculations of break-even sales volumes for the new software suite. Additionally, CyberShield requires a projection of total sales needed to achieve a profit of $2 million within the first year."
     },
     {
       "id": "quant_26",
       "title": "AeroDynamics",
-      "skill_type": "hypothesis",
+      "skill_type": "Hypothesis",
       "prompt_text": "AeroDynamics, an aerospace engineering firm based in Seattle, is preparing to launch a next-generation drone technology aimed at commercial delivery services. The company is focused on evaluating the potential market in Europe and determining the optimal production scale required to achieve cost efficiencies. They aim to quantify the break-even production volumes for their advanced drone models and assess the impact of regulatory standards on market entry.\n\nTo support this initiative, AeroDynamics has engaged your consulting firm to perform a detailed market analysis. Your deliverables should include an evaluation of the European market potential, calculations of break-even production volumes for the drone models, and a projection of total units required to achieve a profit of $8 million within the first year."
     },
     {
       "id": "quant_27",
       "title": "FinEdge",
-      "skill_type": "hypothesis",
+      "skill_type": "Hypothesis",
       "prompt_text": "FinEdge, a financial technology firm based in Chicago, is set to launch a blockchain-based payment platform designed to streamline cross-border transactions. The company is focused on understanding market adoption rates and identifying key regulatory challenges in the fintech sector. They aim to determine the break-even transaction volumes required to offset initial development costs and forecast the market share they can capture in the competitive payments landscape.\n\nTo aid in this launch, FinEdge has contracted your consulting firm to conduct a comprehensive market analysis. Your deliverables should include an assessment of market adoption trends, calculations of break-even transaction volumes, and a projection of total transaction volumes needed to generate a profit of $6 million in the first year."
     },
     {
       "id": "quant_28",
       "title": "BuildSmart",
-      "skill_type": "hypothesis",
+      "skill_type": "Hypothesis",
       "prompt_text": "BuildSmart, a construction technology company based in Denver, is preparing to introduce a cutting-edge project management software tailored for large-scale infrastructure projects. The company is focused on evaluating market demand among construction firms and determining the pricing strategy that would maximize adoption while ensuring profitability. They aim to calculate the break-even number of software licenses required and assess the potential cost savings for their clients.\n\nTo facilitate this product launch, BuildSmart has engaged your consulting firm to perform an in-depth market analysis. Your deliverables should include an evaluation of market demand among infrastructure firms, calculations of break-even license volumes, and a projection of total sales needed to achieve a profit of $7 million within the first year."
     },
     {
       "id": "quant_29",
       "title": "MediLink",
-      "skill_type": "hypothesis",
+      "skill_type": "Hypothesis",
       "prompt_text": "MediLink, a healthcare IT company based in Boston, is planning to launch a comprehensive telemedicine platform aimed at improving access to healthcare services in rural areas. The company is focused on understanding the adoption rate of telehealth solutions and the challenges of integrating with existing healthcare systems. They aim to determine the break-even number of subscriptions required and evaluate the potential market penetration in underserved regions.\n\nTo support this initiative, MediLink has contracted your consulting firm to conduct a detailed market analysis. Your deliverables should include an assessment of telemedicine adoption trends, calculations of break-even subscription numbers, and a projection of total subscriptions needed to achieve a profit of $5 million in the first year."
     },
     {
       "id": "quant_30",
       "title": "AgriFusion",
-      "skill_type": "hypothesis",
+      "skill_type": "Hypothesis",
       "prompt_text": "AgriFusion, an agri-biotech company based in California, is set to launch an innovative crop yield optimization system powered by artificial intelligence. The company is focused on evaluating the demand for precision agriculture solutions among large-scale farms and determining the optimal pricing strategy to maximize market penetration. They aim to calculate the break-even sales volumes for their AI-driven system and assess the potential return on investment for early adopters.\n\nTo assist with this launch, AgriFusion has engaged your consulting firm to perform a comprehensive market analysis. Your deliverables should include an evaluation of market demand for AI-based agriculture solutions, calculations of break-even sales volumes, and a projection of total sales needed to achieve a profit of $9 million within the first year."
     },
     {
       "id": "quant_31",
       "title": "BioInnovate",
-      "skill_type": "hypothesis",
+      "skill_type": "Hypothesis",
       "prompt_text": "BioInnovate, a biotech startup based in San Diego, is preparing to launch a new gene therapy treatment aimed at treating rare genetic disorders. The company is focused on evaluating clinical trial data and understanding regulatory pathways to ensure a successful market entry. They aim to determine the break-even number of treatments needed to cover R&D costs and forecast the potential market share in the rare disease segment.\n\nTo support their launch, BioInnovate has engaged your consulting firm to conduct a comprehensive market analysis. Your deliverables should include an evaluation of clinical trial outcomes, an assessment of regulatory hurdles, and calculations of break-even treatment volumes. Additionally, BioInnovate requires a projection of total treatment sales needed to achieve a profit of $12 million within the first year."
     },
     {
       "id": "quant_32",
       "title": "UrbanTransit",
-      "skill_type": "hypothesis",
+      "skill_type": "Hypothesis",
       "prompt_text": "UrbanTransit, a public transportation solutions provider based in Chicago, is planning to introduce an innovative electric bus fleet to modernize urban transit systems. The company is focused on analyzing the operational efficiency and environmental impact of transitioning to electric vehicles. They aim to determine the break-even point for fleet conversion and estimate the reduction in operating costs.\n\nTo facilitate this transition, UrbanTransit has engaged your consulting firm to perform an in-depth analysis. Your deliverables should include an evaluation of operational cost savings, calculations of break-even fleet conversion numbers, and a projection of total cost reductions needed to achieve a sustainability target of reducing emissions by 40% within the first year."
     },
     {
       "id": "quant_33",
       "title": "FinSecure",
-      "skill_type": "hypothesis",
+      "skill_type": "Hypothesis",
       "prompt_text": "FinSecure, a financial services firm based in London, is set to launch a new risk management software designed for mid-sized banks. The company is focused on understanding the market demand for advanced risk analytics and the competitive landscape in the fintech sector. They aim to calculate the break-even number of software licenses required and assess the potential market penetration among regional banks.\n\nTo support this initiative, FinSecure has engaged your consulting firm to conduct a detailed market analysis. Your deliverables should include an assessment of market demand for risk management solutions, calculations of break-even license volumes, and a projection of total licenses needed to achieve a profit of £8 million within the first year."
     },
     {
       "id": "quant_34",
       "title": "CleanEnergyX",
-      "skill_type": "hypothesis",
+      "skill_type": "Hypothesis",
       "prompt_text": "CleanEnergyX, a renewable energy company based in Austin, is preparing to launch a new series of wind turbine solutions aimed at rural communities. The company is focused on evaluating the feasibility of wind energy projects and understanding the local energy market dynamics. They aim to determine the break-even installation numbers and forecast the potential savings in energy costs for rural areas.\n\nTo assist with this project, CleanEnergyX has engaged your consulting firm to perform a comprehensive market analysis. Your deliverables should include an evaluation of local energy consumption patterns, calculations of break-even installation volumes, and a projection of total installations needed to achieve a profit of $7 million within the first year."
     },
     {
       "id": "quant_35",
       "title": "MediSync",
-      "skill_type": "hypothesis",
+      "skill_type": "Hypothesis",
       "prompt_text": "MediSync, a healthcare integration company based in Atlanta, is planning to launch a new platform that integrates electronic health records across multiple providers. The company is focused on analyzing interoperability challenges and estimating the potential cost savings for hospitals adopting the platform. They aim to calculate the break-even number of integrations required and forecast the market penetration among regional healthcare systems.\n\nTo support this initiative, MediSync has engaged your consulting firm to conduct a detailed market analysis. Your deliverables should include an assessment of interoperability challenges, calculations of break-even integration volumes, and a projection of total integrations needed to achieve a profit of $4 million within the first year."
     },
     {
       "id": "quant_36",
       "title": "RetailRevamp",
-      "skill_type": "hypothesis",
+      "skill_type": "Hypothesis",
       "prompt_text": "RetailRevamp, a mid-sized retail chain based in Chicago, is preparing to launch a comprehensive e-commerce platform to modernize its sales strategy. The company is focused on understanding the evolving consumer behavior in the digital marketplace and identifying key technological investments required to support online growth. They aim to determine the break-even point for digital transformation investments and forecast the potential increase in market share.\n\nTo achieve these objectives, RetailRevamp has engaged your consulting firm to perform a detailed market analysis. Your deliverables should include an assessment of online consumer trends, calculations of break-even digital sales volumes, and a projection of total online revenue needed to achieve a profit increase of $5 million in the first year."
     },
     {
       "id": "quant_37",
       "title": "AquaTech",
-      "skill_type": "hypothesis",
+      "skill_type": "Hypothesis",
       "prompt_text": "AquaTech, a water technology company based in Singapore, is set to introduce an innovative water recycling system designed for urban infrastructure. The company aims to evaluate the demand for sustainable water solutions in densely populated cities and determine the cost efficiencies of implementing advanced recycling technologies. They intend to calculate the break-even installation numbers and assess the environmental impact of their solution.\n\nTo support this initiative, AquaTech has contracted your consulting firm to conduct a comprehensive market analysis. Your deliverables should include an evaluation of urban water usage patterns, calculations of break-even system installations, and a projection of total installations needed to achieve a profit of SGD 4 million within the first year."
     },
     {
       "id": "quant_38",
       "title": "MedVantage",
-      "skill_type": "hypothesis",
+      "skill_type": "Hypothesis",
       "prompt_text": "MedVantage, a healthcare consultancy based in Germany, is planning to launch a suite of digital health services aimed at improving patient outcomes through technology. The company is focused on analyzing market trends in digital healthcare and identifying the most promising service offerings to meet the needs of modern patients. They aim to calculate the break-even number of service subscriptions required and forecast the market penetration rate.\n\nTo facilitate this launch, MedVantage has engaged your consulting firm to perform a detailed market analysis. Your deliverables should include an assessment of digital health market trends, calculations of break-even subscription volumes, and a projection of total subscriptions needed to achieve a profit of €3 million within the first year."
     },
     {
       "id": "quant_39",
       "title": "AgroEdge",
-      "skill_type": "hypothesis",
+      "skill_type": "Hypothesis",
       "prompt_text": "AgroEdge, an agriculture technology company based in Brazil, is preparing to launch a smart irrigation system designed to optimize water usage on large farms. The company is focused on understanding the regional challenges of water scarcity and the economic benefits of precision agriculture. They aim to determine the break-even installation numbers for their system and evaluate the potential yield improvements for farmers.\n\nTo support this project, AgroEdge has engaged your consulting firm to conduct a comprehensive market analysis. Your deliverables should include an evaluation of regional water usage data, calculations of break-even system installations, and a projection of total installations needed to achieve a profit of $6 million within the first year."
     },
     {
       "id": "quant_40",
       "title": "CyberGuard",
-      "skill_type": "hypothesis",
+      "skill_type": "Hypothesis",
       "prompt_text": "CyberGuard, a cybersecurity firm based in Israel, is set to launch a new threat intelligence platform aimed at providing real-time security analytics for enterprises. The company is focused on understanding the evolving landscape of cyber threats and the specific needs of high-risk industries. They aim to calculate the break-even number of platform subscriptions required and forecast the potential market share in the cybersecurity sector.\n\nTo facilitate this launch, CyberGuard has engaged your consulting firm to perform an in-depth market analysis. Your deliverables should include an assessment of current cyber threat trends, calculations of break-even subscription volumes, and a projection of total subscriptions needed to achieve a profit of $7 million within the first year."
     },
     {
       "id": "quant_41",
       "title": "MobiFleet",
-      "skill_type": "hypothesis",
+      "skill_type": "Hypothesis",
       "prompt_text": "MobiFleet, a transportation logistics company based in Dubai, is planning to launch an AI-driven fleet management system to optimize route planning and reduce fuel consumption. The company aims to evaluate market demand for smart logistics solutions in the Middle East and assess the potential cost savings for large transport operators. They intend to determine the break-even number of subscriptions and forecast the market penetration rate.\n\nTo support this initiative, MobiFleet has engaged your consulting firm to conduct a comprehensive market analysis. Your deliverables should include an evaluation of market demand for AI-driven logistics solutions, calculations of break-even subscription volumes, and a projection of total subscriptions needed to achieve a profit of $5 million within the first year."
     },
     {
       "id": "quant_42",
       "title": "AquaLife",
-      "skill_type": "hypothesis",
+      "skill_type": "Hypothesis",
       "prompt_text": "AquaLife, a water treatment company based in Singapore, is preparing to launch a new series of eco-friendly water purification systems designed for urban communities. The company is focused on understanding the environmental impact and cost-effectiveness of sustainable water solutions in Southeast Asia. They aim to calculate the break-even installation numbers and assess the potential market share in densely populated cities.\n\nTo facilitate this project, AquaLife has engaged your consulting firm to perform a detailed market analysis. Your deliverables should include an assessment of urban water treatment needs, calculations of break-even installation volumes, and a projection of total installations required to achieve a profit of SGD 6 million within the first year."
     },
     {
       "id": "quant_43",
       "title": "EduNext",
-      "skill_type": "hypothesis",
+      "skill_type": "Hypothesis",
       "prompt_text": "EduNext, an educational technology firm based in Berlin, is planning to launch a new online learning platform targeting vocational training programs. The company is focused on analyzing market trends in digital education and the demand for skill-based learning in Europe. They intend to determine the break-even enrollment numbers and forecast the potential revenue from subscription models.\n\nTo support this initiative, EduNext has engaged your consulting firm to conduct a comprehensive market analysis. Your deliverables should include an evaluation of digital education trends, calculations of break-even enrollment volumes, and a projection of total subscriptions needed to achieve a profit of €4 million within the first year."
     },
     {
       "id": "quant_44",
       "title": "MedInnovate",
-      "skill_type": "hypothesis",
+      "skill_type": "Hypothesis",
       "prompt_text": "MedInnovate, a medical research organization based in South Korea, is set to introduce a breakthrough diagnostic imaging technology aimed at early detection of neurological disorders. The company is focused on assessing the clinical efficacy and market readiness of this new technology. They aim to calculate the break-even number of imaging systems required and evaluate the potential improvements in patient outcomes.\n\nTo facilitate this launch, MedInnovate has engaged your consulting firm to perform an in-depth market analysis. Your deliverables should include an assessment of clinical trial data, calculations of break-even imaging system volumes, and a projection of total sales needed to achieve a profit of ₩10 billion within the first year."
     },
     {
       "id": "quant_45",
       "title": "GreenBuild",
-      "skill_type": "hypothesis",
+      "skill_type": "Hypothesis",
       "prompt_text": "GreenBuild, a sustainable construction firm based in Sydney, is planning to launch an innovative green building materials line aimed at reducing the carbon footprint of new developments. The company is focused on understanding market trends in eco-friendly construction and the regulatory landscape in Australia. They intend to determine the break-even production volumes and forecast the potential market share in the green building sector.\n\nTo support this initiative, GreenBuild has engaged your consulting firm to conduct a detailed market analysis. Your deliverables should include an evaluation of market demand for sustainable construction materials, calculations of break-even production volumes, and a projection of total sales needed to achieve a profit of AUD 8 million within the first year."
     },
     {
       "id": "quant_46",
       "title": "DataPulse",
-      "skill_type": "hypothesis",
+      "skill_type": "Hypothesis",
       "prompt_text": "DataPulse, a data analytics firm based in Singapore, is preparing to launch a new predictive analytics platform aimed at the retail industry. The company is focused on understanding the evolving consumer behavior in Asia-Pacific markets and identifying key trends that drive sales. They aim to calculate the break-even number of platform subscriptions required and forecast the potential market share in the competitive retail analytics space.\n\nTo support this launch, DataPulse has engaged your consulting firm to conduct a comprehensive market analysis. Your deliverables should include an assessment of market demand for predictive analytics in retail, calculations of break-even subscription volumes, and a projection of total subscriptions needed to achieve a profit of SGD 5 million within the first year."
     },
     {
       "id": "quant_47",
       "title": "AeroVista",
-      "skill_type": "hypothesis",
+      "skill_type": "Hypothesis",
       "prompt_text": "AeroVista, an aerospace manufacturing company based in Toulouse, France, is preparing to launch a new line of eco-friendly aircraft components. The company is focused on reducing emissions and improving fuel efficiency in the aviation industry. They aim to calculate the break-even production volumes for these components and assess the potential market share in the European aerospace market.\n\nTo support this initiative, AeroVista has engaged your consulting firm to conduct a comprehensive market analysis. Your deliverables should include an evaluation of market demand for eco-friendly aircraft components, calculations of break-even production volumes, and a projection of total sales needed to achieve a profit of €10 million within the first year."
     },
     {
       "id": "quant_48",
       "title": "MedExcellence",
-      "skill_type": "hypothesis",
+      "skill_type": "Hypothesis",
       "prompt_text": "MedExcellence, a healthcare provider based in Tokyo, Japan, is planning to introduce a new telehealth service to improve patient access to specialist consultations. The company is focused on understanding the regulatory landscape and patient adoption trends in the Japanese healthcare market. They aim to determine the break-even number of telehealth consultations required and forecast the potential cost savings for healthcare providers.\n\nTo facilitate this project, MedExcellence has engaged your consulting firm to conduct an in-depth market analysis. Your deliverables should include an assessment of telehealth adoption rates, an analysis of regulatory challenges, and calculations of break-even consultation volumes required to achieve a profit of ¥500 million within the first year."
     },
     {
       "id": "quant_49",
       "title": "EcoTrans",
-      "skill_type": "hypothesis",
+      "skill_type": "Hypothesis",
       "prompt_text": "EcoTrans, a logistics company based in Berlin, Germany, is preparing to launch a new green transportation service aimed at reducing carbon emissions in urban freight delivery. The company is focused on evaluating the demand for sustainable logistics solutions in the German market and identifying key operational efficiencies. They aim to calculate the break-even number of green delivery contracts required and assess the potential reduction in logistics costs.\n\nTo support this initiative, EcoTrans has contracted your consulting firm to perform a detailed market analysis. Your deliverables should include an evaluation of market demand for sustainable logistics, calculations of break-even contract volumes, and a projection of total contracts needed to achieve a profit of €3 million within the first year."
     },
     {
       "id": "quant_50",
       "title": "AgriVision",
-      "skill_type": "hypothesis",
+      "skill_type": "Hypothesis",
       "prompt_text": "AgriVision, an agricultural technology firm based in Melbourne, Australia, is set to introduce an advanced crop monitoring system that leverages drone technology and AI analytics. The company is focused on understanding the adoption rates of precision agriculture in the Australian market and determining the optimal pricing strategy for their new system. They aim to calculate the break-even number of system subscriptions required and forecast the potential yield improvements for large-scale farms.\n\nTo assist with this launch, AgriVision has engaged your consulting firm to conduct a comprehensive market analysis. Your deliverables should include an assessment of market demand for precision agriculture solutions, calculations of break-even subscription volumes, and a projection of total subscriptions needed to achieve a profit of AUD 6 million within the first year."
     },
     {
