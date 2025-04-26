@@ -337,7 +337,7 @@ except Exception as e:
 
 
 # --- Helper Functions ---
-# [ reset_skill_state definition remains here, added hypothesis_count ]
+# [ reset_skill_state definition remains here, added hypothesis_count and exhibit_index ]
 def reset_skill_state():
     """Resets state variables specific to a practice run within a skill."""
     prefix = st.session_state.key_prefix
@@ -349,8 +349,9 @@ def reset_skill_state():
         'feedback_submitted', 'user_feedback', 'interaction_start_time',
         'total_time', 'is_typing', 'feedback',
         'show_comment_box', 'feedback_rating_value',
-        'hypothesis_count', # Added for Hypothesis Formulation
-        'analysis_input' # Added for Analysis skill
+        'hypothesis_count',
+        'analysis_input',
+        'current_exhibit_index' # Added for Analysis skill
     ]
     logger.info(f"Resetting state keys: {keys_to_reset}")
     for key in keys_to_reset:
@@ -373,8 +374,9 @@ def reset_skill_state():
     init_session_state_key('total_time', 0.0)
     init_session_state_key('user_feedback', None)
     init_session_state_key('current_prompt_id', None)
-    init_session_state_key('hypothesis_count', 0) # Added for Hypothesis Formulation
-    init_session_state_key('analysis_input', "") # Added for Analysis skill
+    init_session_state_key('hypothesis_count', 0)
+    init_session_state_key('analysis_input', "")
+    init_session_state_key('current_exhibit_index', 0) # Initialize exhibit index
 
 
 # --- UPDATED: Function to Save User Feedback via Google Sheets ---
@@ -539,6 +541,8 @@ def send_question(question, current_case_prompt_text, exhibit_context=None):
     """
     Sends user question/input to LLM, gets response based on skill, updates conversation state.
     Includes optional exhibit_context for Analysis skill.
+    NOTE: This function is NO LONGER used for the main interaction loop of Analysis.
+          It's kept for Clarifying Questions and Hypothesis Formulation.
     """
     prefix = st.session_state.key_prefix
     conv_key = f"{prefix}_conversation"
@@ -553,7 +557,7 @@ def send_question(question, current_case_prompt_text, exhibit_context=None):
 
     st.session_state[is_typing_key] = True
     logger.info(f"Skill: {selected_skill}, PromptID: {prompt_id} - User Input: '{question}'")
-    # For Analysis, store the analysis text as the user message
+    # Store user message
     st.session_state.setdefault(conv_key, []).append({"role": "interviewee", "content": question})
 
     # Increment hypothesis count if this is the relevant skill
@@ -566,7 +570,7 @@ def send_question(question, current_case_prompt_text, exhibit_context=None):
 
     try:
         history_for_prompt = "\n".join([f"{msg['role'].capitalize()}: {msg['content']}" for msg in st.session_state.get(conv_key, [])[:-1]]) # History *before* current input
-        latest_input = question # The user's latest question, hypothesis, or analysis
+        latest_input = question # The user's latest question or hypothesis
 
         # --- Define LLM Prompt based on Skill ---
         prompt_for_llm = ""
@@ -575,78 +579,26 @@ def send_question(question, current_case_prompt_text, exhibit_context=None):
         temperature = 0.5 # Default
 
         if selected_skill == "Clarifying": # Use new skill name
-            prompt_for_llm = f"""
-            You are a **strict** case interviewer simulator focusing ONLY on the clarifying questions phase. Evaluate questions **rigorously**.
-            Current Case Prompt Context: {current_case_prompt_text}
-            Conversation History So Far:\n{history_for_prompt}
-            Interviewee's Latest Question: {latest_input}
-            Your Task:
-            1. Provide a concise, helpful answer...
-            2. Assess the quality of *this specific question*...
-            3. Use the following exact format...
-            ###ANSWER###
-            [Your plausible answer here]
-            ###ASSESSMENT###
-            [Your brief but rigorous assessment...]
-            """
-            system_message = "You are a strict case interview simulator for clarifying questions. Evaluate questions rigorously... Use the specified response format."
+            prompt_for_llm = f"""... [Clarifying Questions Prompt as before] ..."""
+            system_message = "You are a strict case interview simulator for clarifying questions..."
             max_tokens = 350
             temperature = 0.5
 
-        elif selected_skill == "Frameworks": # Use new skill name
-             logger.warning("send_question called unexpectedly for Frameworks skill.")
-             interviewer_answer = "Framework submitted. Generating final feedback..."
-             interviewer_assessment = None
-             st.session_state.setdefault(conv_key, []).append({"role": "interviewer", "content": interviewer_answer, "assessment": interviewer_assessment})
-             st.session_state[is_typing_key] = False
-             st.session_state[done_key] = True
-             st.rerun()
-             return
-
         elif selected_skill == "Hypothesis": # Use new skill name
-            prompt_for_llm = f"""
-            You are playing the role of a case interviewer providing data/information in response to a candidate's hypothesis.
-            The candidate is trying to diagnose an issue based on the case prompt.
-            **Your Primary Task: Evaluate the Candidate's Input FIRST.**
-            Determine if the "Candidate's Latest Hypothesis/Area to Investigate" below is a reasonable, testable hypothesis related to the case context ({current_case_prompt_text}).
-            - Is it specific enough? Is it relevant?
-            - Or is it nonsensical (like jokes, insults), extremely vague (like one word "why?" or "wut"), or clearly unrelated?
-            **Based on your evaluation, respond in ONE of the following two ways:**
-            1.  **If the input IS a reasonable hypothesis:** Provide concise contradictory info (1-2 sentences). Maintain consistency. Sound neutral. **DO NOT** assess quality. **DO NOT** use ### tags.
-            2.  **If the input IS NOT a reasonable hypothesis:** **DO NOT provide contradictory info.** Respond politely asking for a clearer, testable hypothesis related to the case. Example: "I don't have data related to that. Could you propose a specific hypothesis about the potential cause of the issue described in the case?" **DO NOT** use ### tags.
-            **CRITICAL:** Your response must be ONLY the text for either option 1 or option 2 above. No extra formatting or explanation.
-            Conversation History (Previous hypotheses and info provided):
-            {history_for_prompt}
-            Candidate's Latest Hypothesis/Area to Investigate:
-            {latest_input}
-            Your Response:
-            """
-            system_message = "You are a case interviewer. IMPORTANT: First, evaluate if the user's input is a reasonable hypothesis for the case. If yes, provide concise, contradictory information. If no (e.g., nonsensical, vague, unrelated), politely ask for a clearer, relevant hypothesis. Do not assess. Do not use special formatting."
+            prompt_for_llm = f"""... [Hypothesis Interaction Prompt v2 as before] ..."""
+            system_message = "You are a case interviewer. IMPORTANT: First, evaluate if the user's input is a reasonable hypothesis..."
             max_tokens = 150
             temperature = 0.4
 
-        elif selected_skill == "Analysis": # Use new skill name
-             if exhibit_context is None:
-                 logger.error("Analysis skill called without exhibit_context.")
-                 st.error("Internal error: Missing exhibit context for analysis.")
-                 st.session_state[is_typing_key] = False; st.rerun(); return
-             prompt_for_llm = f"""
-             You are a case interview coach evaluating a candidate's analysis of provided exhibits.
-             Case Prompt Context: {current_case_prompt_text}
-             Exhibit(s) Provided (Summary):\n{exhibit_context}
-             Candidate's Analysis of the Exhibit(s): {latest_input}
-             Your Task:
-             1. **Acknowledge:** Briefly acknowledge the analysis.
-             2. **Assess:** Evaluate based on: Key Insights, Data Interpretation, Implications/SO WHAT?, Clarity & Structure.
-             3. **Format:** Use the following exact format...
-             ###ANSWER###
-             [Your brief acknowledgement here.]
-             ###ASSESSMENT###
-             [Your structured assessment...]
-             """
-             system_message = "You are a case interview coach evaluating a candidate's analysis of case exhibits. Provide structured feedback using the specified format."
-             max_tokens = 400
-             temperature = 0.5
+        # Analysis and Framework Dev now handle their primary interaction outside send_question
+        elif selected_skill in ["Frameworks", "Analysis"]:
+             logger.error(f"send_question called unexpectedly for skill: {selected_skill}")
+             interviewer_answer = f"Error: Unexpected interaction for {selected_skill}."
+             interviewer_assessment = None
+             st.session_state.setdefault(conv_key, []).append({"role": "interviewer", "content": interviewer_answer, "assessment": interviewer_assessment})
+             st.session_state[is_typing_key] = False
+             st.rerun()
+             return
 
         else:
             # Handle other potential skills or errors
@@ -691,11 +643,7 @@ def send_question(question, current_case_prompt_text, exhibit_context=None):
             st.session_state[done_key] = True
             st.session_state.setdefault(conv_key, []).append({ "role": "interviewer", "content": "(Maximum hypotheses reached. Moving to feedback.)", "assessment": None })
 
-        # For Analysis skill, submitting the analysis immediately ends the interaction phase
-        if selected_skill == "Analysis": # Use new skill name
-             logger.info("Analysis submitted. Ending session.")
-             st.session_state[done_key] = True
-
+        # Analysis skill ending is handled in its UI function
 
     except Exception as e:
         logger.exception(f"Error generating LLM response: {e}")
@@ -753,15 +701,17 @@ def generate_final_feedback(current_case_prompt_text):
                     formatted_history.append(f"Interviewer Info Provided after H{h_num}: {content}")
          history_string = "\n\n".join(formatted_history)
     elif selected_skill == "Analysis": # Use new skill name
-        if len(conversation_history) >= 2: # Should have user analysis and bot assessment
-            user_analysis = conversation_history[-2].get('content', '[Analysis not found]')
-            bot_assessment = conversation_history[-1].get('assessment', '[Assessment not found]')
-            formatted_history.append(f"Candidate's Analysis:\n{user_analysis}")
-            formatted_history.append(f"\nInterviewer's Initial Assessment:\n{bot_assessment}")
-            history_string = "\n\n".join(formatted_history)
-        else:
-            logger.warning("Analysis: Could not extract analysis/assessment from conversation state.")
-            return "[Could not generate feedback: Analysis/Assessment not found in state]"
+        # History string needs to include all analyses submitted
+        analysis_parts = []
+        exhibit_index = 0
+        for i, msg in enumerate(conversation_history):
+             if msg.get("role") == "interviewee":
+                 analysis_parts.append(f"Candidate's Analysis for Exhibit {exhibit_index + 1}:\n{msg.get('content', '[Analysis not found]')}")
+                 exhibit_index += 1
+        history_string = "\n\n---\n\n".join(analysis_parts) # Separate analyses clearly
+        if not history_string:
+             logger.warning("Analysis: Could not extract analysis from conversation state.")
+             return "[Could not generate feedback: Analysis not found in state]"
     else: # For Clarifying Questions (and potentially others later)
         for i, msg in enumerate(conversation_history):
             role = msg.get("role"); content = msg.get("content", "[missing content]"); q_num = (i // 2) + 1
@@ -803,9 +753,50 @@ def generate_final_feedback(current_case_prompt_text):
                  max_tokens_feedback = 700
 
             elif selected_skill == "Analysis": # Use new skill name
-                 feedback_prompt = f"""... [Analysis Feedback Prompt as before - Rating First] ..."""
-                 system_message_feedback = "You are an expert case interview coach providing structured feedback on exhibit analysis..."
-                 max_tokens_feedback = 700
+                 # --- Updated Analysis Final Feedback Prompt ---
+                 feedback_prompt = f"""
+                 You are an experienced case interview coach providing final summary feedback on the Analysis phase.
+                 The candidate was presented with a case prompt and one or more exhibits sequentially, submitting an analysis for each.
+
+                 Case Prompt Context for this Session:
+                 {current_case_prompt_text}
+
+                 Candidate's Submitted Analyses (for each exhibit shown):
+                 {history_string}
+
+                 Your Task:
+                 Provide detailed, professional, final feedback on the candidate's overall analysis performance across all exhibits. Evaluate their ability to interpret each exhibit correctly AND synthesize the findings. Use markdown formatting effectively.
+
+                 **IMPORTANT:** Your response MUST start *directly* with the "## Overall Analysis Rating:" heading on the first line, followed by the rating and justification. Do not include any introductory phrases.
+
+                 Structure your feedback precisely as follows using Markdown:
+
+                 ## Overall Analysis Rating: [1-5]/5
+                 *(Provide a brief justification for the rating here, considering the quality criteria below across all exhibits analyzed)*
+
+                 ---
+
+                 1.  **Overall Summary:** Briefly summarize the quality and effectiveness of the candidate's analysis across all provided exhibits in the context of the case. Did they connect the dots?
+
+                 2.  **Strengths:** Identify 1-2 specific strengths demonstrated across the analyses (e.g., consistently identified key insights, correctly used data, drew clear implications, well-structured thinking). Refer to specific exhibit analyses if helpful.
+
+                 3.  **Areas for Improvement:** Identify 1-2 key weaknesses (e.g., missed key insights, misinterpreted data, weak implications/so-what, unclear structure, didn't use specific data, failed to synthesize findings). Refer to specific exhibit analyses if helpful.
+
+                 4.  **Actionable Next Steps:** Provide at least two concrete, actionable steps the candidate can take to improve their exhibit analysis and synthesis skills *for future cases*.
+
+
+                 **Rating Criteria Reference:**
+                 * 1: Poor. Completely missed the point, misinterpreted data badly, no structure or implications. Failed to synthesize.
+                 * 2: Weak. Missed major insights or made significant interpretation errors, weak connection to the case or synthesis across exhibits.
+                 * 3: Fair. Identified some insights but missed key ones or made minor errors; implications/synthesis could be stronger/clearer.
+                 * 4: Good. Identified key insights, interpreted data mostly correctly, drew reasonable implications relevant to the case, attempted synthesis. Generally clear.
+                 * 5: Excellent. Clearly identified all key insights, interpreted data accurately, drew strong implications directly addressing the case problem, effectively synthesized findings across exhibits, well-structured.
+
+                 Ensure your response does **not** start with any other title besides "## Overall Analysis Rating:". Use paragraph breaks between sections.
+                 """
+                 system_message_feedback = "You are an expert case interview coach providing structured feedback on exhibit analysis across multiple exhibits. IMPORTANT: Start your response *directly* with the '## Overall Analysis Rating:' heading. Evaluate critically based on the submitted analyses. Use markdown effectively."
+                 max_tokens_feedback = 800 # Allow more tokens for multi-exhibit feedback
+                 # --- End of Updated Analysis Final Feedback Prompt ---
 
             else:
                 logger.error(f"Cannot generate feedback for unhandled skill: {selected_skill}")
@@ -845,6 +836,7 @@ def main_app():
         st.markdown(
             "Love CHIP? Your support helps keep this tool free and improving! 🙏\n\n"
             "Consider making a small donation (suggested $5) to help cover server and API costs."
+            # Alternative text: "$5 gives one hard-working human unlimited access to CHIP."
         )
         donate_url = "https://buymeacoffee.com/9611"
         st.link_button("Buy Me a Coffee ☕", donate_url) # Uses CSS for styling
@@ -1319,6 +1311,7 @@ def analysis_ui():
     show_comment_key = f"{prefix}_show_comment_box"; feedback_rating_value_key = f"{prefix}_feedback_rating_value"
     # show_donation_dialog_key = f"{prefix}_show_donation_dialog" # REMOVED
     analysis_input_key = f"{prefix}_analysis_input" # Specific to this skill
+    current_exhibit_index_key = f"{prefix}_current_exhibit_index" # For sequential exhibits
 
     # Initialize state
     init_session_state_key('conversation', []); init_session_state_key('done_asking', False); init_session_state_key('feedback_submitted', False)
@@ -1326,6 +1319,7 @@ def analysis_ui():
     init_session_state_key('feedback_rating_value', None); init_session_state_key('interaction_start_time', None)
     init_session_state_key('total_time', 0.0); init_session_state_key('user_feedback', None); init_session_state_key('current_prompt_id', None)
     init_session_state_key('analysis_input', "") # Initialize analysis input
+    init_session_state_key(current_exhibit_index_key, 0) # Initialize exhibit index
 
     # --- Instructions ---
     st.markdown("Read the case prompt and examine the exhibit(s) below. Analyze the data presented in the exhibit(s) and explain its significance in relation to the case problem. Enter your analysis in the text area below and click \"Submit Analysis\" to get feedback.")
@@ -1345,6 +1339,7 @@ def analysis_ui():
         if not current_prompt or current_prompt.get("skill_type") != "Analysis":
              logger.error(f"Still could not load a valid Analysis prompt. Last ID: {selected_id}")
              st.error("Could not load a valid Analysis prompt. Please try selecting the skill again or check prompts.json.")
+             if st.button("Restart Skill"): reset_skill_state(); st.rerun() # Add restart button
              st.stop()
 
     st.header("Case Prompt")
@@ -1352,114 +1347,112 @@ def analysis_ui():
     if case_prompt_text.startswith("Error"): st.error(case_prompt_text); st.stop()
     else: st.info(f"**{case_title}**\n\n{case_prompt_text}"); logger.debug(f"Displayed Analysis prompt: {case_title}")
 
-    # Display Exhibits
+    # --- Main Interaction Area (Sequential Exhibits) ---
     exhibits = current_prompt.get("exhibits", [])
-    exhibit_context_for_llm = [] # Build context for LLM feedback
+    current_index = st.session_state.get(current_exhibit_index_key, 0)
+    total_exhibits = len(exhibits)
+
     if not exhibits:
         st.warning("No exhibits found for this analysis prompt.")
-    else:
-        for i, exhibit in enumerate(exhibits):
-            st.subheader(exhibit.get("exhibit_title", f"Exhibit {i+1}"))
-            exhibit_context_for_llm.append(f"Title: {exhibit.get('exhibit_title', f'Exhibit {i+1}')}")
+        # If no exhibits, maybe end immediately or show different message?
+        # For now, it will just show the feedback/conclusion area below if done_asking is true.
+        if not st.session_state.get(done_key):
+             st.session_state[done_key] = True # Mark as done if no exhibits
+             st.rerun()
 
-            if exhibit.get("description"):
-                st.caption(exhibit.get("description"))
-                exhibit_context_for_llm.append(f"Description: {exhibit.get('description')}")
+    elif current_index < total_exhibits:
+        exhibit = exhibits[current_index]
+        st.header(f"Exhibit {current_index + 1} of {total_exhibits}")
+        st.subheader(exhibit.get("exhibit_title", f"Exhibit {current_index + 1}"))
 
-            chart_type = exhibit.get("chart_type", "unknown")
-            data = exhibit.get("data")
-            if data:
-                try:
-                    df = pd.DataFrame(data)
-                    fig = None
-                    if chart_type == "bar":
-                        x_col = exhibit.get("x_axis")
-                        y_cols = exhibit.get("y_axis")
-                        if x_col and y_cols:
-                             if not isinstance(y_cols, list): y_cols = [y_cols]
-                             fig = px.bar(df, x=x_col, y=y_cols, title="", barmode='group')
-                             fig.update_layout(legend_title_text='')
-                        else: st.warning(f"Exhibit {i+1}: Bar chart data needs 'x_axis' and 'y_axis' keys defined in prompts.json.")
-                    elif chart_type == "line":
-                         x_col = exhibit.get("x_axis")
-                         y_cols = exhibit.get("y_axis")
-                         if x_col and y_cols:
-                             if not isinstance(y_cols, list): y_cols = [y_cols]
-                             fig = px.line(df, x=x_col, y=y_cols, title="")
-                             fig.update_layout(legend_title_text='')
-                         else: st.warning(f"Exhibit {i+1}: Line chart data needs 'x_axis' and 'y_axis' keys defined in prompts.json.")
-                    # Add other chart types (pie, scatter) here if needed
-                    elif chart_type == "pie":
-                         names_col = exhibit.get("names") # Column for slice names
-                         values_col = exhibit.get("values") # Column for slice values
-                         if names_col and values_col:
-                             fig = px.pie(df, names=names_col, values=values_col, title="")
-                         else: st.warning(f"Exhibit {i+1}: Pie chart data needs 'names' and 'values' keys defined in prompts.json.")
-                    elif chart_type == "scatter":
-                         x_col = exhibit.get("x_axis")
-                         y_col = exhibit.get("y_axis") # Typically single y for scatter
-                         if x_col and y_col:
-                             # Add optional color/size mapping if defined in JSON
-                             color_col = exhibit.get("color")
-                             size_col = exhibit.get("size")
-                             fig = px.scatter(df, x=x_col, y=y_col, title="", color=color_col, size=size_col)
-                         else: st.warning(f"Exhibit {i+1}: Scatter chart data needs 'x_axis' and 'y_axis' keys defined in prompts.json.")
-                    elif chart_type == "table":
-                         st.dataframe(df) # Display as table
-                         fig = None # No figure to plot
-                    else:
-                        st.warning(f"Exhibit {i+1}: Unsupported or unspecified chart type '{chart_type}'. Displaying data table.")
-                        st.dataframe(df)
-                        fig = None
+        if exhibit.get("description"):
+            st.caption(exhibit.get("description"))
 
-                    if fig:
-                        # Improve chart appearance slightly
-                        fig.update_layout(margin=dict(l=20, r=20, t=30, b=20), height=400)
-                        st.plotly_chart(fig, use_container_width=True)
-                        # Add simplified data summary to context
-                        exhibit_context_for_llm.append(f"Data Summary ({chart_type} chart): {df.head().to_string()}")
-                    elif chart_type == "table":
-                        exhibit_context_for_llm.append(f"Data Summary (table): {df.to_string()}")
+        chart_type = exhibit.get("chart_type", "unknown")
+        data = exhibit.get("data")
+        if data:
+            try:
+                df = pd.DataFrame(data)
+                fig = None
+                # Plotting logic (same as before)
+                if chart_type == "bar":
+                    x_col = exhibit.get("x_axis"); y_cols = exhibit.get("y_axis")
+                    if x_col and y_cols:
+                        if not isinstance(y_cols, list): y_cols = [y_cols]
+                        fig = px.bar(df, x=x_col, y=y_cols, title="", barmode='group'); fig.update_layout(legend_title_text='')
+                    else: st.warning(f"Exhibit {current_index + 1}: Bar chart data needs 'x_axis' and 'y_axis' keys.")
+                elif chart_type == "line":
+                    x_col = exhibit.get("x_axis"); y_cols = exhibit.get("y_axis")
+                    if x_col and y_cols:
+                        if not isinstance(y_cols, list): y_cols = [y_cols]
+                        fig = px.line(df, x=x_col, y=y_cols, title=""); fig.update_layout(legend_title_text='')
+                    else: st.warning(f"Exhibit {current_index + 1}: Line chart data needs 'x_axis' and 'y_axis' keys.")
+                elif chart_type == "pie":
+                    names_col = exhibit.get("names"); values_col = exhibit.get("values")
+                    if names_col and values_col: fig = px.pie(df, names=names_col, values=values_col, title="")
+                    else: st.warning(f"Exhibit {current_index + 1}: Pie chart data needs 'names' and 'values' keys.")
+                elif chart_type == "scatter":
+                    x_col = exhibit.get("x_axis"); y_col = exhibit.get("y_axis")
+                    if x_col and y_col:
+                        color_col = exhibit.get("color"); size_col = exhibit.get("size")
+                        fig = px.scatter(df, x=x_col, y=y_col, title="", color=color_col, size=size_col)
+                    else: st.warning(f"Exhibit {current_index + 1}: Scatter chart data needs 'x_axis' and 'y_axis' keys.")
+                elif chart_type == "table": st.dataframe(df); fig = None
+                else: st.warning(f"Exhibit {current_index + 1}: Unsupported chart type '{chart_type}'. Displaying table."); st.dataframe(df); fig = None
 
+                if fig: fig.update_layout(margin=dict(l=20, r=20, t=30, b=20), height=400); st.plotly_chart(fig, use_container_width=True)
 
-                except Exception as e:
-                    logger.error(f"Error processing exhibit {i+1} data: {e}")
-                    st.error(f"Error displaying exhibit {i+1}. Please check data format in prompts.json.")
-                    exhibit_context_for_llm.append(f"Data: Error processing exhibit data.")
-            else:
-                st.warning(f"Exhibit {i+1}: No data found.")
-                exhibit_context_for_llm.append("Data: No data provided.")
-            exhibit_context_for_llm.append("---") # Separator between exhibits for LLM
+            except Exception as e:
+                logger.error(f"Error processing exhibit {current_index + 1} data: {e}")
+                st.error(f"Error displaying exhibit {current_index + 1}. Please check data format in prompts.json.")
+        else:
+            st.warning(f"Exhibit {current_index + 1}: No data found.")
 
-    exhibit_context_str = "\n".join(exhibit_context_for_llm)
-
-    # --- Main Interaction Area ---
-    if not st.session_state.get(done_key):
-        st.header("Your Analysis")
-        with st.form(key=f"{prefix}_an_input_form", clear_on_submit=False):
+        # Input form for the current exhibit's analysis
+        st.header(f"Your Analysis (Exhibit {current_index + 1})")
+        with st.form(key=f"{prefix}_an_input_form_{current_index}", clear_on_submit=True): # Unique key per exhibit
              analysis_input = st.text_area(
-                 "Enter your analysis of the exhibit(s) here:",
-                 height=250,
-                 key=f"{prefix}_an_form_text_area",
+                 f"Enter your analysis for Exhibit {current_index + 1}:",
+                 height=200,
+                 key=f"{prefix}_an_form_text_area_{current_index}", # Unique key
                  disabled=st.session_state.get(is_typing_key, False),
-                 placeholder="Based on Exhibit 1, the key driver seems to be..."
+                 placeholder="Based on this exhibit, I observe..."
              )
+             # Determine button label based on whether it's the last exhibit
+             button_label = "Submit Analysis & Next Exhibit" if current_index < total_exhibits - 1 else "Submit Final Analysis & Get Feedback"
              submitted = st.form_submit_button(
-                 "Submit Analysis",
+                 button_label,
                  disabled=st.session_state.get(is_typing_key, False) or not analysis_input
              )
              if submitted and analysis_input:
-                 logger.info("User submitted analysis.")
-                 # Call send_question to get initial assessment (will also set done_key=True)
-                 send_question(analysis_input, case_prompt_text, exhibit_context=exhibit_context_str)
-                 # Rerun is handled by send_question
+                 logger.info(f"User submitted analysis for exhibit {current_index + 1}.")
+                 # Append analysis to conversation state, perhaps with exhibit identifier
+                 st.session_state.setdefault(conv_key, []).append({
+                     "role": "interviewee",
+                     "content": f"Analysis for Exhibit {current_index + 1}:\n{analysis_input}" # Store analysis with label
+                 })
 
-        # Typing indicator (will show while feedback generates)
-        typing_placeholder = st.empty()
-        if st.session_state.get(is_typing_key) or (st.session_state.get(done_key) and not st.session_state.get(feedback_key)):
-             typing_placeholder.text("CHIP is analyzing your analysis...")
-        else:
-             typing_placeholder.empty()
+                 # Increment index and check if done
+                 next_index = current_index + 1
+                 st.session_state[current_exhibit_index_key] = next_index
+
+                 if next_index >= total_exhibits:
+                     logger.info("Last exhibit analysis submitted. Ending session.")
+                     st.session_state[done_key] = True
+                     # Calculate time, increment run count, check donation
+                     if st.session_state.get(start_time_key) is None: st.session_state[start_time_key] = time.time(); logger.info("Analysis interaction timer started on first submit.")
+                     end_time = time.time(); start_time = st.session_state.get(start_time_key)
+                     if start_time is not None: st.session_state[time_key] = end_time - start_time
+                     else: st.session_state[time_key] = 0.0
+                     current_session_run_count = st.session_state.get(run_count_key, 0) + 1
+                     st.session_state[run_count_key] = current_session_run_count
+                     logger.info(f"Session run count incremented to: {current_session_run_count} (Analysis)")
+                     # REMOVED Donation Dialog trigger logic
+                 else:
+                      logger.info(f"Moving to exhibit {next_index + 1}")
+
+                 st.rerun() # Rerun to show next exhibit or feedback section
+
         if st.session_state.get(start_time_key) is None: st.session_state[start_time_key] = time.time(); logger.info("Interaction timer started.")
 
 
@@ -1467,7 +1460,7 @@ def analysis_ui():
     if st.session_state.get(done_key):
         logger.debug("Entering analysis feedback and conclusion area.")
         st.session_state[is_typing_key] = True
-        final_feedback_content = generate_final_feedback(case_prompt_text) # exhibit_context_str is implicitly used via history
+        final_feedback_content = generate_final_feedback(case_prompt_text)
         st.session_state[is_typing_key] = False
 
         # --- Add Debug Logging ---
