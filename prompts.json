@@ -601,6 +601,13 @@
   }
 ,
   {
+    "id": "qual_51",
+    "title": "Team Communication Workshop Feedback",
+    "skill_type": "Qualitative",
+    "prompt_text": "Our client, a mid-sized tech firm, recently conducted a team communication workshop. They are seeking feedback on participants’ experiences, perceived improvements in communication clarity, and suggestions for future sessions."
+  }
+,
+  {
     "id": "quant_01",
     "title": "GreenGardens",
     "skill_type": "Frameworks",
@@ -1571,7 +1578,7 @@
       "id": "quant_01",
       "title": "GreenGardens Organics Expansion Analysis",
       "skill_type": "Analysis",
-      "prompt_text": "GreenGardens Organics, a family-owned organic produce farm based in Southern Ontario, is evaluating an expansion into the Northeastern U.S. using three different types of organic produce. Review the exhibits below and answer: (1) Which state offers the best market share opportunity? (2) Which produce type requires the highest break-even volume? (3) Do profit projections meet the $30 million target by 2025? Provide your recommendations.",
+      "prompt_text": "GreenGardens Organics, a family-owned organic produce farm based in Southern Ontario, is evaluating an expansion into the Northeastern U.S. using three different types of organic produce.",
       "exhibits": [
         {
           "exhibit_title": "Exhibit 1: Target Market Share by State",
@@ -1613,7 +1620,7 @@
     "id": "analysis_02",
     "title": "Urban Bean Coffee Shop Profitability",
     "skill_type": "Analysis",
-    "prompt_text": "Urban Bean operates 5 coffee shops across Metro City. Analyze the exhibits below and recommend which location to invest in next and how to optimize costs.",
+    "prompt_text": "Urban Bean operates 5 coffee shops across Metro City. The company is seeking advice on which location to invest in next and how it can optimize overall costs.",
     "exhibits": [
       {
         "exhibit_title": "Exhibit 1: Monthly Revenue by Location",
@@ -1634,9 +1641,2254 @@
           "Category": ["Rent", "Labor", "COGS", "Utilities", "Marketing"],
           "Cost": [30, 25, 20, 10, 15]
         },
-        "names": "Category",
+        "labels": "Category",
         "values": "Cost"
       }
+    ]
+  },
+  {
+    "id": "analysis_03",
+    "title": "FitTrack Pre-Launch Market Analysis",
+    "skill_type": "Analysis",
+    "prompt_text": "FitTrack is preparing to launch a new fitness tracker. The company wants to analyze distribution channels and price tiers to prioritize to maximize early adoption.",
+    "exhibits": [
+      {
+        "exhibit_title": "Exhibit 1: Projected Demand by Channel",
+        "chart_type": "bar",
+        "description": "Units (in thousands) projected for each channel",
+        "data": {
+          "Channel": ["Online Retail", "Specialty Stores", "Direct Sales", "Wholesale"],
+          "Projected Units (000s)": [50, 30, 20, 40]
+        },
+        "x_axis": "Channel",
+        "y_axis": ["Projected Units (000s)"]
+      },
+      {
+        "exhibit_title": "Exhibit 2: Competitor Price vs. Units Sold",
+        "chart_type": "line",
+        "description": "Historical units sold at different price tiers (in thousands)",
+        "data": {
+          "Price Tier ($)": [50, 100, 150, 200],
+          "Units Sold (000s)": [200, 150, 100, 50]
+        },
+        "x_axis": "Price Tier ($)",
+        "y_axis": ["Units Sold (000s)"]
+      },
+      {
+        "exhibit_title": "Exhibit 3: Production Cost Breakdown",
+        "chart_type": "pie",
+        "description": "Percentage of total cost per unit",
+        "data": {
+          "Cost Component": ["Materials", "Labor", "Overhead", "Marketing"],
+          "Percentage": [40, 20, 25, 15]
+        },
+        "labels": "Cost Component",
+        "values": "Percentage"
+      }
+    ]
+  }
+,
+  {
+    "id": "analysis_04",
+    "title": "TechWave App Launch Analysis",
+    "skill_type": "Analysis",
+    "prompt_text": "TechWave is preparing to launch its new fitness mobile app. It is looking for analysis on features to prioritize, promotional channels to focus on, and pricing tiers to evaluate.",
+    "exhibits": [
+      {
+        "exhibit_title": "Exhibit 1: Feature Prioritization Scores",
+        "chart_type": "table",
+        "description": "Survey scores from 1 (low) to 5 (high)",
+        "data": {
+          "Feature": ["Social Sharing", "In-App Workouts", "Nutrition Tracking", "Wearable Integration"],
+          "Average Score": [4.2, 4.5, 3.8, 4.1]
+        }
+      },
+      {
+        "exhibit_title": "Exhibit 2: Projected Downloads by Channel",
+        "chart_type": "bar",
+        "description": "Downloads in thousands",
+        "data": {
+          "Channel": ["App Store Ads", "Social Media", "Influencers", "Email Campaign"],
+          "Downloads (000s)": [60, 45, 30, 25]
+        },
+        "x_axis": "Channel",
+        "y_axis": ["Downloads (000s)"]
+      },
+      {
+        "exhibit_title": "Exhibit 3: Weekly Retention Trend",
+        "chart_type": "line",
+        "description": "Retention rate (%) over the first 6 weeks",
+        "data": {
+          "Week": [1, 2, 3, 4, 5, 6],
+          "Retention (%)": [70, 60, 55, 50, 48, 45]
+        },
+        "x_axis": "Week",
+        "y_axis": ["Retention (%)"]
+      }
+    ]
+  },
+  {
+    "id": "analysis_05",
+    "title": "UrbanRoots Weekend Traffic Analysis",
+    "skill_type": "Analysis",
+    "prompt_text": "UrbanRoots, a fast-casual restaurant brand based in Chicago, is seeking analysis on weekend lunchtime traffic patterns, customer demographics by time slot, and menu item popularity.",
+    "exhibits": [
+      {
+        "exhibit_title": "Exhibit 1: Weekend Lunch Traffic by Location",
+        "chart_type": "line",
+        "description": "Average number of customers per hour",
+        "data": {
+          "Hour": [10, 11, 12, 13, 14, 15, 16],
+          "Downtown": [50, 60, 80, 100, 90, 70, 60],
+          "Suburbs": [40, 50, 70, 85, 75, 65, 55]
+        },
+        "x_axis": "Hour",
+        "y_axis": ["Downtown", "Suburbs"]
+      },
+      {
+        "exhibit_title": "Exhibit 2: Customer Demographics by Time Slot",
+        "chart_type": "bar",
+        "description": "Percentage of customer groups",
+        "data": {
+          "Time Slot": ["10-12", "12-14", "14-16"],
+          "Families": [30, 45, 25],
+          "Professionals": [20, 30, 50],
+          "Students": [10, 25, 15]
+        },
+        "x_axis": "Time Slot",
+        "y_axis": ["Families", "Professionals", "Students"]
+      },
+      {
+        "exhibit_title": "Exhibit 3: Top Menu Items Share",
+        "chart_type": "pie",
+        "description": "Sales share by menu item",
+        "data": {
+          "Menu Item": ["Salad", "Sandwich", "Wrap", "Bowl", "Soup"],
+          "Share %": [25, 30, 20, 15, 10]
+        },
+        "labels": "Menu Item",
+        "values": "Share %"
+      }
+    ]
+  }
+,
+  {
+    "id": "analysis_06",
+    "title": "HomeTech Feature, Pricing, and Demographic Analysis",
+    "skill_type": "Analysis",
+    "prompt_text": "HomeTech, a smart home device manufacturer located in Illinois, is seeking analysis on which product features resonate most with consumers, which price tiers optimize adoption, and which demographics to target.",
+    "exhibits": [
+      {
+        "exhibit_title": "Exhibit 1: Feature Prioritization Scores",
+        "chart_type": "table",
+        "description": "Average consumer rating (1-5)",
+        "data": {
+          "Feature": ["Voice Control", "Mobile App", "Energy Monitoring", "Security Alerts"],
+          "Score": [4.3, 4.7, 4.0, 3.8]
+        }
+      },
+      {
+        "exhibit_title": "Exhibit 2: Adoption by Price Tier",
+        "chart_type": "bar",
+        "description": "Projected units sold (000s)",
+        "data": {
+          "Price Tier ($)": [99, 149, 199],
+          "Units Sold (000s)": [80, 60, 40]
+        },
+        "x_axis": "Price Tier ($)",
+        "y_axis": ["Units Sold (000s)"]
+      },
+      {
+        "exhibit_title": "Exhibit 3: Market Segment Share",
+        "chart_type": "pie",
+        "description": "Share of total market by age group",
+        "data": {
+          "Age Group": ["18-34", "35-54", "55+"],
+          "Share %": [45, 35, 20]
+        },
+        "labels": "Age Group",
+        "values": "Share %"
+      }
+    ]
+  },
+  {
+    "id": "analysis_07",
+    "title": "TravelNest Eco-Tourism Market & Pricing Analysis",
+    "skill_type": "Analysis",
+    "prompt_text": "TravelNest, a travel agency based in Nevada, is seeking analysis on which eco-tourism regions offer the highest market potential, optimal package price points, and channel performance.",
+    "exhibits": [
+      {
+        "exhibit_title": "Exhibit 1: Market Potential by Region",
+        "chart_type": "pie",
+        "description": "Projected market size share",
+        "data": {
+          "Region": ["Desert", "Coastal", "Mountain"],
+          "Market %": [30, 50, 20]
+        },
+        "labels": "Region",
+        "values": "Market %"
+      },
+      {
+        "exhibit_title": "Exhibit 2: Sales by Package Price",
+        "chart_type": "bar",
+        "description": "Bookings (000s)",
+        "data": {
+          "Price Level ($k)": [1, 2, 3],
+          "Bookings (000s)": [100, 75, 50]
+        },
+        "x_axis": "Price Level ($k)",
+        "y_axis": ["Bookings (000s)"]
+      },
+      {
+        "exhibit_title": "Exhibit 3: Channel Conversion Trend",
+        "chart_type": "line",
+        "description": "Conversion rate (%) over six months",
+        "data": {
+          "Month": ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
+          "Conversion %": [2.5, 2.8, 3.0, 3.2, 3.1, 3.3]
+        },
+        "x_axis": "Month",
+        "y_axis": ["Conversion %"]
+      }
+    ]
+  },
+  {
+    "id": "analysis_08",
+    "title": "GourmetBites Corporate Catering Analysis",
+    "skill_type": "Analysis",
+    "prompt_text": "GourmetBites, a gourmet food delivery service based in New Jersey, is seeking analysis on revenue potential by client size, break-even event counts, and menu popularity.",
+    "exhibits": [
+      {
+        "exhibit_title": "Exhibit 1: Revenue by Client Size",
+        "chart_type": "table",
+        "description": "Average revenue per event ($k)",
+        "data": {
+          "Client Size": ["Small", "Medium", "Large"],
+          "Revenue ($k)": [5, 12, 25]
+        }
+      },
+      {
+        "exhibit_title": "Exhibit 2: Break-Even Events by Menu",
+        "chart_type": "bar",
+        "description": "Events required to break even",
+        "data": {
+          "Menu Type": ["Standard", "Premium", "Custom"],
+          "Events to BE": [10, 8, 5]
+        },
+        "x_axis": "Menu Type",
+        "y_axis": ["Events to BE"]
+      },
+      {
+        "exhibit_title": "Exhibit 3: Menu Popularity Share",
+        "chart_type": "pie",
+        "description": "Share of total orders",
+        "data": {
+          "Menu Type": ["Standard", "Premium", "Custom"],
+          "Order %": [50, 30, 20]
+        },
+        "labels": "Menu Type",
+        "values": "Order %"
+      }
+    ]
+  },
+  {
+    "id": "analysis_09",
+    "title": "PetPal Subscription & Churn Analysis",
+    "skill_type": "Analysis",
+    "prompt_text": "PetPal, a pet care subscription service based in Colorado, is seeking analysis on subscription uptake by plan tier, churn rates, and ARPU.",
+    "exhibits": [
+      {
+        "exhibit_title": "Exhibit 1: New Subscriptions by Tier",
+        "chart_type": "bar",
+        "description": "Subscriptions (000s)",
+        "data": {
+          "Tier": ["Basic", "Plus", "Premium"],
+          "Subscriptions (000s)": [40, 30, 20]
+        },
+        "x_axis": "Tier",
+        "y_axis": ["Subscriptions (000s)"]
+      },
+      {
+        "exhibit_title": "Exhibit 2: Monthly Churn Rate",
+        "chart_type": "line",
+        "description": "Churn rate (%) over 12 months",
+        "data": {
+          "Month": [1,2,3,4,5,6,7,8,9,10,11,12],
+          "Churn %": [5,4.8,4.5,4.2,4.0,3.8,3.6,3.5,3.4,3.3,3.2,3.1]
+        },
+        "x_axis": "Month",
+        "y_axis": ["Churn %"]
+      },
+      {
+        "exhibit_title": "Exhibit 3: ARPU by Tier",
+        "chart_type": "table",
+        "description": "Average revenue per user ($)",
+        "data": {
+          "Tier": ["Basic", "Plus", "Premium"],
+          "ARPU ($)": [10, 20, 35]
+        }
+      }
+    ]
+  },
+  {
+    "id": "analysis_10",
+    "title": "UrbanTransit Fleet Conversion Analysis",
+    "skill_type": "Analysis",
+    "prompt_text": "UrbanTransit, a public transportation provider in Chicago, is seeking analysis on cost savings from electric bus conversion, emissions reduction, and break-even conversion timeline.",
+    "exhibits": [
+      {
+        "exhibit_title": "Exhibit 1: Cost per Mile Comparison",
+        "chart_type": "bar",
+        "description": "Cost in USD per mile",
+        "data": {
+          "Bus Type": ["Diesel", "Electric"],
+          "Cost per Mile": [1.50, 1.10]
+        },
+        "x_axis": "Bus Type",
+        "y_axis": ["Cost per Mile"]
+      },
+      {
+        "exhibit_title": "Exhibit 2: Emissions Reduction Over Time",
+        "chart_type": "line",
+        "description": "CO2 emissions (tons) over 12 months",
+        "data": {
+          "Month": [1,2,3,4,5,6,7,8,9,10,11,12],
+          "CO2 (tons)": [500,460,420,380,350,320,300,280,260,240,220,200]
+        },
+        "x_axis": "Month",
+        "y_axis": ["CO2 (tons)"]
+      },
+      {
+        "exhibit_title": "Exhibit 3: Fleet Composition",
+        "chart_type": "pie",
+        "description": "Percentage of fleet by bus type",
+        "data": {
+          "Bus Type": ["Diesel", "Electric"],
+          "Share %": [60, 40]
+        },
+        "labels": "Bus Type",
+        "values": "Share %"
+      }
+    ]
+  }
+,
+  {
+    "id": "analysis_11",
+    "title": "SmartHealth Device Launch Analysis",
+    "skill_type": "Analysis",
+    "prompt_text": "SmartHealth, a health technology company based in Massachusetts, is seeking analysis on competitive landscape, user demographics, and regulatory considerations.",
+    "exhibits": [
+      {
+        "exhibit_title": "Exhibit 1: Competitor Device Features",
+        "chart_type": "table",
+        "description": "Key features comparison",
+        "data": {
+          "Feature": ["Battery Life", "Accuracy", "Connectivity"],
+          "Our Device": [20, 95, "Wi-Fi"],
+          "Competitor A": [18, 90, "Bluetooth"],
+          "Competitor B": [22, 92, "Wi-Fi"]
+        }
+      },
+      {
+        "exhibit_title": "Exhibit 2: Demographic Uptake by Age",
+        "chart_type": "bar",
+        "description": "Projected users (000s)",
+        "data": {
+          "Age Group": ["18-34", "35-54", "55+"],
+          "Projected Users (000s)": [50, 40, 30]
+        },
+        "x_axis": "Age Group",
+        "y_axis": ["Projected Users (000s)"]
+      },
+      {
+        "exhibit_title": "Exhibit 3: Regulatory Approval Timeline",
+        "chart_type": "line",
+        "description": "Months to approval",
+        "data": {
+          "Region": ["FDA", "EMA", "Health Canada"],
+          "Approval Time (months)": [12, 10, 8]
+        },
+        "x_axis": "Region",
+        "y_axis": ["Approval Time (months)"]
+      }
+    ]
+  },
+  {
+    "id": "analysis_12",
+    "title": "HealthHorizons Coaching Retention Analysis",
+    "skill_type": "Analysis",
+    "prompt_text": "HealthHorizons, a health coaching platform, is seeking analysis on user activation milestones, churn rates by plan, and engagement over time.",
+    "exhibits": [
+      {
+        "exhibit_title": "Exhibit 1: Activation Milestones Achieved",
+        "chart_type": "pie",
+        "description": "Percentage of users meeting milestones",
+        "data": {
+          "Milestone": ["First Session", "First Week", "First Month"],
+          "Completion %": [80, 60, 40]
+        },
+        "labels": "Milestone",
+        "values": "Completion %"
+      },
+      {
+        "exhibit_title": "Exhibit 2: Churn Rate by Plan",
+        "chart_type": "bar",
+        "description": "Monthly churn (%)",
+        "data": {
+          "Plan Tier": ["Basic", "Standard", "Premium"],
+          "Churn %": [8, 5, 3]
+        },
+        "x_axis": "Plan Tier",
+        "y_axis": ["Churn %"]
+      },
+      {
+        "exhibit_title": "Exhibit 3: Weekly Active Users Over Time",
+        "chart_type": "line",
+        "description": "Active users (000s)",
+        "data": {
+          "Week": [1,2,3,4,5,6],
+          "Active Users (000s)": [100, 95, 90, 85, 80, 75]
+        },
+        "x_axis": "Week",
+        "y_axis": ["Active Users (000s)"]
+      }
+    ]
+  },
+  {
+    "id": "analysis_13",
+    "title": "EduSmart Course Launch Analysis",
+    "skill_type": "Analysis",
+    "prompt_text": "EduSmart, an online education platform, is seeking analysis on course demand by topic, channel performance, and pricing sensitivity.",
+    "exhibits": [
+      {
+        "exhibit_title": "Exhibit 1: Demand by Course Topic",
+        "chart_type": "table",
+        "description": "Enrollments (000s)",
+        "data": {
+          "Topic": ["AI", "Data Science", "Cybersecurity"],
+          "Enrollments (000s)": [30, 25, 20]
+        }
+      },
+      {
+        "exhibit_title": "Exhibit 2: Enrollment Channel Share",
+        "chart_type": "pie",
+        "description": "Percentage by channel",
+        "data": {
+          "Channel": ["Organic Search", "Ads", "Referral"],
+          "Share %": [50, 30, 20]
+        },
+        "labels": "Channel",
+        "values": "Share %"
+      },
+      {
+        "exhibit_title": "Exhibit 3: Price vs Enrollment",
+        "chart_type": "line",
+        "description": "Enrollments (000s)",
+        "data": {
+          "Price ($)": [100, 200, 300],
+          "Enrollments (000s)": [40, 25, 15]
+        },
+        "x_axis": "Price ($)",
+        "y_axis": ["Enrollments (000s)"]
+      }
+    ]
+  },
+  {
+    "id": "analysis_14",
+    "title": "FinEdge Blockchain Adoption Analysis",
+    "skill_type": "Analysis",
+    "prompt_text": "FinEdge, a fintech firm, is seeking analysis on transaction volumes by region, break-even transaction count, and price elasticity.",
+    "exhibits": [
+      {
+        "exhibit_title": "Exhibit 1: Transactions by Region",
+        "chart_type": "bar",
+        "description": "Monthly transactions (000s)",
+        "data": {
+          "Region": ["North America", "Europe", "APAC"],
+          "Transactions (000s)": [500, 450, 300]
+        },
+        "x_axis": "Region",
+        "y_axis": ["Transactions (000s)"]
+      },
+      {
+        "exhibit_title": "Exhibit 2: Break-Even Transaction Volume",
+        "chart_type": "table",
+        "description": "Volume needed (000s)",
+        "data": {
+          "Region": ["North America", "Europe", "APAC"],
+          "Break-Even (000s)": [400, 350, 250]
+        }
+      },
+      {
+        "exhibit_title": "Exhibit 3: Price Sensitivity Curve",
+        "chart_type": "line",
+        "description": "Transactions vs Price ($)",
+        "data": {
+          "Price ($)": [0.50, 1.00, 1.50, 2.00],
+          "Transactions (000s)": [600, 500, 400, 300]
+        },
+        "x_axis": "Price ($)",
+        "y_axis": ["Transactions (000s)"]
+      }
+    ]
+  },
+  {
+    "id": "analysis_15",
+    "title": "BuildSmart License Sales Analysis",
+    "skill_type": "Analysis",
+    "prompt_text": "BuildSmart, a construction tech company, is seeking analysis on license sales by segment, break-even license count, and feature usage rates.",
+    "exhibits": [
+      {
+        "exhibit_title": "Exhibit 1: License Sales by Segment",
+        "chart_type": "bar",
+        "description": "Sales (000s)",
+        "data": {
+          "Segment": ["Infrastructure", "Residential", "Commercial"],
+          "Sales (000s)": [150, 100, 120]
+        },
+        "x_axis": "Segment",
+        "y_axis": ["Sales (000s)"]
+      },
+      {
+        "exhibit_title": "Exhibit 2: Break-Even License Count",
+        "chart_type": "table",
+        "description": "Count needed",
+        "data": {
+          "Package": ["Basic", "Premium"],
+          "Break-Even Count": [500, 300]
+        }
+      },
+      {
+        "exhibit_title": "Exhibit 3: Feature Usage Rates",
+        "chart_type": "pie",
+        "description": "Usage share by feature",
+        "data": {
+          "Feature": ["Gantt", "Reporting", "Cost Estimation"],
+          "Share %": [40, 35, 25]
+        },
+        "labels": "Feature",
+        "values": "Share %"
+      }
+    ]
+  },
+  {
+    "id": "analysis_16",
+    "title": "RetailRevamp E-Commerce Analysis",
+    "skill_type": "Analysis",
+    "prompt_text": "RetailRevamp, a retail chain, is seeking analysis on traffic sources, conversion rates by device, and average order value.",
+    "exhibits": [
+      {"exhibit_title": "Exhibit 1: Traffic Sources","chart_type": "pie","description": "Share %","data": {"Source": ["Organic", "Paid", "Direct"],"Share %": [60, 25, 15]},"labels": "Source","values": "Share %"},
+      {"exhibit_title": "Exhibit 2: Conversion Rate by Device","chart_type": "bar","description": "Conversion %","data": {"Device": ["Mobile","Desktop"],"Conversion %": [2.5, 3.5]},"x_axis": "Device","y-axis": ["Conversion %"]},
+      {"exhibit_title": "Exhibit 3: Average Order Value Over Time","chart_type": "line","description": "AOV ($)","data": {"Month": ["Jan","Feb","Mar","Apr"],"AOV ($)": [80, 85, 90, 88]},"x_axis": "Month","y_axis": ["AOV ($)"]}
+    ]
+  },
+  {
+    "id": "analysis_17",
+    "title": "SmartEnergy Solar Adoption Analysis",
+    "skill_type": "Analysis",
+    "prompt_text": "GreenWave, a solar energy firm, is seeking analysis on incentive impact, adoption rates by region, and break-even payback period.",
+    "exhibits": [
+      {"exhibit_title": "Exhibit 1: Incentive Impact","chart_type": "bar","description": "Effect on adoption %","data": {"Incentive": ["None","Low","High"],"Adoption %": [10, 30, 50]},"x_axis": "Incentive","y_axis": ["Adoption %"]},
+      {"exhibit_title": "Exhibit 2: Regional Adoption Rates","chart_type": "pie","description": "Share %","data": {"Region": ["North","South","East","West"],"Share %": [25,25,25,25]},"labels":"Region","values":"Share %"},
+      {"exhibit_title": "Exhibit 3: Payback Period","chart_type": "line","description": "Months to payback","data": {"Scenario": ["Base","Optimistic","Pessimistic"],"Payback Months": [60, 50, 70]},"x_axis":"Scenario","y_axis":["Payback Months"]}
+    ]
+  },
+  {
+    "id": "analysis_18",
+    "title": "CleanWave Expansion Analysis",
+    "skill_type": "Analysis",
+    "prompt_text": "CleanWave, a cleaning products maker, is seeking analysis on segment demand, break-even sales, and price elasticity.",
+    "exhibits": [
+      {"exhibit_title": "Exhibit 1: Demand by Segment","chart_type": "table","description": "Sales (000s)","data": {"Segment": ["Household","Commercial"],"Sales (000s)": [120,80]}},
+      {"exhibit_title": "Exhibit 2: Break-Even Sales","chart_type": "bar","description": "Units (000s)","data": {"Product Line": ["Eco","Standard"],"Units (000s)": [50,70]},"x_axis":"Product Line","y_axis":["Units (000s)"]},
+      {"exhibit_title": "Exhibit 3: Price Elasticity","chart_type": "line","description": "Sales vs Price","data": {"Price ($)": [5,10,15,20],"Sales (000s)": [150,120,90,60]},"x_axis":"Price ($)","y_axis":["Sales (000s)"]}
+    ]
+  },
+  {
+    "id": "analysis_19",
+    "title": "BioInnovate Clinical Enrollment Analysis",
+    "skill_type": "Analysis",
+    "prompt_text": "BioInnovate, a biotech startup, is seeking analysis on site enrollment rates, regional participation, and cost per enrollee.",
+    "exhibits": [
+      {"exhibit_title": "Exhibit 1: Enrollment by Site","chart_type": "bar","description": "Participants","data": {"Site": ["A","B","C"],"Enrollees": [50,45,60]},"x_axis":"Site","y_axis":["Enrollees"]},
+      {"exhibit_title": "Exhibit 2: Regional Participation","chart_type": "pie","description": "Share %","data": {"Region": ["NA","EU","APAC"],"Share %": [40,35,25]},"labels":"Region","values":"Share %"},
+      {"exhibit_title": "Exhibit 3: Cost per Enrollee","chart_type": "line","description": "USD","data": {"Phase": [1,2,3],"Cost ($)": [20000,25000,30000]},"x_axis":"Phase","y_axis":["Cost ($)"]}
+    ]
+  },
+  {
+    "id": "analysis_20",
+    "title": "UrbanGardens Partnership & Pricing Analysis",
+    "skill_type": "Analysis",
+    "prompt_text": "UrbanGardens, a vertical farming startup, is seeking analysis on partnership uptake, price sensitivity, and profitability by store type.",
+    "exhibits": [
+      {"exhibit_title": "Exhibit 1: Partnerships by Store Type","chart_type": "bar","description": "Count","data": {"Store Type": ["Grocery","Restaurant","Farmers' Market"],"Count": [20,15,10]},"x_axis":"Store Type","y_axis":["Count"]},
+      {"exhibit_title": "Exhibit 2: Price Sensitivity","chart_type": "line","description": "Orders vs Price","data": {"Price ($)": [2,3,4],"Orders": [100,80,60]},"x_axis":"Price ($)","y_axis":["Orders"]},
+      {"exhibit_title": "Exhibit 3: Profitability by Channel","chart_type": "pie","description": "Margin %","data": {"Channel": ["Direct","Wholesale","Online"],"Margin %": [30,25,20]},"labels":"Channel","values":"Margin %"}
+    ]
+  }
+,
+  {
+    "id": "analysis_21",
+    "title": "UrbanEats Delivery Optimization",
+    "skill_type": "Analysis",
+    "prompt_text": "UrbanEats, a food delivery service based in San Francisco, is seeking analysis on peak order times, average delivery times by zone, and order type distribution.",
+    "exhibits": [
+      {
+        "exhibit_title": "Exhibit 1: Hourly Order Volume",
+        "chart_type": "table",
+        "description": "Orders per hour",
+        "data": {
+          "Hour": ["8AM","9AM","10AM","11AM","12PM","1PM","2PM","3PM","4PM","5PM"],
+          "Orders": [50, 75, 120, 200, 250, 300, 280, 240, 180, 150]
+        }
+      },
+      {
+        "exhibit_title": "Exhibit 2: Average Delivery Time by Zone",
+        "chart_type": "bar",
+        "description": "Minutes per delivery",
+        "data": {
+          "Zone": ["Downtown","Uptown","Suburbs","Airport"],
+          "Delivery Time": [20, 25, 35, 40]
+        },
+        "x_axis": "Zone",
+        "y_axis": ["Delivery Time"]
+      },
+      {
+        "exhibit_title": "Exhibit 3: Order Type Share",
+        "chart_type": "pie",
+        "description": "Percentage of total orders",
+        "data": {
+          "Order Type": ["Lunch","Dinner","Snacks","Beverages"],
+          "Share %": [40, 45, 10, 5]
+        },
+        "labels": "Order Type",
+        "values": "Share %"
+      }
+    ]
+  },
+  {
+    "id": "analysis_22",
+    "title": "FitLab Wearable Engagement",
+    "skill_type": "Analysis",
+    "prompt_text": "FitLab, a wearable fitness device company based in Austin, is seeking analysis on daily active users, feature usage frequency, and device model preference.",
+    "exhibits": [
+      {
+        "exhibit_title": "Exhibit 1: Daily Active Users",
+        "chart_type": "line",
+        "description": "Users (000s)",
+        "data": {
+          "Date": ["2025-01-01","2025-02-01","2025-03-01","2025-04-01"],
+          "Active Users (000s)": [120, 150, 170, 200]
+        },
+        "x_axis": "Date",
+        "y_axis": ["Active Users (000s)"]
+      },
+      {
+        "exhibit_title": "Exhibit 2: Feature Usage Frequency",
+        "chart_type": "bar",
+        "description": "Average uses per user per day",
+        "data": {
+          "Feature": ["Heart Rate","Sleep Tracking","Step Count","Calories Burned"],
+          "Usage": [5, 2, 10, 3]
+        },
+        "x_axis": "Feature",
+        "y_axis": ["Usage"]
+      },
+      {
+        "exhibit_title": "Exhibit 3: Device Model Preference",
+        "chart_type": "pie",
+        "description": "Percentage share by model",
+        "data": {
+          "Model": ["Lite","Pro","Ultra"],
+          "Share %": [30, 50, 20]
+        },
+        "labels": "Model",
+        "values": "Share %"
+      }
+    ]
+  },
+  {
+    "id": "analysis_23",
+    "title": "GreenTransit Fleet Routing",
+    "skill_type": "Analysis",
+    "prompt_text": "GreenTransit, a shuttle service in Seattle, is seeking analysis on route distances, fuel consumption per route, and on-time performance.",
+    "exhibits": [
+      {
+        "exhibit_title": "Exhibit 1: Route Distances",
+        "chart_type": "table",
+        "description": "Distance in miles",
+        "data": {
+          "Route": ["A","B","C","D"],
+          "Distance": [10, 15, 20, 25]
+        }
+      },
+      {
+        "exhibit_title": "Exhibit 2: Fuel Consumption per Route",
+        "chart_type": "bar",
+        "description": "Gallons per trip",
+        "data": {
+          "Route": ["A","B","C","D"],
+          "Fuel": [2.5, 3, 3.5, 4]
+        },
+        "x_axis": "Route",
+        "y_axis": ["Fuel"]
+      },
+      {
+        "exhibit_title": "Exhibit 3: On-Time Performance",
+        "chart_type": "line",
+        "description": "Percentage on-time per month",
+        "data": {
+          "Month": ["Jan","Feb","Mar","Apr","May","Jun"],
+          "On-Time %": [95, 93, 90, 92, 94, 96]
+        },
+        "x_axis": "Month",
+        "y_axis": ["On-Time %"]
+      }
+    ]
+  },
+  {
+    "id": "analysis_24",
+    "title": "HomeChef Meal Kit Composition",
+    "skill_type": "Analysis",
+    "prompt_text": "HomeChef, a meal kit service based in Denver, is seeking analysis on recipe popularity, cost breakdown per kit, and ingredient sourcing cost.",
+    "exhibits": [
+      {
+        "exhibit_title": "Exhibit 1: Recipe Popularity",
+        "chart_type": "pie",
+        "description": "Share of orders",
+        "data": {
+          "Recipe": ["Pasta","Stir-Fry","Salad","Tacos"],
+          "Share %": [35, 25, 20, 20]
+        },
+        "labels": "Recipe",
+        "values": "Share %"
+      },
+      {
+        "exhibit_title": "Exhibit 2: Cost Breakdown per Kit",
+        "chart_type": "bar",
+        "description": "Cost in USD",
+        "data": {
+          "Component": ["Ingredients","Packaging","Labor","Shipping"],
+          "Cost": [8, 2, 5, 3]
+        },
+        "x_axis": "Component",
+        "y_axis": ["Cost"]
+      },
+      {
+        "exhibit_title": "Exhibit 3: Ingredient Sourcing Cost",
+        "chart_type": "table",
+        "description": "Cost per supplier",
+        "data": {
+          "Supplier": ["Local Farm","Distributor A","Distributor B"],
+          "Cost per Unit": [1.2, 1.0, 0.9]
+        }
+      }
+    ]
+  },
+  {
+    "id": "analysis_25",
+    "title": "TechCampus Course Enrollment",
+    "skill_type": "Analysis",
+    "prompt_text": "TechCampus, a vocational training center in Boston, is seeking analysis on enrollments by department, semester trends, and student demographics.",
+    "exhibits": [
+      {
+        "exhibit_title": "Exhibit 1: Enrollments by Department",
+        "chart_type": "bar",
+        "description": "Students per department",
+        "data": {
+          "Department": ["IT","Business","Design","Healthcare"],
+          "Enrollments": [200, 150, 100, 80]
+        },
+        "x_axis": "Department",
+        "y_axis": ["Enrollments"]
+      },
+      {
+        "exhibit_title": "Exhibit 2: Semester Enrollment Trend",
+        "chart_type": "line",
+        "description": "Enrollments per semester",
+        "data": {
+          "Semester": ["Fall 2024","Winter 2025","Spring 2025","Summer 2025"],
+          "Enrollments": [400, 380, 420, 390]
+        },
+        "x_axis": "Semester",
+        "y_axis": ["Enrollments"]
+      },
+      {
+        "exhibit_title": "Exhibit 3: Student Demographics",
+        "chart_type": "pie",
+        "description": "Share by age group",
+        "data": {
+          "Age Group": ["18-24","25-34","35-44","45+"],
+          "Share %": [50, 30, 15, 5]
+        },
+        "labels": "Age Group",
+        "values": "Share %"
+      }
+    ]
+  },
+  {
+    "id": "analysis_26",
+    "title": "AquaGuard Water Usage Analysis",
+    "skill_type": "Analysis",
+    "prompt_text": "AquaGuard, a municipal water utility in Miami, is seeking analysis on daily consumption trends, usage by district, and usage category distribution.",
+    "exhibits": [
+      {
+        "exhibit_title": "Exhibit 1: Daily Consumption Trend",
+        "chart_type": "line",
+        "description": "Million gallons per day",
+        "data": {
+          "Day": ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"],
+          "Consumption": [50, 55, 53, 58, 60, 62, 57]
+        },
+        "x_axis": "Day",
+        "y_axis": ["Consumption"]
+      },
+      {
+        "exhibit_title": "Exhibit 2: District Usage Comparison",
+        "chart_type": "bar",
+        "description": "Average daily usage (MGD)",
+        "data": {
+          "District": ["North","South","East","West"],
+          "Usage (MGD)": [15, 20, 18, 22]
+        },
+        "x_axis": "District",
+        "y_axis": ["Usage (MGD)"]
+      },
+      {
+        "exhibit_title": "Exhibit 3: Usage Category Share",
+        "chart_type": "pie",
+        "description": "Share by category",
+        "data": {
+          "Category": ["Residential","Commercial","Industrial","Public"],
+          "Share %": [45, 25, 20, 10]
+        },
+        "labels": "Category",
+        "values": "Share %"
+      }
+    ]
+  },
+  {
+    "id": "analysis_27",
+    "title": "BuildGreen Material Cost Analysis",
+    "skill_type": "Analysis",
+    "prompt_text": "BuildGreen, a sustainable construction supplier in Denver, is seeking analysis on material cost per square foot, cost comparison, and material share.",
+    "exhibits": [
+      {
+        "exhibit_title": "Exhibit 1: Cost per Sq Ft by Material",
+        "chart_type": "table",
+        "description": "USD per sq ft",
+        "data": {
+          "Material": ["Wood","Steel","Concrete","Brick"],
+          "Cost": [7.5, 9.0, 6.0, 8.0]
+        }
+      },
+      {
+        "exhibit_title": "Exhibit 2: Cost Comparison",
+        "chart_type": "bar",
+        "description": "USD per sq ft",
+        "data": {
+          "Material": ["Wood","Steel","Concrete","Brick"],
+          "Cost": [7.5, 9.0, 6.0, 8.0]
+        },
+        "x_axis": "Material",
+        "y_axis": ["Cost"]
+      },
+      {
+        "exhibit_title": "Exhibit 3: Material Share",
+        "chart_type": "pie",
+        "description": "Percentage share by usage",
+        "data": {
+          "Material": ["Wood","Steel","Concrete","Brick"],
+          "Share %": [30, 25, 30, 15]
+        },
+        "labels": "Material",
+        "values": "Share %"
+      }
+    ]
+  },
+  {
+    "id": "analysis_28",
+    "title": "HealthHub Telehealth Adoption",
+    "skill_type": "Analysis",
+    "prompt_text": "HealthHub, a telehealth provider based in Chicago, is seeking analysis on session counts by month, adoption by age group, and device usage share.",
+    "exhibits": [
+      {"exhibit_title": "Exhibit 1: Monthly Sessions","chart_type": "line","description": "Sessions per month (000s)","data": {"Month": ["Jan","Feb","Mar","Apr","May","Jun"],"Sessions (000s)": [50, 55, 60, 65, 70, 75]},"x_axis": "Month","y_axis": ["Sessions (000s)"]},
+      {"exhibit_title": "Exhibit 2: Adoption by Age Group","chart_type": "bar","description": "Users (000s)","data": {"Age Group": ["18-34","35-54","55+"],"Users (000s)": [30, 25, 20]},"x_axis": "Age Group","y_axis": ["Users (000s)"]},
+      {"exhibit_title": "Exhibit 3: Device Usage Share","chart_type": "pie","description": "Share by device","data": {"Device": ["Mobile","Desktop","Tablet"],"Share %": [60, 30, 10]},"labels": "Device","values": "Share %"}
+    ]
+  },
+  {
+    "id": "analysis_29",
+    "title": "AutoSecure Insurance Claim Trends",
+    "skill_type": "Analysis",
+    "prompt_text": "AutoSecure, an auto insurer based in Detroit, is seeking analysis on claim counts by type, monthly claim trend, and claim outcome distribution.",
+    "exhibits": [
+      {"exhibit_title": "Exhibit 1: Claims by Type","chart_type": "bar","description": "Number of claims","data": {"Claim Type": ["Collision","Theft","Fire","Vandalism"],"Claims": [500, 150, 75, 50]},"x_axis": "Claim Type","y_axis": ["Claims"]},
+      {"exhibit_title": "Exhibit 2: Monthly Claim Trend","chart_type": "line","description": "Claims per month","data": {"Month": ["Jan","Feb","Mar","Apr","May","Jun"],"Claims": [100, 120, 130, 110, 140, 150]},"x_axis": "Month","y_axis": ["Claims"]},
+      {"exhibit_title": "Exhibit 3: Claim Outcome Distribution","chart_type": "pie","description": "Share by outcome","data": {"Outcome": ["Paid","Denied","Pending"],"Share %": [70, 20, 10]},"labels": "Outcome","values": "Share %"}
+    ]
+  },
+  {
+    "id": "analysis_30",
+    "title": "EduBridge Platform Feature Usage",
+    "skill_type": "Analysis",
+    "prompt_text": "EduBridge, an edtech platform in Toronto, is seeking analysis on feature usage counts, active users by region, and session length distribution.",
+    "exhibits": [
+      {"exhibit_title": "Exhibit 1: Feature Usage Counts","chart_type": "table","description": "Uses per feature","data": {"Feature": ["Quizzes","Videos","Assignments","Forums"],"Uses": [5000, 4000, 3000, 2000]}},
+      {"exhibit_title": "Exhibit 2: Active Users by Region","chart_type": "bar","description": "Users (000s)","data": {"Region": ["North America","Europe","Asia"],"Users (000s)": [50, 40, 30]},"x_axis": "Region","y_axis": ["Users (000s)"]},
+      {"exhibit_title": "Exhibit 3: Session Length Distribution","chart_type": "pie","description": "Share by session length","data": {"Session Length": ["<5min","5-10min","10-20min","20+min"],"Share %": [25, 35, 30, 10]},"labels": "Session Length","values": "Share %"}
+    ]
+  },
+  {
+    "id": "analysis_31",
+    "title": "MarketPulse Consumer Sentiment",
+    "skill_type": "Analysis",
+    "prompt_text": "MarketPulse, a market research firm in New York, is seeking analysis on sentiment score over time, sentiment by demographic, and sentiment category distribution.",
+    "exhibits": [
+      {"exhibit_title": "Exhibit 1: Sentiment Score Over Time","chart_type": "line","description": "Average score 1-5","data": {"Date": ["2025-01-01","2025-02-01","2025-03-01","2025-04-01"],"Score": [3.5, 3.7, 3.8, 3.9]},"x_axis": "Date","y_axis": ["Score"]},
+      {"exhibit_title": "Exhibit 2: Sentiment by Demographic","chart_type": "bar","description": "Average score","data": {"Group": ["18-34","35-54","55+"],"Score": [3.8, 3.6, 3.4]},"x_axis": "Group","y_axis": ["Score"]},
+      {"exhibit_title": "Exhibit 3: Sentiment Category Distribution","chart_type": "pie","description": "Share by category","data": {"Category": ["Positive","Neutral","Negative"],"Share %": [50, 30, 20]},"labels": "Category","values": "Share %"}
+    ]
+  },
+  {
+    "id": "analysis_32",
+    "title": "Retail360 Inventory Turnover",
+    "skill_type": "Analysis",
+    "prompt_text": "Retail360, a retail analytics provider based in London, is seeking analysis on SKU turnover rates, category turnover comparison, and turnover trend over time.",
+    "exhibits": [
+      {"exhibit_title": "Exhibit 1: SKU Turnover Rates","chart_type": "table","description": "Turns per period","data": {"SKU": ["A","B","C","D"],"Turnover": [4.0, 3.5, 5.0, 4.5]}},
+      {"exhibit_title": "Exhibit 2: Category Turnover Comparison","chart_type": "bar","description": "Average turnover","data": {"Category": ["Electronics","Apparel","Home"],"Turnover": [4.5, 3.8, 4.2]},"x_axis": "Category","y_axis": ["Turnover"]},
+      {"exhibit_title": "Exhibit 3: Turnover Trend","chart_type": "line","description": "Monthly turnover","data": {"Month": ["Jan","Feb","Mar","Apr"],"Turnover": [4.0, 4.2, 4.4, 4.3]},"x_axis": "Month","y_axis": ["Turnover"]}
+    ]
+  },
+  {
+    "id": "analysis_33",
+    "title": "WellnessNow App Session Analysis",
+    "skill_type": "Analysis",
+    "prompt_text": "WellnessNow, a mental health app based in Toronto, is seeking analysis on session type distribution, average session duration, and daily sessions trend.",
+    "exhibits": [
+      {"exhibit_title": "Exhibit 1: Session Type Distribution","chart_type": "pie","description": "Share by type","data": {"Type": ["Meditation","Therapy","Journaling","Breathing"],"Share %": [40, 25, 20, 15]},"labels": "Type","values": "Share %"},
+      {"exhibit_title": "Exhibit 2: Average Session Duration","chart_type": "bar","description": "Minutes per session","data": {"Type": ["Meditation","Therapy","Journaling","Breathing"],"Duration": [10, 50, 15, 5]},"x_axis": "Type","y_axis": ["Duration"]},
+      {"exhibit_title": "Exhibit 3: Daily Sessions Trend","chart_type": "line","description": "Sessions per day (000s)","data": {"Date": ["2025-04-01","2025-04-02","2025-04-03","2025-04-04"],"Sessions (000s)": [20, 22, 21, 23]},"x_axis": "Date","y_axis": ["Sessions (000s)"]}
+    ]
+  },
+  {
+    "id": "analysis_34",
+    "title": "TravelX Seasonal Booking Patterns",
+    "skill_type": "Analysis",
+    "prompt_text": "TravelX, a travel agency based in Miami, is seeking analysis on monthly booking volume, destination popularity, and channel share.",
+    "exhibits": [
+      {"exhibit_title": "Exhibit 1: Monthly Booking Volume","chart_type": "line","description": "Bookings per month","data": {"Month": ["Jan","Feb","Mar","Apr","May","Jun"],"Bookings": [1000, 1100, 1200, 1150, 1300, 1400]},"x_axis": "Month","y_axis": ["Bookings"]},
+      {"exhibit_title": "Exhibit 2: Destination Popularity","chart_type": "bar","description": "Trips booked","data": {"Destination": ["Beach","Mountain","City","Cruise"],"Trips": [500, 300, 400, 200]},"x_axis": "Destination","y_axis": ["Trips"]},
+      {"exhibit_title": "Exhibit 3: Booking Channel Share","chart_type": "pie","description": "Share by channel","data": {"Channel": ["Online","Agent","Mobile"],"Share %": [60, 30, 10]},"labels": "Channel","values": "Share %"}
+    ]
+  },
+  {
+    "id": "analysis_35",
+    "title": "FarmFresh Crop Yield Analysis",
+    "skill_type": "Analysis",
+    "prompt_text": "FarmFresh, an agricultural cooperative in Iowa, is seeking analysis on yield per acre by crop, yield comparison, and year-over-year trends.",
+    "exhibits": [
+      {"exhibit_title": "Exhibit 1: Yield per Acre by Crop","chart_type": "table","description": "Bushels per acre","data": {"Crop": ["Corn","Soybeans","Wheat"],"Yield": [180, 50, 60]}},
+      {"exhibit_title": "Exhibit 2: Yield Comparison","chart_type": "bar","description": "Yield per crop","data": {"Crop": ["Corn","Soybeans","Wheat"],"Yield": [180, 50, 60]},"x_axis": "Crop","y_axis": ["Yield"]},
+      {"exhibit_title": "Exhibit 3: Year-over-Year Yield","chart_type": "line","description": "Yield over years","data": {"Year": [2022, 2023, 2024],"Corn": [170, 175, 180],"Soybeans": [45, 48, 50],"Wheat": [55, 58, 60]},"x_axis": "Year","y_axis": ["Corn","Soybeans","Wheat"]}
+    ]
+  },
+  {
+    "id": "analysis_36",
+    "title": "CityBike Ridership Trends",
+    "skill_type": "Analysis",
+    "prompt_text": "CityBike, a bike-share program in Amsterdam, is seeking analysis on daily ride counts, rides by station, and user type share.",
+    "exhibits": [
+      {"exhibit_title": "Exhibit 1: Daily Ride Counts","chart_type": "line","description": "Rides per day (000s)","data": {"Day": ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"],"Rides": [30, 35, 40, 45, 50, 55, 60]},"x_axis": "Day","y_axis": ["Rides"]},
+      {"exhibit_title": "Exhibit 2: Rides by Station","chart_type": "bar","description": "Total rides","data": {"Station": ["Central","East","West","North","South"],"Rides": [10000, 8000, 9000, 7000, 6000]},"x_axis": "Station","y_axis": ["Rides"]},
+      {"exhibit_title": "Exhibit 3: User Type Share","chart_type": "pie","description": "Share by user type","data": {"User Type": ["Subscriber","Casual"],"Share %": [70, 30]},"labels": "User Type","values": "Share %"}
+    ]
+  },
+  {
+    "id": "analysis_37",
+    "title": "ShopSmart Promotional Impact",
+    "skill_type": "Analysis",
+    "prompt_text": "ShopSmart, a discount retailer in Chicago, is seeking analysis on sales by promotion, sales trend over time, and promotion channel share.",
+    "exhibits": [
+      {"exhibit_title": "Exhibit 1: Sales by Promotion","chart_type": "bar","description": "USD thousands","data": {"Promotion": ["BOGO","Discount","Coupon","Flash Sale"],"Sales": [200, 150, 100, 250]},"x_axis": "Promotion","y_axis": ["Sales"]},
+      {"exhibit_title": "Exhibit 2: Sales Trend Over Time","chart_type": "line","description": "Sales per week (000s)","data": {"Week": [1,2,3,4],"Sales": [300, 320, 310, 330]},"x_axis": "Week","y_axis": ["Sales"]},
+      {"exhibit_title": "Exhibit 3: Promotion Channel Share","chart_type": "pie","description": "Share by channel","data": {"Channel": ["Email","Social","In-Store","App"],"Share %": [25, 35, 20, 20]},"labels": "Channel","values": "Share %"}
+    ]
+  },
+  {
+    "id": "analysis_38",
+    "title": "MediCare Patient Wait Time Analysis",
+    "skill_type": "Analysis",
+    "prompt_text": "MediCare, a hospital network in Boston, is seeking analysis on average wait times by department, peak wait hours, and wait time trend.",
+    "exhibits": [
+      {"exhibit_title": "Exhibit 1: Avg Wait Time by Department","chart_type": "table","description": "Minutes","data": {"Department": ["ER","Radiology","Cardiology","Oncology"],"Wait Time": [60, 30, 45, 50]}},
+      {"exhibit_title": "Exhibit 2: Peak Wait Hours","chart_type": "bar","description": "Average wait time (min)","data": {"Hour": ["8AM","12PM","4PM","8PM"],"Wait Time": [50, 60, 55, 40]},"x_axis": "Hour","y_axis": ["Wait Time"]},
+      {"exhibit_title": "Exhibit 3: Wait Time Trend","chart_type": "line","description": "Monthly average wait (min)","data": {"Month": ["Jan","Feb","Mar","Apr"],"Wait Time": [45, 47, 50, 48]},"x_axis": "Month","y_axis": ["Wait Time"]}
+    ]
+  },
+  {
+    "id": "analysis_39",
+    "title": "EnergyPlus Peak Demand Analysis",
+    "skill_type": "Analysis",
+    "prompt_text": "EnergyPlus, an electricity provider in New York, is seeking analysis on 24-hour demand patterns, sector demand comparison, and energy source share.",
+    "exhibits": [
+      {"exhibit_title": "Exhibit 1: 24-Hour Demand Pattern","chart_type": "line","description": "MW demand","data": {"Hour": [0,6,12,18,24],"Demand (MW)": [5000, 7000, 10000, 8000, 6000]},"x_axis": "Hour","y_axis": ["Demand (MW)"]},
+      {"exhibit_title": "Exhibit 2: Sector Demand Comparison","chart_type": "bar","description": "MW demand","data": {"Sector": ["Residential","Commercial","Industrial"],"Demand": [4000, 3000, 2000]},"x_axis": "Sector","y_axis": ["Demand"]},
+      {"exhibit_title": "Exhibit 3: Energy Source Share","chart_type": "pie","description": "Percentage share","data": {"Source": ["Coal","Natural Gas","Renewables","Nuclear"],"Share %": [30, 40, 20, 10]},"labels": "Source","values": "Share %"}
+    ]
+  },
+  {
+    "id": "analysis_40",
+    "title": "FinTechAI Fraud Detection Metrics",
+    "skill_type": "Analysis",
+    "prompt_text": "FinTechAI, a fraud detection platform in London, is seeking analysis on fraud alerts by type, false positive rate, and detection method share.",
+    "exhibits": [
+      {"exhibit_title": "Exhibit 1: Fraud Alerts by Type","chart_type": "bar","description": "Alerts per day","data": {"Type": ["Card Fraud","Identity Theft","Account Takeover"],"Alerts": [500, 200, 100]},"x_axis": "Type","y_axis": ["Alerts"]},
+      {"exhibit_title": "Exhibit 2: False Positive Rate Over Time","chart_type": "line","description": "% False Positives","data": {"Month": ["Jan","Feb","Mar","Apr"],"False Positive %": [5, 4.5, 4.0, 3.8]},"x_axis": "Month","y_axis": ["False Positive %"]},
+      {"exhibit_title": "Exhibit 3: Detection Method Share","chart_type": "pie","description": "Share by method","data": {"Method": ["Machine Learning","Rules-Based","Hybrid"],"Share %": [50, 30, 20]},"labels": "Method","values": "Share %"}
+    ]
+  }
+,
+  {
+    "id": "analysis_41",
+    "title": "CityCharge EV Charging Demand Analysis",
+    "skill_type": "Analysis",
+    "prompt_text": "CityCharge, an electric vehicle charging network in Los Angeles, is seeking analysis on station utilization rates, peak demand periods, and charger type performance.",
+    "exhibits": [
+      {
+        "exhibit_title": "Exhibit 1: Station Utilization Rates",
+        "chart_type": "bar",
+        "description": "Percentage of time in use",
+        "data": {
+          "Station": ["Downtown","Airport","Suburbs","Mall"],
+          "Utilization %": [75, 60, 50, 65]
+        },
+        "x_axis": "Station",
+        "y_axis": ["Utilization %"]
+      },
+      {
+        "exhibit_title": "Exhibit 2: Peak Demand Periods",
+        "chart_type": "line",
+        "description": "Number of charges per hour",
+        "data": {
+          "Hour": [6,7,8,9,10,11,12,13,14,15],
+          "Charges": [20,30,45,60,55,50,40,35,30,25]
+        },
+        "x_axis": "Hour",
+        "y_axis": ["Charges"]
+      },
+      {
+        "exhibit_title": "Exhibit 3: Charger Type Share",
+        "chart_type": "pie",
+        "description": "Distribution of charger models",
+        "data": {
+          "Charger Type": ["Fast","Standard","Ultra-Fast"],
+          "Share %": [40, 45, 15]
+        },
+        "labels": "Charger Type",
+        "values": "Share %"
+      }
+    ]
+  },
+  {
+    "id": "analysis_42",
+    "title": "EduStream Video Engagement Analysis",
+    "skill_type": "Analysis",
+    "prompt_text": "EduStream, an online education platform in Seattle, is seeking analysis on video completion rates by course, drop-off rates over time, and device usage share.",
+    "exhibits": [
+      {
+        "exhibit_title": "Exhibit 1: Course Completion Rates",
+        "chart_type": "table",
+        "description": "Percentage of videos completed",
+        "data": {
+          "Course": ["Math","Science","Art","History"],
+          "Completion %": [80, 75, 90, 85]
+        }
+      },
+      {
+        "exhibit_title": "Exhibit 2: Drop-off Trend",
+        "chart_type": "line",
+        "description": "Drop-off rate over video duration",
+        "data": {
+          "Minute": [1,2,3,4,5,6,7,8,9,10],
+          "Drop-off %": [5,10,15,20,25,30,35,40,45,50]
+        },
+        "x_axis": "Minute",
+        "y_axis": ["Drop-off %"]
+      },
+      {
+        "exhibit_title": "Exhibit 3: Device Usage Share",
+        "chart_type": "pie",
+        "description": "Share by device",
+        "data": {
+          "Device": ["Desktop","Mobile","Tablet"],
+          "Share %": [50, 40, 10]
+        },
+        "labels": "Device",
+        "values": "Share %"
+      }
+    ]
+  },
+  {
+    "id": "analysis_43",
+    "title": "FarmLink Supply Chain Cost Analysis",
+    "skill_type": "Analysis",
+    "prompt_text": "FarmLink, an agricultural supply company in Iowa, is seeking analysis on supply chain costs, lead times, and inventory turnover.",
+    "exhibits": [
+      {
+        "exhibit_title": "Exhibit 1: Supplier Lead Times",
+        "chart_type": "table",
+        "description": "Delivery time in days",
+        "data": {
+          "Supplier": ["A","B","C","D"],
+          "Lead Time": [5, 7, 10, 8]
+        }
+      },
+      {
+        "exhibit_title": "Exhibit 2: Shipping Costs by Mode",
+        "chart_type": "bar",
+        "description": "Cost per ton (USD)",
+        "data": {
+          "Mode": ["Truck","Rail","Air","Ship"],
+          "Cost": [50, 30, 80, 20]
+        },
+        "x_axis": "Mode",
+        "y_axis": ["Cost"]
+      },
+      {
+        "exhibit_title": "Exhibit 3: Inventory Turnover",
+        "chart_type": "line",
+        "description": "Turnover ratio over 6 months",
+        "data": {
+          "Month": ["Jan","Feb","Mar","Apr","May","Jun"],
+          "Turnover": [4.5, 4.6, 4.7, 4.8, 4.6, 4.5]
+        },
+        "x_axis": "Month",
+        "y_axis": ["Turnover"]
+      }
+    ]
+  },
+  {
+    "id": "analysis_44",
+    "title": "RetailNext In-Store Promotion Analysis",
+    "skill_type": "Analysis",
+    "prompt_text": "RetailNext, a retail chain in London, is seeking analysis on in-store promotion uplift, promotion mix, and sales trends.",
+    "exhibits": [
+      {
+        "exhibit_title": "Exhibit 1: Promotion Uplift",
+        "chart_type": "bar",
+        "description": "Sales increase (%)",
+        "data": {
+          "Promo Type": ["Discount","BOGO","Coupon"],
+          "Uplift %": [15, 20, 10]
+        },
+        "x_axis": "Promo Type",
+        "y_axis": ["Uplift %"]
+      },
+      {
+        "exhibit_title": "Exhibit 2: Promotion Mix",
+        "chart_type": "pie",
+        "description": "Share of promotions run",
+        "data": {
+          "Promo Type": ["Discount","BOGO","Coupon","Flash Sale"],
+          "Share %": [40, 25, 20, 15]
+        },
+        "labels": "Promo Type",
+        "values": "Share %"
+      },
+      {
+        "exhibit_title": "Exhibit 3: Sales Trend",
+        "chart_type": "line",
+        "description": "Weekly sales (000s USD)",
+        "data": {
+          "Week": [1,2,3,4,5,6],
+          "Sales (000s)": [300, 320, 310, 330, 340, 350]
+        },
+        "x_axis": "Week",
+        "y_axis": ["Sales (000s)"]
+      }
+    ]
+  },
+  {
+    "id": "analysis_45",
+    "title": "TransitFlow Ridership Forecast Analysis",
+    "skill_type": "Analysis",
+    "prompt_text": "TransitFlow, a metropolitan transit agency in Toronto, is seeking analysis on ridership forecasts, capacity utilization, and pass type distribution.",
+    "exhibits": [
+      {
+        "exhibit_title": "Exhibit 1: Ridership Forecast",
+        "chart_type": "line",
+        "description": "Projected daily riders (000s)",
+        "data": {
+          "Year": [2023,2024,2025,2026],
+          "Riders (000s)": [400, 420, 440, 460]
+        },
+        "x_axis": "Year",
+        "y_axis": ["Riders (000s)"]
+      },
+      {
+        "exhibit_title": "Exhibit 2: Capacity Utilization",
+        "chart_type": "bar",
+        "description": "Percent capacity used",
+        "data": {
+          "Line": ["Red","Blue","Green","Yellow"],
+          "Utilization %": [80, 75, 70, 65]
+        },
+        "x_axis": "Line",
+        "y_axis": ["Utilization %"]
+      },
+      {
+        "exhibit_title": "Exhibit 3: Pass Type Distribution",
+        "chart_type": "pie",
+        "description": "Share of pass sales",
+        "data": {
+          "Pass Type": ["Monthly","Weekly","Day"],
+          "Share %": [50,30,20]
+        },
+        "labels": "Pass Type",
+        "values": "Share %"
+      }
+    ]
+  },
+  {
+    "id": "analysis_46",
+    "title": "HealthTrack Patient No-Show Analysis",
+    "skill_type": "Analysis",
+    "prompt_text": "HealthTrack, a healthcare provider in Chicago, is seeking analysis on patient no-show rates by department, reasons, and monthly trends.",
+    "exhibits": [
+      {
+        "exhibit_title": "Exhibit 1: No-Show Rates by Department",
+        "chart_type": "bar",
+        "description": "Percentage no-show",
+        "data": {
+          "Department": ["ER","Pediatrics","Cardiology","Orthopedics"],
+          "No-Show %": [5, 7, 4, 6]
+        },
+        "x_axis": "Department",
+        "y_axis": ["No-Show %"]
+      },
+      {
+        "exhibit_title": "Exhibit 2: No-Show Reasons",
+        "chart_type": "table",
+        "description": "Top reasons and frequency",
+        "data": {
+          "Reason": ["Forgot","Weather","Transport","Sick"],
+          "Count": [100, 50, 30, 20]
+        }
+      },
+      {
+        "exhibit_title": "Exhibit 3: Monthly No-Show Trend",
+        "chart_type": "line",
+        "description": "No-show count per month",
+        "data": {
+          "Month": ["Jan","Feb","Mar","Apr"],
+          "No-Shows": [150, 140, 160, 155]
+        },
+        "x_axis": "Month",
+        "y_axis": ["No-Shows"]
+      }
+    ]
+  },
+  {
+    "id": "analysis_47",
+    "title": "SmartGrid Peak Load Analysis",
+    "skill_type": "Analysis",
+    "prompt_text": "SmartGrid, an electric utility in New York, is seeking analysis on peak load patterns, regional capacity, and energy source mix.",
+    "exhibits": [
+      {
+        "exhibit_title": "Exhibit 1: Peak Load Over 24 Hours",
+        "chart_type": "line",
+        "description": "MW demand",
+        "data": {
+          "Hour": [0,4,8,12,16,20,24],
+          "MW": [8000, 9000, 11000, 12000, 10000, 9000, 8000]
+        },
+        "x_axis": "Hour",
+        "y_axis": ["MW"]
+      },
+      {
+        "exhibit_title": "Exhibit 2: Regional Capacity",
+        "chart_type": "bar",
+        "description": "Available capacity (MW)",
+        "data": {
+          "Region": ["North","South","East","West"],
+          "Capacity": [5000, 6000, 5500, 5800]
+        },
+        "x_axis": "Region",
+        "y_axis": ["Capacity"]
+      },
+      {
+        "exhibit_title": "Exhibit 3: Energy Source Mix",
+        "chart_type": "pie",
+        "description": "Share of generation",
+        "data": {
+          "Source": ["Coal","Gas","Renewables","Nuclear"],
+          "Share %": [30, 35, 25, 10]
+        },
+        "labels": "Source",
+        "values": "Share %"
+      }
+    ]
+  },
+  {
+    "id": "analysis_48",
+    "title": "LogiRoute Delivery Time Analysis",
+    "skill_type": "Analysis",
+    "prompt_text": "LogiRoute, a logistics provider in Dallas, is seeking analysis on delivery times by region, on-time performance, and delay trends.",
+    "exhibits": [
+      {
+        "exhibit_title": "Exhibit 1: Average Delivery Time by Region",
+        "chart_type": "table",
+        "description": "Time in hours",
+        "data": {
+          "Region": ["North","South","East","West"],
+          "Avg Time": [5, 6, 7, 5.5]
+        }
+      },
+      {
+        "exhibit_title": "Exhibit 2: On-Time Performance",
+        "chart_type": "bar",
+        "description": "Percentage on-time",
+        "data": {
+          "Region": ["North","South","East","West"],
+          "On-Time %": [90, 85, 80, 88]
+        },
+        "x_axis": "Region",
+        "y_axis": ["On-Time %"]
+      },
+      {
+        "exhibit_title": "Exhibit 3: Delivery Delay Trend",
+        "chart_type": "line",
+        "description": "Delayed delivery count per month",
+        "data": {
+          "Month": ["Jan","Feb","Mar","Apr"],
+          "Delays": [100, 120, 110, 115]
+        },
+        "x_axis": "Month",
+        "y_axis": ["Delays"]
+      }
+    ]
+  },
+  {
+    "id": "analysis_49",
+    "title": "MediaBuzz Ad Performance Analysis",
+    "skill_type": "Analysis",
+    "prompt_text": "MediaBuzz, a digital advertising agency in New York, is seeking analysis on click-through rates by campaign, channel share, and impressions trend.",
+    "exhibits": [
+      {
+        "exhibit_title": "Exhibit 1: Click-Through Rates by Campaign",
+        "chart_type": "bar",
+        "description": "% CTR",
+        "data": {
+          "Campaign": ["Spring Sale","Holiday","New Product"],
+          "CTR %": [2.5, 3.0, 1.8]
+        },
+        "x_axis": "Campaign",
+        "y_axis": ["CTR %"]
+      },
+      {
+        "exhibit_title": "Exhibit 2: Channel Share",
+        "chart_type": "pie",
+        "description": "Impressions by channel",
+        "data": {
+          "Channel": ["Search","Social","Display","Video"],
+          "Share %": [40, 30, 20, 10]
+        },
+        "labels": "Channel",
+        "values": "Share %"
+      },
+      {
+        "exhibit_title": "Exhibit 3: Impressions Trend",
+        "chart_type": "line",
+        "description": "Impressions per day (000s)",
+        "data": {
+          "Day": [1,2,3,4,5,6,7],
+          "Impressions (000s)": [50, 55, 60, 58, 62, 65, 70]
+        },
+        "x_axis": "Day",
+        "y_axis": ["Impressions (000s)"]
+      }
+    ]
+  },
+  {
+    "id": "analysis_50",
+    "title": "GreenSupply Carbon Emissions Analysis",
+    "skill_type": "Analysis",
+    "prompt_text": "GreenSupply, a manufacturing firm in Germany, is seeking analysis on carbon emissions per product line, reduction targets, and emissions share.",
+    "exhibits": [
+      {
+        "exhibit_title": "Exhibit 1: Emissions per Product",
+        "chart_type": "table",
+        "description": "Tons CO2",
+        "data": {
+          "Product": ["A","B","C","D"],
+          "Emissions": [100, 150, 120, 110]
+        }
+      },
+      {
+        "exhibit_title": "Exhibit 2: Reduction Targets",
+        "chart_type": "bar",
+        "description": "% reduction goal by 2025",
+        "data": {
+          "Product": ["A","B","C","D"],
+          "Target %": [20, 25, 15, 10]
+        },
+        "x_axis": "Product",
+        "y_axis": ["Target %"]
+      },
+      {
+        "exhibit_title": "Exhibit 3: Emissions Share",
+        "chart_type": "pie",
+        "description": "Share by product line",
+        "data": {
+          "Product": ["A","B","C","D"],
+          "Share %": [25, 30, 20, 25]
+        },
+        "labels": "Product",
+        "values": "Share %"
+      }
+    ]
+  },
+  {
+    "id": "analysis_51",
+    "title": "Nimbus Tour Focus Group Feedback Analysis",
+    "skill_type": "Analysis",
+    "prompt_text": "Nimbus Tours recently conducted focus groups with potential customers to gather feedback on their new adventure travel packages. The company is seeking interpretation of key themes, sentiment insights, and participant recommendations.",
+    "exhibits": [
+      {
+        "exhibit_title": "Exhibit 1: Average Sentiment Score by Theme",
+        "chart_type": "table",
+        "description": "Average sentiment rating (1=negative, 5=positive) per theme",
+        "data": {
+          "Theme": ["Adventure", "Safety", "Value", "Customer Service"],
+          "Avg Score": [4.3, 4.6, 4.1, 4.8]
+        }
+      },
+      {
+        "exhibit_title": "Exhibit 2: Theme Mention Frequency",
+        "chart_type": "bar",
+        "description": "Number of mentions per theme across all focus groups",
+        "data": {
+          "Theme": ["Adventure", "Safety", "Value", "Customer Service"],
+          "Mentions": [15, 12, 10, 8]
+        },
+        "x_axis": "Theme",
+        "y_axis": ["Mentions"]
+      },
+      {
+        "exhibit_title": "Exhibit 3: Overall Sentiment Rating Over Sessions",
+        "chart_type": "line",
+        "description": "Average sentiment score (1=negative, 5=positive) across three sessions",
+        "data": {
+          "Session": [1, 2, 3],
+          "Average Sentiment Score": [4.2, 4.5, 4.3]
+        },
+        "x_axis": "Session",
+        "y_axis": ["Average Sentiment Score"]
+      }
+    ]
+  },
+  {
+    "id": "analysis_52",
+    "title": "EcoVista Community Health Workshop Feedback Analysis",
+    "skill_type": "Analysis",
+    "prompt_text": "EcoVista Health, a non-profit organization, recently conducted community workshops on preventive health. The company is seeking interpretation of average survey ratings by topic, frequency of thematic keywords, and overall participant satisfaction distribution.",
+    "exhibits": [
+      {
+        "exhibit_title": "Exhibit 1: Average Survey Ratings by Topic",
+        "chart_type": "table",
+        "description": "Average rating (1=poor, 5=excellent) per topic",
+        "data": {
+          "Topic": ["Nutrition", "Exercise", "Mental Health", "Preventive Screening"],
+          "Avg Rating": [4.1, 4.3, 4.0, 3.8]
+        }
+      },
+      {
+        "exhibit_title": "Exhibit 2: Keyword Theme Frequency",
+        "chart_type": "bar",
+        "description": "Number of mentions per theme in open responses",
+        "data": {
+          "Theme": ["Awareness", "Access", "Engagement", "Follow-up"],
+          "Mentions": [20, 15, 10, 8]
+        },
+        "x_axis": "Theme",
+        "y_axis": ["Mentions"]
+      },
+      {
+        "exhibit_title": "Exhibit 3: Participant Satisfaction Categories",
+        "chart_type": "pie",
+        "description": "Share of participants per satisfaction category",
+        "data": {
+          "Satisfaction": ["Very Satisfied", "Satisfied", "Neutral", "Dissatisfied"],
+          "Share %": [50, 30, 15, 5]
+        },
+        "labels": "Satisfaction",
+        "values": "Share %"
+      }
+    ]
+  },
+  {
+    "id": "analysis_53",
+    "title": "TechFlow Customer Behavior Interpretation",
+    "skill_type": "Analysis",
+    "prompt_text": "TechFlow, a B2B SaaS provider, is interpreting customer behavior through usage metrics, support ticket trends, and competitor feature comparisons.",
+    "exhibits": [
+      {
+        "exhibit_title": "Exhibit 1: Monthly Active Users by Region",
+        "chart_type": "table",
+        "description": "Active users (000s) per region",
+        "data": {
+          "Region": ["North America", "Europe", "APAC"],
+          "Active Users (000s)": [120, 80, 60]
+        }
+      },
+      {
+        "exhibit_title": "Exhibit 2: Feature Usage Frequency",
+        "chart_type": "bar",
+        "description": "Average daily uses per feature",
+        "data": {
+          "Feature": ["Reporting", "Collaboration", "Mobile App", "API"],
+          "Avg Uses per User": [5, 3, 2, 1]
+        },
+        "x_axis": "Feature",
+        "y_axis": ["Avg Uses per User"]
+      },
+      {
+        "exhibit_title": "Exhibit 3: Support Ticket Volume Over Time",
+        "chart_type": "line",
+        "description": "Tickets per month by priority level",
+        "data": {
+          "Month": ["Jan", "Feb", "Mar", "Apr", "May"],
+          "High Priority": [50, 45, 55, 60, 65],
+          "Medium Priority": [100, 110, 105, 100, 95],
+          "Low Priority": [200, 190, 180, 170, 160]
+        },
+        "x_axis": "Month",
+        "y_axis": ["High Priority", "Medium Priority", "Low Priority"]
+      }
+    ]
+  },
+  {
+    "id": "analysis_54",
+    "title": "QuantumTech Competitive Feature Benchmarking",
+    "skill_type": "Analysis",
+    "prompt_text": "QuantumTech, a quantum computing hardware startup, is evaluating how its new qubit designs compare to competitors’ in terms of feature set, performance, and price positioning.",
+    "exhibits": [
+      {
+        "exhibit_title": "Exhibit 1: Feature Comparison Table",
+        "chart_type": "table",
+        "description": "Comparison of key hardware features",
+        "data": {
+          "Feature": ["Qubit Count", "Coherence Time (µs)", "Gate Fidelity (%)", "Price per Unit (M$)"],
+          "QuantumTech": [64, 100, 99.5, 10],
+          "Competitor A": [53, 90, 98.0, 12],
+          "Competitor B": [72, 110, 99.0, 11]
+        }
+      },
+      {
+        "exhibit_title": "Exhibit 2: Performance Benchmark (Throughput)",
+        "chart_type": "bar",
+        "description": "Qubit operations per second (Gops)",
+        "data": {
+          "Vendor": ["QuantumTech", "Competitor A", "Competitor B"],
+          "Throughput (Gops)": [200, 180, 220]
+        },
+        "x_axis": "Vendor",
+        "y_axis": ["Throughput (Gops)"]
+      },
+      {
+        "exhibit_title": "Exhibit 3: Market Segment Share by Application",
+        "chart_type": "pie",
+        "description": "Projected share of qubit-based systems by application area",
+        "data": {
+          "Application": ["Scientific Research", "Cryptography", "Optimization", "Machine Learning"],
+          "Share %": [30, 25, 20, 25]
+        },
+        "labels": "Application",
+        "values": "Share %"
+      }
+    ]
+  },
+  {
+    "id": "analysis_55",
+    "title": "SafePaths Workplace Safety Incident Analysis",
+    "skill_type": "Analysis",
+    "prompt_text": "SafePaths, a manufacturing firm, is reviewing recent workplace safety incidents. The company is seeking interpretation of incident counts by type, severity trends over time, and department-level comparisons.",
+    "exhibits": [
+      {
+        "exhibit_title": "Exhibit 1: Incident Counts by Type",
+        "chart_type": "bar",
+        "description": "Number of incidents in the last quarter",
+        "data": {
+          "Incident Type": ["Slip/Trip", "Equipment", "Ergonomic", "Chemical"],
+          "Count": [8, 5, 3, 2]
+        },
+        "x_axis": "Incident Type",
+        "y_axis": ["Count"]
+      },
+      {
+        "exhibit_title": "Exhibit 2: Severity Level Trend",
+        "chart_type": "line",
+        "description": "Average severity score (1=minor, 5=severe) by month",
+        "data": {
+          "Month": ["Jan", "Feb", "Mar", "Apr"],
+          "Avg Severity": [2.1, 2.3, 2.5, 2.4]
+        },
+        "x_axis": "Month",
+        "y_axis": ["Avg Severity"]
+      },
+      {
+        "exhibit_title": "Exhibit 3: Incidents by Department",
+        "chart_type": "pie",
+        "description": "Share of total incidents",
+        "data": {
+          "Department": ["Assembly", "Maintenance", "Logistics", "QA"],
+          "Share %": [40, 30, 20, 10]
+        },
+        "labels": "Department",
+        "values": "Share %"
+      }
+    ]
+  },
+  {
+    "id": "analysis_56",
+    "title": "GreenLine Employee Engagement Trend Analysis",
+    "skill_type": "Analysis",
+    "prompt_text": "GreenLine, a renewable energy provider, is analyzing employee engagement metrics, training completion rates, and internal survey scores to understand workforce motivation.",
+    "exhibits": [
+      {
+        "exhibit_title": "Exhibit 1: Monthly Training Completion Rates",
+        "chart_type": "bar",
+        "description": "Percentage of employees completing training modules",
+        "data": {
+          "Month": ["Jan","Feb","Mar","Apr","May","Jun"],
+          "Completion %": [75, 80, 85, 90, 88, 92]
+        },
+        "x_axis": "Month",
+        "y_axis": ["Completion %"]
+      },
+      {
+        "exhibit_title": "Exhibit 2: Engagement Survey Average Scores",
+        "chart_type": "line",
+        "description": "Average score (1=low, 5=high) across quarters",
+        "data": {
+          "Quarter": ["Q1","Q2","Q3","Q4"],
+          "Score": [3.8, 4.0, 4.2, 4.1]
+        },
+        "x_axis": "Quarter",
+        "y_axis": ["Score"]
+      },
+      {
+        "exhibit_title": "Exhibit 3: Departmental Engagement Comparison",
+        "chart_type": "pie",
+        "description": "Share of high-engagement employees by department",
+        "data": {
+          "Department": ["Operations","Sales","R&D","Support"],
+          "High Engagement %": [30, 25, 20, 25]
+        },
+        "labels": "Department",
+        "values": "High Engagement %"
+      }
+    ]
+  },
+  {
+    "id": "analysis_57",
+    "title": "EduPlus Course Completion Insights",
+    "skill_type": "Analysis",
+    "prompt_text": "EduPlus, an online learning platform, is analyzing course completion rates, dropout timing, and module performance to improve user retention.",
+    "exhibits": [
+      {
+        "exhibit_title": "Exhibit 1: Course Completion Rate by Cohort",
+        "chart_type": "table",
+        "description": "Completion % for each monthly cohort",
+        "data": {
+          "Cohort Month": ["Jan","Feb","Mar","Apr"],
+          "Completion %": [60, 65, 62, 70]
+        }
+      },
+      {
+        "exhibit_title": "Exhibit 2: Dropout Timing Distribution",
+        "chart_type": "bar",
+        "description": "Percentage of students dropping out by week",
+        "data": {
+          "Week": [1,2,3,4,5,6],
+          "Dropout %": [10, 15, 20, 18, 12, 5]
+        },
+        "x_axis": "Week",
+        "y_axis": ["Dropout %"]
+      },
+      {
+        "exhibit_title": "Exhibit 3: Module Performance Ratings",
+        "chart_type": "pie",
+        "description": "Average rating (1-5) by module",
+        "data": {
+          "Module": ["Intro","Intermediate","Advanced"],
+          "Avg Rating": [4.0, 3.7, 3.5]
+        },
+        "labels": "Module",
+        "values": "Avg Rating"
+      }
+    ]
+  },
+  {
+    "id": "analysis_58",
+    "title": "HealthFirst Treatment Protocol Analysis",
+    "skill_type": "Analysis",
+    "prompt_text": "HealthFirst, a hospital network, is interpreting treatment outcome rates, average patient recovery times, and readmission statistics to improve care protocols.",
+    "exhibits": [
+      {
+        "exhibit_title": "Exhibit 1: Recovery Time Distribution",
+        "chart_type": "bar",
+        "description": "Percentage of patients by recovery time bracket",
+        "data": {
+          "Recovery Days": ["<5","5-10","10-15","15+"],
+          "Percentage": [25, 40, 20, 15]
+        },
+        "x_axis": "Recovery Days",
+        "y_axis": ["Percentage"]
+      },
+      {
+        "exhibit_title": "Exhibit 2: Readmission Rates by Department",
+        "chart_type": "table",
+        "description": "Readmission % for key departments",
+        "data": {
+          "Department": ["Cardiology","Oncology","Orthopedics"],
+          "Readmission %": [8, 12, 5]
+        }
+      },
+      {
+        "exhibit_title": "Exhibit 3: Treatment Success Rates Over Time",
+        "chart_type": "line",
+        "description": "Success % by quarter",
+        "data": {
+          "Quarter": ["Q1","Q2","Q3","Q4"],
+          "Success %": [85, 88, 90, 92]
+        },
+        "x_axis": "Quarter",
+        "y_axis": ["Success %"]
+      }
+    ]
+  },
+  {
+    "id": "analysis_59",
+    "title": "CityStore Inventory Shrinkage Analysis",
+    "skill_type": "Analysis",
+    "prompt_text": "CityStore, a retail chain, is assessing inventory shrinkage rates, loss by category, and month-over-month trends to identify root causes.",
+    "exhibits": [
+      {
+        "exhibit_title": "Exhibit 1: Shrinkage Rate by Category",
+        "chart_type": "bar",
+        "description": "Shrinkage % for major categories",
+        "data": {
+          "Category": ["Electronics","Groceries","Apparel","Home Goods"],
+          "Shrinkage %": [1.5, 2.0, 1.2, 0.8]
+        },
+        "x_axis": "Category",
+        "y_axis": ["Shrinkage %"]
+      },
+      {
+        "exhibit_title": "Exhibit 2: Monthly Shrinkage Trend",
+        "chart_type": "line",
+        "description": "Overall shrinkage % by month",
+        "data": {
+          "Month": ["Jan","Feb","Mar","Apr","May","Jun"],
+          "Shrinkage %": [1.8, 2.0, 1.9, 1.7, 1.6, 1.5]
+        },
+        "x_axis": "Month",
+        "y_axis": ["Shrinkage %"]
+      },
+      {
+        "exhibit_title": "Exhibit 3: Loss Value by Department",
+        "chart_type": "pie",
+        "description": "Share of total loss value",
+        "data": {
+          "Department": ["Sales Floor","Backroom","Warehouse"],
+          "Share %": [60, 25, 15]
+        },
+        "labels": "Department",
+        "values": "Share %"
+      }
+    ]
+  },
+  {
+    "id": "analysis_60",
+    "title": "TechWave Feature Adoption Interpretation",
+    "skill_type": "Analysis",
+    "prompt_text": "TechWave, a software provider, is interpreting feature adoption rates, user feedback counts, and feature-specific support tickets to guide product roadmaps.",
+    "exhibits": [
+      {
+        "exhibit_title": "Exhibit 1: Feature Adoption Rates",
+        "chart_type": "table",
+        "description": "Percentage of active users adopting each feature",
+        "data": {
+          "Feature": ["Chat","Dashboard","API","Mobile"],
+          "Adoption %": [70, 60, 40, 30]
+        }
+      },
+      {
+        "exhibit_title": "Exhibit 2: Support Ticket Counts by Feature",
+        "chart_type": "bar",
+        "description": "Tickets logged in last quarter",
+        "data": {
+          "Feature": ["Chat","Dashboard","API","Mobile"],
+          "Tickets": [120, 80, 60, 40]
+        },
+        "x_axis": "Feature",
+        "y_axis": ["Tickets"]
+      },
+      {
+        "exhibit_title": "Exhibit 3: User Feedback Sentiment",
+        "chart_type": "line",
+        "description": "Average feedback sentiment score (1-5) over months",
+        "data": {
+          "Month": ["Jan","Feb","Mar","Apr","May"],
+          "Sentiment Score": [4.0, 4.1, 4.2, 4.3, 4.4]
+        },
+        "x_axis": "Month",
+        "y_axis": ["Sentiment Score"]
+      }
+    ]
+  }
+,
+  {
+    "id": "analysis_61",
+    "title": "FinEdge Mobile Payment Adoption Analysis",
+    "skill_type": "Analysis",
+    "prompt_text": "FinEdge, a mobile payments company, is seeking interpretation of user adoption curves, transaction volume trends, and regional usage share.",
+    "exhibits": [
+      {"exhibit_title": "Exhibit 1: Monthly Active Users","chart_type": "line","description": "Active users (000s)","data": {"Month": ["Jan","Feb","Mar","Apr","May","Jun"],"Users (000s)": [120,130,140,150,160,170]},"x_axis": "Month","y_axis": ["Users (000s)"]},
+      {"exhibit_title": "Exhibit 2: Average Transaction Value","chart_type": "bar","description": "USD per transaction","data": {"Month": ["Jan","Feb","Mar","Apr","May","Jun"],"Value": [25,27,26,28,29,30]},"x_axis": "Month","y_axis": ["Value"]},
+      {"exhibit_title": "Exhibit 3: Regional Usage Share","chart_type": "pie","description": "Share by region","data": {"Region": ["NA","EU","APAC","LATAM"],"Share %": [40,30,20,10]},"labels": "Region","values": "Share %"}
+    ]
+  },
+  {
+    "id": "analysis_62",
+    "title": "HealthCore Patient Satisfaction Interpretation",
+    "skill_type": "Analysis",
+    "prompt_text": "HealthCore, a primary care network, is interpreting patient satisfaction scores, wait time distributions, and service recommendation rates.",
+    "exhibits": [
+      {"exhibit_title": "Exhibit 1: Satisfaction Scores by Department","chart_type": "table","description": "Average score (1–5)","data": {"Department": ["General","Pediatrics","ER","Cardio"],"Score": [4.2,4.5,3.8,4.0]}},
+      {"exhibit_title": "Exhibit 2: Wait Time Distribution","chart_type": "bar","description": "Percentage of patients","data": {"Wait (min)": ["<15","15-30","30-45","45+"],"%": [50,30,15,5]},"x_axis": "Wait (min)","y_axis": ["%"]},
+      {"exhibit_title": "Exhibit 3: Recommendation Rate Over Time","chart_type": "line","description": "% recommending service","data": {"Quarter": ["Q1","Q2","Q3","Q4"],"Rate %": [80,82,85,88]},"x_axis": "Quarter","y_axis": ["Rate %"]}
+    ]
+  },
+  {
+    "id": "analysis_63",
+    "title": "AutoDrive Maintenance Trend Interpretation",
+    "skill_type": "Analysis",
+    "prompt_text": "AutoDrive, a fleet operator, is interpreting vehicle maintenance costs, downtime patterns, and issue frequency by model.",
+    "exhibits": [
+      {"exhibit_title": "Exhibit 1: Maintenance Cost by Model","chart_type": "bar","description": "USD per vehicle per month","data": {"Model": ["A","B","C"],"Cost": [150,200,180]},"x_axis": "Model","y_axis": ["Cost"]},
+      {"exhibit_title": "Exhibit 2: Downtime Hours Over Time","chart_type": "line","description": "Total hours","data": {"Month": ["Jan","Feb","Mar","Apr","May","Jun"],"Downtime": [20,25,22,30,28,24]},"x_axis": "Month","y_axis": ["Downtime"]},
+      {"exhibit_title": "Exhibit 3: Issue Frequency by Category","chart_type": "pie","description": "% of incidents","data": {"Category": ["Engine","Brake","Electrical","Tires"],"Share %": [35,25,20,20]},"labels": "Category","values": "Share %"}
+    ]
+  },
+  {
+    "id": "analysis_64",
+    "title": "EduWave Curriculum Effectiveness Interpretation",
+    "skill_type": "Analysis",
+    "prompt_text": "EduWave, an educational publisher, is interpreting test score improvements, module completion rates, and student feedback distribution.",
+    "exhibits": [
+      {"exhibit_title":"Exhibit 1: Score Improvements Pre/Post","chart_type":"table","description":"Average percent change","data":{"Subject":["Math","Science","Reading"],"Improvement %":[10,8,12]}},
+      {"exhibit_title":"Exhibit 2: Module Completion Rates","chart_type":"bar","description":"% of enrolled students","data":{"Module":["Intro","Mid","Final"],"Completion %":[90,75,60]},"x_axis":"Module","y_axis":["Completion %"]},
+      {"exhibit_title":"Exhibit 3: Feedback Category Share","chart_type":"pie","description":"% of comments","data":{"Sentiment":["Positive","Neutral","Negative"],"Share %":[60,25,15]},"labels":"Sentiment","values":"Share %"}
+    ]
+  },
+  {
+    "id": "analysis_65",
+    "title": "FoodFast Delivery Time Interpretation",
+    "skill_type": "Analysis",
+    "prompt_text": "FoodFast, a meal delivery startup, is interpreting delivery time distributions, on-time percentages, and service area performance.",
+    "exhibits": [
+      {"exhibit_title":"Exhibit 1: Delivery Time Distribution","chart_type":"bar","description":"% of orders","data":{"Time (min)":["<20","20-30","30-40","40+"],"%": [40,35,15,10]},"x_axis":"Time (min)","y_axis":["%"]},
+      {"exhibit_title":"Exhibit 2: On-Time Rate by Zone","chart_type":"table","description":"% on time","data":{"Zone":["North","South","East","West"],"On-Time %":[90,85,88,92]}},
+      {"exhibit_title":"Exhibit 3: Average Delay Over Time","chart_type":"line","description":"Minutes delayed","data":{"Week":[1,2,3,4],"Delay Min":[5,7,6,8]},"x_axis":"Week","y_axis":["Delay Min"]}
+    ]
+  },
+  {
+    "id": "analysis_66",
+    "title": "BioHealth Clinical Trial Enrollment Interpretation",
+    "skill_type": "Analysis",
+    "prompt_text": "BioHealth, a biotech firm, is interpreting site enrollment timelines, dropout patterns, and demographic mix in a new clinical trial.",
+    "exhibits": [
+      {"exhibit_title":"Exhibit 1: Enrollment Timelines by Site","chart_type":"table","description":"Days to enroll 50 participants","data":{"Site":["A","B","C"],"Days":[30,45,40]}},
+      {"exhibit_title":"Exhibit 2: Dropout Rate Over Time","chart_type":"line","description":"% of initial cohort","data":{"Week":[1,2,3,4,5,6],"Dropout %":[5,10,15,17,18,20]},"x_axis":"Week","y_axis":["Dropout %"]},
+      {"exhibit_title":"Exhibit 3: Demographic Mix","chart_type":"pie","description":"% by age group","data":{"Age Group":["18-34","35-54","55+"],"Share %":[40,35,25]},"labels":"Age Group","values":"Share %"}
+    ]
+  },
+  {
+    "id":"analysis_67",
+    "title":"TechSecure Vulnerability Response Interpretation",
+    "skill_type":"Analysis",
+    "prompt_text":"TechSecure, a cybersecurity vendor, is interpreting incident response times, vulnerability severity distributions, and resolution rates.",
+    "exhibits":[
+      {"exhibit_title":"Exhibit 1: Response Time Distribution","chart_type":"bar","description":"% of incidents","data":{"Time (hrs)":["<1","1-4","4-8","8+"],"%": [30,40,20,10]},"x_axis":"Time (hrs)","y_axis":["%"]},
+      {"exhibit_title":"Exhibit 2: Severity Distribution","chart_type":"pie","description":"% of vulnerabilities","data":{"Severity":["Low","Medium","High","Critical"],"Share %":[25,35,25,15]},"labels":"Severity","values":"Share %"},
+      {"exhibit_title":"Exhibit 3: Resolution Rate Over Time","chart_type":"line","description":"% resolved within SLA","data":{"Month":["Jan","Feb","Mar","Apr","May"],"Rate %":[80,82,85,88,90]},"x_axis":"Month","y_axis":["Rate %"]}
+    ]
+  },
+  {
+    "id":"analysis_68",
+    "title":"GreenHarvest Crop Yield Pattern Interpretation",
+    "skill_type":"Analysis",
+    "prompt_text":"GreenHarvest, an agritech firm, is interpreting seasonal yield patterns, fertilizer usage correlation, and regional performance.",
+    "exhibits":[
+      {"exhibit_title":"Exhibit 1: Seasonal Yield Trend","chart_type":"line","description":"Bushels per acre","data":{"Quarter":["Q1","Q2","Q3","Q4"],"Yield":[120,140,160,130]},"x_axis":"Quarter","y_axis":["Yield"]},
+      {"exhibit_title":"Exhibit 2: Fertilizer Usage Correlation","chart_type":"scatter","description":"Yield vs fertilizer (lbs/acre)","data":{"Fertilizer":[50,60,70,80,90],"Yield":[110,130,150,145,135]},"x_axis":"Fertilizer","y_axis":["Yield"]},
+      {"exhibit_title":"Exhibit 3: Regional Performance","chart_type":"pie","description":"% of total yield","data":{"Region":["North","South","East","West"],"Share %":[25,25,30,20]},"labels":"Region","values":"Share %"}
+    ]
+  },
+  {
+    "id":"analysis_69",
+    "title":"ShopTrend Product Return Interpretation",
+    "skill_type":"Analysis",
+    "prompt_text":"ShopTrend, an e-commerce retailer, is interpreting return rates by category, reason distributions, and time-to-return patterns.",
+    "exhibits":[
+      {"exhibit_title":"Exhibit 1: Return Rate by Category","chart_type":"bar","description":"% of sold items","data":{"Category":["Electronics","Apparel","Home"],"Return %":[5,15,8]},"x_axis":"Category","y_axis":["Return %"]},
+      {"exhibit_title":"Exhibit 2: Return Reasons","chart_type":"pie","description":"% of returns","data":{"Reason":["Defect","Size","No Longer Needed","Other"],"Share %":[40,30,20,10]},"labels":"Reason","values":"Share %"},
+      {"exhibit_title":"Exhibit 3: Time-to-Return Distribution","chart_type":"bar","description":"% of returns","data":{"Days":["<7","7-14","14-30","30+"],"%": [50,30,15,5]},"x_axis":"Days","y_axis":["%"]}
+    ]
+  },
+  {
+    "id":"analysis_70",
+    "title":"MediaStream Viewer Engagement Interpretation",
+    "skill_type":"Analysis",
+    "prompt_text":"MediaStream, a streaming service, is interpreting viewer session lengths, repeat viewership rates, and content genre preferences.",
+    "exhibits":[
+      {"exhibit_title":"Exhibit 1: Session Length Distribution","chart_type":"histogram","description":"% of sessions","data":{"Length Min":["<15","15-30","30-60","60+"],"%": [20,40,30,10]},"x_axis":"Length Min","y_axis":["%"]},
+      {"exhibit_title":"Exhibit 2: Repeat Viewership Rate","chart_type":"line","description":"% of users returning","data":{"Week":[1,2,3,4,5],"Repeat %":[30,35,40,45,50]},"x_axis":"Week","y_axis":["Repeat %"]},
+      {"exhibit_title":"Exhibit 3: Genre Preference","chart_type":"pie","description":"% of watch time","data":{"Genre":["Drama","Comedy","Doc","Action"],"Share %":[25,25,20,30]},"labels":"Genre","values":"Share %"}
+    ]
+  },
+  {
+    "id": "analysis_71",
+    "title": "AquaPure Water Filter Usage Analysis",
+    "skill_type": "Analysis",
+    "prompt_text": "AquaPure, a water filtration company, is interpreting filter replacement rates, customer satisfaction trends, and sales by channel.",
+    "exhibits": [
+      {"exhibit_title": "Exhibit 1: Filter Replacement Rate","chart_type": "line","description": "Replacements per month (000s)","data": {"Month": ["Jan","Feb","Mar","Apr","May","Jun"],"Replacements (000s)": [10,12,13,15,14,16]},"x_axis": "Month","y_axis": ["Replacements (000s)"]},
+      {"exhibit_title": "Exhibit 2: Customer Satisfaction Trend","chart_type": "bar","description": "Average satisfaction score (1-5)","data": {"Quarter": ["Q1","Q2","Q3","Q4"],"Score": [4.1,4.3,4.4,4.2]},"x_axis": "Quarter","y_axis": ["Score"]},
+      {"exhibit_title": "Exhibit 3: Sales Share by Channel","chart_type": "pie","description": "Share by channel","data": {"Channel": ["Online","Retail","Wholesale"],"Share %": [50,30,20]},"labels": "Channel","values": "Share %"}
+    ]
+  },
+  {
+    "id": "analysis_72",
+    "title": "DriveNow Car Rental Utilization Analysis",
+    "skill_type": "Analysis",
+    "prompt_text": "DriveNow, a car rental company, is interpreting fleet utilization rates, booking lead times, and customer type distribution.",
+    "exhibits": [
+      {"exhibit_title": "Exhibit 1: Fleet Utilization Rate","chart_type": "bar","description": "% of fleet in use","data": {"Month": ["Jan","Feb","Mar","Apr","May","Jun"],"Utilization %": [70,75,80,78,82,85]},"x_axis": "Month","y_axis": ["Utilization %"]},
+      {"exhibit_title": "Exhibit 2: Booking Lead Time Distribution","chart_type": "line","description": "Average days before rental","data": {"Month": ["Jan","Feb","Mar","Apr","May","Jun"],"Lead Time": [3,3.5,3.2,3.8,4,4.1]},"x_axis": "Month","y_axis": ["Lead Time"]},
+      {"exhibit_title": "Exhibit 3: Customer Type Share","chart_type": "pie","description": "Share by type","data": {"Type": ["Business","Leisure"],"Share %": [60,40]},"labels": "Type","values": "Share %"}
+    ]
+  },
+  {
+    "id": "analysis_73",
+    "title": "SmartHome Device Feature Adoption",
+    "skill_type": "Analysis",
+    "prompt_text": "SmartHome, a smart device company, is interpreting feature activation rates, support request distribution, and device model share.",
+    "exhibits": [
+      {"exhibit_title": "Exhibit 1: Feature Activation Rate","chart_type": "bar","description": "% of devices with feature enabled","data": {"Feature": ["Voice","Remote","Automation"],"Activation %": [80,70,60]},"x_axis": "Feature","y_axis": ["Activation %"]},
+      {"exhibit_title": "Exhibit 2: Support Requests by Feature","chart_type": "line","description": "Requests per month","data": {"Month": ["Jan","Feb","Mar","Apr"],"Voice": [20,22,18,15],"Remote": [10,12,11,10],"Automation": [5,7,6,4]},"x_axis": "Month","y_axis": ["Voice","Remote","Automation"]},
+      {"exhibit_title": "Exhibit 3: Device Model Share","chart_type": "pie","description": "Share by model","data": {"Model": ["Basic","Pro","Elite"],"Share %": [50,35,15]},"labels": "Model","values": "Share %"}
+    ]
+  },
+  {
+    "id": "analysis_74",
+    "title": "TravelEase Booking Channel Analysis",
+    "skill_type": "Analysis",
+    "prompt_text": "TravelEase, an online travel agency, is interpreting bookings by channel, cancellation rate trend, and destination share.",
+    "exhibits": [
+      {"exhibit_title": "Exhibit 1: Bookings by Channel","chart_type": "bar","description": "Bookings (000s)","data": {"Channel": ["Web","Mobile App","Call Center"],"Bookings (000s)": [80,60,20]},"x_axis": "Channel","y_axis": ["Bookings (000s)"]},
+      {"exhibit_title": "Exhibit 2: Cancellation Rate Over Time","chart_type": "line","description": "% of bookings cancelled","data": {"Month": ["Jan","Feb","Mar","Apr"],"Cancellation %": [10,9,8,7]},"x_axis": "Month","y_axis": ["Cancellation %"]},
+      {"exhibit_title": "Exhibit 3: Destination Share","chart_type": "pie","description": "Share by top 3 destinations","data": {"Destination": ["Beach","City","Mountain"],"Share %": [40,35,25]},"labels": "Destination","values": "Share %"}
+    ]
+  },
+  {
+    "id": "analysis_75",
+    "title": "MediConnect Telemedicine Usage Analysis",
+    "skill_type": "Analysis",
+    "prompt_text": "MediConnect, a telemedicine provider, is interpreting session counts by specialty, patient satisfaction trends, and device usage share.",
+    "exhibits": [
+      {"exhibit_title": "Exhibit 1: Sessions by Specialty","chart_type": "bar","description": "Sessions per month (000s)","data": {"Specialty": ["GP","Derm","Psych","Peds"],"Sessions (000s)": [30,20,15,10]},"x_axis": "Specialty","y_axis": ["Sessions (000s)"]},
+      {"exhibit_title": "Exhibit 2: Patient Satisfaction Trend","chart_type": "line","description": "Average score (1-5)","data": {"Month": ["Jan","Feb","Mar","Apr"],"Score": [4.2,4.3,4.4,4.5]},"x_axis": "Month","y_axis": ["Score"]},
+      {"exhibit_title": "Exhibit 3: Device Usage Share","chart_type": "pie","description": "Share by device","data": {"Device": ["Mobile","Desktop","Tablet"],"Share %": [55,35,10]},"labels": "Device","values": "Share %"}
+    ]
+  },
+  {
+    "id": "analysis_76",
+    "title": "EcoFleet Electric Vehicle Fleet Analysis",
+    "skill_type": "Analysis",
+    "prompt_text": "EcoFleet, an EV fleet operator, is interpreting vehicle utilization rates, charging session patterns, and cost savings trends.",
+    "exhibits": [
+      {"exhibit_title": "Exhibit 1: Vehicle Utilization Rate","chart_type": "bar","description": "% of fleet in use","data": {"Month": ["Jan","Feb","Mar","Apr"],"Utilization %": [60,65,70,75]},"x_axis": "Month","y_axis": ["Utilization %"]},
+      {"exhibit_title": "Exhibit 2: Charging Sessions by Day","chart_type": "line","description": "Sessions per day","data": {"Day": ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"],"Sessions": [100,110,120,130,125,115,105]},"x_axis": "Day","y_axis": ["Sessions"]},
+      {"exhibit_title": "Exhibit 3: Cost Savings Trend","chart_type": "line","description": "Savings per month (000s USD)","data": {"Month": ["Jan","Feb","Mar","Apr"],"Savings (000s)": [20,25,30,35]},"x_axis": "Month","y_axis": ["Savings (000s)"]}
+    ]
+  },
+  {
+    "id": "analysis_77",
+    "title": "AgriTech Crop Disease Detection Analysis",
+    "skill_type": "Analysis",
+    "prompt_text": "AgriTech, an agri-analytics firm, is interpreting disease detection rates, alert frequency trends, and crop loss by region.",
+    "exhibits": [
+      {"exhibit_title": "Exhibit 1: Detection Rate by Crop","chart_type": "bar","description": "% of cases detected","data": {"Crop": ["Wheat","Corn","Soy"],"Detection %": [85,80,90]},"x_axis": "Crop","y_axis": ["Detection %"]},
+      {"exhibit_title": "Exhibit 2: Alert Frequency Over Time","chart_type": "line","description": "Alerts per week","data": {"Week": [1,2,3,4,5],"Alerts": [10,12,14,13,15]},"x_axis": "Week","y_axis": ["Alerts"]},
+      {"exhibit_title": "Exhibit 3: Crop Loss by Region","chart_type": "pie","description": "Share of total loss","data": {"Region": ["North","South","East","West"],"Share %": [30,25,25,20]},"labels": "Region","values": "Share %"}
+    ]
+  },
+  {
+    "id": "analysis_78",
+    "title": "ShopMate Loyalty Program Analysis",
+    "skill_type": "Analysis",
+    "prompt_text": "ShopMate, a retail chain, is interpreting loyalty member growth, redemption rate trends, and spend share by segment.",
+    "exhibits": [
+      {"exhibit_title": "Exhibit 1: Loyalty Member Growth","chart_type": "line","description": "Members (000s)","data": {"Month": ["Jan","Feb","Mar","Apr"],"Members (000s)": [50,55,60,65]},"x_axis": "Month","y_axis": ["Members (000s)"]},
+      {"exhibit_title": "Exhibit 2: Redemption Rate Trend","chart_type": "bar","description": "% of points redeemed","data": {"Quarter": ["Q1","Q2","Q3","Q4"],"Redemption %": [30,35,40,45]},"x_axis": "Quarter","y_axis": ["Redemption %"]},
+      {"exhibit_title": "Exhibit 3: Spend Share by Segment","chart_type": "pie","description": "Share by segment","data": {"Segment": ["Silver","Gold","Platinum"],"Share %": [40,35,25]},"labels": "Segment","values": "Share %"}
+    ]
+  },
+  {
+    "id": "analysis_79",
+    "title": "MediPlus Patient Portal Usage Analysis",
+    "skill_type": "Analysis",
+    "prompt_text": "MediPlus, a healthcare network, is interpreting patient portal login rates, feature usage trends, and access by age group.",
+    "exhibits": [
+      {"exhibit_title": "Exhibit 1: Portal Logins by Month","chart_type": "line","description": "Logins (000s)","data": {"Month": ["Jan","Feb","Mar","Apr"],"Logins (000s)": [20,22,25,28]},"x_axis": "Month","y_axis": ["Logins (000s)"]},
+      {"exhibit_title": "Exhibit 2: Feature Usage Trend","chart_type": "bar","description": "Uses per user","data": {"Feature": ["Appointments","Messaging","Lab Results"],"Uses": [5,3,2]},"x_axis": "Feature","y_axis": ["Uses"]},
+      {"exhibit_title": "Exhibit 3: Access by Age Group","chart_type": "pie","description": "Share by age group","data": {"Age Group": ["18-34","35-54","55+"],"Share %": [40,35,25]},"labels": "Age Group","values": "Share %"}
+    ]
+  },
+  {
+    "id": "analysis_80",
+    "title": "AutoRent Fleet Maintenance Analysis",
+    "skill_type": "Analysis",
+    "prompt_text": "AutoRent, a car rental company, is interpreting maintenance cost trends, downtime hours by vehicle type, and repair type share.",
+    "exhibits": [
+      {"exhibit_title": "Exhibit 1: Maintenance Cost Trend","chart_type": "line","description": "Cost per month (000s USD)","data": {"Month": ["Jan","Feb","Mar","Apr"],"Cost (000s)": [15,16,18,17]},"x_axis": "Month","y_axis": ["Cost (000s)"]},
+      {"exhibit_title": "Exhibit 2: Downtime by Vehicle Type","chart_type": "bar","description": "Hours per month","data": {"Type": ["Sedan","SUV","Truck"],"Hours": [40,50,60]},"x_axis": "Type","y_axis": ["Hours"]},
+      {"exhibit_title": "Exhibit 3: Repair Type Share","chart_type": "pie","description": "Share by repair type","data": {"Repair": ["Engine","Tires","Brakes"],"Share %": [50,30,20]},"labels": "Repair","values": "Share %"}
+    ]
+  },
+  {
+    "id": "analysis_81",
+    "title": "EduKids After-School Program Analysis",
+    "skill_type": "Analysis",
+    "prompt_text": "EduKids, an after-school program, is interpreting enrollment trends, activity participation rates, and feedback sentiment share.",
+    "exhibits": [
+      {"exhibit_title": "Exhibit 1: Enrollment Trend","chart_type": "line","description": "Enrollments per semester","data": {"Semester": ["Fall","Winter","Spring","Summer"],"Enrollments": [100,110,120,115]},"x_axis": "Semester","y_axis": ["Enrollments"]},
+      {"exhibit_title": "Exhibit 2: Activity Participation Rates","chart_type": "bar","description": "% of students by activity","data": {"Activity": ["Art","Sports","STEM"],"Participation %": [60,70,80]},"x_axis": "Activity","y_axis": ["Participation %"]},
+      {"exhibit_title": "Exhibit 3: Feedback Sentiment Share","chart_type": "pie","description": "Share by sentiment","data": {"Sentiment": ["Positive","Neutral","Negative"],"Share %": [70,20,10]},"labels": "Sentiment","values": "Share %"}
+    ]
+  },
+  {
+    "id": "analysis_82",
+    "title": "GreenPower Solar Panel Adoption Analysis",
+    "skill_type": "Analysis",
+    "prompt_text": "GreenPower, a solar provider, is interpreting adoption rates by region, incentive impact trends, and market share by segment.",
+    "exhibits": [
+      {"exhibit_title": "Exhibit 1: Adoption Rate by Region","chart_type": "bar","description": "% of homes with solar","data": {"Region": ["North","South","East","West"],"Adoption %": [20,25,15,30]},"x_axis": "Region","y_axis": ["Adoption %"]},
+      {"exhibit_title": "Exhibit 2: Incentive Impact Trend","chart_type": "line","description": "Adoption % over time","data": {"Year": [2020,2021,2022,2023],"Adoption %": [10,15,20,25]},"x_axis": "Year","y_axis": ["Adoption %"]},
+      {"exhibit_title": "Exhibit 3: Market Share by Segment","chart_type": "pie","description": "Share by segment","data": {"Segment": ["Residential","Commercial"],"Share %": [60,40]},"labels": "Segment","values": "Share %"}
+    ]
+  },
+  {
+    "id": "analysis_83",
+    "title": "FitCity Gym Attendance Analysis",
+    "skill_type": "Analysis",
+    "prompt_text": "FitCity, a gym chain, is interpreting attendance by time slot, membership type trend, and class popularity share.",
+    "exhibits": [
+      {"exhibit_title": "Exhibit 1: Attendance by Time Slot","chart_type": "bar","description": "Average members per slot","data": {"Time Slot": ["Morning","Afternoon","Evening"],"Members": [50,40,60]},"x_axis": "Time Slot","y_axis": ["Members"]},
+      {"exhibit_title": "Exhibit 2: Membership Type Trend","chart_type": "line","description": "Active members by type","data": {"Month": ["Jan","Feb","Mar","Apr"],"Standard": [100,105,110,112],"Premium": [40,45,48,50]},"x_axis": "Month","y_axis": ["Standard","Premium"]},
+      {"exhibit_title": "Exhibit 3: Class Popularity Share","chart_type": "pie","description": "Share by class","data": {"Class": ["Yoga","Spin","HIIT"],"Share %": [40,35,25]},"labels": "Class","values": "Share %"}
+    ]
+  },
+  {
+    "id": "analysis_84",
+    "title": "ShopLink Online Conversion Analysis",
+    "skill_type": "Analysis",
+    "prompt_text": "ShopLink, an e-commerce platform, is interpreting conversion rates by device, abandoned cart trends, and sales share by category.",
+    "exhibits": [
+      {"exhibit_title": "Exhibit 1: Conversion Rate by Device","chart_type": "bar","description": "% conversion","data": {"Device": ["Desktop","Mobile","Tablet"],"Conversion %": [3.5,2.8,2.2]},"x_axis": "Device","y_axis": ["Conversion %"]},
+      {"exhibit_title": "Exhibit 2: Abandoned Cart Trend","chart_type": "line","description": "Abandoned carts per month","data": {"Month": ["Jan","Feb","Mar","Apr"],"Abandoned": [200,220,210,205]},"x_axis": "Month","y_axis": ["Abandoned"]},
+      {"exhibit_title": "Exhibit 3: Sales Share by Category","chart_type": "pie","description": "Share by category","data": {"Category": ["Electronics","Clothing","Home"],"Share %": [40,35,25]},"labels": "Category","values": "Share %"}
+    ]
+  },
+  {
+    "id": "analysis_85",
+    "title": "MediCare Appointment Scheduling Analysis",
+    "skill_type": "Analysis",
+    "prompt_text": "MediCare, a clinic, is interpreting no-show rates by appointment type, reschedule trends, and patient age group share.",
+    "exhibits": [
+      {"exhibit_title": "Exhibit 1: No-Show Rate by Appointment Type","chart_type": "bar","description": "% no-shows","data": {"Type": ["Checkup","Follow-up","Specialist"],"No-Show %": [5,8,10]},"x_axis": "Type","y_axis": ["No-Show %"]},
+      {"exhibit_title": "Exhibit 2: Reschedule Trend","chart_type": "line","description": "Reschedules per month","data": {"Month": ["Jan","Feb","Mar","Apr"],"Reschedules": [30,28,32,29]},"x_axis": "Month","y_axis": ["Reschedules"]},
+      {"exhibit_title": "Exhibit 3: Patient Age Group Share","chart_type": "pie","description": "Share by age group","data": {"Age Group": ["0-18","19-34","35-54","55+"],"Share %": [15,25,35,25]},"labels": "Age Group","values": "Share %"}
+    ]
+  },
+  {
+    "id": "analysis_86",
+    "title": "UrbanMove Scooter Usage Analysis",
+    "skill_type": "Analysis",
+    "prompt_text": "UrbanMove, a scooter sharing company, is interpreting trip duration patterns, user segment trends, and ride share by neighborhood.",
+    "exhibits": [
+      {"exhibit_title": "Exhibit 1: Average Trip Duration","chart_type": "bar","description": "Minutes per trip","data": {"Neighborhood": ["Central","East","West","South"],"Duration": [12,10,14,11]},"x_axis": "Neighborhood","y_axis": ["Duration"]},
+      {"exhibit_title": "Exhibit 2: User Segment Trend","chart_type": "line","description": "Trips by segment","data": {"Month": ["Jan","Feb","Mar","Apr"],"Commuter": [1000,1100,1200,1250],"Tourist": [500,600,700,750]},"x_axis": "Month","y_axis": ["Commuter","Tourist"]},
+      {"exhibit_title": "Exhibit 3: Ride Share by Neighborhood","chart_type": "pie","description": "Share by neighborhood","data": {"Neighborhood": ["Central","East","West","South"],"Share %": [35,25,25,15]},"labels": "Neighborhood","values": "Share %"}
+    ]
+  },
+  {
+    "id": "analysis_87",
+    "title": "CityGrocer Delivery Route Analysis",
+    "skill_type": "Analysis",
+    "prompt_text": "CityGrocer, a grocery delivery service, is interpreting route efficiency, delivery window trends, and order share by category.",
+    "exhibits": [
+      {"exhibit_title": "Exhibit 1: Route Efficiency","chart_type": "bar","description": "Avg deliveries/hour","data": {"Route": ["A","B","C","D"],"Deliveries/Hour": [8,9,7,10]},"x_axis": "Route","y_axis": ["Deliveries/Hour"]},
+      {"exhibit_title": "Exhibit 2: Delivery Window Trend","chart_type": "line","description": "Orders by window","data": {"Window": ["Morning","Afternoon","Evening"],"Orders": [100,150,120]},"x_axis": "Window","y_axis": ["Orders"]},
+      {"exhibit_title": "Exhibit 3: Order Share by Category","chart_type": "pie","description": "Share by category","data": {"Category": ["Fresh","Pantry","Frozen"],"Share %": [50,30,20]},"labels": "Category","values": "Share %"}
+    ]
+  },
+  {
+    "id": "analysis_88",
+    "title": "WellCare Health Plan Enrollment Analysis",
+    "skill_type": "Analysis",
+    "prompt_text": "WellCare, a health insurer, is interpreting enrollment by plan, churn trends, and premium share by segment.",
+    "exhibits": [
+      {"exhibit_title": "Exhibit 1: Enrollment by Plan","chart_type": "bar","description": "Members (000s)","data": {"Plan": ["Basic","Plus","Premium"],"Members (000s)": [70,50,30]},"x_axis": "Plan","y_axis": ["Members (000s)"]},
+      {"exhibit_title": "Exhibit 2: Churn Trend","chart_type": "line","description": "Churn % by month","data": {"Month": ["Jan","Feb","Mar","Apr"],"Churn %": [2,2.5,2.2,2.1]},"x_axis": "Month","y_axis": ["Churn %"]},
+      {"exhibit_title": "Exhibit 3: Premium Share by Segment","chart_type": "pie","description": "Share by segment","data": {"Segment": ["Individual","Family","Group"],"Share %": [40,35,25]},"labels": "Segment","values": "Share %"}
+    ]
+  },
+  {
+    "id": "analysis_89",
+    "title": "RentWise Apartment Occupancy Analysis",
+    "skill_type": "Analysis",
+    "prompt_text": "RentWise, a property management firm, is interpreting occupancy by building, lease renewal trend, and tenant age group share.",
+    "exhibits": [
+      {"exhibit_title": "Exhibit 1: Occupancy by Building","chart_type": "bar","description": "% occupied","data": {"Building": ["A","B","C"],"Occupancy %": [95,90,92]},"x_axis": "Building","y_axis": ["Occupancy %"]},
+      {"exhibit_title": "Exhibit 2: Lease Renewal Trend","chart_type": "line","description": "Renewals per quarter","data": {"Quarter": ["Q1","Q2","Q3","Q4"],"Renewals": [30,35,32,34]},"x_axis": "Quarter","y_axis": ["Renewals"]},
+      {"exhibit_title": "Exhibit 3: Tenant Age Group Share","chart_type": "pie","description": "Share by age group","data": {"Age Group": ["18-34","35-54","55+"],"Share %": [50,35,15]},"labels": "Age Group","values": "Share %"}
+    ]
+  },
+  {
+    "id": "analysis_90",
+    "title": "EduLearn Online Course Feedback Analysis",
+    "skill_type": "Analysis",
+    "prompt_text": "EduLearn, an online learning platform, is interpreting feedback ratings by course, completion trend, and student age group share.",
+    "exhibits": [
+      {"exhibit_title": "Exhibit 1: Feedback Ratings by Course","chart_type": "bar","description": "Avg rating (1-5)","data": {"Course": ["Math","Science","History"],"Rating": [4.2,4.1,4.4]},"x_axis": "Course","y_axis": ["Rating"]},
+      {"exhibit_title": "Exhibit 2: Completion Trend","chart_type": "line","description": "% complete per month","data": {"Month": ["Jan","Feb","Mar","Apr"],"Completion %": [60,62,65,68]},"x_axis": "Month","y_axis": ["Completion %"]},
+      {"exhibit_title": "Exhibit 3: Student Age Group Share","chart_type": "pie","description": "Share by age group","data": {"Age Group": ["18-24","25-34","35+"],"Share %": [55,30,15]},"labels": "Age Group","values": "Share %"}
+    ]
+  },
+  {
+    "id": "analysis_91",
+    "title": "GreenRide Shared Mobility Usage Analysis",
+    "skill_type": "Analysis",
+    "prompt_text": "GreenRide, a shared mobility service, is interpreting trip counts by mode, usage trend, and neighborhood share.",
+    "exhibits": [
+      {"exhibit_title": "Exhibit 1: Trips by Mode","chart_type": "bar","description": "Trips (000s)","data": {"Mode": ["Bike","Scooter","Car"],"Trips (000s)": [40,30,20]},"x_axis": "Mode","y_axis": ["Trips (000s)"]},
+      {"exhibit_title": "Exhibit 2: Usage Trend","chart_type": "line","description": "Total trips per month","data": {"Month": ["Jan","Feb","Mar","Apr"],"Trips": [80,90,100,110]},"x_axis": "Month","y_axis": ["Trips"]},
+      {"exhibit_title": "Exhibit 3: Neighborhood Share","chart_type": "pie","description": "Share by neighborhood","data": {"Neighborhood": ["Central","East","West"],"Share %": [45,35,20]},"labels": "Neighborhood","values": "Share %"}
+    ]
+  },
+  {
+    "id": "analysis_92",
+    "title": "HealthSync Remote Patient Monitoring Analysis",
+    "skill_type": "Analysis",
+    "prompt_text": "HealthSync, a remote health monitoring provider, is interpreting device adherence rates, alert trend, and patient condition share.",
+    "exhibits": [
+      {"exhibit_title": "Exhibit 1: Device Adherence Rate","chart_type": "line","description": "% of patients using device daily","data": {"Month": ["Jan","Feb","Mar","Apr"],"Adherence %": [70,72,75,77]},"x_axis": "Month","y_axis": ["Adherence %"]},
+      {"exhibit_title": "Exhibit 2: Alert Trend","chart_type": "bar","description": "Alerts per week","data": {"Week": [1,2,3,4],"Alerts": [15,18,20,17]},"x_axis": "Week","y_axis": ["Alerts"]},
+      {"exhibit_title": "Exhibit 3: Patient Condition Share","chart_type": "pie","description": "Share by condition","data": {"Condition": ["Diabetes","Heart","Other"],"Share %": [50,30,20]},"labels": "Condition","values": "Share %"}
+    ]
+  },
+  {
+    "id": "analysis_93",
+    "title": "ShopQuick Order Fulfillment Analysis",
+    "skill_type": "Analysis",
+    "prompt_text": "ShopQuick, a same-day delivery service, is interpreting fulfillment time by warehouse, delay trend, and order share by product category.",
+    "exhibits": [
+      {"exhibit_title": "Exhibit 1: Fulfillment Time by Warehouse","chart_type": "bar","description": "Avg hours to fulfill","data": {"Warehouse": ["A","B","C"],"Hours": [4,5,3]},"x_axis": "Warehouse","y_axis": ["Hours"]},
+      {"exhibit_title": "Exhibit 2: Delay Trend","chart_type": "line","description": "Delayed orders per week","data": {"Week": [1,2,3,4],"Delays": [8,10,7,6]},"x_axis": "Week","y_axis": ["Delays"]},
+      {"exhibit_title": "Exhibit 3: Order Share by Category","chart_type": "pie","description": "Share by category","data": {"Category": ["Electronics","Groceries","Other"],"Share %": [40,50,10]},"labels": "Category","values": "Share %"}
+    ]
+  },
+  {
+    "id": "analysis_94",
+    "title": "FarmDirect Produce Delivery Analysis",
+    "skill_type": "Analysis",
+    "prompt_text": "FarmDirect, a produce delivery startup, is interpreting delivery frequency, customer satisfaction trend, and produce type share.",
+    "exhibits": [
+      {"exhibit_title": "Exhibit 1: Delivery Frequency","chart_type": "bar","description": "Deliveries per week","data": {"Type": ["Single","Weekly","Biweekly"],"Deliveries": [30,50,20]},"x_axis": "Type","y_axis": ["Deliveries"]},
+      {"exhibit_title": "Exhibit 2: Customer Satisfaction Trend","chart_type": "line","description": "Avg score (1-5)","data": {"Month": ["Jan","Feb","Mar","Apr"],"Score": [4.4,4.5,4.6,4.7]},"x_axis": "Month","y_axis": ["Score"]},
+      {"exhibit_title": "Exhibit 3: Produce Type Share","chart_type": "pie","description": "Share by type","data": {"Type": ["Fruit","Vegetable"],"Share %": [60,40]},"labels": "Type","values": "Share %"}
+    ]
+  },
+  {
+    "id": "analysis_95",
+    "title": "Medix Diagnostics Test Volume Analysis",
+    "skill_type": "Analysis",
+    "prompt_text": "Medix Diagnostics, a lab testing provider, is interpreting test volume by type, turnaround time trend, and revenue share by payer.",
+    "exhibits": [
+      {"exhibit_title": "Exhibit 1: Test Volume by Type","chart_type": "bar","description": "Tests per month (000s)","data": {"Type": ["Blood","Urine","Other"],"Tests (000s)": [40,30,10]},"x_axis": "Type","y_axis": ["Tests (000s)"]},
+      {"exhibit_title": "Exhibit 2: Turnaround Time Trend","chart_type": "line","description": "Avg hours per test","data": {"Month": ["Jan","Feb","Mar","Apr"],"Hours": [24,22,20,18]},"x_axis": "Month","y_axis": ["Hours"]},
+      {"exhibit_title": "Exhibit 3: Revenue Share by Payer","chart_type": "pie","description": "Share by payer","data": {"Payer": ["Private","Public"],"Share %": [70,30]},"labels": "Payer","values": "Share %"}
+    ]
+  },
+  {
+    "id": "analysis_96",
+    "title": "CityPark Parking Utilization Analysis",
+    "skill_type": "Analysis",
+    "prompt_text": "CityPark, a parking operator, is interpreting utilization by lot, payment method trend, and vehicle type share.",
+    "exhibits": [
+      {"exhibit_title": "Exhibit 1: Utilization by Lot","chart_type": "bar","description": "% used","data": {"Lot": ["A","B","C"],"Utilization %": [80,75,85]},"x_axis": "Lot","y_axis": ["Utilization %"]},
+      {"exhibit_title": "Exhibit 2: Payment Method Trend","chart_type": "line","description": "Payments per method/month","data": {"Month": ["Jan","Feb","Mar","Apr"],"Card": [100,110,120,130],"App": [60,70,75,80]},"x_axis": "Month","y_axis": ["Card","App"]},
+      {"exhibit_title": "Exhibit 3: Vehicle Type Share","chart_type": "pie","description": "Share by type","data": {"Type": ["Car","Truck","Motorcycle"],"Share %": [70,25,5]},"labels": "Type","values": "Share %"}
+    ]
+  },
+  {
+    "id": "analysis_97",
+    "title": "TravelGo Package Tour Booking Analysis",
+    "skill_type": "Analysis",
+    "prompt_text": "TravelGo, a tour operator, is interpreting booking volume by tour type, lead time trend, and traveler age group share.",
+    "exhibits": [
+      {"exhibit_title": "Exhibit 1: Booking Volume by Tour Type","chart_type": "bar","description": "Bookings (000s)","data": {"Tour": ["Adventure","Culture","Relaxation"],"Bookings (000s)": [30,25,20]},"x_axis": "Tour","y_axis": ["Bookings (000s)"]},
+      {"exhibit_title": "Exhibit 2: Lead Time Trend","chart_type": "line","description": "Days before tour","data": {"Month": ["Jan","Feb","Mar","Apr"],"Lead Time": [20,18,15,12]},"x_axis": "Month","y_axis": ["Lead Time"]},
+      {"exhibit_title": "Exhibit 3: Traveler Age Group Share","chart_type": "pie","description": "Share by age group","data": {"Age Group": ["18-34","35-54","55+"],"Share %": [45,40,15]},"labels": "Age Group","values": "Share %"}
+    ]
+  },
+  {
+    "id": "analysis_98",
+    "title": "SafeWork Incident Reporting Analysis",
+    "skill_type": "Analysis",
+    "prompt_text": "SafeWork, a workplace safety platform, is interpreting incident type frequency, resolution time trend, and department share.",
+    "exhibits": [
+      {"exhibit_title": "Exhibit 1: Incident Type Frequency","chart_type": "bar","description": "Incidents per month","data": {"Type": ["Slip","Equipment","Other"],"Incidents": [10,7,5]},"x_axis": "Type","y_axis": ["Incidents"]},
+      {"exhibit_title": "Exhibit 2: Resolution Time Trend","chart_type": "line","description": "Avg days to resolve","data": {"Month": ["Jan","Feb","Mar","Apr"],"Days": [5,4.5,4,3.8]},"x_axis": "Month","y_axis": ["Days"]},
+      {"exhibit_title": "Exhibit 3: Department Share","chart_type": "pie","description": "Share by department","data": {"Department": ["Ops","Admin","Sales"],"Share %": [50,30,20]},"labels": "Department","values": "Share %"}
+    ]
+  },
+  {
+    "id": "analysis_99",
+    "title": "CityTransit Bus Route Analysis",
+    "skill_type": "Analysis",
+    "prompt_text": "CityTransit, a bus operator, is interpreting ridership by route, delay trend, and fare type share.",
+    "exhibits": [
+      {"exhibit_title": "Exhibit 1: Ridership by Route","chart_type": "bar","description": "Riders per day","data": {"Route": ["1","2","3"],"Riders": [500,600,400]},"x_axis": "Route","y_axis": ["Riders"]},
+      {"exhibit_title": "Exhibit 2: Delay Trend","chart_type": "line","description": "Delays per month","data": {"Month": ["Jan","Feb","Mar","Apr"],"Delays": [15,12,10,8]},"x_axis": "Month","y_axis": ["Delays"]},
+      {"exhibit_title": "Exhibit 3: Fare Type Share","chart_type": "pie","description": "Share by fare type","data": {"Fare": ["Regular","Discount","Student"],"Share %": [70,20,10]},"labels": "Fare","values": "Share %"}
+    ]
+  },
+  {
+    "id": "analysis_100",
+    "title": "CleanAir Air Quality Monitoring Analysis",
+    "skill_type": "Analysis",
+    "prompt_text": "CleanAir, an air quality monitoring provider, is interpreting AQI by location, pollutant trend, and sensor type share.",
+    "exhibits": [
+      {"exhibit_title": "Exhibit 1: AQI by Location","chart_type": "bar","description": "Avg AQI","data": {"Location": ["Downtown","Suburbs","Industrial"],"AQI": [80,60,100]},"x_axis": "Location","y_axis": ["AQI"]},
+      {"exhibit_title": "Exhibit 2: Pollutant Trend","chart_type": "line","description": "PM2.5 over months","data": {"Month": ["Jan","Feb","Mar","Apr"],"PM2.5": [30,28,25,20]},"x_axis": "Month","y_axis": ["PM2.5"]},
+      {"exhibit_title": "Exhibit 3: Sensor Type Share","chart_type": "pie","description": "Share by sensor type","data": {"Type": ["Fixed","Mobile"],"Share %": [70,30]},"labels": "Type","values": "Share %"}
     ]
   }
 ]
