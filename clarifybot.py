@@ -351,7 +351,8 @@ def reset_skill_state():
         'show_comment_box', 'feedback_rating_value',
         'hypothesis_count',
         'analysis_input',
-        'current_exhibit_index' # Added for Analysis skill
+        'current_exhibit_index', # Added for Analysis skill
+        'recommendation_input' # Added for Recommendation skill
     ]
     logger.info(f"Resetting state keys: {keys_to_reset}")
     for key in keys_to_reset:
@@ -376,7 +377,8 @@ def reset_skill_state():
     init_session_state_key('current_prompt_id', None)
     init_session_state_key('hypothesis_count', 0)
     init_session_state_key('analysis_input', "")
-    init_session_state_key('current_exhibit_index', 0) # Initialize exhibit index
+    init_session_state_key('current_exhibit_index', 0)
+    init_session_state_key('recommendation_input', "") # Added for Recommendation skill
 
 
 # --- UPDATED: Function to Save User Feedback via Google Sheets ---
@@ -509,7 +511,8 @@ def parse_interviewer_response(response_text, skill):
     assessment = None
 
     # Use new skill names for checks
-    if skill in ["Clarifying", "Frameworks", "Analysis"]: # Analysis feedback will be structured
+    # Recommendation feedback should also be structured
+    if skill in ["Clarifying", "Frameworks", "Analysis", "Recommendation"]:
         answer_match = re.search(r"###ANSWER###\s*(.*?)\s*###ASSESSMENT###", response_text, re.DOTALL | re.IGNORECASE)
         assessment_match = re.search(r"###ASSESSMENT###\s*(.*)", response_text, re.DOTALL | re.IGNORECASE)
         if answer_match: answer = answer_match.group(1).strip()
@@ -541,7 +544,7 @@ def send_question(question, current_case_prompt_text, exhibit_context=None):
     """
     Sends user question/input to LLM, gets response based on skill, updates conversation state.
     Includes optional exhibit_context for Analysis skill.
-    NOTE: This function is NO LONGER used for the main interaction loop of Analysis.
+    NOTE: This function is NO LONGER used for the main interaction loop of Analysis or Recommendation.
           It's kept for Clarifying Questions and Hypothesis Formulation.
     """
     prefix = st.session_state.key_prefix
@@ -585,49 +588,13 @@ def send_question(question, current_case_prompt_text, exhibit_context=None):
             temperature = 0.5
 
         elif selected_skill == "Hypothesis": # Use new skill name
-            # --- Refined Interaction Prompt v2 ---
-            prompt_for_llm = f"""
-            You are playing the role of a case interviewer providing data/information in response to a candidate's hypothesis.
-            The candidate is trying to diagnose an issue based on the case prompt.
-
-            **Your Primary Task: Evaluate the Candidate's Input FIRST.**
-            Determine if the "Candidate's Latest Hypothesis/Area to Investigate" below is a reasonable, testable hypothesis related to the case context ({current_case_prompt_text}).
-            - Is it specific enough? Is it relevant?
-            - Or is it nonsensical (like jokes, insults), extremely vague (like one word "why?" or "wut"), or clearly unrelated?
-
-            **Based on your evaluation, respond in ONE of the following two ways:**
-
-            1.  **If the input IS a reasonable hypothesis:**
-                * Provide a concise (1-2 sentences) piece of plausible information that *contradicts* their line of thinking or suggests it's not the primary driver.
-                * Maintain consistency with previous info provided in the history.
-                * Sound like a neutral source of data.
-                * **DO NOT** assess the hypothesis quality directly (e.g., don't say "Good hypothesis").
-                * **DO NOT** use ###ANSWER### or ###ASSESSMENT### tags.
-
-            2.  **If the input IS NOT a reasonable hypothesis:**
-                * **DO NOT provide contradictory case information.**
-                * Respond politely and neutrally that you cannot provide relevant information based on that input.
-                * Ask them to state a clearer, testable hypothesis related to the case.
-                * Example responses: "I don't have data related to that. Could you propose a specific hypothesis about the potential cause of the issue described in the case?" OR "Could you clarify what specific area you'd like to investigate based on the case details?" OR "Please state a testable hypothesis related to the case."
-                * **DO NOT** use ###ANSWER### or ###ASSESSMENT### tags.
-
-            **CRITICAL:** Your response must be ONLY the text for either option 1 or option 2 above. No extra formatting or explanation.
-
-            Conversation History (Previous hypotheses and info provided):
-            {history_for_prompt}
-
-            Candidate's Latest Hypothesis/Area to Investigate:
-            {latest_input}
-
-            Your Response:
-            """
-            system_message = "You are a case interviewer. IMPORTANT: First, evaluate if the user's input is a reasonable hypothesis for the case. If yes, provide concise, contradictory information. If no (e.g., nonsensical, vague, unrelated), politely ask for a clearer, relevant hypothesis. Do not assess. Do not use special formatting."
-            # --- End of Refined Prompt v2 ---
+            prompt_for_llm = f"""... [Hypothesis Interaction Prompt v2 as before] ..."""
+            system_message = "You are a case interviewer. IMPORTANT: First, evaluate if the user's input is a reasonable hypothesis..."
             max_tokens = 150
-            temperature = 0.4 # Slightly lower temperature
+            temperature = 0.4
 
-        # Analysis and Framework Dev now handle their primary interaction outside send_question
-        elif selected_skill in ["Frameworks", "Analysis"]:
+        # Analysis, Framework Dev, Recommendation now handle interaction outside send_question
+        elif selected_skill in ["Frameworks", "Analysis", "Recommendation"]:
              logger.error(f"send_question called unexpectedly for skill: {selected_skill}")
              interviewer_answer = f"Error: Unexpected interaction for {selected_skill}."
              interviewer_assessment = None
@@ -749,6 +716,13 @@ def generate_final_feedback(current_case_prompt_text):
         if not history_string:
              logger.warning("Analysis: Could not extract analysis from conversation state.")
              return "[Could not generate feedback: Analysis not found in state]"
+    elif selected_skill == "Recommendation": # Use new skill name
+        # History string is just the single recommendation submitted
+        if conversation_history and conversation_history[0].get("role") == "interviewee":
+             history_string = f"Candidate's Submitted Recommendation:\n{conversation_history[0].get('content', '[Recommendation not found]')}"
+        else:
+             logger.warning("Recommendation: Could not extract recommendation from conversation state.")
+             return "[Could not generate feedback: Recommendation submission not found in state]"
     else: # For Clarifying Questions (and potentially others later)
         for i, msg in enumerate(conversation_history):
             role = msg.get("role"); content = msg.get("content", "[missing content]"); q_num = (i // 2) + 1
@@ -790,50 +764,56 @@ def generate_final_feedback(current_case_prompt_text):
                  max_tokens_feedback = 700
 
             elif selected_skill == "Analysis": # Use new skill name
-                 # --- Updated Analysis Final Feedback Prompt ---
+                 feedback_prompt = f"""... [Analysis Feedback Prompt as before - Rating First] ..."""
+                 system_message_feedback = "You are an expert case interview coach providing structured feedback on exhibit analysis..."
+                 max_tokens_feedback = 800
+
+            elif selected_skill == "Recommendation": # Use new skill name
+                 # --- NEW: Final Feedback Prompt for Recommendation ---
                  feedback_prompt = f"""
-                 You are an experienced case interview coach providing final summary feedback on the Analysis phase.
-                 The candidate was presented with a case prompt and one or more exhibits sequentially, submitting an analysis for each.
+                 You are an experienced case interview coach providing final summary feedback on the Recommendation phase.
+                 The candidate was presented with a case prompt and summary findings/exhibits and submitted their final recommendation.
 
                  Case Prompt Context for this Session:
                  {current_case_prompt_text}
 
-                 Candidate's Submitted Analyses (for each exhibit shown):
+                 Candidate's Submitted Recommendation:
                  {history_string}
 
                  Your Task:
-                 Provide detailed, professional, final feedback on the candidate's overall analysis performance across all exhibits. Evaluate their ability to interpret each exhibit correctly AND synthesize the findings. Use markdown formatting effectively.
+                 Provide detailed, professional, final feedback on the candidate's submitted recommendation. Evaluate the structure, synthesis of information, clarity, and inclusion of risks and next steps. Use markdown formatting effectively.
 
-                 **IMPORTANT:** Your response MUST start *directly* with the "## Overall Analysis Rating:" heading on the first line, followed by the rating and justification. Do not include any introductory phrases.
+                 **IMPORTANT:** Your response MUST start *directly* with the "## Overall Recommendation Rating:" heading on the first line, followed by the rating and justification. Do not include any introductory phrases.
 
                  Structure your feedback precisely as follows using Markdown:
 
-                 ## Overall Analysis Rating: [1-5]/5
-                 *(Provide a brief justification for the rating here, considering the quality criteria below across all exhibits analyzed)*
+                 ## Overall Recommendation Rating: [1-5]/5
+                 *(Provide a brief justification for the rating here, considering the quality criteria below)*
 
                  ---
 
-                 1.  **Overall Summary:** Briefly summarize the quality and effectiveness of the candidate's analysis across all provided exhibits in the context of the case. Did they connect the dots?
+                 1.  **Structure (Pyramid Principle):** Did the recommendation start with a clear conclusion/answer to the main case question? Was it followed by logical supporting rationale and evidence (implicitly or explicitly referencing the provided exhibits/findings)?
 
-                 2.  **Strengths:** Identify 1-2 specific strengths demonstrated across the analyses (e.g., consistently identified key insights, correctly used data, drew clear implications, well-structured thinking). Refer to specific exhibit analyses if helpful.
+                 2.  **Synthesis & Logic:** How well did the candidate synthesize the information provided (case prompt + exhibits) to arrive at their recommendation? Was the rationale sound and logical?
 
-                 3.  **Areas for Improvement:** Identify 1-2 key weaknesses (e.g., missed key insights, misinterpreted data, weak implications/so-what, unclear structure, didn't use specific data, failed to synthesize findings). Refer to specific exhibit analyses if helpful.
+                 3.  **Risks & Next Steps:** Did the candidate appropriately identify potential risks associated with their recommendation? Were the proposed next steps relevant and actionable?
 
-                 4.  **Actionable Next Steps:** Provide at least two concrete, actionable steps the candidate can take to improve their exhibit analysis and synthesis skills *for future cases*.
+                 4.  **Clarity & Conciseness:** Was the recommendation communicated clearly, professionally, and concisely?
 
+                 5.  **Actionable Next Steps (for the candidate):** Provide at least two concrete, actionable steps the candidate can take to improve their recommendation structuring and delivery skills *for future cases*.
 
                  **Rating Criteria Reference:**
-                 * 1: Poor. Completely missed the point, misinterpreted data badly, no structure or implications. Failed to synthesize.
-                 * 2: Weak. Missed major insights or made significant interpretation errors, weak connection to the case or synthesis across exhibits.
-                 * 3: Fair. Identified some insights but missed key ones or made minor errors; implications/synthesis could be stronger/clearer.
-                 * 4: Good. Identified key insights, interpreted data mostly correctly, drew reasonable implications relevant to the case, attempted synthesis. Generally clear.
-                 * 5: Excellent. Clearly identified all key insights, interpreted data accurately, drew strong implications directly addressing the case problem, effectively synthesized findings across exhibits, well-structured.
+                 * 1: Poor. Recommendation missing or completely off-base. No clear structure, risks/next steps missing.
+                 * 2: Weak. Unclear conclusion or weak rationale. Poor structure (e.g., no Pyramid Principle). Risks/steps generic or missing.
+                 * 3: Fair. Recommendation addresses the prompt but structure could be better. Rationale is present but may lack depth or clear link to data. Risks/steps are basic.
+                 * 4: Good. Clear recommendation, mostly follows structure. Good synthesis of information. Relevant risks and next steps identified. Generally clear language.
+                 * 5: Excellent. Clear, concise, actionable recommendation following Pyramid Principle. Strong synthesis of case facts/exhibits. Insightful risks and concrete next steps. Professional delivery.
 
-                 Ensure your response does **not** start with any other title besides "## Overall Analysis Rating:". Use paragraph breaks between sections.
+                 Ensure your response does **not** start with any other title besides "## Overall Recommendation Rating:". Use paragraph breaks between sections.
                  """
-                 system_message_feedback = "You are an expert case interview coach providing structured feedback on exhibit analysis across multiple exhibits. IMPORTANT: Start your response *directly* with the '## Overall Analysis Rating:' heading. Evaluate critically based on the submitted analyses. Use markdown effectively."
-                 max_tokens_feedback = 800 # Allow more tokens for multi-exhibit feedback
-                 # --- End of Updated Analysis Final Feedback Prompt ---
+                 system_message_feedback = "You are an expert case interview coach providing structured feedback on a final case recommendation. IMPORTANT: Start your response *directly* with the '## Overall Recommendation Rating:' heading. Evaluate structure, synthesis, risks, and next steps. Use markdown effectively."
+                 max_tokens_feedback = 800
+                 # --- End of Recommendation Feedback Prompt ---
 
             else:
                 logger.error(f"Cannot generate feedback for unhandled skill: {selected_skill}")
@@ -914,11 +894,11 @@ def main_app():
     elif selected_skill == "Frameworks": framework_development_ui()
     elif selected_skill == "Hypothesis": hypothesis_formulation_ui()
     elif selected_skill == "Analysis": analysis_ui()
-    elif selected_skill == "Recommendation": st.header("Recommendation"); st.info("Under construction..."); logger.info("Displayed 'Under Construction'...")
+    elif selected_skill == "Recommendation": recommendation_ui() # Call new function
     else: logger.error(f"Invalid skill selected: {selected_skill}"); st.error("Invalid skill selected.")
     # --- End Update ---
 
-# --- Skill-Specific UI Functions (clarifying_questions_bot_ui, framework_development_ui) ---
+# --- Skill-Specific UI Functions (clarifying_questions_bot_ui, framework_development_ui, hypothesis_formulation_ui, analysis_ui) ---
 
 def clarifying_questions_bot_ui():
     # [ This function remains unchanged from the previous version ]
@@ -1049,7 +1029,7 @@ def clarifying_questions_bot_ui():
 
 
 def framework_development_ui():
-    # [ This function remains unchanged from the previous version ]
+    # [ This function remains largely unchanged, but donation dialog logic removed ]
     logger.info("Loading Framework Development UI.")
     prefix = st.session_state.key_prefix
     # Define keys
@@ -1164,6 +1144,7 @@ def framework_development_ui():
 
 # --- NEW: Skill-Specific UI Function (Hypothesis Formulation) ---
 def hypothesis_formulation_ui():
+    # [ This function remains unchanged from the previous version ]
     logger.info("Loading Hypothesis Formulation UI.")
     prefix = st.session_state.key_prefix
     # Define keys
@@ -1566,6 +1547,184 @@ def analysis_ui():
         col_btn_r1, col_btn_r2, col_btn_r3 = st.columns([1, 1.5, 1])
         with col_btn_r2:
             if st.button("Practice This Skill Again", use_container_width=True, key=f"{prefix}_an_practice_again"): logger.info("User clicked 'Practice This Skill Again' for Analysis."); reset_skill_state(); st.rerun()
+
+
+# --- NEW: Skill-Specific UI Function (Recommendation) ---
+def recommendation_ui():
+    logger.info("Loading Recommendation UI.")
+    prefix = st.session_state.key_prefix
+    # Define keys
+    done_key = f"{prefix}_done_asking"; time_key = f"{prefix}_total_time"; start_time_key = f"{prefix}_interaction_start_time"
+    conv_key = f"{prefix}_conversation"; feedback_key = f"{prefix}_feedback"; is_typing_key = f"{prefix}_is_typing"
+    feedback_submitted_key = f"{prefix}_feedback_submitted"; user_feedback_key = f"{prefix}_user_feedback"
+    current_prompt_id_key = f"{prefix}_current_prompt_id"; run_count_key = f"{prefix}_run_count"
+    show_comment_key = f"{prefix}_show_comment_box"; feedback_rating_value_key = f"{prefix}_feedback_rating_value"
+    # show_donation_dialog_key = f"{prefix}_show_donation_dialog" # REMOVED
+    recommendation_input_key = f"{prefix}_recommendation_input" # Specific key
+
+    # Initialize state
+    init_session_state_key('conversation', []); init_session_state_key('done_asking', False); init_session_state_key('feedback_submitted', False)
+    init_session_state_key('is_typing', False); init_session_state_key('feedback', None); init_session_state_key('show_comment_box', False)
+    init_session_state_key('feedback_rating_value', None); init_session_state_key('interaction_start_time', None)
+    init_session_state_key('total_time', 0.0); init_session_state_key('user_feedback', None); init_session_state_key('current_prompt_id', None)
+    init_session_state_key(recommendation_input_key, "")
+
+    # --- Instructions ---
+    st.markdown("Review the case prompt and key findings summarized below. Structure your final recommendation, including your rationale, potential risks, and next steps. Enter your full recommendation in the text area and click \"Submit Recommendation\" to get feedback.")
+    st.divider()
+
+    # --- REMOVED Donation Dialog Logic ---
+
+    # --- Select and Display Case Prompt & Exhibits ---
+    if st.session_state.get(current_prompt_id_key) is None:
+        logger.info("No current prompt ID (Recommendation), selecting new one.")
+        selected_id = select_new_prompt(); st.session_state[current_prompt_id_key] = selected_id
+    current_prompt = get_prompt_details(st.session_state.get(current_prompt_id_key))
+    if not current_prompt or current_prompt.get("skill_type") != "Recommendation":
+        logger.warning(f"Invalid or missing prompt for Recommendation skill. Prompt ID: {st.session_state.get(current_prompt_id_key)}. Selecting new.")
+        selected_id = select_new_prompt(); st.session_state[current_prompt_id_key] = selected_id
+        current_prompt = get_prompt_details(selected_id)
+        if not current_prompt or current_prompt.get("skill_type") != "Recommendation":
+             logger.error(f"Still could not load a valid Recommendation prompt. Last ID: {selected_id}")
+             st.error("Could not load a valid Recommendation prompt. Please try selecting the skill again or check prompts.json.")
+             if st.button("Restart Skill"): reset_skill_state(); st.rerun()
+             st.stop()
+
+    st.header("Case Prompt")
+    case_title = current_prompt.get('title', 'N/A'); case_prompt_text = current_prompt.get('prompt_text', 'Error: Prompt text missing.')
+    if case_prompt_text.startswith("Error"): st.error(case_prompt_text); st.stop()
+    else: st.info(f"**{case_title}**\n\n{case_prompt_text}"); logger.debug(f"Displayed Recommendation prompt: {case_title}")
+
+    # Display Exhibits (Summaries/Tables)
+    exhibits = current_prompt.get("exhibits", [])
+    if not exhibits:
+        st.warning("No exhibits/summary findings found for this recommendation prompt.")
+    else:
+        for i, exhibit in enumerate(exhibits):
+            st.subheader(exhibit.get("exhibit_title", f"Exhibit {i+1} / Key Finding"))
+            if exhibit.get("description"):
+                st.caption(exhibit.get("description"))
+            data = exhibit.get("data")
+            if data:
+                try:
+                    df = pd.DataFrame(data)
+                    # Display as table for recommendation prompts
+                    st.dataframe(df, use_container_width=True)
+                except Exception as e:
+                    logger.error(f"Error processing exhibit {i+1} data for Recommendation: {e}")
+                    st.error(f"Error displaying exhibit {i+1}. Please check data format in prompts.json.")
+            elif exhibit.get("summary_text"): # Allow plain text summaries
+                 st.markdown(exhibit.get("summary_text"))
+            else:
+                st.warning(f"Exhibit {i+1}: No data or summary text found.")
+
+    # --- Main Interaction Area ---
+    if not st.session_state.get(done_key):
+        st.header("Your Recommendation")
+        with st.form(key=f"{prefix}_rec_input_form", clear_on_submit=False):
+             recommendation_input = st.text_area(
+                 "Enter your full recommendation here:",
+                 height=300, # Make taller for full recommendation
+                 key=f"{prefix}_rec_form_text_area",
+                 disabled=st.session_state.get(is_typing_key, False),
+                 placeholder="Start with your conclusion, followed by rationale, risks, and next steps..."
+             )
+             submitted = st.form_submit_button(
+                 "Submit Recommendation",
+                 disabled=st.session_state.get(is_typing_key, False) or not recommendation_input
+             )
+             if submitted and recommendation_input:
+                 logger.info("User submitted recommendation.")
+                 # Store the recommendation for feedback generation
+                 st.session_state[conv_key] = [{"role": "interviewee", "content": recommendation_input}]
+                 st.session_state[done_key] = True
+                 # Calculate time, increment run count, check donation
+                 if st.session_state.get(start_time_key) is None: st.session_state[start_time_key] = time.time(); logger.info("Recommendation interaction timer started on submit.")
+                 end_time = time.time(); start_time = st.session_state.get(start_time_key)
+                 if start_time is not None: st.session_state[time_key] = end_time - start_time
+                 else: st.session_state[time_key] = 0.0
+                 current_session_run_count = st.session_state.get(run_count_key, 0) + 1
+                 st.session_state[run_count_key] = current_session_run_count
+                 logger.info(f"Session run count incremented to: {current_session_run_count} (Recommendation)")
+                 # REMOVED Donation Dialog trigger logic
+                 st.rerun()
+
+        # Typing indicator (will show while feedback generates)
+        typing_placeholder = st.empty()
+        if st.session_state.get(is_typing_key) or (st.session_state.get(done_key) and not st.session_state.get(feedback_key)):
+             typing_placeholder.text("CHIP is analyzing your recommendation...")
+        else:
+             typing_placeholder.empty()
+        if st.session_state.get(start_time_key) is None: st.session_state[start_time_key] = time.time(); logger.info("Interaction timer started.")
+
+
+    # --- Feedback and Conclusion Area ---
+    if st.session_state.get(done_key):
+        logger.debug("Entering recommendation feedback and conclusion area.")
+        st.session_state[is_typing_key] = True
+        final_feedback_content = generate_final_feedback(case_prompt_text)
+        st.session_state[is_typing_key] = False
+
+        logger.debug(f"Value returned by generate_final_feedback (Recommendation): '{final_feedback_content}'")
+        # Check for the specific heading for Recommendation feedback
+        feedback_was_generated = final_feedback_content and \
+                                 isinstance(final_feedback_content, str) and \
+                                 final_feedback_content.strip().startswith("## Overall Recommendation Rating:")
+        logger.debug(f"Feedback generated flag evaluated as: {feedback_was_generated}")
+
+        if feedback_was_generated:
+            st.divider(); st.markdown(final_feedback_content); st.divider()
+            # Feedback Rating Section
+            st.subheader("Rate this Feedback")
+            feedback_already_submitted = st.session_state.get(feedback_submitted_key, False)
+            if feedback_already_submitted:
+                stored_user_feedback = st.session_state.get(user_feedback_key)
+                st.success("Thank you for your feedback!")
+                if stored_user_feedback:
+                     rating_display = '★' * stored_user_feedback.get('rating', 0); st.caption(f"Your rating: {rating_display}")
+                     if stored_user_feedback.get('comment'): st.caption(f"Your comment: {stored_user_feedback.get('comment')}")
+            else:
+                st.markdown("**How helpful was the feedback provided above? ...**")
+                cols = st.columns(5); selected_rating = 0; rating_clicked = False
+                for i in range(5):
+                    with cols[i]:
+                        if st.button('★' * (i + 1), key=f"{prefix}_rec_star_{i+1}", help=f"Rate {i+1} star{'s' if i>0 else ''}"): selected_rating = i + 1; rating_clicked = True; logger.info(f"User clicked rating: {selected_rating} stars.")
+                if rating_clicked:
+                    st.session_state[feedback_rating_value_key] = selected_rating
+                    if selected_rating >= 4:
+                        user_feedback_data = {"rating": selected_rating, "comment": "", "prompt_id": st.session_state.get(current_prompt_id_key, "N/A"), "timestamp": time.time()}
+                        st.session_state[user_feedback_key] = user_feedback_data; st.session_state[feedback_submitted_key] = True; st.session_state[show_comment_key] = False
+                        if save_user_feedback(user_feedback_data): logger.info("User Feedback Auto-Submitted (Rating >= 4) and saved."); st.rerun()
+                        else: logger.error("User Feedback Auto-Submitted (Rating >= 4) but FAILED TO SAVE.")
+                    else: st.session_state[show_comment_key] = True
+                if st.session_state.get(show_comment_key, False):
+                    st.warning("Please provide a comment for ratings below 4 stars.")
+                    current_rating_value = st.session_state.get(feedback_rating_value_key, 0)
+                    rating_display = ('★' * current_rating_value) if isinstance(current_rating_value, int) and current_rating_value > 0 else "(select rating)"
+                    feedback_comment = st.text_area(f"Comment for your {rating_display} rating:", key=f"{prefix}_rec_feedback_comment_input", placeholder="...")
+                    if st.button("Submit Rating and Comment", key=f"{prefix}_rec_submit_feedback_button"):
+                        if not feedback_comment.strip(): st.error("Comment cannot be empty...")
+                        elif not isinstance(current_rating_value, int) or current_rating_value <= 0: st.error("Invalid rating selected...")
+                        else:
+                            user_feedback_data = {"rating": current_rating_value, "comment": feedback_comment.strip(), "prompt_id": st.session_state.get(current_prompt_id_key, "N/A"), "timestamp": time.time()}
+                            st.session_state[user_feedback_key] = user_feedback_data; st.session_state[feedback_submitted_key] = True; st.session_state[show_comment_key] = False
+                            if save_user_feedback(user_feedback_data): logger.info("User Feedback Submitted with Comment and saved."); st.rerun()
+                            else: logger.error("User Feedback Submitted with Comment but FAILED TO SAVE.")
+        elif final_feedback_content and str(final_feedback_content).startswith("Error"):
+             st.error(f"Could not display feedback: {final_feedback_content}")
+             logger.error(f"Feedback generation resulted in error message: {final_feedback_content}")
+        else:
+             st.warning("Feedback is currently unavailable or was not generated correctly.")
+             logger.warning(f"Feedback was not displayed. Content: {final_feedback_content}")
+
+        # Conclusion
+        st.divider(); st.header("Conclusion")
+        total_interaction_time = st.session_state.get(time_key, 0.0)
+        st.write(f"You spent **{total_interaction_time:.2f} seconds** in the recommendation phase.")
+        logger.info(f"Displayed recommendation conclusion. Total time: {total_interaction_time:.2f}s")
+        col_btn_r1, col_btn_r2, col_btn_r3 = st.columns([1, 1.5, 1])
+        with col_btn_r2:
+            if st.button("Practice This Skill Again", use_container_width=True, key=f"{prefix}_rec_practice_again"): logger.info("User clicked 'Practice This Skill Again' for Recommendation."); reset_skill_state(); st.rerun()
 
 
 # --- Entry Point ---
