@@ -1574,409 +1574,416 @@
       "skill_type": "Hypothesis",
       "prompt_text": "AgriVision, an agricultural technology firm based in Melbourne, Australia, is set to introduce an advanced crop monitoring system that leverages drone technology and AI analytics. The company is focused on understanding the adoption rates of precision agriculture in the Australian market and determining the optimal pricing strategy for their new system. They aim to calculate the break-even number of system subscriptions required and forecast the potential yield improvements for large-scale farms.\n\nTo assist with this launch, AgriVision has engaged your consulting firm to conduct a comprehensive market analysis. Your deliverables should include an assessment of market demand for precision agriculture solutions, calculations of break-even subscription volumes, and a projection of total subscriptions needed to achieve a profit of AUD 6 million within the first year."
     },
-    {
-      "id": "quant_01",
-      "title": "GreenGardens Organics Expansion Analysis",
-      "skill_type": "Analysis",
-      "prompt_text": "GreenGardens Organics, a family-owned organic produce farm based in Southern Ontario, is evaluating an expansion into the Northeastern U.S. using three different types of organic produce.",
-      "exhibits": [
-        {
-          "exhibit_title": "Exhibit 1: Target Market Share by State",
-          "chart_type": "pie",
-          "description": "Projected share of total organic produce market in each state",
-          "data": {
-            "State": ["New York", "Pennsylvania", "Massachusetts"],
-            "Market Share %": [40, 35, 25]
+      {
+        "id": "analysis_01",
+        "title": "Coffee Shop Profitability Analysis",
+        "skill_type": "Analysis",
+        "prompt_text": "Urban Bean, a coffee shop chain, is seeking support to evaluate profitability across locations. The company has asked for your support in conducting analysis of annual costs by category, year-over-year revenue growth, and profit margin drivers to interpret and identify cost-saving and revenue opportunities. Please review the following information and provide relevant insights for Urban Bean.",
+        "exhibits": [
+          {
+            "exhibit_title": "Exhibit 1: Annual Costs by Category",
+            "chart_type": "bar",
+            "description": "Costs shown in thousands of USD",
+            "data": {
+              "Category": ["Rent", "COGS", "Labor", "Utilities", "Marketing", "Other"],
+              "Previous Year": [100, 150, 200, 30, 20, 15],
+              "Last Year":     [105, 160, 250, 35, 25, 18]
+            },
+            "x_axis": "Category",
+            "y_axis": ["Previous Year", "Last Year"]
           },
-          "labels": "State",
-          "values": "Market Share %"
-        },
-        {
-          "exhibit_title": "Exhibit 2: Break-Even Volumes by Produce Type",
-          "chart_type": "bar",
-          "description": "Units (in thousands) needed to break even for each produce category",
-          "data": {
-            "Produce": ["Tomatoes", "Berries", "Lettuce", "Peppers"],
-            "Break-Even Volume (000s)": [120, 80, 150, 100]
+          {
+            "exhibit_title": "Exhibit 2: Year-over-Year Revenue Growth",
+            "chart_type": "line",
+            "description": "Revenue in millions of USD",
+            "data": {
+              "Year": ["2022", "2023", "2024", "2025"],
+              "Revenue": [2.5, 2.8, 3.1, 3.5]
+            },
+            "x_axis": "Year",
+            "y_axis": ["Revenue"]
           },
-          "x_axis": "Produce",
-          "y_axis": ["Break-Even Volume (000s)"]
-        },
-        {
-          "exhibit_title": "Exhibit 3: Profit Projection Over Time",
-          "chart_type": "line",
-          "description": "Projected profit (in millions USD) from 2022 through 2025",
-          "data": {
-            "Year": [2022, 2023, 2024, 2025],
-            "Projected Profit ($M)": [12, 18, 24, 30]
+          {
+            "exhibit_title": "Exhibit 3: Profit Margin Drivers by Location",
+            "chart_type": "pie",
+            "description": "Share of total profit margin",
+            "data": {
+              "Location": ["Downtown", "Uptown", "Suburbs"],
+              "Share %": [50, 30, 20]
+            },
+            "labels": "Location",
+            "values": "Share %"
+          }
+        ]
+      },
+      {
+        "id": "analysis_02",
+        "title": "Sales Performance Analysis",
+        "skill_type": "Analysis",
+        "prompt_text": "FashionFiesta, an online retail clothing brand, is seeking support to analyze sales performance. The company has asked for your support in conducting analysis of monthly sales trends, product category breakdowns, and market share distribution to interpret and identify key growth drivers. Please review the following information and provide relevant insights for FashionFiesta.",
+        "exhibits": [
+          {
+            "exhibit_title": "Exhibit 1: Monthly Sales Trend",
+            "chart_type": "line",
+            "description": "Sales in thousands of USD",
+            "data": {
+              "Month": ["Jan","Feb","Mar","Apr","May","Jun"],
+              "Sales": [120, 140, 160, 150, 170, 180]
+            },
+            "x_axis": "Month",
+            "y_axis": ["Sales"]
           },
-          "x_axis": "Year",
-          "y_axis": ["Projected Profit ($M)"]
-        }
-      ]
-    }
-,
-  {
-    "id": "analysis_02",
-    "title": "Urban Bean Coffee Shop Profitability",
-    "skill_type": "Analysis",
-    "prompt_text": "Urban Bean operates 5 coffee shops across Metro City. The company is seeking advice on which location to invest in next and how it can optimize overall costs.",
-    "exhibits": [
-      {
-        "exhibit_title": "Exhibit 1: Monthly Revenue by Location",
-        "chart_type": "bar",
-        "description": "Revenue in thousands of USD",
-        "data": {
-          "Location": ["Downtown", "Uptown", "Midtown", "Suburbs"],
-          "Revenue": [120, 95, 110, 80]
-        },
-        "x_axis": "Location",
-        "y_axis": ["Revenue"]
+          {
+            "exhibit_title": "Exhibit 2: Sales by Product Category",
+            "chart_type": "bar",
+            "description": "Sales in thousands of USD",
+            "data": {
+              "Category": ["Women","Men","Kids","Accessories"],
+              "Sales": [500, 300, 200, 100]
+            },
+            "x_axis": "Category",
+            "y_axis": ["Sales"]
+          },
+          {
+            "exhibit_title": "Exhibit 3: Market Share Distribution",
+            "chart_type": "pie",
+            "description": "Share of total online fashion sales",
+            "data": {
+              "Brand": ["FashionFiesta", "Competitor A", "Competitor B", "Others"],
+              "Share %": [25, 30, 20, 25]
+            },
+            "labels": "Brand",
+            "values": "Share %"
+          }
+        ]
       },
       {
-        "exhibit_title": "Exhibit 2: Cost Breakdown for Downtown Shop",
-        "chart_type": "pie",
-        "description": "Cost distribution",
-        "data": {
-          "Category": ["Rent", "Labor", "COGS", "Utilities", "Marketing"],
-          "Cost": [30, 25, 20, 10, 15]
-        },
-        "labels": "Category",
-        "values": "Cost"
+        "id": "analysis_03",
+        "title": "Subscriber Growth & Engagement Analysis",
+        "skill_type": "Analysis",
+        "prompt_text": "Subscribr, an OTT streaming service, is seeking support to evaluate subscriber growth and engagement. The company has asked for your support in conducting analysis of new subscription counts by state, subscriber growth trends by month, and feature usage share to interpret and identify retention and acquisition opportunities. Please review the following information and provide relevant insights for Subscribr.",
+        "exhibits": [
+          {
+            "exhibit_title": "Exhibit 1: New Subscriptions by State",
+            "chart_type": "bar",
+            "description": "Subscriptions in thousands",
+            "data": {
+              "State": ["CA","NY","TX","FL","IL"],
+              "Subscriptions": [50, 40, 35, 30, 25]
+            },
+            "x_axis": "State",
+            "y_axis": ["Subscriptions"]
+          },
+          {
+            "exhibit_title": "Exhibit 2: Subscriber Growth Over Time",
+            "chart_type": "line",
+            "description": "Total subscribers in millions",
+            "data": {
+              "Month": ["Jan","Feb","Mar","Apr","May","Jun"],
+              "Subscribers": [1.0,1.1,1.3,1.4,1.5,1.6]
+            },
+            "x_axis": "Month",
+            "y_axis": ["Subscribers"]
+          },
+          {
+            "exhibit_title": "Exhibit 3: Feature Usage Share",
+            "chart_type": "pie",
+            "description": "Percentage of total usage",
+            "data": {
+              "Feature": ["Live TV","On-Demand","Downloads","Other"],
+              "Share %": [30, 50, 15, 5]
+            },
+            "labels": "Feature",
+            "values": "Share %"
+          }
+        ]
+      },
+      {
+        "id": "analysis_04",
+        "title": "App Launch Strategy Analysis",
+        "skill_type": "Analysis",
+        "prompt_text": "TechWave, a fitness mobile app developer, is seeking support to evaluate its app launch strategy. The company has asked for your support in conducting analysis of feature prioritization scores, promotional channel effectiveness, and pricing tier projections to interpret and identify optimal launch parameters. Please review the following information and provide relevant insights for TechWave.",
+        "exhibits": [
+          {
+            "exhibit_title": "Exhibit 1: Feature Prioritization Scores",
+            "chart_type": "table",
+            "description": "Scores out of 10 as rated by user focus group",
+            "data": {
+              "Feature": ["Tracking","Social","Gamification","Nutrition"],
+              "Score": [9, 7, 8, 6]
+            }
+          },
+          {
+            "exhibit_title": "Exhibit 2: Promo Channel Effectiveness",
+            "chart_type": "bar",
+            "description": "Cost per acquisition (USD)",
+            "data": {
+              "Channel": ["Social Ads","Search Ads","Email","Influencer"],
+              "CPA": [5, 8, 3, 10]
+            },
+            "x_axis": "Channel",
+            "y_axis": ["CPA"]
+          },
+          {
+            "exhibit_title": "Exhibit 3: Pricing Tier Revenue Projection",
+            "chart_type": "line",
+            "description": "Projected monthly revenue (USD thousands)",
+            "data": {
+              "Month": ["Jan","Feb","Mar","Apr","May","Jun"],
+              "Base Plan": [50, 55, 60, 65, 70, 75],
+              "Pro Plan":  [30, 35, 40, 45, 50, 55]
+            },
+            "x_axis": "Month",
+            "y_axis": ["Base Plan","Pro Plan"]
+          }
+        ]
+      },
+      {
+        "id": "analysis_05",
+        "title": "Weekend Lunchtime Traffic Analysis",
+        "skill_type": "Analysis",
+        "prompt_text": "UrbanRoots, a fast-casual restaurant brand in Chicago, is seeking support to analyze weekend lunchtime traffic patterns. The company has asked for your support in conducting analysis of hourly traffic by location, customer demographics by time slot, and menu item share to interpret and identify peak demand drivers. Please review the following information and provide relevant insights for UrbanRoots.",
+        "exhibits": [
+          {
+            "exhibit_title": "Exhibit 1: Hourly Traffic by Location",
+            "chart_type": "table",
+            "description": "Customer visits per hour",
+            "data": {
+              "Hour": ["11AM","12PM","1PM","2PM","3PM"],
+              "Downtown": [80, 120, 100, 60, 40],
+              "Suburbs":  [50, 80, 70, 40, 30]
+            }
+          },
+          {
+            "exhibit_title": "Exhibit 2: Customer Demographics by Time Slot",
+            "chart_type": "bar",
+            "description": "Percentage by age group",
+            "data": {
+              "Age Group": ["18–24","25–34","35–44","45+"],
+              "11–12PM":   [20,     40,     25,     15],
+              "12–1PM":    [25,     35,     25,     15]
+            },
+            "x_axis": "Age Group",
+            "y_axis": ["11–12PM","12–1PM"]
+          },
+          {
+            "exhibit_title": "Exhibit 3: Menu Item Share",
+            "chart_type": "pie",
+            "description": "Share of orders",
+            "data": {
+              "Item": ["Bowl","Wrap","Salad","Sandwich"],
+              "Share %": [30, 25, 20, 25]
+            },
+            "labels": "Item",
+            "values": "Share %"
+          }
+        ]
+      },
+      {
+        "id": "analysis_06",
+        "title": "Product Adoption Strategy Analysis",
+        "skill_type": "Analysis",
+        "prompt_text": "HomeTech, a smart home device manufacturer in Illinois, is seeking support to optimize product adoption strategies. The company has asked for your support in conducting analysis of feature prioritization scores, adoption by price tier, and market segment share to interpret and identify target segments and pricing sweet spots. Please review the following information and provide relevant insights for HomeTech.",
+        "exhibits": [
+          {
+            "exhibit_title": "Exhibit 1: Feature Prioritization Scores",
+            "chart_type": "table",
+            "description": "User ratings out of 10",
+            "data": {
+              "Feature": ["Voice Control","Remote Access","Energy Monitoring","Security Alerts"],
+              "Score": [8, 7, 9, 6]
+            }
+          },
+          {
+            "exhibit_title": "Exhibit 2: Adoption by Price Tier",
+            "chart_type": "bar",
+            "description": "Units sold per tier",
+            "data": {
+              "Tier": ["Basic","Plus","Premium"],
+              "Units": [500, 300, 150]
+            },
+            "x_axis": "Tier",
+            "y_axis": ["Units"]
+          },
+          {
+            "exhibit_title": "Exhibit 3: Market Segment Share",
+            "chart_type": "pie",
+            "description": "Share by segment",
+            "data": {
+              "Segment": ["Retirees","Families","Tech Enthusiasts","Renters"],
+              "Share %": [25, 35, 20, 20]
+            },
+            "labels": "Segment",
+            "values": "Share %"
+          }
+        ]
+      },
+      {
+        "id": "analysis_07",
+        "title": "Eco-Tourism Market Potential Analysis",
+        "skill_type": "Analysis",
+        "prompt_text": "TravelNest, a travel agency based in Nevada, is seeking support to assess eco-tourism market potential. The company has asked for your support in conducting analysis of regional market share, package bookings by price level, and conversion rate trends to interpret and identify high-potential destinations and price points. Please review the following information and provide relevant insights for TravelNest.",
+        "exhibits": [
+          {
+            "exhibit_title": "Exhibit 1: Regional Market Share",
+            "chart_type": "bar",
+            "description": "Percentage share by region",
+            "data": {
+              "Region": ["West","South","East","Midwest"],
+              "Share %": [40, 25, 20, 15]
+            },
+            "x_axis": "Region",
+            "y_axis": ["Share %"]
+          },
+          {
+            "exhibit_title": "Exhibit 2: Bookings by Price Level",
+            "chart_type": "bar",
+            "description": "Number of packages booked",
+            "data": {
+              "Price Tier": ["Budget","Standard","Luxury"],
+              "Bookings": [300, 200, 100]
+            },
+            "x_axis": "Price Tier",
+            "y_axis": ["Bookings"]
+          },
+          {
+            "exhibit_title": "Exhibit 3: Conversion Rate Over Time",
+            "chart_type": "line",
+            "description": "Website conversion rate (%)",
+            "data": {
+              "Month": ["Jan","Feb","Mar","Apr","May","Jun"],
+              "Conversion %": [2.5, 2.7, 3.0, 2.8, 3.2, 3.5]
+            },
+            "x_axis": "Month",
+            "y_axis": ["Conversion %"]
+          }
+        ]
+      },
+      {
+        "id": "analysis_08",
+        "title": "Corporate Catering Performance Analysis",
+        "skill_type": "Analysis",
+        "prompt_text": "GourmetBites, a gourmet food delivery service in New Jersey, is seeking support to evaluate corporate catering performance. The company has asked for your support in conducting analysis of revenue by client size, break-even event counts by menu, and menu popularity share to interpret and identify profitable catering segments. Please review the following information and provide relevant insights for GourmetBites.",
+        "exhibits": [
+          {
+            "exhibit_title": "Exhibit 1: Revenue by Client Size",
+            "chart_type": "bar",
+            "description": "Revenue in thousands of USD",
+            "data": {
+              "Client Size": ["Small","Medium","Large","Enterprise"],
+              "Revenue": [50, 100, 150, 200]
+            },
+            "x_axis": "Client Size",
+            "y_axis": ["Revenue"]
+          },
+          {
+            "exhibit_title": "Exhibit 2: Break-Even Event Counts by Menu",
+            "chart_type": "table",
+            "description": "Number of events to cover costs",
+            "data": {
+              "Menu": ["Standard","Premium","Deluxe"],
+              "Break-Even Events": [10, 8, 5]
+            }
+          },
+          {
+            "exhibit_title": "Exhibit 3: Menu Popularity Share",
+            "chart_type": "pie",
+            "description": "Share of orders",
+            "data": {
+              "Menu": ["Standard","Premium","Deluxe"],
+              "Share %": [40, 35, 25]
+            },
+            "labels": "Menu",
+            "values": "Share %"
+          }
+        ]
+      },
+      {
+        "id": "analysis_09",
+        "title": "Subscription Growth & Retention Analysis",
+        "skill_type": "Analysis",
+        "prompt_text": "PetPal, a pet care subscription service in Colorado, is seeking support to analyze subscription growth and retention. The company has asked for your support in conducting analysis of subscription uptake by plan tier, monthly churn rate trends, and ARPU by tier to interpret and identify drivers of subscription revenue. Please review the following information and provide relevant insights for PetPal.",
+        "exhibits": [
+          {
+            "exhibit_title": "Exhibit 1: Subscription Uptake by Tier",
+            "chart_type": "table",
+            "description": "New subscriptions per month",
+            "data": {
+              "Tier": ["Basic","Standard","Premium"],
+              "New Subs": [100, 75, 50]
+            }
+          },
+          {
+            "exhibit_title": "Exhibit 2: Monthly Churn Rate Trends",
+            "chart_type": "line",
+            "description": "Churn rate (%) over six months",
+            "data": {
+              "Month": ["Jan","Feb","Mar","Apr","May","Jun"],
+              "Churn %": [5, 6, 7, 6, 5, 4]
+            },
+            "x_axis": "Month",
+            "y_axis": ["Churn %"]
+          },
+          {
+            "exhibit_title": "Exhibit 3: ARPU by Tier",
+            "chart_type": "bar",
+            "description": "Average revenue per user (USD)",
+            "data": {
+              "Tier": ["Basic","Standard","Premium"],
+              "ARPU": [10, 15, 25]
+            },
+            "x_axis": "Tier",
+            "y_axis": ["ARPU"]
+          }
+        ]
+      },
+      {
+        "id": "analysis_10",
+        "title": "Electric Bus Conversion Benefit Analysis",
+        "skill_type": "Analysis",
+        "prompt_text": "UrbanTransit, a public transportation provider in Chicago, is seeking support to evaluate electric bus conversion benefits. The company has asked for your support in conducting analysis of cost per mile comparison, emissions reduction over time, and fleet composition share to interpret and identify break-even timelines and environmental impact. Please review the following information and provide relevant insights for UrbanTransit.",
+        "exhibits": [
+          {
+            "exhibit_title": "Exhibit 1: Cost per Mile Comparison",
+            "chart_type": "bar",
+            "description": "Cost in USD per mile",
+            "data": {
+              "Bus Type": ["Diesel","Hybrid","Electric"],
+              "Cost per Mile": [1.50, 1.20, 0.80]
+            },
+            "x_axis": "Bus Type",
+            "y_axis": ["Cost per Mile"]
+          },
+          {
+            "exhibit_title": "Exhibit 2: Emissions Reduction Over Time",
+            "chart_type": "line",
+            "description": "Kg CO₂ reduced per mile",
+            "data": {
+              "Year": ["2022","2023","2024","2025"],
+              "Reduction": [0, 0.2, 0.5, 0.8]
+            },
+            "x_axis": "Year",
+            "y_axis": ["Reduction"]
+          },
+          {
+            "exhibit_title": "Exhibit 3: Fleet Composition Share",
+            "chart_type": "pie",
+            "description": "Share of total bus fleet",
+            "data": {
+              "Bus Type": ["Diesel","Hybrid","Electric"],
+              "Share %": [60, 25, 15]
+            },
+            "labels": "Bus Type",
+            "values": "Share %"
+          }
+        ]
       }
-    ]
-  },
-  {
-    "id": "analysis_03",
-    "title": "FitTrack Pre-Launch Market Analysis",
-    "skill_type": "Analysis",
-    "prompt_text": "FitTrack is preparing to launch a new fitness tracker. The company wants to analyze distribution channels and price tiers to prioritize to maximize early adoption.",
-    "exhibits": [
-      {
-        "exhibit_title": "Exhibit 1: Projected Demand by Channel",
-        "chart_type": "bar",
-        "description": "Units (in thousands) projected for each channel",
-        "data": {
-          "Channel": ["Online Retail", "Specialty Stores", "Direct Sales", "Wholesale"],
-          "Projected Units (000s)": [50, 30, 20, 40]
-        },
-        "x_axis": "Channel",
-        "y_axis": ["Projected Units (000s)"]
-      },
-      {
-        "exhibit_title": "Exhibit 2: Competitor Price vs. Units Sold",
-        "chart_type": "line",
-        "description": "Historical units sold at different price tiers (in thousands)",
-        "data": {
-          "Price Tier ($)": [50, 100, 150, 200],
-          "Units Sold (000s)": [200, 150, 100, 50]
-        },
-        "x_axis": "Price Tier ($)",
-        "y_axis": ["Units Sold (000s)"]
-      },
-      {
-        "exhibit_title": "Exhibit 3: Production Cost Breakdown",
-        "chart_type": "pie",
-        "description": "Percentage of total cost per unit",
-        "data": {
-          "Cost Component": ["Materials", "Labor", "Overhead", "Marketing"],
-          "Percentage": [40, 20, 25, 15]
-        },
-        "labels": "Cost Component",
-        "values": "Percentage"
-      }
-    ]
-  }
-,
-  {
-    "id": "analysis_04",
-    "title": "TechWave App Launch Analysis",
-    "skill_type": "Analysis",
-    "prompt_text": "TechWave is preparing to launch its new fitness mobile app. It is looking for analysis on features to prioritize, promotional channels to focus on, and pricing tiers to evaluate.",
-    "exhibits": [
-      {
-        "exhibit_title": "Exhibit 1: Feature Prioritization Scores",
-        "chart_type": "table",
-        "description": "Survey scores from 1 (low) to 5 (high)",
-        "data": {
-          "Feature": ["Social Sharing", "In-App Workouts", "Nutrition Tracking", "Wearable Integration"],
-          "Average Score": [4.2, 4.5, 3.8, 4.1]
-        }
-      },
-      {
-        "exhibit_title": "Exhibit 2: Projected Downloads by Channel",
-        "chart_type": "bar",
-        "description": "Downloads in thousands",
-        "data": {
-          "Channel": ["App Store Ads", "Social Media", "Influencers", "Email Campaign"],
-          "Downloads (000s)": [60, 45, 30, 25]
-        },
-        "x_axis": "Channel",
-        "y_axis": ["Downloads (000s)"]
-      },
-      {
-        "exhibit_title": "Exhibit 3: Weekly Retention Trend",
-        "chart_type": "line",
-        "description": "Retention rate (%) over the first 6 weeks",
-        "data": {
-          "Week": [1, 2, 3, 4, 5, 6],
-          "Retention (%)": [70, 60, 55, 50, 48, 45]
-        },
-        "x_axis": "Week",
-        "y_axis": ["Retention (%)"]
-      }
-    ]
-  },
-  {
-    "id": "analysis_05",
-    "title": "UrbanRoots Weekend Traffic Analysis",
-    "skill_type": "Analysis",
-    "prompt_text": "UrbanRoots, a fast-casual restaurant brand based in Chicago, is seeking analysis on weekend lunchtime traffic patterns, customer demographics by time slot, and menu item popularity.",
-    "exhibits": [
-      {
-        "exhibit_title": "Exhibit 1: Weekend Lunch Traffic by Location",
-        "chart_type": "line",
-        "description": "Average number of customers per hour",
-        "data": {
-          "Hour": [10, 11, 12, 13, 14, 15, 16],
-          "Downtown": [50, 60, 80, 100, 90, 70, 60],
-          "Suburbs": [40, 50, 70, 85, 75, 65, 55]
-        },
-        "x_axis": "Hour",
-        "y_axis": ["Downtown", "Suburbs"]
-      },
-      {
-        "exhibit_title": "Exhibit 2: Customer Demographics by Time Slot",
-        "chart_type": "bar",
-        "description": "Percentage of customer groups",
-        "data": {
-          "Time Slot": ["10-12", "12-14", "14-16"],
-          "Families": [30, 45, 25],
-          "Professionals": [20, 30, 50],
-          "Students": [10, 25, 15]
-        },
-        "x_axis": "Time Slot",
-        "y_axis": ["Families", "Professionals", "Students"]
-      },
-      {
-        "exhibit_title": "Exhibit 3: Top Menu Items Share",
-        "chart_type": "pie",
-        "description": "Sales share by menu item",
-        "data": {
-          "Menu Item": ["Salad", "Sandwich", "Wrap", "Bowl", "Soup"],
-          "Share %": [25, 30, 20, 15, 10]
-        },
-        "labels": "Menu Item",
-        "values": "Share %"
-      }
-    ]
-  }
-,
-  {
-    "id": "analysis_06",
-    "title": "HomeTech Feature, Pricing, and Demographic Analysis",
-    "skill_type": "Analysis",
-    "prompt_text": "HomeTech, a smart home device manufacturer located in Illinois, is seeking analysis on which product features resonate most with consumers, which price tiers optimize adoption, and which demographics to target.",
-    "exhibits": [
-      {
-        "exhibit_title": "Exhibit 1: Feature Prioritization Scores",
-        "chart_type": "table",
-        "description": "Average consumer rating (1-5)",
-        "data": {
-          "Feature": ["Voice Control", "Mobile App", "Energy Monitoring", "Security Alerts"],
-          "Score": [4.3, 4.7, 4.0, 3.8]
-        }
-      },
-      {
-        "exhibit_title": "Exhibit 2: Adoption by Price Tier",
-        "chart_type": "bar",
-        "description": "Projected units sold (000s)",
-        "data": {
-          "Price Tier ($)": [99, 149, 199],
-          "Units Sold (000s)": [80, 60, 40]
-        },
-        "x_axis": "Price Tier ($)",
-        "y_axis": ["Units Sold (000s)"]
-      },
-      {
-        "exhibit_title": "Exhibit 3: Market Segment Share",
-        "chart_type": "pie",
-        "description": "Share of total market by age group",
-        "data": {
-          "Age Group": ["18-34", "35-54", "55+"],
-          "Share %": [45, 35, 20]
-        },
-        "labels": "Age Group",
-        "values": "Share %"
-      }
-    ]
-  },
-  {
-    "id": "analysis_07",
-    "title": "TravelNest Eco-Tourism Market & Pricing Analysis",
-    "skill_type": "Analysis",
-    "prompt_text": "TravelNest, a travel agency based in Nevada, is seeking analysis on which eco-tourism regions offer the highest market potential, optimal package price points, and channel performance.",
-    "exhibits": [
-      {
-        "exhibit_title": "Exhibit 1: Market Potential by Region",
-        "chart_type": "pie",
-        "description": "Projected market size share",
-        "data": {
-          "Region": ["Desert", "Coastal", "Mountain"],
-          "Market %": [30, 50, 20]
-        },
-        "labels": "Region",
-        "values": "Market %"
-      },
-      {
-        "exhibit_title": "Exhibit 2: Sales by Package Price",
-        "chart_type": "bar",
-        "description": "Bookings (000s)",
-        "data": {
-          "Price Level ($k)": [1, 2, 3],
-          "Bookings (000s)": [100, 75, 50]
-        },
-        "x_axis": "Price Level ($k)",
-        "y_axis": ["Bookings (000s)"]
-      },
-      {
-        "exhibit_title": "Exhibit 3: Channel Conversion Trend",
-        "chart_type": "line",
-        "description": "Conversion rate (%) over six months",
-        "data": {
-          "Month": ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
-          "Conversion %": [2.5, 2.8, 3.0, 3.2, 3.1, 3.3]
-        },
-        "x_axis": "Month",
-        "y_axis": ["Conversion %"]
-      }
-    ]
-  },
-  {
-    "id": "analysis_08",
-    "title": "GourmetBites Corporate Catering Analysis",
-    "skill_type": "Analysis",
-    "prompt_text": "GourmetBites, a gourmet food delivery service based in New Jersey, is seeking analysis on revenue potential by client size, break-even event counts, and menu popularity.",
-    "exhibits": [
-      {
-        "exhibit_title": "Exhibit 1: Revenue by Client Size",
-        "chart_type": "table",
-        "description": "Average revenue per event ($k)",
-        "data": {
-          "Client Size": ["Small", "Medium", "Large"],
-          "Revenue ($k)": [5, 12, 25]
-        }
-      },
-      {
-        "exhibit_title": "Exhibit 2: Break-Even Events by Menu",
-        "chart_type": "bar",
-        "description": "Events required to break even",
-        "data": {
-          "Menu Type": ["Standard", "Premium", "Custom"],
-          "Events to BE": [10, 8, 5]
-        },
-        "x_axis": "Menu Type",
-        "y_axis": ["Events to BE"]
-      },
-      {
-        "exhibit_title": "Exhibit 3: Menu Popularity Share",
-        "chart_type": "pie",
-        "description": "Share of total orders",
-        "data": {
-          "Menu Type": ["Standard", "Premium", "Custom"],
-          "Order %": [50, 30, 20]
-        },
-        "labels": "Menu Type",
-        "values": "Order %"
-      }
-    ]
-  },
-  {
-    "id": "analysis_09",
-    "title": "PetPal Subscription & Churn Analysis",
-    "skill_type": "Analysis",
-    "prompt_text": "PetPal, a pet care subscription service based in Colorado, is seeking analysis on subscription uptake by plan tier, churn rates, and ARPU.",
-    "exhibits": [
-      {
-        "exhibit_title": "Exhibit 1: New Subscriptions by Tier",
-        "chart_type": "bar",
-        "description": "Subscriptions (000s)",
-        "data": {
-          "Tier": ["Basic", "Plus", "Premium"],
-          "Subscriptions (000s)": [40, 30, 20]
-        },
-        "x_axis": "Tier",
-        "y_axis": ["Subscriptions (000s)"]
-      },
-      {
-        "exhibit_title": "Exhibit 2: Monthly Churn Rate",
-        "chart_type": "line",
-        "description": "Churn rate (%) over 12 months",
-        "data": {
-          "Month": [1,2,3,4,5,6,7,8,9,10,11,12],
-          "Churn %": [5,4.8,4.5,4.2,4.0,3.8,3.6,3.5,3.4,3.3,3.2,3.1]
-        },
-        "x_axis": "Month",
-        "y_axis": ["Churn %"]
-      },
-      {
-        "exhibit_title": "Exhibit 3: ARPU by Tier",
-        "chart_type": "table",
-        "description": "Average revenue per user ($)",
-        "data": {
-          "Tier": ["Basic", "Plus", "Premium"],
-          "ARPU ($)": [10, 20, 35]
-        }
-      }
-    ]
-  },
-  {
-    "id": "analysis_10",
-    "title": "UrbanTransit Fleet Conversion Analysis",
-    "skill_type": "Analysis",
-    "prompt_text": "UrbanTransit, a public transportation provider in Chicago, is seeking analysis on cost savings from electric bus conversion, emissions reduction, and break-even conversion timeline.",
-    "exhibits": [
-      {
-        "exhibit_title": "Exhibit 1: Cost per Mile Comparison",
-        "chart_type": "bar",
-        "description": "Cost in USD per mile",
-        "data": {
-          "Bus Type": ["Diesel", "Electric"],
-          "Cost per Mile": [1.50, 1.10]
-        },
-        "x_axis": "Bus Type",
-        "y_axis": ["Cost per Mile"]
-      },
-      {
-        "exhibit_title": "Exhibit 2: Emissions Reduction Over Time",
-        "chart_type": "line",
-        "description": "CO2 emissions (tons) over 12 months",
-        "data": {
-          "Month": [1,2,3,4,5,6,7,8,9,10,11,12],
-          "CO2 (tons)": [500,460,420,380,350,320,300,280,260,240,220,200]
-        },
-        "x_axis": "Month",
-        "y_axis": ["CO2 (tons)"]
-      },
-      {
-        "exhibit_title": "Exhibit 3: Fleet Composition",
-        "chart_type": "pie",
-        "description": "Percentage of fleet by bus type",
-        "data": {
-          "Bus Type": ["Diesel", "Electric"],
-          "Share %": [60, 40]
-        },
-        "labels": "Bus Type",
-        "values": "Share %"
-      }
-    ]
-  }
 ,
   {
     "id": "analysis_11",
     "title": "SmartHealth Device Launch Analysis",
     "skill_type": "Analysis",
-    "prompt_text": "SmartHealth, a health technology company based in Massachusetts, is seeking analysis on competitive landscape, user demographics, and regulatory considerations.",
+    "prompt_text": "SmartHealth, a health technology company based in Massachusetts, is seeking support to successfully launch its new wearable monitoring device. The company has asked for your support in conducting analysis of competitive landscape, user demographics, and regulatory considerations to interpret and identify market entry strategies. Please review the following information and provide relevant insights for SmartHealth.",
     "exhibits": [
       {
         "exhibit_title": "Exhibit 1: Competitor Device Features",
@@ -2017,7 +2024,7 @@
     "id": "analysis_12",
     "title": "HealthHorizons Coaching Retention Analysis",
     "skill_type": "Analysis",
-    "prompt_text": "HealthHorizons, a health coaching platform, is seeking analysis on user activation milestones, churn rates by plan, and engagement over time.",
+    "prompt_text": "HealthHorizons, a health coaching platform, is seeking support to improve user retention strategies. The company has asked for your support in conducting analysis of user activation milestones, churn rates by plan, and engagement over time to interpret and identify retention improvement opportunities. Please review the following information and provide relevant insights for HealthHorizons.",
     "exhibits": [
       {
         "exhibit_title": "Exhibit 1: Activation Milestones Achieved",
@@ -2058,7 +2065,7 @@
     "id": "analysis_13",
     "title": "EduSmart Course Launch Analysis",
     "skill_type": "Analysis",
-    "prompt_text": "EduSmart, an online education platform, is seeking analysis on course demand by topic, channel performance, and pricing sensitivity.",
+    "prompt_text": "EduSmart, an online education platform, is seeking support to optimize its course launch strategy. The company has asked for your support in conducting analysis of course demand by topic, channel performance, and pricing sensitivity to interpret and identify optimal launch parameters. Please review the following information and provide relevant insights for EduSmart.",
     "exhibits": [
       {
         "exhibit_title": "Exhibit 1: Demand by Course Topic",
@@ -2097,7 +2104,7 @@
     "id": "analysis_14",
     "title": "FinEdge Blockchain Adoption Analysis",
     "skill_type": "Analysis",
-    "prompt_text": "FinEdge, a fintech firm, is seeking analysis on transaction volumes by region, break-even transaction count, and price elasticity.",
+    "prompt_text": "FinEdge, a financial technology firm, is seeking support to assess its blockchain platform's market adoption. The company has asked for your support in conducting analysis of transaction volumes by region, break-even transaction count, and price elasticity to interpret and identify adoption drivers and pricing strategies. Please review the following information and provide relevant insights for FinEdge.",
     "exhibits": [
       {
         "exhibit_title": "Exhibit 1: Transactions by Region",
@@ -2136,7 +2143,7 @@
     "id": "analysis_15",
     "title": "BuildSmart License Sales Analysis",
     "skill_type": "Analysis",
-    "prompt_text": "BuildSmart, a construction tech company, is seeking analysis on license sales by segment, break-even license count, and feature usage rates.",
+    "prompt_text": "BuildSmart, a construction technology company, is seeking support to maximize its license sales. The company has asked for your support in conducting analysis of license sales by segment, break-even license count, and feature usage rates to interpret and identify growth opportunities. Please review the following information and provide relevant insights for BuildSmart.",
     "exhibits": [
       {
         "exhibit_title": "Exhibit 1: License Sales by Segment",
@@ -2175,7 +2182,7 @@
     "id": "analysis_16",
     "title": "RetailRevamp E-Commerce Analysis",
     "skill_type": "Analysis",
-    "prompt_text": "RetailRevamp, a retail chain, is seeking analysis on traffic sources, conversion rates by device, and average order value.",
+    "prompt_text": "RetailRevamp, a retail chain, is seeking support to optimize its e-commerce performance. The company has asked for your support in conducting analysis of traffic sources, conversion rates by device, and average order value to interpret and identify performance improvement opportunities. Please review the following information and provide relevant insights for RetailRevamp.",
     "exhibits": [
       {"exhibit_title": "Exhibit 1: Traffic Sources","chart_type": "pie","description": "Share %","data": {"Source": ["Organic", "Paid", "Direct"],"Share %": [60, 25, 15]},"labels": "Source","values": "Share %"},
       {"exhibit_title": "Exhibit 2: Conversion Rate by Device","chart_type": "bar","description": "Conversion %","data": {"Device": ["Mobile","Desktop"],"Conversion %": [2.5, 3.5]},"x_axis": "Device","y-axis": ["Conversion %"]},
@@ -2186,7 +2193,7 @@
     "id": "analysis_17",
     "title": "SmartEnergy Solar Adoption Analysis",
     "skill_type": "Analysis",
-    "prompt_text": "GreenWave, a solar energy firm, is seeking analysis on incentive impact, adoption rates by region, and break-even payback period.",
+    "prompt_text": "GreenWave, a solar energy firm, is seeking support to accelerate solar adoption. The company has asked for your support in conducting analysis of incentive impact, adoption rates by region, and break-even payback period to interpret and identify adoption drivers and financial viability. Please review the following information and provide relevant insights for GreenWave.",
     "exhibits": [
       {"exhibit_title": "Exhibit 1: Incentive Impact","chart_type": "bar","description": "Effect on adoption %","data": {"Incentive": ["None","Low","High"],"Adoption %": [10, 30, 50]},"x_axis": "Incentive","y_axis": ["Adoption %"]},
       {"exhibit_title": "Exhibit 2: Regional Adoption Rates","chart_type": "pie","description": "Share %","data": {"Region": ["North","South","East","West"],"Share %": [25,25,25,25]},"labels":"Region","values":"Share %"},
@@ -2197,7 +2204,7 @@
     "id": "analysis_18",
     "title": "CleanWave Expansion Analysis",
     "skill_type": "Analysis",
-    "prompt_text": "CleanWave, a cleaning products maker, is seeking analysis on segment demand, break-even sales, and price elasticity.",
+    "prompt_text": "CleanWave, a cleaning products manufacturer, is seeking support to expand its eco-friendly product lines. The company has asked for your support in conducting analysis of segment demand, break-even sales, and price elasticity to interpret and identify expansion opportunities. Please review the following information and provide relevant insights for CleanWave.",
     "exhibits": [
       {"exhibit_title": "Exhibit 1: Demand by Segment","chart_type": "table","description": "Sales (000s)","data": {"Segment": ["Household","Commercial"],"Sales (000s)": [120,80]}},
       {"exhibit_title": "Exhibit 2: Break-Even Sales","chart_type": "bar","description": "Units (000s)","data": {"Product Line": ["Eco","Standard"],"Units (000s)": [50,70]},"x_axis":"Product Line","y_axis":["Units (000s)"]},
@@ -2208,7 +2215,7 @@
     "id": "analysis_19",
     "title": "BioInnovate Clinical Enrollment Analysis",
     "skill_type": "Analysis",
-    "prompt_text": "BioInnovate, a biotech startup, is seeking analysis on site enrollment rates, regional participation, and cost per enrollee.",
+    "prompt_text": "BioInnovate, a biotechnology startup, is seeking support to optimize its clinical trial enrollment. The company has asked for your support in conducting analysis of site enrollment rates, regional participation, and cost per enrollee to interpret and identify enrollment optimization strategies. Please review the following information and provide relevant insights for BioInnovate.",
     "exhibits": [
       {"exhibit_title": "Exhibit 1: Enrollment by Site","chart_type": "bar","description": "Participants","data": {"Site": ["A","B","C"],"Enrollees": [50,45,60]},"x_axis":"Site","y_axis":["Enrollees"]},
       {"exhibit_title": "Exhibit 2: Regional Participation","chart_type": "pie","description": "Share %","data": {"Region": ["NA","EU","APAC"],"Share %": [40,35,25]},"labels":"Region","values":"Share %"},
@@ -2219,7 +2226,7 @@
     "id": "analysis_20",
     "title": "UrbanGardens Partnership & Pricing Analysis",
     "skill_type": "Analysis",
-    "prompt_text": "UrbanGardens, a vertical farming startup, is seeking analysis on partnership uptake, price sensitivity, and profitability by store type.",
+    "prompt_text": "UrbanGardens, a vertical farming startup, is seeking support to scale its urban agriculture partnerships. The company has asked for your support in conducting analysis of partnership uptake, price sensitivity, and profitability by store type to interpret and identify growth levers. Please review the following information and provide relevant insights for UrbanGardens.",
     "exhibits": [
       {"exhibit_title": "Exhibit 1: Partnerships by Store Type","chart_type": "bar","description": "Count","data": {"Store Type": ["Grocery","Restaurant","Farmers' Market"],"Count": [20,15,10]},"x_axis":"Store Type","y_axis":["Count"]},
       {"exhibit_title": "Exhibit 2: Price Sensitivity","chart_type": "line","description": "Orders vs Price","data": {"Price ($)": [2,3,4],"Orders": [100,80,60]},"x_axis":"Price ($)","y_axis":["Orders"]},
@@ -2231,7 +2238,7 @@
     "id": "analysis_21",
     "title": "UrbanEats Delivery Optimization",
     "skill_type": "Analysis",
-    "prompt_text": "UrbanEats, a food delivery service based in San Francisco, is seeking analysis on peak order times, average delivery times by zone, and order type distribution.",
+    "prompt_text": "UrbanEats, a food delivery service based in San Francisco, is seeking support to optimize delivery operations. The company has asked for your support in conducting analysis of peak order times, average delivery times by zone, and order type distribution to interpret and identify delivery performance improvements. Please review the following information and provide relevant insights for UrbanEats.",
     "exhibits": [
       {
         "exhibit_title": "Exhibit 1: Hourly Order Volume",
@@ -2270,7 +2277,7 @@
     "id": "analysis_22",
     "title": "FitLab Wearable Engagement",
     "skill_type": "Analysis",
-    "prompt_text": "FitLab, a wearable fitness device company based in Austin, is seeking analysis on daily active users, feature usage frequency, and device model preference.",
+    "prompt_text": "FitLab, a wearable fitness device company based in Austin, is seeking support to optimize user engagement on its devices. The company has asked for your support in conducting analysis of daily active users, feature usage frequency, and device model preference to interpret and identify engagement drivers. Please review the following information and provide relevant insights for FitLab.",
     "exhibits": [
       {
         "exhibit_title": "Exhibit 1: Daily Active Users",
@@ -2311,7 +2318,7 @@
     "id": "analysis_23",
     "title": "GreenTransit Fleet Routing",
     "skill_type": "Analysis",
-    "prompt_text": "GreenTransit, a shuttle service in Seattle, is seeking analysis on route distances, fuel consumption per route, and on-time performance.",
+    "prompt_text": "GreenTransit, a shuttle service in Seattle, is seeking support to optimize fleet performance. The company has asked for your support in conducting analysis of route distances, fuel consumption per route, and on-time performance to interpret and identify efficiency improvement opportunities. Please review the following information and provide relevant insights for GreenTransit.",
     "exhibits": [
       {
         "exhibit_title": "Exhibit 1: Route Distances",
@@ -2350,7 +2357,7 @@
     "id": "analysis_24",
     "title": "HomeChef Meal Kit Composition",
     "skill_type": "Analysis",
-    "prompt_text": "HomeChef, a meal kit service based in Denver, is seeking analysis on recipe popularity, cost breakdown per kit, and ingredient sourcing cost.",
+    "prompt_text": "HomeChef, a meal kit service based in Denver, is seeking support to optimize meal kit offerings. The company has asked for your support in conducting analysis of recipe popularity, cost breakdown per kit, and ingredient sourcing cost to interpret and identify profitability drivers. Please review the following information and provide relevant insights for HomeChef.",
     "exhibits": [
       {
         "exhibit_title": "Exhibit 1: Recipe Popularity",
@@ -2389,7 +2396,7 @@
     "id": "analysis_25",
     "title": "TechCampus Course Enrollment",
     "skill_type": "Analysis",
-    "prompt_text": "TechCampus, a vocational training center in Boston, is seeking analysis on enrollments by department, semester trends, and student demographics.",
+    "prompt_text": "TechCampus, a vocational training center in Boston, is seeking support to optimize enrollment strategies. The company has asked for your support in conducting analysis of enrollments by department, semester trends, and student demographics to interpret and identify enrollment growth opportunities. Please review the following information and provide relevant insights for TechCampus.",
     "exhibits": [
       {
         "exhibit_title": "Exhibit 1: Enrollments by Department",
@@ -2543,7 +2550,7 @@
     "id": "analysis_31",
     "title": "MarketPulse Consumer Sentiment",
     "skill_type": "Analysis",
-    "prompt_text": "MarketPulse, a market research firm in New York, is seeking analysis on sentiment score over time, sentiment by demographic, and sentiment category distribution.",
+    "prompt_text": "MarketPulse, a market research firm in New York, is seeking support to interpret customer sentiment trends. The company has asked for your support in conducting analysis of sentiment score over time, sentiment by demographic, and sentiment category distribution to interpret and identify key sentiment drivers. Please review the following information and provide relevant insights for MarketPulse.",
     "exhibits": [
       {"exhibit_title": "Exhibit 1: Sentiment Score Over Time","chart_type": "line","description": "Average score 1-5","data": {"Date": ["2025-01-01","2025-02-01","2025-03-01","2025-04-01"],"Score": [3.5, 3.7, 3.8, 3.9]},"x_axis": "Date","y_axis": ["Score"]},
       {"exhibit_title": "Exhibit 2: Sentiment by Demographic","chart_type": "bar","description": "Average score","data": {"Group": ["18-34","35-54","55+"],"Score": [3.8, 3.6, 3.4]},"x_axis": "Group","y_axis": ["Score"]},
@@ -2554,7 +2561,7 @@
     "id": "analysis_32",
     "title": "Retail360 Inventory Turnover",
     "skill_type": "Analysis",
-    "prompt_text": "Retail360, a retail analytics provider based in London, is seeking analysis on SKU turnover rates, category turnover comparison, and turnover trend over time.",
+    "prompt_text": "Retail360, a retail analytics provider based in London, is seeking support to optimize inventory management. The company has asked for your support in conducting analysis of SKU turnover rates, category turnover comparison, and turnover trend over time to interpret and identify stock optimization strategies. Please review the following information and provide relevant insights for Retail360.",
     "exhibits": [
       {"exhibit_title": "Exhibit 1: SKU Turnover Rates","chart_type": "table","description": "Turns per period","data": {"SKU": ["A","B","C","D"],"Turnover": [4.0, 3.5, 5.0, 4.5]}},
       {"exhibit_title": "Exhibit 2: Category Turnover Comparison","chart_type": "bar","description": "Average turnover","data": {"Category": ["Electronics","Apparel","Home"],"Turnover": [4.5, 3.8, 4.2]},"x_axis": "Category","y_axis": ["Turnover"]},
@@ -2565,7 +2572,7 @@
     "id": "analysis_33",
     "title": "WellnessNow App Session Analysis",
     "skill_type": "Analysis",
-    "prompt_text": "WellnessNow, a mental health app based in Toronto, is seeking analysis on session type distribution, average session duration, and daily sessions trend.",
+    "prompt_text": "WellnessNow, a mental health app based in Toronto, is seeking support to interpret user engagement patterns. The company has asked for your support in conducting analysis of session type distribution, average session duration, and daily sessions trend to interpret and identify key engagement insights. Please review the following information and provide relevant insights for WellnessNow.",
     "exhibits": [
       {"exhibit_title": "Exhibit 1: Session Type Distribution","chart_type": "pie","description": "Share by type","data": {"Type": ["Meditation","Therapy","Journaling","Breathing"],"Share %": [40, 25, 20, 15]},"labels": "Type","values": "Share %"},
       {"exhibit_title": "Exhibit 2: Average Session Duration","chart_type": "bar","description": "Minutes per session","data": {"Type": ["Meditation","Therapy","Journaling","Breathing"],"Duration": [10, 50, 15, 5]},"x_axis": "Type","y_axis": ["Duration"]},
@@ -2576,7 +2583,7 @@
     "id": "analysis_34",
     "title": "TravelX Seasonal Booking Patterns",
     "skill_type": "Analysis",
-    "prompt_text": "TravelX, a travel agency based in Miami, is seeking analysis on monthly booking volume, destination popularity, and channel share.",
+    "prompt_text": "TravelX, a travel agency based in Miami, is seeking support to evaluate booking seasonality. The company has asked for your support in conducting analysis of monthly booking volume, destination popularity, and booking channel share to interpret and identify peak demand periods. Please review the following information and provide relevant insights for TravelX.",
     "exhibits": [
       {"exhibit_title": "Exhibit 1: Monthly Booking Volume","chart_type": "line","description": "Bookings per month","data": {"Month": ["Jan","Feb","Mar","Apr","May","Jun"],"Bookings": [1000, 1100, 1200, 1150, 1300, 1400]},"x_axis": "Month","y_axis": ["Bookings"]},
       {"exhibit_title": "Exhibit 2: Destination Popularity","chart_type": "bar","description": "Trips booked","data": {"Destination": ["Beach","Mountain","City","Cruise"],"Trips": [500, 300, 400, 200]},"x_axis": "Destination","y_axis": ["Trips"]},
@@ -2587,7 +2594,7 @@
     "id": "analysis_35",
     "title": "FarmFresh Crop Yield Analysis",
     "skill_type": "Analysis",
-    "prompt_text": "FarmFresh, an agricultural cooperative in Iowa, is seeking analysis on yield per acre by crop, yield comparison, and year-over-year trends.",
+    "prompt_text": "FarmFresh, an agricultural cooperative in Iowa, is seeking support to optimize crop productivity. The company has asked for your support in conducting analysis of yield per acre by crop, yield comparison by crop, and year-over-year yield trends to interpret and identify productivity improvement opportunities. Please review the following information and provide relevant insights for FarmFresh.",
     "exhibits": [
       {"exhibit_title": "Exhibit 1: Yield per Acre by Crop","chart_type": "table","description": "Bushels per acre","data": {"Crop": ["Corn","Soybeans","Wheat"],"Yield": [180, 50, 60]}},
       {"exhibit_title": "Exhibit 2: Yield Comparison","chart_type": "bar","description": "Yield per crop","data": {"Crop": ["Corn","Soybeans","Wheat"],"Yield": [180, 50, 60]},"x_axis": "Crop","y_axis": ["Yield"]},
@@ -2598,7 +2605,7 @@
     "id": "analysis_36",
     "title": "CityBike Ridership Trends",
     "skill_type": "Analysis",
-    "prompt_text": "CityBike, a bike-share program in Amsterdam, is seeking analysis on daily ride counts, rides by station, and user type share.",
+    "prompt_text": "CityBike, a bike-share program in Amsterdam, is seeking support to interpret ridership trends. The company has asked for your support in conducting analysis of daily ride counts, rides by station, and user type share to interpret and identify operational and marketing opportunities. Please review the following information and provide relevant insights for CityBike.",
     "exhibits": [
       {"exhibit_title": "Exhibit 1: Daily Ride Counts","chart_type": "line","description": "Rides per day (000s)","data": {"Day": ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"],"Rides": [30, 35, 40, 45, 50, 55, 60]},"x_axis": "Day","y_axis": ["Rides"]},
       {"exhibit_title": "Exhibit 2: Rides by Station","chart_type": "bar","description": "Total rides","data": {"Station": ["Central","East","West","North","South"],"Rides": [10000, 8000, 9000, 7000, 6000]},"x_axis": "Station","y_axis": ["Rides"]},
@@ -2609,7 +2616,7 @@
     "id": "analysis_37",
     "title": "ShopSmart Promotional Impact",
     "skill_type": "Analysis",
-    "prompt_text": "ShopSmart, a discount retailer in Chicago, is seeking analysis on sales by promotion, sales trend over time, and promotion channel share.",
+    "prompt_text": "ShopSmart, a discount retailer in Chicago, is seeking support to measure promotional impact. The company has asked for your support in conducting analysis of sales by promotion, sales trend over time, and promotion channel share to interpret and identify the most effective promotional strategies. Please review the following information and provide relevant insights for ShopSmart.",
     "exhibits": [
       {"exhibit_title": "Exhibit 1: Sales by Promotion","chart_type": "bar","description": "USD thousands","data": {"Promotion": ["BOGO","Discount","Coupon","Flash Sale"],"Sales": [200, 150, 100, 250]},"x_axis": "Promotion","y_axis": ["Sales"]},
       {"exhibit_title": "Exhibit 2: Sales Trend Over Time","chart_type": "line","description": "Sales per week (000s)","data": {"Week": [1,2,3,4],"Sales": [300, 320, 310, 330]},"x_axis": "Week","y_axis": ["Sales"]},
@@ -2620,7 +2627,7 @@
     "id": "analysis_38",
     "title": "MediCare Patient Wait Time Analysis",
     "skill_type": "Analysis",
-    "prompt_text": "MediCare, a hospital network in Boston, is seeking analysis on average wait times by department, peak wait hours, and wait time trend.",
+    "prompt_text": "MediCare, a hospital network in Boston, is seeking support to analyze patient wait time efficiency. The company has asked for your support in conducting analysis of average wait times by department, peak wait hours, and wait time trend to interpret and identify process improvement areas. Please review the following information and provide relevant insights for MediCare.",
     "exhibits": [
       {"exhibit_title": "Exhibit 1: Avg Wait Time by Department","chart_type": "table","description": "Minutes","data": {"Department": ["ER","Radiology","Cardiology","Oncology"],"Wait Time": [60, 30, 45, 50]}},
       {"exhibit_title": "Exhibit 2: Peak Wait Hours","chart_type": "bar","description": "Average wait time (min)","data": {"Hour": ["8AM","12PM","4PM","8PM"],"Wait Time": [50, 60, 55, 40]},"x_axis": "Hour","y_axis": ["Wait Time"]},
@@ -2631,7 +2638,7 @@
     "id": "analysis_39",
     "title": "EnergyPlus Peak Demand Analysis",
     "skill_type": "Analysis",
-    "prompt_text": "EnergyPlus, an electricity provider in New York, is seeking analysis on 24-hour demand patterns, sector demand comparison, and energy source share.",
+    "prompt_text": "EnergyPlus, an electricity provider in New York, is seeking support to assess peak demand patterns. The company has asked for your support in conducting analysis of 24-hour demand patterns, sector demand comparison, and energy source share to interpret and identify load balancing and resource planning strategies. Please review the following information and provide relevant insights for EnergyPlus.",
     "exhibits": [
       {"exhibit_title": "Exhibit 1: 24-Hour Demand Pattern","chart_type": "line","description": "MW demand","data": {"Hour": [0,6,12,18,24],"Demand (MW)": [5000, 7000, 10000, 8000, 6000]},"x_axis": "Hour","y_axis": ["Demand (MW)"]},
       {"exhibit_title": "Exhibit 2: Sector Demand Comparison","chart_type": "bar","description": "MW demand","data": {"Sector": ["Residential","Commercial","Industrial"],"Demand": [4000, 3000, 2000]},"x_axis": "Sector","y_axis": ["Demand"]},
@@ -2642,7 +2649,7 @@
     "id": "analysis_40",
     "title": "FinTechAI Fraud Detection Metrics",
     "skill_type": "Analysis",
-    "prompt_text": "FinTechAI, a fraud detection platform in London, is seeking analysis on fraud alerts by type, false positive rate, and detection method share.",
+    "prompt_text": "FinTechAI, a fraud detection platform in London, is seeking support to analyze detection performance. The company has asked for your support in conducting analysis of fraud alerts by type, false positive rate over time, and detection method share to interpret and identify ways to enhance accuracy and efficiency. Please review the following information and provide relevant insights for FinTechAI.",
     "exhibits": [
       {"exhibit_title": "Exhibit 1: Fraud Alerts by Type","chart_type": "bar","description": "Alerts per day","data": {"Type": ["Card Fraud","Identity Theft","Account Takeover"],"Alerts": [500, 200, 100]},"x_axis": "Type","y_axis": ["Alerts"]},
       {"exhibit_title": "Exhibit 2: False Positive Rate Over Time","chart_type": "line","description": "% False Positives","data": {"Month": ["Jan","Feb","Mar","Apr"],"False Positive %": [5, 4.5, 4.0, 3.8]},"x_axis": "Month","y_axis": ["False Positive %"]},
@@ -2654,7 +2661,7 @@
     "id": "analysis_41",
     "title": "CityCharge EV Charging Demand Analysis",
     "skill_type": "Analysis",
-    "prompt_text": "CityCharge, an electric vehicle charging network in Los Angeles, is seeking analysis on station utilization rates, peak demand periods, and charger type performance.",
+    "prompt_text": "CityCharge, an electric vehicle charging network in Los Angeles, is seeking support to optimize station operations. The company has asked for your support in conducting analysis of station utilization rates, peak demand periods, and charger type performance to interpret and identify network performance improvements. Please review the following information and provide relevant insights for CityCharge.",
     "exhibits": [
       {
         "exhibit_title": "Exhibit 1: Station Utilization Rates",
@@ -2695,7 +2702,7 @@
     "id": "analysis_42",
     "title": "EduStream Video Engagement Analysis",
     "skill_type": "Analysis",
-    "prompt_text": "EduStream, an online education platform in Seattle, is seeking analysis on video completion rates by course, drop-off rates over time, and device usage share.",
+    "prompt_text": "EduStream, an online education platform in Seattle, is seeking support to improve video engagement. The company has asked for your support in conducting analysis of video completion rates by course, drop-off rates over time, and device usage share to interpret and identify engagement improvement strategies. Please review the following information and provide relevant insights for EduStream.",
     "exhibits": [
       {
         "exhibit_title": "Exhibit 1: Course Completion Rates",
@@ -2734,7 +2741,7 @@
     "id": "analysis_43",
     "title": "FarmLink Supply Chain Cost Analysis",
     "skill_type": "Analysis",
-    "prompt_text": "FarmLink, an agricultural supply company in Iowa, is seeking analysis on supply chain costs, lead times, and inventory turnover.",
+    "prompt_text": "FarmLink, an agricultural supply company in Iowa, is seeking support to optimize supply chain cost management. The company has asked for your support in conducting analysis of supply chain costs, lead times, and inventory turnover to interpret and identify cost-saving and efficiency opportunities. Please review the following information and provide relevant insights for FarmLink.",
     "exhibits": [
       {
         "exhibit_title": "Exhibit 1: Supplier Lead Times",
@@ -2773,7 +2780,7 @@
     "id": "analysis_44",
     "title": "RetailNext In-Store Promotion Analysis",
     "skill_type": "Analysis",
-    "prompt_text": "RetailNext, a retail chain in London, is seeking analysis on in-store promotion uplift, promotion mix, and sales trends.",
+    "prompt_text": "RetailNext, a retail chain in London, is seeking support to optimize in-store promotions. The company has asked for your support in conducting analysis of in-store promotion uplift, promotion mix, and sales trends to interpret and identify promotion effectiveness strategies. Please review the following information and provide relevant insights for RetailNext.",
     "exhibits": [
       {
         "exhibit_title": "Exhibit 1: Promotion Uplift",
@@ -2814,7 +2821,7 @@
     "id": "analysis_45",
     "title": "TransitFlow Ridership Forecast Analysis",
     "skill_type": "Analysis",
-    "prompt_text": "TransitFlow, a metropolitan transit agency in Toronto, is seeking analysis on ridership forecasts, capacity utilization, and pass type distribution.",
+    "prompt_text": "TransitFlow, a metropolitan transit agency in Toronto, is seeking support to improve ridership forecasting. The company has asked for your support in conducting analysis of ridership forecasts, capacity utilization, and pass type distribution to interpret and identify service planning insights. Please review the following information and provide relevant insights for TransitFlow.",
     "exhibits": [
       {
         "exhibit_title": "Exhibit 1: Ridership Forecast",
@@ -2855,7 +2862,7 @@
     "id": "analysis_46",
     "title": "HealthTrack Patient No-Show Analysis",
     "skill_type": "Analysis",
-    "prompt_text": "HealthTrack, a healthcare provider in Chicago, is seeking analysis on patient no-show rates by department, reasons, and monthly trends.",
+    "prompt_text": "HealthTrack, a healthcare provider in Chicago, is seeking support to reduce patient no-show rates. The company has asked for your support in conducting analysis of patient no-show rates by department, reasons, and monthly trends to interpret and identify process improvement areas. Please review the following information and provide relevant insights for HealthTrack.",
     "exhibits": [
       {
         "exhibit_title": "Exhibit 1: No-Show Rates by Department",
@@ -2894,7 +2901,7 @@
     "id": "analysis_47",
     "title": "SmartGrid Peak Load Analysis",
     "skill_type": "Analysis",
-    "prompt_text": "SmartGrid, an electric utility in New York, is seeking analysis on peak load patterns, regional capacity, and energy source mix.",
+    "prompt_text": "SmartGrid, an electric utility in New York, is seeking support to balance peak load patterns. The company has asked for your support in conducting analysis of peak load patterns, regional capacity, and energy source mix to interpret and identify load management strategies. Please review the following information and provide relevant insights for SmartGrid.",
     "exhibits": [
       {
         "exhibit_title": "Exhibit 1: Peak Load Over 24 Hours",
@@ -2935,7 +2942,7 @@
     "id": "analysis_48",
     "title": "LogiRoute Delivery Time Analysis",
     "skill_type": "Analysis",
-    "prompt_text": "LogiRoute, a logistics provider in Dallas, is seeking analysis on delivery times by region, on-time performance, and delay trends.",
+    "prompt_text": "LogiRoute, a logistics provider in Dallas, is seeking support to optimize delivery times. The company has asked for your support in conducting analysis of delivery times by region, on-time performance, and delay trends to interpret and identify operational efficiencies. Please review the following information and provide relevant insights for LogiRoute.",
     "exhibits": [
       {
         "exhibit_title": "Exhibit 1: Average Delivery Time by Region",
@@ -2974,7 +2981,7 @@
     "id": "analysis_49",
     "title": "MediaBuzz Ad Performance Analysis",
     "skill_type": "Analysis",
-    "prompt_text": "MediaBuzz, a digital advertising agency in New York, is seeking analysis on click-through rates by campaign, channel share, and impressions trend.",
+    "prompt_text": "MediaBuzz, a digital advertising agency in New York, is seeking support to enhance ad performance. The company has asked for your support in conducting analysis of click-through rates by campaign, channel share, and impressions trend to interpret and identify high-impact advertising strategies. Please review the following information and provide relevant insights for MediaBuzz.",
     "exhibits": [
       {
         "exhibit_title": "Exhibit 1: Click-Through Rates by Campaign",
@@ -3015,7 +3022,7 @@
     "id": "analysis_50",
     "title": "GreenSupply Carbon Emissions Analysis",
     "skill_type": "Analysis",
-    "prompt_text": "GreenSupply, a manufacturing firm in Germany, is seeking analysis on carbon emissions per product line, reduction targets, and emissions share.",
+    "prompt_text": "GreenSupply, a manufacturing firm in Germany, is seeking support to reduce carbon emissions. The company has asked for your support in conducting analysis of carbon emissions per product line, reduction targets, and emissions share to interpret and identify environmental impact reduction strategies. Please review the following information and provide relevant insights for GreenSupply.",
     "exhibits": [
       {
         "exhibit_title": "Exhibit 1: Emissions per Product",
@@ -3054,7 +3061,7 @@
     "id": "analysis_51",
     "title": "Nimbus Tour Focus Group Feedback Analysis",
     "skill_type": "Analysis",
-    "prompt_text": "Nimbus Tours recently conducted focus groups with potential customers to gather feedback on their new adventure travel packages. The company is seeking interpretation of key themes, sentiment insights, and participant recommendations.",
+    "prompt_text": "Nimbus Tours, a tour operator, is seeking support to interpret focus group feedback on new adventure travel packages. The company has asked for your support in conducting analysis of key themes, sentiment insights, and participant recommendations to identify actionable improvements. Please review the following information and provide relevant insights for Nimbus Tours.",
     "exhibits": [
       {
         "exhibit_title": "Exhibit 1: Average Sentiment Score by Theme",
@@ -3093,7 +3100,7 @@
     "id": "analysis_52",
     "title": "EcoVista Community Health Workshop Feedback Analysis",
     "skill_type": "Analysis",
-    "prompt_text": "EcoVista Health, a non-profit organization, recently conducted community workshops on preventive health. The company is seeking interpretation of average survey ratings by topic, frequency of thematic keywords, and overall participant satisfaction distribution.",
+    "prompt_text": "EcoVista Health, a non-profit organization, is seeking support to interpret community workshop feedback. The company has asked for your support in conducting analysis of average survey ratings by topic, thematic keyword frequency, and participant satisfaction distribution to extract key insights. Please review the following information and provide relevant insights for EcoVista Health.",
     "exhibits": [
       {
         "exhibit_title": "Exhibit 1: Average Survey Ratings by Topic",
@@ -3132,7 +3139,7 @@
     "id": "analysis_53",
     "title": "TechFlow Customer Behavior Interpretation",
     "skill_type": "Analysis",
-    "prompt_text": "TechFlow, a B2B SaaS provider, is interpreting customer behavior through usage metrics, support ticket trends, and competitor feature comparisons.",
+    "prompt_text": "TechFlow, a B2B SaaS provider, is seeking support to interpret customer behavior metrics. The company has asked for your support in conducting analysis of usage metrics, support ticket trends, and competitor feature comparisons to identify customer insights. Please review the following information and provide relevant insights for TechFlow.",
     "exhibits": [
       {
         "exhibit_title": "Exhibit 1: Monthly Active Users by Region",
@@ -3173,7 +3180,7 @@
     "id": "analysis_54",
     "title": "QuantumTech Competitive Feature Benchmarking",
     "skill_type": "Analysis",
-    "prompt_text": "QuantumTech, a quantum computing hardware startup, is evaluating how its new qubit designs compare to competitors’ in terms of feature set, performance, and price positioning.",
+    "prompt_text": "QuantumTech, a quantum computing hardware startup, is seeking support to benchmark its new qubit designs. The company has asked for your support in conducting analysis of feature set comparisons, performance metrics, and price positioning to identify competitive advantages. Please review the following information and provide relevant insights for QuantumTech.",
     "exhibits": [
       {
         "exhibit_title": "Exhibit 1: Feature Comparison Table",
@@ -3214,7 +3221,7 @@
     "id": "analysis_55",
     "title": "SafePaths Workplace Safety Incident Analysis",
     "skill_type": "Analysis",
-    "prompt_text": "SafePaths, a manufacturing firm, is reviewing recent workplace safety incidents. The company is seeking interpretation of incident counts by type, severity trends over time, and department-level comparisons.",
+    "prompt_text": "SafePaths, a manufacturing firm, is seeking support to analyze workplace safety incidents. The company has asked for your support in conducting analysis of incident counts by type, severity trends over time, and department comparisons to identify safety improvement opportunities. Please review the following information and provide relevant insights for SafePaths.",
     "exhibits": [
       {
         "exhibit_title": "Exhibit 1: Incident Counts by Type",
@@ -3255,7 +3262,7 @@
     "id": "analysis_56",
     "title": "GreenLine Employee Engagement Trend Analysis",
     "skill_type": "Analysis",
-    "prompt_text": "GreenLine, a renewable energy provider, is analyzing employee engagement metrics, training completion rates, and internal survey scores to understand workforce motivation.",
+    "prompt_text": "GreenLine, a renewable energy provider, is seeking support to interpret employee engagement metrics. The company has asked for your support in conducting analysis of engagement scores, training completion rates, and survey results to identify workforce motivation drivers. Please review the following information and provide relevant insights for GreenLine.",
     "exhibits": [
       {
         "exhibit_title": "Exhibit 1: Monthly Training Completion Rates",
@@ -3296,7 +3303,7 @@
     "id": "analysis_57",
     "title": "EduPlus Course Completion Insights",
     "skill_type": "Analysis",
-    "prompt_text": "EduPlus, an online learning platform, is analyzing course completion rates, dropout timing, and module performance to improve user retention.",
+    "prompt_text": "EduPlus, an online learning platform, is seeking support to improve user retention. The company has asked for your support in conducting analysis of course completion rates, dropout timing, and module performance to identify retention strategies. Please review the following information and provide relevant insights for EduPlus.",
     "exhibits": [
       {
         "exhibit_title": "Exhibit 1: Course Completion Rate by Cohort",
@@ -3335,7 +3342,7 @@
     "id": "analysis_58",
     "title": "HealthFirst Treatment Protocol Analysis",
     "skill_type": "Analysis",
-    "prompt_text": "HealthFirst, a hospital network, is interpreting treatment outcome rates, average patient recovery times, and readmission statistics to improve care protocols.",
+    "prompt_text": "HealthFirst, a hospital network, is seeking support to improve care protocols. The company has asked for your support in conducting analysis of treatment outcome rates, patient recovery times, and readmission statistics to identify improvement opportunities. Please review the following information and provide relevant insights for HealthFirst.",
     "exhibits": [
       {
         "exhibit_title": "Exhibit 1: Recovery Time Distribution",
@@ -3374,7 +3381,7 @@
     "id": "analysis_59",
     "title": "CityStore Inventory Shrinkage Analysis",
     "skill_type": "Analysis",
-    "prompt_text": "CityStore, a retail chain, is assessing inventory shrinkage rates, loss by category, and month-over-month trends to identify root causes.",
+    "prompt_text": "CityStore, a retail chain, is seeking support to investigate inventory shrinkage. The company has asked for your support in conducting analysis of shrinkage rates, loss by category, and month-over-month trends to identify root causes. Please review the following information and provide relevant insights for CityStore.",
     "exhibits": [
       {
         "exhibit_title": "Exhibit 1: Shrinkage Rate by Category",
@@ -3415,7 +3422,7 @@
     "id": "analysis_60",
     "title": "TechWave Feature Adoption Interpretation",
     "skill_type": "Analysis",
-    "prompt_text": "TechWave, a software provider, is interpreting feature adoption rates, user feedback counts, and feature-specific support tickets to guide product roadmaps.",
+    "prompt_text": "TechWave, a software provider, is seeking support to guide product roadmap decisions. The company has asked for your support in conducting analysis of feature adoption rates, user feedback counts, and support ticket volumes to identify usage patterns. Please review the following information and provide relevant insights for TechWave.",
     "exhibits": [
       {
         "exhibit_title": "Exhibit 1: Feature Adoption Rates",
@@ -3455,7 +3462,7 @@
     "id": "analysis_61",
     "title": "FinEdge Mobile Payment Adoption Analysis",
     "skill_type": "Analysis",
-    "prompt_text": "FinEdge, a mobile payments company, is seeking interpretation of user adoption curves, transaction volume trends, and regional usage share.",
+    "prompt_text": "FinEdge, a mobile payments company, is seeking support to interpret service adoption patterns. The company has asked for your support in conducting analysis of user adoption curves, transaction volume trends, and regional usage share to identify growth opportunities. Please review the following information and provide relevant insights for FinEdge.",
     "exhibits": [
       {"exhibit_title": "Exhibit 1: Monthly Active Users","chart_type": "line","description": "Active users (000s)","data": {"Month": ["Jan","Feb","Mar","Apr","May","Jun"],"Users (000s)": [120,130,140,150,160,170]},"x_axis": "Month","y_axis": ["Users (000s)"]},
       {"exhibit_title": "Exhibit 2: Average Transaction Value","chart_type": "bar","description": "USD per transaction","data": {"Month": ["Jan","Feb","Mar","Apr","May","Jun"],"Value": [25,27,26,28,29,30]},"x_axis": "Month","y_axis": ["Value"]},
@@ -3466,7 +3473,7 @@
     "id": "analysis_62",
     "title": "HealthCore Patient Satisfaction Interpretation",
     "skill_type": "Analysis",
-    "prompt_text": "HealthCore, a primary care network, is interpreting patient satisfaction scores, wait time distributions, and service recommendation rates.",
+    "prompt_text": "HealthCore, a primary care network, is seeking support to interpret patient satisfaction metrics. The company has asked for your support in conducting analysis of satisfaction scores, wait time distributions, and recommendation rates to identify service enhancement opportunities. Please review the following information and provide relevant insights for HealthCore.",
     "exhibits": [
       {"exhibit_title": "Exhibit 1: Satisfaction Scores by Department","chart_type": "table","description": "Average score (1–5)","data": {"Department": ["General","Pediatrics","ER","Cardio"],"Score": [4.2,4.5,3.8,4.0]}},
       {"exhibit_title": "Exhibit 2: Wait Time Distribution","chart_type": "bar","description": "Percentage of patients","data": {"Wait (min)": ["<15","15-30","30-45","45+"],"%": [50,30,15,5]},"x_axis": "Wait (min)","y_axis": ["%"]},
@@ -3477,7 +3484,7 @@
     "id": "analysis_63",
     "title": "AutoDrive Maintenance Trend Interpretation",
     "skill_type": "Analysis",
-    "prompt_text": "AutoDrive, a fleet operator, is interpreting vehicle maintenance costs, downtime patterns, and issue frequency by model.",
+    "prompt_text": "AutoDrive, a fleet operator, is seeking support to analyze maintenance and downtime metrics. The company has asked for your support in conducting analysis of maintenance costs, downtime patterns, and issue frequency by model to identify reliability improvements. Please review the following information and provide relevant insights for AutoDrive.",
     "exhibits": [
       {"exhibit_title": "Exhibit 1: Maintenance Cost by Model","chart_type": "bar","description": "USD per vehicle per month","data": {"Model": ["A","B","C"],"Cost": [150,200,180]},"x_axis": "Model","y_axis": ["Cost"]},
       {"exhibit_title": "Exhibit 2: Downtime Hours Over Time","chart_type": "line","description": "Total hours","data": {"Month": ["Jan","Feb","Mar","Apr","May","Jun"],"Downtime": [20,25,22,30,28,24]},"x_axis": "Month","y_axis": ["Downtime"]},
@@ -3488,7 +3495,7 @@
     "id": "analysis_64",
     "title": "EduWave Curriculum Effectiveness Interpretation",
     "skill_type": "Analysis",
-    "prompt_text": "EduWave, an educational publisher, is interpreting test score improvements, module completion rates, and student feedback distribution.",
+    "prompt_text": "EduWave, an educational publisher, is seeking support to assess curriculum effectiveness. The company has asked for your support in conducting analysis of test score improvements, module completion rates, and feedback distribution to identify curriculum improvement areas. Please review the following information and provide relevant insights for EduWave.",
     "exhibits": [
       {"exhibit_title":"Exhibit 1: Score Improvements Pre/Post","chart_type":"table","description":"Average percent change","data":{"Subject":["Math","Science","Reading"],"Improvement %":[10,8,12]}},
       {"exhibit_title":"Exhibit 2: Module Completion Rates","chart_type":"bar","description":"% of enrolled students","data":{"Module":["Intro","Mid","Final"],"Completion %":[90,75,60]},"x_axis":"Module","y_axis":["Completion %"]},
@@ -3499,7 +3506,7 @@
     "id": "analysis_65",
     "title": "FoodFast Delivery Time Interpretation",
     "skill_type": "Analysis",
-    "prompt_text": "FoodFast, a meal delivery startup, is interpreting delivery time distributions, on-time percentages, and service area performance.",
+    "prompt_text": "FoodFast, a meal delivery startup, is seeking support to optimize delivery performance. The company has asked for your support in conducting analysis of delivery time distributions, on-time percentages, and service area performance to identify operational improvements. Please review the following information and provide relevant insights for FoodFast.",
     "exhibits": [
       {"exhibit_title":"Exhibit 1: Delivery Time Distribution","chart_type":"bar","description":"% of orders","data":{"Time (min)":["<20","20-30","30-40","40+"],"%": [40,35,15,10]},"x_axis":"Time (min)","y_axis":["%"]},
       {"exhibit_title":"Exhibit 2: On-Time Rate by Zone","chart_type":"table","description":"% on time","data":{"Zone":["North","South","East","West"],"On-Time %":[90,85,88,92]}},
@@ -3510,7 +3517,7 @@
     "id": "analysis_66",
     "title": "BioHealth Clinical Trial Enrollment Interpretation",
     "skill_type": "Analysis",
-    "prompt_text": "BioHealth, a biotech firm, is interpreting site enrollment timelines, dropout patterns, and demographic mix in a new clinical trial.",
+    "prompt_text": "BioHealth, a biotech firm, is seeking support to optimize clinical trial enrollment. The company has asked for your support in conducting analysis of enrollment timelines, dropout patterns, and demographic mix to identify enrollment optimization strategies. Please review the following information and provide relevant insights for BioHealth.",
     "exhibits": [
       {"exhibit_title":"Exhibit 1: Enrollment Timelines by Site","chart_type":"table","description":"Days to enroll 50 participants","data":{"Site":["A","B","C"],"Days":[30,45,40]}},
       {"exhibit_title":"Exhibit 2: Dropout Rate Over Time","chart_type":"line","description":"% of initial cohort","data":{"Week":[1,2,3,4,5,6],"Dropout %":[5,10,15,17,18,20]},"x_axis":"Week","y_axis":["Dropout %"]},
@@ -3521,7 +3528,7 @@
     "id":"analysis_67",
     "title":"TechSecure Vulnerability Response Interpretation",
     "skill_type":"Analysis",
-    "prompt_text":"TechSecure, a cybersecurity vendor, is interpreting incident response times, vulnerability severity distributions, and resolution rates.",
+    "prompt_text":"TechSecure, a cybersecurity vendor, is seeking support to improve response processes. The company has asked for your support in conducting analysis of incident response times, vulnerability severity distributions, and resolution rates to identify process improvement opportunities. Please review the following information and provide relevant insights for TechSecure.",
     "exhibits":[
       {"exhibit_title":"Exhibit 1: Response Time Distribution","chart_type":"bar","description":"% of incidents","data":{"Time (hrs)":["<1","1-4","4-8","8+"],"%": [30,40,20,10]},"x_axis":"Time (hrs)","y_axis":["%"]},
       {"exhibit_title":"Exhibit 2: Severity Distribution","chart_type":"pie","description":"% of vulnerabilities","data":{"Severity":["Low","Medium","High","Critical"],"Share %":[25,35,25,15]},"labels":"Severity","values":"Share %"},
@@ -3532,7 +3539,7 @@
     "id":"analysis_68",
     "title":"GreenHarvest Crop Yield Pattern Interpretation",
     "skill_type":"Analysis",
-    "prompt_text":"GreenHarvest, an agritech firm, is interpreting seasonal yield patterns, fertilizer usage correlation, and regional performance.",
+    "prompt_text":"GreenHarvest, an agritech firm, is seeking support to enhance crop yield outcomes. The company has asked for your support in conducting analysis of seasonal yield patterns, fertilizer usage correlations, and regional performance to identify yield optimization strategies. Please review the following information and provide relevant insights for GreenHarvest.",
     "exhibits":[
       {"exhibit_title":"Exhibit 1: Seasonal Yield Trend","chart_type":"line","description":"Bushels per acre","data":{"Quarter":["Q1","Q2","Q3","Q4"],"Yield":[120,140,160,130]},"x_axis":"Quarter","y_axis":["Yield"]},
       {"exhibit_title":"Exhibit 2: Fertilizer Usage Correlation","chart_type":"scatter","description":"Yield vs fertilizer (lbs/acre)","data":{"Fertilizer":[50,60,70,80,90],"Yield":[110,130,150,145,135]},"x_axis":"Fertilizer","y_axis":["Yield"]},
@@ -3543,7 +3550,7 @@
     "id":"analysis_69",
     "title":"ShopTrend Product Return Interpretation",
     "skill_type":"Analysis",
-    "prompt_text":"ShopTrend, an e-commerce retailer, is interpreting return rates by category, reason distributions, and time-to-return patterns.",
+    "prompt_text":"ShopTrend, an e-commerce retailer, is seeking support to analyze product returns. The company has asked for your support in conducting analysis of return rates by category, reason distributions, and return time patterns to identify reduction strategies. Please review the following information and provide relevant insights for ShopTrend.",
     "exhibits":[
       {"exhibit_title":"Exhibit 1: Return Rate by Category","chart_type":"bar","description":"% of sold items","data":{"Category":["Electronics","Apparel","Home"],"Return %":[5,15,8]},"x_axis":"Category","y_axis":["Return %"]},
       {"exhibit_title":"Exhibit 2: Return Reasons","chart_type":"pie","description":"% of returns","data":{"Reason":["Defect","Size","No Longer Needed","Other"],"Share %":[40,30,20,10]},"labels":"Reason","values":"Share %"},
@@ -3554,7 +3561,7 @@
     "id":"analysis_70",
     "title":"MediaStream Viewer Engagement Interpretation",
     "skill_type":"Analysis",
-    "prompt_text":"MediaStream, a streaming service, is interpreting viewer session lengths, repeat viewership rates, and content genre preferences.",
+    "prompt_text":"MediaStream, a streaming service, is seeking support to understand viewer engagement. The company has asked for your support in conducting analysis of session lengths, repeat viewership rates, and genre preferences to identify engagement drivers. Please review the following information and provide relevant insights for MediaStream.",
     "exhibits":[
       {"exhibit_title":"Exhibit 1: Session Length Distribution","chart_type":"histogram","description":"% of sessions","data":{"Length Min":["<15","15-30","30-60","60+"],"%": [20,40,30,10]},"x_axis":"Length Min","y_axis":["%"]},
       {"exhibit_title":"Exhibit 2: Repeat Viewership Rate","chart_type":"line","description":"% of users returning","data":{"Week":[1,2,3,4,5],"Repeat %":[30,35,40,45,50]},"x_axis":"Week","y_axis":["Repeat %"]},
@@ -3565,7 +3572,7 @@
     "id": "analysis_71",
     "title": "AquaPure Water Filter Usage Analysis",
     "skill_type": "Analysis",
-    "prompt_text": "AquaPure, a water filtration company, is interpreting filter replacement rates, customer satisfaction trends, and sales by channel.",
+    "prompt_text": "AquaPure, a water filtration company, is seeking support to optimize filter replacement schedules. The company has asked for your support in conducting analysis of filter replacement rates, customer satisfaction trends, and sales by channel to identify maintenance timing improvements and revenue opportunities. Please review the following information and provide relevant insights for AquaPure.",
     "exhibits": [
       {"exhibit_title": "Exhibit 1: Filter Replacement Rate","chart_type": "line","description": "Replacements per month (000s)","data": {"Month": ["Jan","Feb","Mar","Apr","May","Jun"],"Replacements (000s)": [10,12,13,15,14,16]},"x_axis": "Month","y_axis": ["Replacements (000s)"]},
       {"exhibit_title": "Exhibit 2: Customer Satisfaction Trend","chart_type": "bar","description": "Average satisfaction score (1-5)","data": {"Quarter": ["Q1","Q2","Q3","Q4"],"Score": [4.1,4.3,4.4,4.2]},"x_axis": "Quarter","y_axis": ["Score"]},
@@ -3576,7 +3583,7 @@
     "id": "analysis_72",
     "title": "DriveNow Car Rental Utilization Analysis",
     "skill_type": "Analysis",
-    "prompt_text": "DriveNow, a car rental company, is interpreting fleet utilization rates, booking lead times, and customer type distribution.",
+    "prompt_text": "DriveNow, a car rental company, is seeking support to enhance fleet utilization efficiency. The company has asked for your support in conducting analysis of fleet utilization rates, booking lead times, and customer type distribution to interpret and identify utilization optimization strategies. Please review the following information and provide relevant insights for DriveNow.",
     "exhibits": [
       {"exhibit_title": "Exhibit 1: Fleet Utilization Rate","chart_type": "bar","description": "% of fleet in use","data": {"Month": ["Jan","Feb","Mar","Apr","May","Jun"],"Utilization %": [70,75,80,78,82,85]},"x_axis": "Month","y_axis": ["Utilization %"]},
       {"exhibit_title": "Exhibit 2: Booking Lead Time Distribution","chart_type": "line","description": "Average days before rental","data": {"Month": ["Jan","Feb","Mar","Apr","May","Jun"],"Lead Time": [3,3.5,3.2,3.8,4,4.1]},"x_axis": "Month","y_axis": ["Lead Time"]},
@@ -3587,7 +3594,7 @@
     "id": "analysis_73",
     "title": "SmartHome Device Feature Adoption",
     "skill_type": "Analysis",
-    "prompt_text": "SmartHome, a smart device company, is interpreting feature activation rates, support request distribution, and device model share.",
+    "prompt_text": "SmartHome, a smart device company, is seeking support to boost feature adoption. The company has asked for your support in conducting analysis of feature activation rates, support request distribution, and device model share to interpret and identify engagement drivers. Please review the following information and provide relevant insights for SmartHome.",
     "exhibits": [
       {"exhibit_title": "Exhibit 1: Feature Activation Rate","chart_type": "bar","description": "% of devices with feature enabled","data": {"Feature": ["Voice","Remote","Automation"],"Activation %": [80,70,60]},"x_axis": "Feature","y_axis": ["Activation %"]},
       {"exhibit_title": "Exhibit 2: Support Requests by Feature","chart_type": "line","description": "Requests per month","data": {"Month": ["Jan","Feb","Mar","Apr"],"Voice": [20,22,18,15],"Remote": [10,12,11,10],"Automation": [5,7,6,4]},"x_axis": "Month","y_axis": ["Voice","Remote","Automation"]},
@@ -3598,7 +3605,7 @@
     "id": "analysis_74",
     "title": "TravelEase Booking Channel Analysis",
     "skill_type": "Analysis",
-    "prompt_text": "TravelEase, an online travel agency, is interpreting bookings by channel, cancellation rate trend, and destination share.",
+    "prompt_text": "TravelEase, an online travel agency, is seeking support to optimize booking channel performance. The company has asked for your support in conducting analysis of bookings by channel, cancellation rate trends, and destination share to interpret and identify distribution and cancellation risk strategies. Please review the following information and provide relevant insights for TravelEase.",
     "exhibits": [
       {"exhibit_title": "Exhibit 1: Bookings by Channel","chart_type": "bar","description": "Bookings (000s)","data": {"Channel": ["Web","Mobile App","Call Center"],"Bookings (000s)": [80,60,20]},"x_axis": "Channel","y_axis": ["Bookings (000s)"]},
       {"exhibit_title": "Exhibit 2: Cancellation Rate Over Time","chart_type": "line","description": "% of bookings cancelled","data": {"Month": ["Jan","Feb","Mar","Apr"],"Cancellation %": [10,9,8,7]},"x_axis": "Month","y_axis": ["Cancellation %"]},
@@ -3609,7 +3616,7 @@
     "id": "analysis_75",
     "title": "MediConnect Telemedicine Usage Analysis",
     "skill_type": "Analysis",
-    "prompt_text": "MediConnect, a telemedicine provider, is interpreting session counts by specialty, patient satisfaction trends, and device usage share.",
+    "prompt_text": "MediConnect, a telemedicine provider, is seeking support to improve remote care adoption. The company has asked for your support in conducting analysis of session counts by specialty, patient satisfaction trends, and device usage share to interpret and identify service delivery improvements. Please review the following information and provide relevant insights for MediConnect.",
     "exhibits": [
       {"exhibit_title": "Exhibit 1: Sessions by Specialty","chart_type": "bar","description": "Sessions per month (000s)","data": {"Specialty": ["GP","Derm","Psych","Peds"],"Sessions (000s)": [30,20,15,10]},"x_axis": "Specialty","y_axis": ["Sessions (000s)"]},
       {"exhibit_title": "Exhibit 2: Patient Satisfaction Trend","chart_type": "line","description": "Average score (1-5)","data": {"Month": ["Jan","Feb","Mar","Apr"],"Score": [4.2,4.3,4.4,4.5]},"x_axis": "Month","y_axis": ["Score"]},
@@ -3620,7 +3627,7 @@
     "id": "analysis_76",
     "title": "EcoFleet Electric Vehicle Fleet Analysis",
     "skill_type": "Analysis",
-    "prompt_text": "EcoFleet, an EV fleet operator, is interpreting vehicle utilization rates, charging session patterns, and cost savings trends.",
+    "prompt_text": "EcoFleet, an EV fleet operator, is seeking support to maximize fleet efficiency. The company has asked for your support in conducting analysis of vehicle utilization rates, charging session patterns, and cost savings trends to interpret and identify operational and financial optimization strategies. Please review the following information and provide relevant insights for EcoFleet.",
     "exhibits": [
       {"exhibit_title": "Exhibit 1: Vehicle Utilization Rate","chart_type": "bar","description": "% of fleet in use","data": {"Month": ["Jan","Feb","Mar","Apr"],"Utilization %": [60,65,70,75]},"x_axis": "Month","y_axis": ["Utilization %"]},
       {"exhibit_title": "Exhibit 2: Charging Sessions by Day","chart_type": "line","description": "Sessions per day","data": {"Day": ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"],"Sessions": [100,110,120,130,125,115,105]},"x_axis": "Day","y_axis": ["Sessions"]},
@@ -3631,7 +3638,7 @@
     "id": "analysis_77",
     "title": "AgriTech Crop Disease Detection Analysis",
     "skill_type": "Analysis",
-    "prompt_text": "AgriTech, an agri-analytics firm, is interpreting disease detection rates, alert frequency trends, and crop loss by region.",
+    "prompt_text": "AgriTech, an agri-analytics firm, is seeking support to enhance disease detection accuracy. The company has asked for your support in conducting analysis of disease detection rates, alert frequency trends, and crop loss by region to interpret and identify detection improvement strategies. Please review the following information and provide relevant insights for AgriTech.",
     "exhibits": [
       {"exhibit_title": "Exhibit 1: Detection Rate by Crop","chart_type": "bar","description": "% of cases detected","data": {"Crop": ["Wheat","Corn","Soy"],"Detection %": [85,80,90]},"x_axis": "Crop","y_axis": ["Detection %"]},
       {"exhibit_title": "Exhibit 2: Alert Frequency Over Time","chart_type": "line","description": "Alerts per week","data": {"Week": [1,2,3,4,5],"Alerts": [10,12,14,13,15]},"x_axis": "Week","y_axis": ["Alerts"]},
@@ -3642,7 +3649,7 @@
     "id": "analysis_78",
     "title": "ShopMate Loyalty Program Analysis",
     "skill_type": "Analysis",
-    "prompt_text": "ShopMate, a retail chain, is interpreting loyalty member growth, redemption rate trends, and spend share by segment.",
+    "prompt_text": "ShopMate, a retail chain, is seeking support to strengthen its loyalty program. The company has asked for your support in conducting analysis of loyalty member growth, redemption rate trends, and spend share by segment to interpret and identify engagement and retention strategies. Please review the following information and provide relevant insights for ShopMate.",
     "exhibits": [
       {"exhibit_title": "Exhibit 1: Loyalty Member Growth","chart_type": "line","description": "Members (000s)","data": {"Month": ["Jan","Feb","Mar","Apr"],"Members (000s)": [50,55,60,65]},"x_axis": "Month","y_axis": ["Members (000s)"]},
       {"exhibit_title": "Exhibit 2: Redemption Rate Trend","chart_type": "bar","description": "% of points redeemed","data": {"Quarter": ["Q1","Q2","Q3","Q4"],"Redemption %": [30,35,40,45]},"x_axis": "Quarter","y_axis": ["Redemption %"]},
@@ -3653,7 +3660,7 @@
     "id": "analysis_79",
     "title": "MediPlus Patient Portal Usage Analysis",
     "skill_type": "Analysis",
-    "prompt_text": "MediPlus, a healthcare network, is interpreting patient portal login rates, feature usage trends, and access by age group.",
+    "prompt_text": "MediPlus, a healthcare network, is seeking support to optimize patient portal engagement. The company has asked for your support in conducting analysis of portal login rates, feature usage trends, and access by age group to interpret and identify digital engagement improvements. Please review the following information and provide relevant insights for MediPlus.",
     "exhibits": [
       {"exhibit_title": "Exhibit 1: Portal Logins by Month","chart_type": "line","description": "Logins (000s)","data": {"Month": ["Jan","Feb","Mar","Apr"],"Logins (000s)": [20,22,25,28]},"x_axis": "Month","y_axis": ["Logins (000s)"]},
       {"exhibit_title": "Exhibit 2: Feature Usage Trend","chart_type": "bar","description": "Uses per user","data": {"Feature": ["Appointments","Messaging","Lab Results"],"Uses": [5,3,2]},"x_axis": "Feature","y_axis": ["Uses"]},
@@ -3664,7 +3671,7 @@
     "id": "analysis_80",
     "title": "AutoRent Fleet Maintenance Analysis",
     "skill_type": "Analysis",
-    "prompt_text": "AutoRent, a car rental company, is interpreting maintenance cost trends, downtime hours by vehicle type, and repair type share.",
+    "prompt_text": "AutoRent, a car rental company, is seeking support to refine its maintenance operations. The company has asked for your support in conducting analysis of maintenance cost trends, downtime hours by vehicle type, and repair type share to interpret and identify maintenance optimization strategies. Please review the following information and provide relevant insights for AutoRent.",
     "exhibits": [
       {"exhibit_title": "Exhibit 1: Maintenance Cost Trend","chart_type": "line","description": "Cost per month (000s USD)","data": {"Month": ["Jan","Feb","Mar","Apr"],"Cost (000s)": [15,16,18,17]},"x_axis": "Month","y_axis": ["Cost (000s)"]},
       {"exhibit_title": "Exhibit 2: Downtime by Vehicle Type","chart_type": "bar","description": "Hours per month","data": {"Type": ["Sedan","SUV","Truck"],"Hours": [40,50,60]},"x_axis": "Type","y_axis": ["Hours"]},
@@ -3675,7 +3682,7 @@
     "id": "analysis_81",
     "title": "EduKids After-School Program Analysis",
     "skill_type": "Analysis",
-    "prompt_text": "EduKids, an after-school program, is interpreting enrollment trends, activity participation rates, and feedback sentiment share.",
+    "prompt_text": "EduKids, an after-school program, is seeking support to boost program participation and satisfaction. The company has asked for your support in conducting analysis of enrollment trends, activity participation rates, and feedback sentiment share to interpret and identify program improvement opportunities. Please review the following information and provide relevant insights for EduKids.",
     "exhibits": [
       {"exhibit_title": "Exhibit 1: Enrollment Trend","chart_type": "line","description": "Enrollments per semester","data": {"Semester": ["Fall","Winter","Spring","Summer"],"Enrollments": [100,110,120,115]},"x_axis": "Semester","y_axis": ["Enrollments"]},
       {"exhibit_title": "Exhibit 2: Activity Participation Rates","chart_type": "bar","description": "% of students by activity","data": {"Activity": ["Art","Sports","STEM"],"Participation %": [60,70,80]},"x_axis": "Activity","y_axis": ["Participation %"]},
@@ -3686,7 +3693,7 @@
     "id": "analysis_82",
     "title": "GreenPower Solar Panel Adoption Analysis",
     "skill_type": "Analysis",
-    "prompt_text": "GreenPower, a solar provider, is interpreting adoption rates by region, incentive impact trends, and market share by segment.",
+    "prompt_text": "GreenPower, a solar energy provider, is seeking support to accelerate solar adoption. The company has asked for your support in conducting analysis of adoption rates by region, incentive impact trends, and market share by segment to interpret and identify growth strategies. Please review the following information and provide relevant insights for GreenPower.",
     "exhibits": [
       {"exhibit_title": "Exhibit 1: Adoption Rate by Region","chart_type": "bar","description": "% of homes with solar","data": {"Region": ["North","South","East","West"],"Adoption %": [20,25,15,30]},"x_axis": "Region","y_axis": ["Adoption %"]},
       {"exhibit_title": "Exhibit 2: Incentive Impact Trend","chart_type": "line","description": "Adoption % over time","data": {"Year": [2020,2021,2022,2023],"Adoption %": [10,15,20,25]},"x_axis": "Year","y_axis": ["Adoption %"]},
@@ -3697,7 +3704,7 @@
     "id": "analysis_83",
     "title": "FitCity Gym Attendance Analysis",
     "skill_type": "Analysis",
-    "prompt_text": "FitCity, a gym chain, is interpreting attendance by time slot, membership type trend, and class popularity share.",
+    "prompt_text": "FitCity, a gym chain, is seeking support to elevate member engagement. The company has asked for your support in conducting analysis of attendance by time slot, membership type trends, and class popularity share to interpret and identify engagement drivers. Please review the following information and provide relevant insights for FitCity.",
     "exhibits": [
       {"exhibit_title": "Exhibit 1: Attendance by Time Slot","chart_type": "bar","description": "Average members per slot","data": {"Time Slot": ["Morning","Afternoon","Evening"],"Members": [50,40,60]},"x_axis": "Time Slot","y_axis": ["Members"]},
       {"exhibit_title": "Exhibit 2: Membership Type Trend","chart_type": "line","description": "Active members by type","data": {"Month": ["Jan","Feb","Mar","Apr"],"Standard": [100,105,110,112],"Premium": [40,45,48,50]},"x_axis": "Month","y_axis": ["Standard","Premium"]},
@@ -3708,7 +3715,7 @@
     "id": "analysis_84",
     "title": "ShopLink Online Conversion Analysis",
     "skill_type": "Analysis",
-    "prompt_text": "ShopLink, an e-commerce platform, is interpreting conversion rates by device, abandoned cart trends, and sales share by category.",
+    "prompt_text": "ShopLink, an e-commerce platform, is seeking support to improve online conversion. The company has asked for your support in conducting analysis of conversion rates by device, abandoned cart trends, and sales share by category to interpret and identify conversion improvement strategies. Please review the following information and provide relevant insights for ShopLink.",
     "exhibits": [
       {"exhibit_title": "Exhibit 1: Conversion Rate by Device","chart_type": "bar","description": "% conversion","data": {"Device": ["Desktop","Mobile","Tablet"],"Conversion %": [3.5,2.8,2.2]},"x_axis": "Device","y_axis": ["Conversion %"]},
       {"exhibit_title": "Exhibit 2: Abandoned Cart Trend","chart_type": "line","description": "Abandoned carts per month","data": {"Month": ["Jan","Feb","Mar","Apr"],"Abandoned": [200,220,210,205]},"x_axis": "Month","y_axis": ["Abandoned"]},
@@ -3719,7 +3726,7 @@
     "id": "analysis_85",
     "title": "MediCare Appointment Scheduling Analysis",
     "skill_type": "Analysis",
-    "prompt_text": "MediCare, a clinic, is interpreting no-show rates by appointment type, reschedule trends, and patient age group share.",
+    "prompt_text": "MediCare, a clinic, is seeking support to reduce appointment no-shows. The company has asked for your support in conducting analysis of no-show rates by appointment type, reschedule trends, and patient age group share to interpret and identify scheduling improvement strategies. Please review the following information and provide relevant insights for MediCare.",
     "exhibits": [
       {"exhibit_title": "Exhibit 1: No-Show Rate by Appointment Type","chart_type": "bar","description": "% no-shows","data": {"Type": ["Checkup","Follow-up","Specialist"],"No-Show %": [5,8,10]},"x_axis": "Type","y_axis": ["No-Show %"]},
       {"exhibit_title": "Exhibit 2: Reschedule Trend","chart_type": "line","description": "Reschedules per month","data": {"Month": ["Jan","Feb","Mar","Apr"],"Reschedules": [30,28,32,29]},"x_axis": "Month","y_axis": ["Reschedules"]},
@@ -3730,7 +3737,7 @@
     "id": "analysis_86",
     "title": "UrbanMove Scooter Usage Analysis",
     "skill_type": "Analysis",
-    "prompt_text": "UrbanMove, a scooter sharing company, is interpreting trip duration patterns, user segment trends, and ride share by neighborhood.",
+    "prompt_text": "UrbanMove, a scooter sharing company, is seeking support to optimize trip operations. The company has asked for your support in conducting analysis of trip duration patterns, user segment trends, and ride share by neighborhood to interpret and identify operational improvement strategies. Please review the following information and provide relevant insights for UrbanMove.",
     "exhibits": [
       {"exhibit_title": "Exhibit 1: Average Trip Duration","chart_type": "bar","description": "Minutes per trip","data": {"Neighborhood": ["Central","East","West","South"],"Duration": [12,10,14,11]},"x_axis": "Neighborhood","y_axis": ["Duration"]},
       {"exhibit_title": "Exhibit 2: User Segment Trend","chart_type": "line","description": "Trips by segment","data": {"Month": ["Jan","Feb","Mar","Apr"],"Commuter": [1000,1100,1200,1250],"Tourist": [500,600,700,750]},"x_axis": "Month","y_axis": ["Commuter","Tourist"]},
@@ -3741,7 +3748,7 @@
     "id": "analysis_87",
     "title": "CityGrocer Delivery Route Analysis",
     "skill_type": "Analysis",
-    "prompt_text": "CityGrocer, a grocery delivery service, is interpreting route efficiency, delivery window trends, and order share by category.",
+    "prompt_text": "CityGrocer, a grocery delivery service, is seeking support to enhance delivery efficiency. The company has asked for your support in conducting analysis of route efficiency, delivery window trends, and order share by category to interpret and identify routing and scheduling improvements. Please review the following information and provide relevant insights for CityGrocer.",
     "exhibits": [
       {"exhibit_title": "Exhibit 1: Route Efficiency","chart_type": "bar","description": "Avg deliveries/hour","data": {"Route": ["A","B","C","D"],"Deliveries/Hour": [8,9,7,10]},"x_axis": "Route","y_axis": ["Deliveries/Hour"]},
       {"exhibit_title": "Exhibit 2: Delivery Window Trend","chart_type": "line","description": "Orders by window","data": {"Window": ["Morning","Afternoon","Evening"],"Orders": [100,150,120]},"x_axis": "Window","y_axis": ["Orders"]},
@@ -3752,7 +3759,7 @@
     "id": "analysis_88",
     "title": "WellCare Health Plan Enrollment Analysis",
     "skill_type": "Analysis",
-    "prompt_text": "WellCare, a health insurer, is interpreting enrollment by plan, churn trends, and premium share by segment.",
+    "prompt_text": "WellCare, a health insurer, is seeking support to optimize plan performance. The company has asked for your support in conducting analysis of enrollment by plan, churn trends, and premium share by segment to interpret and identify retention and pricing strategies. Please review the following information and provide relevant insights for WellCare.",
     "exhibits": [
       {"exhibit_title": "Exhibit 1: Enrollment by Plan","chart_type": "bar","description": "Members (000s)","data": {"Plan": ["Basic","Plus","Premium"],"Members (000s)": [70,50,30]},"x_axis": "Plan","y_axis": ["Members (000s)"]},
       {"exhibit_title": "Exhibit 2: Churn Trend","chart_type": "line","description": "Churn % by month","data": {"Month": ["Jan","Feb","Mar","Apr"],"Churn %": [2,2.5,2.2,2.1]},"x_axis": "Month","y_axis": ["Churn %"]},
@@ -3763,7 +3770,7 @@
     "id": "analysis_89",
     "title": "RentWise Apartment Occupancy Analysis",
     "skill_type": "Analysis",
-    "prompt_text": "RentWise, a property management firm, is interpreting occupancy by building, lease renewal trend, and tenant age group share.",
+    "prompt_text": "RentWise, a property management firm, is seeking support to maximize occupancy. The company has asked for your support in conducting analysis of occupancy by building, lease renewal trends, and tenant age group share to interpret and identify retention and occupancy strategies. Please review the following information and provide relevant insights for RentWise.",
     "exhibits": [
       {"exhibit_title": "Exhibit 1: Occupancy by Building","chart_type": "bar","description": "% occupied","data": {"Building": ["A","B","C"],"Occupancy %": [95,90,92]},"x_axis": "Building","y_axis": ["Occupancy %"]},
       {"exhibit_title": "Exhibit 2: Lease Renewal Trend","chart_type": "line","description": "Renewals per quarter","data": {"Quarter": ["Q1","Q2","Q3","Q4"],"Renewals": [30,35,32,34]},"x_axis": "Quarter","y_axis": ["Renewals"]},
@@ -3774,7 +3781,7 @@
     "id": "analysis_90",
     "title": "EduLearn Online Course Feedback Analysis",
     "skill_type": "Analysis",
-    "prompt_text": "EduLearn, an online learning platform, is interpreting feedback ratings by course, completion trend, and student age group share.",
+    "prompt_text": "EduLearn, an online learning platform, is seeking support to enhance course engagement and feedback. The company has asked for your support in conducting analysis of feedback ratings by course, completion trends, and student age group share to interpret and identify course improvement strategies. Please review the following information and provide relevant insights for EduLearn.",
     "exhibits": [
       {"exhibit_title": "Exhibit 1: Feedback Ratings by Course","chart_type": "bar","description": "Avg rating (1-5)","data": {"Course": ["Math","Science","History"],"Rating": [4.2,4.1,4.4]},"x_axis": "Course","y_axis": ["Rating"]},
       {"exhibit_title": "Exhibit 2: Completion Trend","chart_type": "line","description": "% complete per month","data": {"Month": ["Jan","Feb","Mar","Apr"],"Completion %": [60,62,65,68]},"x_axis": "Month","y_axis": ["Completion %"]},
@@ -3785,7 +3792,7 @@
     "id": "analysis_91",
     "title": "GreenRide Shared Mobility Usage Analysis",
     "skill_type": "Analysis",
-    "prompt_text": "GreenRide, a shared mobility service, is interpreting trip counts by mode, usage trend, and neighborhood share.",
+    "prompt_text": "GreenRide, a shared mobility service, is seeking support to boost ridership. The company has asked for your support in conducting analysis of trip counts by mode, usage trends, and neighborhood share to interpret and identify mode and location engagement strategies. Please review the following information and provide relevant insights for GreenRide.",
     "exhibits": [
       {"exhibit_title": "Exhibit 1: Trips by Mode","chart_type": "bar","description": "Trips (000s)","data": {"Mode": ["Bike","Scooter","Car"],"Trips (000s)": [40,30,20]},"x_axis": "Mode","y_axis": ["Trips (000s)"]},
       {"exhibit_title": "Exhibit 2: Usage Trend","chart_type": "line","description": "Total trips per month","data": {"Month": ["Jan","Feb","Mar","Apr"],"Trips": [80,90,100,110]},"x_axis": "Month","y_axis": ["Trips"]},
@@ -3796,7 +3803,7 @@
     "id": "analysis_92",
     "title": "HealthSync Remote Patient Monitoring Analysis",
     "skill_type": "Analysis",
-    "prompt_text": "HealthSync, a remote health monitoring provider, is interpreting device adherence rates, alert trend, and patient condition share.",
+    "prompt_text": "HealthSync, a remote health monitoring provider, is seeking support to improve patient adherence. The company has asked for your support in conducting analysis of device adherence rates, alert trends, and patient condition share to interpret and identify monitoring engagement strategies. Please review the following information and provide relevant insights for HealthSync.",
     "exhibits": [
       {"exhibit_title": "Exhibit 1: Device Adherence Rate","chart_type": "line","description": "% of patients using device daily","data": {"Month": ["Jan","Feb","Mar","Apr"],"Adherence %": [70,72,75,77]},"x_axis": "Month","y_axis": ["Adherence %"]},
       {"exhibit_title": "Exhibit 2: Alert Trend","chart_type": "bar","description": "Alerts per week","data": {"Week": [1,2,3,4],"Alerts": [15,18,20,17]},"x_axis": "Week","y_axis": ["Alerts"]},
@@ -3807,7 +3814,7 @@
     "id": "analysis_93",
     "title": "ShopQuick Order Fulfillment Analysis",
     "skill_type": "Analysis",
-    "prompt_text": "ShopQuick, a same-day delivery service, is interpreting fulfillment time by warehouse, delay trend, and order share by product category.",
+    "prompt_text": "ShopQuick, a same-day delivery service, is seeking support to streamline order fulfillment. The company has asked for your support in conducting analysis of fulfillment time by warehouse, delay trends, and order share by category to interpret and identify operational improvement strategies. Please review the following information and provide relevant insights for ShopQuick.",
     "exhibits": [
       {"exhibit_title": "Exhibit 1: Fulfillment Time by Warehouse","chart_type": "bar","description": "Avg hours to fulfill","data": {"Warehouse": ["A","B","C"],"Hours": [4,5,3]},"x_axis": "Warehouse","y_axis": ["Hours"]},
       {"exhibit_title": "Exhibit 2: Delay Trend","chart_type": "line","description": "Delayed orders per week","data": {"Week": [1,2,3,4],"Delays": [8,10,7,6]},"x_axis": "Week","y_axis": ["Delays"]},
@@ -3818,7 +3825,7 @@
     "id": "analysis_94",
     "title": "FarmDirect Produce Delivery Analysis",
     "skill_type": "Analysis",
-    "prompt_text": "FarmDirect, a produce delivery startup, is interpreting delivery frequency, customer satisfaction trend, and produce type share.",
+    "prompt_text": "FarmDirect, a produce delivery startup, is seeking support to elevate service satisfaction. The company has asked for your support in conducting analysis of delivery frequency, customer satisfaction trends, and produce type share to interpret and identify service improvement strategies. Please review the following information and provide relevant insights for FarmDirect.",
     "exhibits": [
       {"exhibit_title": "Exhibit 1: Delivery Frequency","chart_type": "bar","description": "Deliveries per week","data": {"Type": ["Single","Weekly","Biweekly"],"Deliveries": [30,50,20]},"x_axis": "Type","y_axis": ["Deliveries"]},
       {"exhibit_title": "Exhibit 2: Customer Satisfaction Trend","chart_type": "line","description": "Avg score (1-5)","data": {"Month": ["Jan","Feb","Mar","Apr"],"Score": [4.4,4.5,4.6,4.7]},"x_axis": "Month","y_axis": ["Score"]},
@@ -3829,7 +3836,7 @@
     "id": "analysis_95",
     "title": "Medix Diagnostics Test Volume Analysis",
     "skill_type": "Analysis",
-    "prompt_text": "Medix Diagnostics, a lab testing provider, is interpreting test volume by type, turnaround time trend, and revenue share by payer.",
+    "prompt_text": "Medix Diagnostics, a lab testing provider, is seeking support to optimize test operations. The company has asked for your support in conducting analysis of test volume by type, turnaround time trends, and revenue share by payer to interpret and identify operational and revenue optimization strategies. Please review the following information and provide relevant insights for Medix Diagnostics.",
     "exhibits": [
       {"exhibit_title": "Exhibit 1: Test Volume by Type","chart_type": "bar","description": "Tests per month (000s)","data": {"Type": ["Blood","Urine","Other"],"Tests (000s)": [40,30,10]},"x_axis": "Type","y_axis": ["Tests (000s)"]},
       {"exhibit_title": "Exhibit 2: Turnaround Time Trend","chart_type": "line","description": "Avg hours per test","data": {"Month": ["Jan","Feb","Mar","Apr"],"Hours": [24,22,20,18]},"x_axis": "Month","y_axis": ["Hours"]},
@@ -3840,7 +3847,7 @@
     "id": "analysis_96",
     "title": "CityPark Parking Utilization Analysis",
     "skill_type": "Analysis",
-    "prompt_text": "CityPark, a parking operator, is interpreting utilization by lot, payment method trend, and vehicle type share.",
+    "prompt_text": "CityPark, a parking operator, is seeking support to improve parking utilization. The company has asked for your support in conducting analysis of utilization by lot, payment method trends, and vehicle type share to interpret and identify utilization and payment optimization strategies. Please review the following information and provide relevant insights for CityPark.",
     "exhibits": [
       {"exhibit_title": "Exhibit 1: Utilization by Lot","chart_type": "bar","description": "% used","data": {"Lot": ["A","B","C"],"Utilization %": [80,75,85]},"x_axis": "Lot","y_axis": ["Utilization %"]},
       {"exhibit_title": "Exhibit 2: Payment Method Trend","chart_type": "line","description": "Payments per method/month","data": {"Month": ["Jan","Feb","Mar","Apr"],"Card": [100,110,120,130],"App": [60,70,75,80]},"x_axis": "Month","y_axis": ["Card","App"]},
@@ -3851,7 +3858,7 @@
     "id": "analysis_97",
     "title": "TravelGo Package Tour Booking Analysis",
     "skill_type": "Analysis",
-    "prompt_text": "TravelGo, a tour operator, is interpreting booking volume by tour type, lead time trend, and traveler age group share.",
+    "prompt_text": "TravelGo, a tour operator, is seeking support to refine booking operations. The company has asked for your support in conducting analysis of booking volume by tour type, lead time trends, and traveler age group share to interpret and identify booking efficiency strategies. Please review the following information and provide relevant insights for TravelGo.",
     "exhibits": [
       {"exhibit_title": "Exhibit 1: Booking Volume by Tour Type","chart_type": "bar","description": "Bookings (000s)","data": {"Tour": ["Adventure","Culture","Relaxation"],"Bookings (000s)": [30,25,20]},"x_axis": "Tour","y_axis": ["Bookings (000s)"]},
       {"exhibit_title": "Exhibit 2: Lead Time Trend","chart_type": "line","description": "Days before tour","data": {"Month": ["Jan","Feb","Mar","Apr"],"Lead Time": [20,18,15,12]},"x_axis": "Month","y_axis": ["Lead Time"]},
@@ -3862,7 +3869,7 @@
     "id": "analysis_98",
     "title": "SafeWork Incident Reporting Analysis",
     "skill_type": "Analysis",
-    "prompt_text": "SafeWork, a workplace safety platform, is interpreting incident type frequency, resolution time trend, and department share.",
+    "prompt_text": "SafeWork, a workplace safety platform, is seeking support to enhance incident response processes. The company has asked for your support in conducting analysis of incident type frequency, resolution time trends, and department share to interpret and identify response improvement strategies. Please review the following information and provide relevant insights for SafeWork.",
     "exhibits": [
       {"exhibit_title": "Exhibit 1: Incident Type Frequency","chart_type": "bar","description": "Incidents per month","data": {"Type": ["Slip","Equipment","Other"],"Incidents": [10,7,5]},"x_axis": "Type","y_axis": ["Incidents"]},
       {"exhibit_title": "Exhibit 2: Resolution Time Trend","chart_type": "line","description": "Avg days to resolve","data": {"Month": ["Jan","Feb","Mar","Apr"],"Days": [5,4.5,4,3.8]},"x_axis": "Month","y_axis": ["Days"]},
@@ -3873,7 +3880,7 @@
     "id": "analysis_99",
     "title": "CityTransit Bus Route Analysis",
     "skill_type": "Analysis",
-    "prompt_text": "CityTransit, a bus operator, is interpreting ridership by route, delay trend, and fare type share.",
+    "prompt_text": "CityTransit, a bus operator, is seeking support to boost service reliability. The company has asked for your support in conducting analysis of ridership by route, delay trends, and fare type share to interpret and identify reliability improvement strategies. Please review the following information and provide relevant insights for CityTransit.",
     "exhibits": [
       {"exhibit_title": "Exhibit 1: Ridership by Route","chart_type": "bar","description": "Riders per day","data": {"Route": ["1","2","3"],"Riders": [500,600,400]},"x_axis": "Route","y_axis": ["Riders"]},
       {"exhibit_title": "Exhibit 2: Delay Trend","chart_type": "line","description": "Delays per month","data": {"Month": ["Jan","Feb","Mar","Apr"],"Delays": [15,12,10,8]},"x_axis": "Month","y_axis": ["Delays"]},
@@ -3884,7 +3891,7 @@
     "id": "analysis_100",
     "title": "CleanAir Air Quality Monitoring Analysis",
     "skill_type": "Analysis",
-    "prompt_text": "CleanAir, an air quality monitoring provider, is interpreting AQI by location, pollutant trend, and sensor type share.",
+    "prompt_text": "CleanAir, an air quality monitoring provider, is seeking support to identify Air Quality Index (AQI) trends in a local area. The company has asked for your support in conducting analysis of locations, pollutant levels, and sensor types to interpret and identify trends in AQI. Please review the following information and provide relevant insights for CleanAir.",
     "exhibits": [
       {"exhibit_title": "Exhibit 1: AQI by Location","chart_type": "bar","description": "Avg AQI","data": {"Location": ["Downtown","Suburbs","Industrial"],"AQI": [80,60,100]},"x_axis": "Location","y_axis": ["AQI"]},
       {"exhibit_title": "Exhibit 2: Pollutant Trend","chart_type": "line","description": "PM2.5 over months","data": {"Month": ["Jan","Feb","Mar","Apr"],"PM2.5": [30,28,25,20]},"x_axis": "Month","y_axis": ["PM2.5"]},
