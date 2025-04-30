@@ -3563,7 +3563,7 @@
     "skill_type":"Analysis",
     "prompt_text":"MediaStream, a streaming service, is seeking support to understand viewer engagement. The company has asked for your support in conducting analysis of session lengths, repeat viewership rates, and genre preferences to identify engagement drivers. Please review the following information and provide relevant insights for MediaStream.",
     "exhibits":[
-      {"exhibit_title":"Exhibit 1: Session Length Distribution","chart_type":"histogram","description":"% of sessions","data":{"Length Min":["<15","15-30","30-60","60+"],"%": [20,40,30,10]},"x_axis":"Length Min","y_axis":["%"]},
+      {"exhibit_title":"Exhibit 1: Session Length Distribution","chart_type":"bar","description":"% of sessions","data":{"Length Min":["<15","15-30","30-60","60+"],"%": [20,40,30,10]},"x_axis":"Length Min","y_axis":["%"]},
       {"exhibit_title":"Exhibit 2: Repeat Viewership Rate","chart_type":"line","description":"% of users returning","data":{"Week":[1,2,3,4,5],"Repeat %":[30,35,40,45,50]},"x_axis":"Week","y_axis":["Repeat %"]},
       {"exhibit_title":"Exhibit 3: Genre Preference","chart_type":"pie","description":"% of watch time","data":{"Genre":["Drama","Comedy","Doc","Action"],"Share %":[25,25,20,30]},"labels":"Genre","values":"Share %"}
     ]
