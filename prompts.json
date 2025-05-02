@@ -5573,7 +5573,7 @@
     "skill_type": "Recommendation",
     "prompt_text": "You have analyzed GreenHarvest’s yield optimization data. Based on the key findings summarized below, please craft a final recommendation on fertilizer usage and region prioritization.",
     "exhibits": [
-      {"exhibit_title": "Key Finding 1: Yield vs Fertilizer","chart_type": "table","description": "Bushels per acre","data": {"Fertilizer (lbs): [50,60,70,80],"Yield": [110,130,150,145]}},
+      {"exhibit_title": "Key Finding 1: Yield vs Fertilizer","chart_type": "table","description": "Bushels per acre","data": {"Fertilizer (lbs)": [50,60,70,80],"Yield": [110,130,150,145]}},
       {"exhibit_title": "Key Finding 2: Regional Yield","chart_type": "table","description": "Bushels per acre","data": {"Region": ["North","South","East","West"],"Yield": [140,150,130,120]}},
       {"exhibit_title": "Key Finding 3: Summary Insights","chart_type": "summary_text","summary_text": [
         "Optimal fertilizer range 60–70 lbs/acre yields highest output.",
