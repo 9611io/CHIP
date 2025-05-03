@@ -4517,7 +4517,7 @@
     "id": "rec_prompt_20",
     "title": "UrbanGardens – Final Recommendation",
     "skill_type": "Recommendation",
-    "prompt_text": "You have completed your analysis for UrbanGardens’ partnership performance. Based on the key findings summarized below, please structure and present your final recommendation on partnership models and expansion priorities.",
+    "prompt_text": "UrbanGardens, a provider of urban agriculture solutions, is seeking to optimize partnership models and prioritize expansion. You have analyzed partnership uptake by store type and profitability by model. Based on the exhibits below, please craft a final recommendation to help UrbanGardens achieve optimal partnership strategy and expansion.",
     "exhibits": [
       {
         "exhibit_title": "Key Finding 1: Partnership Uptake by Store Type",
@@ -4535,9 +4535,9 @@
         "exhibit_title": "Key Finding 3: Summary Insights",
         "chart_type": "summary_text",
         "summary_text": [
-          "Subscription models yield the highest margins but slower uptake.",
-          "Wholesale partnerships scale quickly but at lower margins.",
-          "Retail partnerships balance uptake and profitability moderately."
+          "Subscription partnerships, while slower to scale, offer the best long-term profitability for UrbanGardens.",
+          "A hybrid approach targeting supermarkets with wholesale and subscription models could maximize both reach and margin.",
+          "Rapid expansion may strain operational resources; pilot programs should validate new partnership types before scaling."
         ]
       }
     ]
@@ -4547,7 +4547,7 @@
     "id": "rec_prompt_21",
     "title": "CityStore – Final Recommendation",
     "skill_type": "Recommendation",
-    "prompt_text": "You have completed your analysis for CityStore’s inventory shrinkage investigation. Based on the key findings summarized below, please craft a final recommendation on shrinkage reduction strategies.",
+    "prompt_text": "CityStore, a multi-category retail chain, is seeking to reduce inventory shrinkage and associated losses. You have analyzed shrinkage rates by product category and loss values by department. Based on the exhibits below, please craft a final recommendation to help CityStore minimize shrinkage and loss.",
     "exhibits": [
       {
         "exhibit_title": "Key Finding 1: Shrinkage Rate by Category",
@@ -4565,9 +4565,9 @@
         "exhibit_title": "Key Finding 3: Summary Insights",
         "chart_type": "summary_text",
         "summary_text": [
-          "Electronics and Groceries account for over 3.5% combined shrinkage.",
-          "Sales Floor sees the highest loss share at 60% of value.",
-          "Warehouse loss is significant at 15%, indicating upstream issues."
+          "Sales Floor is the primary loss point, suggesting immediate focus on in-store controls and monitoring.",
+          "High shrinkage in Electronics and Groceries points to targeted theft and spoilage risks requiring category-specific interventions.",
+          "Upstream warehouse losses indicate supply chain vulnerabilities that may undermine store-level efforts if unaddressed."
         ]
       }
     ]
@@ -4576,14 +4576,14 @@
     "id": "rec_prompt_22",
     "title": "TechWave – Final Recommendation",
     "skill_type": "Recommendation",
-    "prompt_text": "You have completed your analysis for TechWave’s product usage metrics. Based on the key findings summarized below, please craft a final recommendation on feature prioritization and support optimization.",
+    "prompt_text": "TechWave, a technology platform offering communication and analytics tools, is seeking to prioritize product features and optimize customer support. You have analyzed feature adoption rates and support ticket counts. Based on the exhibits below, please craft a final recommendation to help TechWave achieve optimal feature focus and support efficiency.",
     "exhibits": [
       {"exhibit_title": "Key Finding 1: Feature Adoption Rates","chart_type": "table","description": "Adoption % by feature","data": {"Feature": ["Chat","Dashboard","API","Mobile"],"Adoption %": [70,60,40,30]}},
       {"exhibit_title": "Key Finding 2: Support Ticket Counts","chart_type": "table","description": "Tickets logged last quarter","data": {"Feature": ["Chat","Dashboard","API","Mobile"],"Tickets": [120,80,60,40]}},
       {"exhibit_title": "Key Finding 3: Summary Insights","chart_type": "summary_text","summary_text": [
-          "Chat has highest adoption but also highest support tickets.",
-          "API feature adoption lags at 40% with moderate ticket volume.",
-          "Mobile feature sees lowest adoption and tickets, indicating lower priority."
+          "High support demand for Chat suggests the need for usability improvements or self-service resources.",
+          "Disparity between adoption and ticket volume indicates API users may require targeted onboarding and documentation.",
+          "Prioritizing feature enhancements for high-adoption/high-ticket features could improve satisfaction and reduce support costs."
         ]}
     ]
   },
@@ -4591,14 +4591,14 @@
     "id": "rec_prompt_23",
     "title": "FinEdge – Final Recommendation",
     "skill_type": "Recommendation",
-    "prompt_text": "You have completed your analysis for FinEdge’s service adoption patterns. Based on the key findings summarized below, please craft a final recommendation on regional growth focus and product enhancements.",
+    "prompt_text": "FinEdge, a digital financial services provider, is seeking to drive user growth and increase transaction value, especially in high-potential regions. You have analyzed monthly active user trends and average transaction values. Based on the exhibits below, please craft a final recommendation to help FinEdge accelerate service adoption and maximize value.",
     "exhibits": [
       {"exhibit_title": "Key Finding 1: Monthly Active Users","chart_type": "table","description": "Active users (000s)","data": {"Month": ["Jan","Feb","Mar","Apr","May","Jun"],"Users (000s)": [120,130,140,150,160,170]}},
       {"exhibit_title": "Key Finding 2: Average Transaction Value","chart_type": "table","description": "USD per transaction","data": {"Month": ["Jan","Feb","Mar","Apr","May","Jun"],"Value": [25,27,26,28,29,30]}},
       {"exhibit_title": "Key Finding 3: Summary Insights","chart_type": "summary_text","summary_text": [
-          "User growth is strongest in Q2 at 160–170k.",
-          "Transaction value steadily increases, peaking at $30.",
-          "Regional share shift suggests focus on APAC for higher growth."
+          "Sustained user and transaction growth points to strong product-market fit, especially in APAC.",
+          "Rising transaction values suggest successful upmarket engagement or cross-sell efforts.",
+          "Future growth may depend on tailoring offerings to high-growth regions and deepening user engagement through new features."
         ]}
     ]
   },
@@ -4606,14 +4606,14 @@
     "id": "rec_prompt_24",
     "title": "HealthCore – Final Recommendation",
     "skill_type": "Recommendation",
-    "prompt_text": "You have completed your analysis for HealthCore’s patient satisfaction metrics. Based on the key findings summarized below, please craft a final recommendation on service enhancements and staffing allocation.",
+    "prompt_text": "HealthCore, a healthcare provider, is seeking to improve patient satisfaction and optimize service delivery. You have analyzed satisfaction scores by department and patient wait times. Based on the exhibits below, please craft a final recommendation to help HealthCore enhance patient experience and allocate resources effectively.",
     "exhibits": [
       {"exhibit_title": "Key Finding 1: Satisfaction Scores by Department","chart_type": "table","description": "Avg score (1–5)","data": {"Department": ["General","Pediatrics","ER","Cardio"],"Score": [4.2,4.5,3.8,4.0]}},
       {"exhibit_title": "Key Finding 2: Wait Time Distribution","chart_type": "table","description": "% of patients","data": {"Wait (min)": ["<15","15-30","30-45","45+"],"%": [50,30,15,5]}},
       {"exhibit_title": "Key Finding 3: Summary Insights","chart_type": "summary_text","summary_text": [
-          "ER satisfaction is lowest (3.8) due to long wait times.",
-          "50% of patients wait under 15 min in General care.",
-          "Pediatrics excels with a high satisfaction score of 4.5."
+          "Long ER wait times directly impact satisfaction, making queue management a priority.",
+          "Pediatrics' high satisfaction may be leveraged as a model for other departments.",
+          "Redistribution of staffing or resources could reduce bottlenecks in underperforming areas."
         ]}
     ]
   },
@@ -4621,14 +4621,14 @@
     "id": "rec_prompt_25",
     "title": "AutoDrive – Final Recommendation",
     "skill_type": "Recommendation",
-    "prompt_text": "You have completed your analysis for AutoDrive’s maintenance and downtime metrics. Based on the key findings summarized below, please craft a final recommendation on reliability improvements and cost optimization.",
+    "prompt_text": "AutoDrive, a provider of autonomous vehicle fleets, is seeking to improve reliability and reduce maintenance costs. You have analyzed maintenance costs by model and downtime trends. Based on the exhibits below, please craft a final recommendation to help AutoDrive optimize fleet performance and cost.",
     "exhibits": [
       {"exhibit_title": "Key Finding 1: Maintenance Cost by Model","chart_type": "table","description": "USD per vehicle per month","data": {"Model": ["A","B","C"],"Cost": [150,200,180]}},
       {"exhibit_title": "Key Finding 2: Downtime Hours Over Time","chart_type": "table","description": "Total hours","data": {"Month": ["Jan","Feb","Mar","Apr","May","Jun"],"Downtime": [20,25,22,30,28,24]}},
       {"exhibit_title": "Key Finding 3: Summary Insights","chart_type": "summary_text","summary_text": [
-          "Model B incurs the highest maintenance cost at $200/month.",
-          "Downtime spikes in April to 30 hours, indicating a process lapse.",
-          "Models A and C maintain more stable uptime, suggesting best practices."
+          "April downtime spike highlights the need for proactive maintenance scheduling and monitoring.",
+          "Model B's high costs may require a review of parts sourcing or operational processes.",
+          "Transferring uptime best practices from Models A and C to Model B may yield immediate reliability gains."
         ]}
     ]
   },
@@ -4636,14 +4636,14 @@
     "id": "rec_prompt_26",
     "title": "EduWave – Final Recommendation",
     "skill_type": "Recommendation",
-    "prompt_text": "You have completed your analysis for EduWave’s curriculum effectiveness. Based on the key findings summarized below, please craft a final recommendation on curriculum enhancements and support resources.",
+    "prompt_text": "EduWave, an education technology provider, is seeking to improve curriculum effectiveness and student outcomes. You have analyzed score improvements and module completion rates. Based on the exhibits below, please craft a final recommendation to help EduWave enhance curriculum and student support.",
     "exhibits": [
       {"exhibit_title": "Key Finding 1: Score Improvements Pre/Post","chart_type": "table","description": "Average percent change","data": {"Subject": ["Math","Science","Reading"],"Improvement %": [10,8,12]}},
       {"exhibit_title": "Key Finding 2: Module Completion Rates","chart_type": "table","description": "% of enrolled students","data": {"Module": ["Intro","Mid","Final"],"Completion %": [90,75,60]}},
       {"exhibit_title": "Key Finding 3: Summary Insights","chart_type": "summary_text","summary_text": [
-          "Reading shows the highest improvement at 12%.",
-          "Final module completion drops to 60%, suggesting pacing issues.",
-          "High Intro completion (90%) but steep midterm drop-off."
+          "Drop-off between mid and final modules signals a need for better pacing or engagement strategies.",
+          "Reading curriculum improvements could be replicated in other subjects for greater impact.",
+          "Support interventions at the mid-module point may prevent further attrition before course completion."
         ]}
     ]
   },
@@ -4651,14 +4651,14 @@
     "id": "rec_prompt_27",
     "title": "FoodFast – Final Recommendation",
     "skill_type": "Recommendation",
-    "prompt_text": "You have completed your analysis for FoodFast’s delivery performance. Based on the key findings summarized below, please craft a final recommendation on operational improvements and customer communication.",
+    "prompt_text": "FoodFast, a food delivery service, is seeking to improve delivery speed and reliability across zones. You have analyzed delivery times and on-time rates by zone. Based on the exhibits below, please craft a final recommendation to help FoodFast achieve operational excellence and enhance customer satisfaction.",
     "exhibits": [
       {"exhibit_title": "Key Finding 1: Delivery Time Distribution","chart_type": "table","description": "% of orders","data": {"Time (min)": ["<20","20-30","30-40","40+"],"%": [40,35,15,10]}},
       {"exhibit_title": "Key Finding 2: On-Time Rate by Zone","chart_type": "table","description": "% on time","data": {"Zone": ["North","South","East","West"],"On-Time %": [90,85,88,92]}},
       {"exhibit_title": "Key Finding 3: Summary Insights","chart_type": "summary_text","summary_text": [
-          "40% of orders delivered under 20 min meets target SLAs.",
-          "South zone underperforms at 85% on-time rate.",
-          "East and West zones exceed 90% accuracy consistently."
+          "Consistent underperformance in the South zone may point to route or staffing issues requiring targeted improvement.",
+          "Best practices from East and West zones could be adapted for lower-performing regions.",
+          "Maintaining high on-time rates is critical for customer retention and brand reputation."
         ]}
     ]
   },
@@ -4666,14 +4666,14 @@
     "id": "rec_prompt_28",
     "title": "BioHealth – Final Recommendation",
     "skill_type": "Recommendation",
-    "prompt_text": "You have completed your analysis for BioHealth’s clinical trial enrollment. Based on the key findings summarized below, please craft a final recommendation on enrollment optimization and retention strategies.",
+    "prompt_text": "BioHealth, a clinical research organization, is seeking to optimize trial participant enrollment and retention. You have analyzed enrollment timelines by site and dropout rates over time. Based on the exhibits below, please craft a final recommendation to help BioHealth achieve faster and more reliable trial completion.",
     "exhibits": [
       {"exhibit_title": "Key Finding 1: Enrollment Timelines by Site","chart_type": "table","description": "Days to enroll 50 participants","data": {"Site": ["A","B","C"],"Days": [30,45,40]}},
       {"exhibit_title": "Key Finding 2: Dropout Rate Over Time","chart_type": "table","description": "% of initial cohort","data": {"Week": [1,2,3,4,5,6],"Dropout %": [5,10,15,17,18,20]}},
       {"exhibit_title": "Key Finding 3: Summary Insights","chart_type": "summary_text","summary_text": [
-          "Site A enrolls fastest but has early dropouts of 5%.",
-          "Dropout accelerates after Week 2 across all sites.",
-          "Site C retains 80% of cohort through Week 4, best performing."
+          "Retention drops sharply after Week 2, indicating a critical period for intervention.",
+          "Site A's quick enrollment may sacrifice early engagement, leading to initial dropouts.",
+          "Sustained retention at Site C suggests its onboarding or support practices could be standardized across sites."
         ]}
     ]
   },
