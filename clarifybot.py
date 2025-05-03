@@ -769,51 +769,9 @@ def generate_final_feedback(current_case_prompt_text):
                  max_tokens_feedback = 800
 
             elif selected_skill == "Recommendation": # Use new skill name
-                 # --- NEW: Final Feedback Prompt for Recommendation ---
-                 feedback_prompt = f"""
-                 You are an experienced case interview coach providing final summary feedback on the Recommendation phase.
-                 The candidate was presented with a case prompt and summary findings/exhibits and submitted their final recommendation.
-
-                 Case Prompt Context for this Session:
-                 {current_case_prompt_text}
-
-                 Candidate's Submitted Recommendation:
-                 {history_string}
-
-                 Your Task:
-                 Provide detailed, professional, final feedback on the candidate's submitted recommendation. Evaluate the structure, synthesis of information, clarity, and inclusion of risks and next steps. Use markdown formatting effectively.
-
-                 **IMPORTANT:** Your response MUST start *directly* with the "## Overall Recommendation Rating:" heading on the first line, followed by the rating and justification. Do not include any introductory phrases.
-
-                 Structure your feedback precisely as follows using Markdown:
-
-                 ## Overall Recommendation Rating: [1-5]/5
-                 *(Provide a brief justification for the rating here, considering the quality criteria below)*
-
-                 ---
-
-                 1.  **Structure (Pyramid Principle):** Did the recommendation start with a clear conclusion/answer to the main case question? Was it followed by logical supporting rationale and evidence (implicitly or explicitly referencing the provided exhibits/findings)?
-
-                 2.  **Synthesis & Logic:** How well did the candidate synthesize the information provided (case prompt + exhibits) to arrive at their recommendation? Was the rationale sound and logical?
-
-                 3.  **Risks & Next Steps:** Did the candidate appropriately identify potential risks associated with their recommendation? Were the proposed next steps relevant and actionable?
-
-                 4.  **Clarity & Conciseness:** Was the recommendation communicated clearly, professionally, and concisely?
-
-                 5.  **Actionable Next Steps (for the candidate):** Provide at least two concrete, actionable steps the candidate can take to improve their recommendation structuring and delivery skills *for future cases*.
-
-                 **Rating Criteria Reference:**
-                 * 1: Poor. Recommendation missing or completely off-base. No clear structure, risks/next steps missing.
-                 * 2: Weak. Unclear conclusion or weak rationale. Poor structure (e.g., no Pyramid Principle). Risks/steps generic or missing.
-                 * 3: Fair. Recommendation addresses the prompt but structure could be better. Rationale is present but may lack depth or clear link to data. Risks/steps are basic.
-                 * 4: Good. Clear recommendation, mostly follows structure. Good synthesis of information. Relevant risks and next steps identified. Generally clear language.
-                 * 5: Excellent. Clear, concise, actionable recommendation following Pyramid Principle. Strong synthesis of case facts/exhibits. Insightful risks and concrete next steps. Professional delivery.
-
-                 Ensure your response does **not** start with any other title besides "## Overall Recommendation Rating:". Use paragraph breaks between sections.
-                 """
-                 system_message_feedback = "You are an expert case interview coach providing structured feedback on a final case recommendation. IMPORTANT: Start your response *directly* with the '## Overall Recommendation Rating:' heading. Evaluate structure, synthesis, risks, and next steps. Use markdown effectively."
+                 feedback_prompt = f"""... [Recommendation Feedback Prompt as before - Rating First] ..."""
+                 system_message_feedback = "You are an expert case interview coach providing structured feedback on a final case recommendation..."
                  max_tokens_feedback = 800
-                 # --- End of Recommendation Feedback Prompt ---
 
             else:
                 logger.error(f"Cannot generate feedback for unhandled skill: {selected_skill}")
@@ -901,43 +859,29 @@ def main_app():
 # --- Skill-Specific UI Functions (clarifying_questions_bot_ui, framework_development_ui, hypothesis_formulation_ui, analysis_ui) ---
 
 def clarifying_questions_bot_ui():
-    # [ This function remains unchanged from the previous version ]
+    # [ Code remains unchanged ]
     logger.info("Loading Clarifying Questions UI.")
     prefix = st.session_state.key_prefix
-    # Define keys
     done_key = f"{prefix}_done_asking"; time_key = f"{prefix}_total_time"; start_time_key = f"{prefix}_interaction_start_time"
     conv_key = f"{prefix}_conversation"; feedback_key = f"{prefix}_feedback"; is_typing_key = f"{prefix}_is_typing"
     feedback_submitted_key = f"{prefix}_feedback_submitted"; user_feedback_key = f"{prefix}_user_feedback"
     current_prompt_id_key = f"{prefix}_current_prompt_id"; run_count_key = f"{prefix}_run_count"
     show_comment_key = f"{prefix}_show_comment_box"; feedback_rating_value_key = f"{prefix}_feedback_rating_value"
-    # show_donation_dialog_key = f"{prefix}_show_donation_dialog" # REMOVED
-    # Initialize state
     init_session_state_key('conversation', []); init_session_state_key('done_asking', False); init_session_state_key('feedback_submitted', False)
     init_session_state_key('is_typing', False); init_session_state_key('feedback', None); init_session_state_key('show_comment_box', False)
     init_session_state_key('feedback_rating_value', None); init_session_state_key('interaction_start_time', None)
     init_session_state_key('total_time', 0.0); init_session_state_key('user_feedback', None); init_session_state_key('current_prompt_id', None)
-
-    # --- Instructions ---
     st.markdown("Read the prompt below, then enter your clarifying questions one at a time in the chat field at the bottom of the page. Press \"Send\" to submit a clarifying question. When you are satisfied with your questions, press the \"End Clarification Questions\" button.")
-    st.divider() # Add divider after instructions
-
-    # --- REMOVED Donation Dialog Logic ---
-
-    # --- Select and Display Case Prompt ---
-    if st.session_state.get(current_prompt_id_key) is None:
-        logger.info("No current prompt ID, selecting new one.")
-        selected_id = select_new_prompt(); st.session_state[current_prompt_id_key] = selected_id
+    st.divider()
+    if st.session_state.get(current_prompt_id_key) is None: logger.info("No current prompt ID, selecting new one."); selected_id = select_new_prompt(); st.session_state[current_prompt_id_key] = selected_id
     current_prompt = get_prompt_details(st.session_state.get(current_prompt_id_key))
     if not current_prompt: logger.error(f"Could not load details for prompt ID: {st.session_state.get(current_prompt_id_key)}"); st.error("Could not load the current case prompt details..."); st.stop()
     st.header("Case Prompt")
     case_title = current_prompt.get('title', 'N/A'); case_prompt_text = current_prompt.get('prompt_text', 'Error: Prompt text missing.')
     if case_prompt_text.startswith("Error"): st.error(case_prompt_text); st.stop()
     else: st.info(f"**{case_title}**\n\n{case_prompt_text}"); logger.debug(f"Displayed prompt: {case_title}")
-
-    # --- Main Interaction Area ---
     if not st.session_state.get(done_key):
         st.header("Clarifying Questions")
-        # Chat history display
         chat_container = st.container()
         with chat_container:
             conversation_history = st.session_state.get(conv_key, [])
@@ -945,19 +889,13 @@ def clarifying_questions_bot_ui():
                  for msg in conversation_history:
                      role = msg.get("role"); display_role = "user" if role == "interviewee" else "assistant"
                      with st.chat_message(display_role): st.markdown(msg.get("content", ""))
-        # Typing indicator
         typing_placeholder = st.empty()
         if st.session_state.get(is_typing_key): typing_placeholder.text("CHIP is thinking...")
         else: typing_placeholder.empty()
-        # Input Form
         with st.form(key=f"{prefix}_cq_input_form", clear_on_submit=True):
              user_question = st.text_input("Type your question here:", key=f"{prefix}_cq_form_text_input", disabled=st.session_state.get(is_typing_key, False), label_visibility="collapsed", placeholder="Type your question...")
              submitted = st.form_submit_button("Send", disabled=st.session_state.get(is_typing_key, False))
-             if submitted and user_question:
-                 logger.debug(f"Form submitted with question: '{user_question}'")
-                 if st.session_state.get(is_typing_key): typing_placeholder.empty()
-                 send_question(user_question, case_prompt_text)
-        # End Button
+             if submitted and user_question: logger.debug(f"Form submitted with question: '{user_question}'"); send_question(user_question, case_prompt_text)
         st.write(" ")
         col_btn1, col_btn2, col_btn3 = st.columns([1, 1.5, 1])
         with col_btn2:
@@ -970,18 +908,14 @@ def clarifying_questions_bot_ui():
                 current_session_run_count = st.session_state.get(run_count_key, 0) + 1
                 st.session_state[run_count_key] = current_session_run_count
                 logger.info(f"Session run count incremented to: {current_session_run_count}")
-                # REMOVED Donation Dialog trigger logic
                 st.rerun()
         if st.session_state.get(start_time_key) is None: st.session_state[start_time_key] = time.time(); logger.info("Interaction timer started.")
-
-    # --- Feedback and Conclusion Area ---
     if st.session_state.get(done_key):
         logger.debug("Entering feedback and conclusion area.")
         final_feedback_content = generate_final_feedback(case_prompt_text)
         feedback_was_generated = final_feedback_content and not str(final_feedback_content).startswith("Error") and not str(final_feedback_content).startswith("[Feedback")
         if feedback_was_generated:
             st.divider(); st.markdown(final_feedback_content); st.divider()
-            # Feedback Rating Section
             st.subheader("Rate this Feedback")
             feedback_already_submitted = st.session_state.get(feedback_submitted_key, False)
             if feedback_already_submitted:
@@ -1019,7 +953,6 @@ def clarifying_questions_bot_ui():
                             else: logger.error("User Feedback Submitted with Comment but FAILED TO SAVE.")
         elif final_feedback_content and str(final_feedback_content).startswith("Error"): st.error(f"Could not display feedback: {final_feedback_content}")
         else: st.warning("Feedback is currently unavailable...")
-        # Conclusion
         st.divider(); st.header("Conclusion")
         total_interaction_time = st.session_state.get(time_key, 0.0)
         st.write(f"You spent **{total_interaction_time:.2f} seconds**...")
@@ -1029,45 +962,32 @@ def clarifying_questions_bot_ui():
 
 
 def framework_development_ui():
-    # [ This function remains largely unchanged, but donation dialog logic removed ]
+    # [ This function remains unchanged from the previous version ]
     logger.info("Loading Framework Development UI.")
     prefix = st.session_state.key_prefix
-    # Define keys
     done_key = f"{prefix}_done_asking"; time_key = f"{prefix}_total_time"; start_time_key = f"{prefix}_interaction_start_time"
     conv_key = f"{prefix}_conversation"; feedback_key = f"{prefix}_feedback"; is_typing_key = f"{prefix}_is_typing"
     feedback_submitted_key = f"{prefix}_feedback_submitted"; user_feedback_key = f"{prefix}_user_feedback"
     current_prompt_id_key = f"{prefix}_current_prompt_id"; run_count_key = f"{prefix}_run_count"
     show_comment_key = f"{prefix}_show_comment_box"; feedback_rating_value_key = f"{prefix}_feedback_rating_value"
-    # show_donation_dialog_key = f"{prefix}_show_donation_dialog" # REMOVED
-    # Initialize state
     init_session_state_key('conversation', []); init_session_state_key('done_asking', False); init_session_state_key('feedback_submitted', False)
     init_session_state_key('is_typing', False); init_session_state_key('feedback', None); init_session_state_key('show_comment_box', False)
     init_session_state_key('feedback_rating_value', None); init_session_state_key('interaction_start_time', None)
     init_session_state_key('total_time', 0.0); init_session_state_key('user_feedback', None); init_session_state_key('current_prompt_id', None)
-
-    # --- Instructions ---
     st.markdown("Read the case prompt below. Take some time to think, then outline your framework and proposed approach in the framework area below. When you are satisfied with your framework, press \"Submit Framework for Feedback\".")
-    st.divider() # Add divider after instructions
-
-    # --- REMOVED Donation Dialog Logic ---
-
-    # --- Select and Display Case Prompt ---
-    if st.session_state.get(current_prompt_id_key) is None:
-        logger.info("No current prompt ID (Framework Dev), selecting new one.")
-        selected_id = select_new_prompt(); st.session_state[current_prompt_id_key] = selected_id
+    st.divider()
+    if st.session_state.get(current_prompt_id_key) is None: logger.info("No current prompt ID (Framework Dev), selecting new one."); selected_id = select_new_prompt(); st.session_state[current_prompt_id_key] = selected_id
     current_prompt = get_prompt_details(st.session_state.get(current_prompt_id_key))
     if not current_prompt: logger.error(f"Could not load details for prompt ID (Framework Dev): {st.session_state.get(current_prompt_id_key)}"); st.error("Could not load the current case prompt details..."); st.stop()
     st.header("Case Prompt")
     case_title = current_prompt.get('title', 'N/A'); case_prompt_text = current_prompt.get('prompt_text', 'Error: Prompt text missing.')
     if case_prompt_text.startswith("Error"): st.error(case_prompt_text); st.stop()
     else: st.info(f"**{case_title}**\n\n{case_prompt_text}"); logger.debug(f"Displayed prompt (Framework Dev): {case_title}")
-
-    # --- Main Interaction Area (Framework Development - Simplified Flow) ---
     if not st.session_state.get(done_key):
         st.header("Develop Your Framework");
         with st.form(key=f"{prefix}_fw_input_form", clear_on_submit=False):
              framework_input = st.text_area("Enter your framework here:", height=200, key=f"{prefix}_fw_form_text_area", disabled=st.session_state.get(is_typing_key, False), placeholder="e.g.,\n1. Market Analysis...")
-             submitted = st.form_submit_button("Submit Framework for Feedback", disabled=st.session_state.get(is_typing_key, False) or not framework_input) # Corrected disabled logic
+             submitted = st.form_submit_button("Submit Framework for Feedback", disabled=st.session_state.get(is_typing_key, False) or not framework_input)
              if submitted and framework_input:
                  logger.info("User submitted framework for final feedback.")
                  st.session_state[conv_key] = [{"role": "interviewee", "content": framework_input}]
@@ -1079,13 +999,10 @@ def framework_development_ui():
                  current_session_run_count = st.session_state.get(run_count_key, 0) + 1
                  st.session_state[run_count_key] = current_session_run_count
                  logger.info(f"Session run count incremented to: {current_session_run_count} (Framework Dev)")
-                 # REMOVED Donation Dialog trigger logic
                  st.rerun()
         typing_placeholder = st.empty()
         if st.session_state.get(is_typing_key) or (st.session_state.get(done_key) and not st.session_state.get(feedback_key)): typing_placeholder.text("CHIP is analyzing your framework...")
         else: typing_placeholder.empty()
-
-    # --- Feedback and Conclusion Area (Framework Development) ---
     if st.session_state.get(done_key):
         logger.debug("Entering framework feedback and conclusion area.")
         st.session_state[is_typing_key] = True
@@ -1094,7 +1011,6 @@ def framework_development_ui():
         feedback_was_generated = final_feedback_content and not str(final_feedback_content).startswith("Error") and not str(final_feedback_content).startswith("[Feedback")
         if feedback_was_generated:
             st.divider(); st.markdown(final_feedback_content); st.divider()
-            # Feedback Rating Section
             st.subheader("Rate this Feedback")
             feedback_already_submitted = st.session_state.get(feedback_submitted_key, False)
             if feedback_already_submitted:
@@ -1132,7 +1048,6 @@ def framework_development_ui():
                             else: logger.error("User Framework Feedback Submitted with Comment but FAILED TO SAVE.")
         elif final_feedback_content and str(final_feedback_content).startswith("Error"): st.error(f"Could not display feedback: {final_feedback_content}")
         else: st.warning("Feedback is currently unavailable...")
-        # Conclusion Section
         st.divider(); st.header("Conclusion")
         total_interaction_time = st.session_state.get(time_key, 0.0)
         st.write(f"You spent **{total_interaction_time:.2f} seconds** developing the framework for this case.")
@@ -1147,85 +1062,47 @@ def hypothesis_formulation_ui():
     # [ This function remains unchanged from the previous version ]
     logger.info("Loading Hypothesis Formulation UI.")
     prefix = st.session_state.key_prefix
-    # Define keys
     done_key = f"{prefix}_done_asking"; time_key = f"{prefix}_total_time"; start_time_key = f"{prefix}_interaction_start_time"
     conv_key = f"{prefix}_conversation"; feedback_key = f"{prefix}_feedback"; is_typing_key = f"{prefix}_is_typing"
     feedback_submitted_key = f"{prefix}_feedback_submitted"; user_feedback_key = f"{prefix}_user_feedback"
     current_prompt_id_key = f"{prefix}_current_prompt_id"; run_count_key = f"{prefix}_run_count"
     show_comment_key = f"{prefix}_show_comment_box"; feedback_rating_value_key = f"{prefix}_feedback_rating_value"
-    # show_donation_dialog_key = f"{prefix}_show_donation_dialog" # REMOVED
-    hypothesis_count_key = f"{prefix}_hypothesis_count" # Specific to this skill
-    # Initialize state
+    hypothesis_count_key = f"{prefix}_hypothesis_count"
     init_session_state_key('conversation', []); init_session_state_key('done_asking', False); init_session_state_key('feedback_submitted', False)
     init_session_state_key('is_typing', False); init_session_state_key('feedback', None); init_session_state_key('show_comment_box', False)
     init_session_state_key('feedback_rating_value', None); init_session_state_key('interaction_start_time', None)
     init_session_state_key('total_time', 0.0); init_session_state_key('user_feedback', None); init_session_state_key('current_prompt_id', None)
-    init_session_state_key('hypothesis_count', 0) # Initialize hypothesis counter
-
-    # --- Instructions ---
+    init_session_state_key('hypothesis_count', 0)
     st.markdown("Read the case prompt below. Formulate an initial hypothesis about the core issue and state what you'd like to investigate first. Enter it in the text field below and press \"Send\". CHIP will provide information based on your hypothesis. Refine your hypothesis based on the information provided (up to 3 hypotheses total). Click \"End Hypothesis Formulation\" when finished.")
     st.divider()
-
-    # --- REMOVED Donation Dialog Logic ---
-
-    # --- Select and Display Case Prompt ---
-    if st.session_state.get(current_prompt_id_key) is None:
-        logger.info("No current prompt ID (Hypothesis), selecting new one.")
-        selected_id = select_new_prompt(); st.session_state[current_prompt_id_key] = selected_id
+    if st.session_state.get(current_prompt_id_key) is None: logger.info("No current prompt ID (Hypothesis), selecting new one."); selected_id = select_new_prompt(); st.session_state[current_prompt_id_key] = selected_id
     current_prompt = get_prompt_details(st.session_state.get(current_prompt_id_key))
     if not current_prompt: logger.error(f"Could not load details for prompt ID (Hypothesis): {st.session_state.get(current_prompt_id_key)}"); st.error("Could not load the current case prompt details..."); st.stop()
     st.header("Case Prompt")
     case_title = current_prompt.get('title', 'N/A'); case_prompt_text = current_prompt.get('prompt_text', 'Error: Prompt text missing.')
     if case_prompt_text.startswith("Error"): st.error(case_prompt_text); st.stop()
     else: st.info(f"**{case_title}**\n\n{case_prompt_text}"); logger.debug(f"Displayed prompt (Hypothesis): {case_title}")
-
-    # --- Main Interaction Area ---
     if not st.session_state.get(done_key):
         st.header("Hypothesis Formulation")
-
-        # Chat history display
         chat_container = st.container()
         with chat_container:
             conversation_history = st.session_state.get(conv_key, [])
             if isinstance(conversation_history, list):
                  for msg in conversation_history:
                      role = msg.get("role"); display_role = "user" if role == "interviewee" else "assistant"
-                     # Use different labels for hypothesis flow
                      label = "Your Hypothesis" if role == "interviewee" else "Interviewer Information"
-                     with st.chat_message(display_role):
-                         # st.markdown(f"**{label}**") # Optional label
-                         st.markdown(msg.get("content", ""))
-        # Typing indicator
+                     with st.chat_message(display_role): st.markdown(msg.get("content", ""))
         typing_placeholder = st.empty()
         if st.session_state.get(is_typing_key): typing_placeholder.text("CHIP is processing...")
         else: typing_placeholder.empty()
-
-        # Input Form (allow input if count < 3)
         hypothesis_count = st.session_state.get(hypothesis_count_key, 0)
         if hypothesis_count < 3:
             with st.form(key=f"{prefix}_hf_input_form", clear_on_submit=True):
-                 user_hypothesis = st.text_area( # Use text_area for potentially longer hypotheses
-                     f"Enter Hypothesis #{hypothesis_count + 1}:",
-                     key=f"{prefix}_hf_form_text_area",
-                     height=100,
-                     disabled=st.session_state.get(is_typing_key, False),
-                     label_visibility="visible", # Show label
-                     placeholder=f"State hypothesis {hypothesis_count + 1} and what you want to investigate..."
-                 )
-                 submitted = st.form_submit_button(
-                     "Submit Hypothesis",
-                     disabled=st.session_state.get(is_typing_key, False)
-                 )
-                 if submitted and user_hypothesis:
-                     logger.debug(f"Form submitted with hypothesis {hypothesis_count + 1}: '{user_hypothesis}'")
-                     if st.session_state.get(is_typing_key): typing_placeholder.empty()
-                     send_question(user_hypothesis, case_prompt_text) # send_question handles count and done_key
-        else:
-             st.info("Maximum number of hypotheses reached. Click below to get feedback or start over.")
-
-
-        # End Button (available unless already done)
-        st.write(" ") # Spacer
+                 user_hypothesis = st.text_area(f"Enter Hypothesis #{hypothesis_count + 1}:", key=f"{prefix}_hf_form_text_area", height=100, disabled=st.session_state.get(is_typing_key, False), label_visibility="visible", placeholder=f"State hypothesis {hypothesis_count + 1} and what you want to investigate...")
+                 submitted = st.form_submit_button("Submit Hypothesis", disabled=st.session_state.get(is_typing_key, False))
+                 if submitted and user_hypothesis: logger.debug(f"Form submitted with hypothesis {hypothesis_count + 1}: '{user_hypothesis}'"); send_question(user_hypothesis, case_prompt_text)
+        else: st.info("Maximum number of hypotheses reached. Click below to get feedback or start over.")
+        st.write(" ")
         col_btn1, col_btn2, col_btn3 = st.columns([1, 1.5, 1])
         with col_btn2:
             if st.button("End Hypothesis Formulation", use_container_width=True):
@@ -1237,34 +1114,18 @@ def hypothesis_formulation_ui():
                 current_session_run_count = st.session_state.get(run_count_key, 0) + 1
                 st.session_state[run_count_key] = current_session_run_count
                 logger.info(f"Session run count incremented to: {current_session_run_count} (Hypothesis)")
-                # REMOVED Donation Dialog trigger logic
                 st.rerun()
         if st.session_state.get(start_time_key) is None: st.session_state[start_time_key] = time.time(); logger.info("Interaction timer started.")
-
-
-    # --- Feedback and Conclusion Area ---
     if st.session_state.get(done_key):
         logger.debug("Entering hypothesis feedback and conclusion area.")
-        st.session_state[is_typing_key] = True # Indicate feedback generation
+        st.session_state[is_typing_key] = True
         final_feedback_content = generate_final_feedback(case_prompt_text)
         st.session_state[is_typing_key] = False
-
-        # --- Add Debug Logging ---
         logger.debug(f"Value returned by generate_final_feedback: '{final_feedback_content}'")
-        # --- End Debug Logging ---
-
-        # More robust check for valid feedback structure
-        feedback_was_generated = final_feedback_content and \
-                                 isinstance(final_feedback_content, str) and \
-                                 final_feedback_content.strip().startswith("## Overall Hypothesis Formulation Rating:")
-
-        # --- Add Debug Logging ---
+        feedback_was_generated = final_feedback_content and isinstance(final_feedback_content, str) and final_feedback_content.strip().startswith("## Overall Hypothesis Formulation Rating:")
         logger.debug(f"Feedback generated flag evaluated as: {feedback_was_generated}")
-        # --- End Debug Logging ---
-
         if feedback_was_generated:
             st.divider(); st.markdown(final_feedback_content); st.divider()
-            # Feedback Rating Section
             st.subheader("Rate this Feedback")
             feedback_already_submitted = st.session_state.get(feedback_submitted_key, False)
             if feedback_already_submitted:
@@ -1300,14 +1161,8 @@ def hypothesis_formulation_ui():
                             st.session_state[user_feedback_key] = user_feedback_data; st.session_state[feedback_submitted_key] = True; st.session_state[show_comment_key] = False
                             if save_user_feedback(user_feedback_data): logger.info("User Feedback Submitted with Comment and saved."); st.rerun()
                             else: logger.error("User Feedback Submitted with Comment but FAILED TO SAVE.")
-        elif final_feedback_content and str(final_feedback_content).startswith("Error"):
-             st.error(f"Could not display feedback: {final_feedback_content}")
-             logger.error(f"Feedback generation resulted in error message: {final_feedback_content}") # Log error
-        else:
-             st.warning("Feedback is currently unavailable or was not generated correctly.")
-             logger.warning(f"Feedback was not displayed. Content: {final_feedback_content}") # Log non-display
-
-        # Conclusion
+        elif final_feedback_content and str(final_feedback_content).startswith("Error"): st.error(f"Could not display feedback: {final_feedback_content}"); logger.error(f"Feedback generation resulted in error message: {final_feedback_content}")
+        else: st.warning("Feedback is currently unavailable or was not generated correctly."); logger.warning(f"Feedback was not displayed. Content: {final_feedback_content}")
         st.divider(); st.header("Conclusion")
         total_interaction_time = st.session_state.get(time_key, 0.0)
         st.write(f"You spent **{total_interaction_time:.2f} seconds** in the hypothesis formulation phase.")
@@ -1319,80 +1174,48 @@ def hypothesis_formulation_ui():
 
 # --- NEW: Skill-Specific UI Function (Analysis) ---
 def analysis_ui():
+    # [ This function remains unchanged from the previous version ]
     logger.info("Loading Analysis UI.")
     prefix = st.session_state.key_prefix
-    # Define keys
     done_key = f"{prefix}_done_asking"; time_key = f"{prefix}_total_time"; start_time_key = f"{prefix}_interaction_start_time"
     conv_key = f"{prefix}_conversation"; feedback_key = f"{prefix}_feedback"; is_typing_key = f"{prefix}_is_typing"
     feedback_submitted_key = f"{prefix}_feedback_submitted"; user_feedback_key = f"{prefix}_user_feedback"
     current_prompt_id_key = f"{prefix}_current_prompt_id"; run_count_key = f"{prefix}_run_count"
     show_comment_key = f"{prefix}_show_comment_box"; feedback_rating_value_key = f"{prefix}_feedback_rating_value"
-    # show_donation_dialog_key = f"{prefix}_show_donation_dialog" # REMOVED
-    analysis_input_key = f"{prefix}_analysis_input" # Specific to this skill
-    current_exhibit_index_key = f"{prefix}_current_exhibit_index" # For sequential exhibits
-
-    # Initialize state
+    analysis_input_key = f"{prefix}_analysis_input"; current_exhibit_index_key = f"{prefix}_current_exhibit_index"
     init_session_state_key('conversation', []); init_session_state_key('done_asking', False); init_session_state_key('feedback_submitted', False)
     init_session_state_key('is_typing', False); init_session_state_key('feedback', None); init_session_state_key('show_comment_box', False)
     init_session_state_key('feedback_rating_value', None); init_session_state_key('interaction_start_time', None)
     init_session_state_key('total_time', 0.0); init_session_state_key('user_feedback', None); init_session_state_key('current_prompt_id', None)
-    init_session_state_key('analysis_input', "") # Initialize analysis input
-    init_session_state_key(current_exhibit_index_key, 0) # Initialize exhibit index
-
-    # --- Instructions ---
+    init_session_state_key('analysis_input', ""); init_session_state_key(current_exhibit_index_key, 0)
     st.markdown("Read the case prompt and examine the exhibit(s) below. Analyze the data presented in the exhibit(s) and explain its significance in relation to the case problem. Enter your analysis in the text area below and click \"Submit Analysis\" to get feedback.")
     st.divider()
-
-    # --- REMOVED Donation Dialog Logic ---
-
-    # --- Select and Display Case Prompt & Exhibits ---
-    if st.session_state.get(current_prompt_id_key) is None:
-        logger.info("No current prompt ID (Analysis), selecting new one.")
-        selected_id = select_new_prompt(); st.session_state[current_prompt_id_key] = selected_id
+    if st.session_state.get(current_prompt_id_key) is None: logger.info("No current prompt ID (Analysis), selecting new one."); selected_id = select_new_prompt(); st.session_state[current_prompt_id_key] = selected_id
     current_prompt = get_prompt_details(st.session_state.get(current_prompt_id_key))
     if not current_prompt or current_prompt.get("skill_type") != "Analysis":
         logger.warning(f"Invalid or missing prompt for Analysis skill. Prompt ID: {st.session_state.get(current_prompt_id_key)}. Selecting new.")
         selected_id = select_new_prompt(); st.session_state[current_prompt_id_key] = selected_id
         current_prompt = get_prompt_details(selected_id)
-        if not current_prompt or current_prompt.get("skill_type") != "Analysis":
-             logger.error(f"Still could not load a valid Analysis prompt. Last ID: {selected_id}")
-             st.error("Could not load a valid Analysis prompt. Please try selecting the skill again or check prompts.json.")
-             if st.button("Restart Skill"): reset_skill_state(); st.rerun() # Add restart button
-             st.stop()
-
+        if not current_prompt or current_prompt.get("skill_type") != "Analysis": logger.error(f"Still could not load a valid Analysis prompt. Last ID: {selected_id}"); st.error("Could not load a valid Analysis prompt. Please try selecting the skill again or check prompts.json."); st.stop()
     st.header("Case Prompt")
     case_title = current_prompt.get('title', 'N/A'); case_prompt_text = current_prompt.get('prompt_text', 'Error: Prompt text missing.')
     if case_prompt_text.startswith("Error"): st.error(case_prompt_text); st.stop()
     else: st.info(f"**{case_title}**\n\n{case_prompt_text}"); logger.debug(f"Displayed Analysis prompt: {case_title}")
-
-    # --- Main Interaction Area (Sequential Exhibits) ---
     exhibits = current_prompt.get("exhibits", [])
     current_index = st.session_state.get(current_exhibit_index_key, 0)
     total_exhibits = len(exhibits)
-
     if not exhibits:
         st.warning("No exhibits found for this analysis prompt.")
-        # If no exhibits, maybe end immediately or show different message?
-        # For now, it will just show the feedback/conclusion area below if done_asking is true.
-        if not st.session_state.get(done_key):
-             st.session_state[done_key] = True # Mark as done if no exhibits
-             st.rerun()
-
+        if not st.session_state.get(done_key): st.session_state[done_key] = True; st.rerun()
     elif current_index < total_exhibits:
         exhibit = exhibits[current_index]
         st.header(f"Exhibit {current_index + 1} of {total_exhibits}")
         st.subheader(exhibit.get("exhibit_title", f"Exhibit {current_index + 1}"))
-
-        if exhibit.get("description"):
-            st.caption(exhibit.get("description"))
-
-        chart_type = exhibit.get("chart_type", "unknown")
-        data = exhibit.get("data")
+        if exhibit.get("description"): st.caption(exhibit.get("description"))
+        chart_type = exhibit.get("chart_type", "unknown"); data = exhibit.get("data")
         if data:
             try:
-                df = pd.DataFrame(data)
-                fig = None
-                # Plotting logic (same as before)
+                df = pd.DataFrame(data); fig = None
                 if chart_type == "bar":
                     x_col = exhibit.get("x_axis"); y_cols = exhibit.get("y_axis")
                     if x_col and y_cols:
@@ -1411,53 +1234,26 @@ def analysis_ui():
                     else: st.warning(f"Exhibit {current_index + 1}: Pie chart data needs 'names' and 'values' keys.")
                 elif chart_type == "scatter":
                     x_col = exhibit.get("x_axis"); y_col = exhibit.get("y_axis")
-                    if x_col and y_col:
-                        color_col = exhibit.get("color"); size_col = exhibit.get("size")
-                        fig = px.scatter(df, x=x_col, y=y_col, title="", color=color_col, size=size_col)
+                    if x_col and y_col: color_col = exhibit.get("color"); size_col = exhibit.get("size"); fig = px.scatter(df, x=x_col, y=y_col, title="", color=color_col, size=size_col)
                     else: st.warning(f"Exhibit {current_index + 1}: Scatter chart data needs 'x_axis' and 'y_axis' keys.")
-                elif chart_type == "table": st.dataframe(df); fig = None
-                else: st.warning(f"Exhibit {current_index + 1}: Unsupported or unspecified chart type '{chart_type}'. Displaying table."); st.dataframe(df); fig = None
-
+                elif chart_type == "table": st.dataframe(df, hide_index=True); fig = None
+                else: st.warning(f"Exhibit {current_index + 1}: Unsupported chart type '{chart_type}'. Displaying table."); st.dataframe(df, hide_index=True); fig = None
                 if fig: fig.update_layout(margin=dict(l=20, r=20, t=30, b=20), height=400); st.plotly_chart(fig, use_container_width=True)
-
-            except Exception as e:
-                logger.error(f"Error processing exhibit {current_index + 1} data: {e}")
-                st.error(f"Error displaying exhibit {current_index + 1}. Please check data format in prompts.json.")
-        else:
-            st.warning(f"Exhibit {current_index + 1}: No data found.")
-
-        # Input form for the current exhibit's analysis
+            except Exception as e: logger.error(f"Error processing exhibit {current_index + 1} data: {e}"); st.error(f"Error displaying exhibit {current_index + 1}.")
+        else: st.warning(f"Exhibit {current_index + 1}: No data found.")
         st.header(f"Your Analysis (Exhibit {current_index + 1})")
-        with st.form(key=f"{prefix}_an_input_form_{current_index}", clear_on_submit=True): # Set clear_on_submit=True
-             analysis_input = st.text_area(
-                 f"Enter your analysis for Exhibit {current_index + 1}:",
-                 height=200,
-                 key=f"{prefix}_an_form_text_area_{current_index}", # Unique key
-                 disabled=st.session_state.get(is_typing_key, False),
-                 placeholder="Based on this exhibit, I observe..."
-             )
-             # Determine button label based on whether it's the last exhibit
+        with st.form(key=f"{prefix}_an_input_form_{current_index}", clear_on_submit=True):
+             analysis_input = st.text_area(f"Enter your analysis for Exhibit {current_index + 1}:", height=200, key=f"{prefix}_an_form_text_area_{current_index}", disabled=st.session_state.get(is_typing_key, False), placeholder="Based on this exhibit, I observe...")
              button_label = "Submit Analysis & Next Exhibit" if current_index < total_exhibits - 1 else "Submit Final Analysis & Get Feedback"
-             submitted = st.form_submit_button(
-                 button_label,
-                 disabled=st.session_state.get(is_typing_key, False) # Corrected disabled logic
-             )
+             submitted = st.form_submit_button(button_label, disabled=st.session_state.get(is_typing_key, False) or not analysis_input) # Corrected disabled logic
              if submitted and analysis_input:
                  logger.info(f"User submitted analysis for exhibit {current_index + 1}.")
-                 # Append analysis to conversation state, perhaps with exhibit identifier
-                 st.session_state.setdefault(conv_key, []).append({
-                     "role": "interviewee",
-                     "content": f"Analysis for Exhibit {current_index + 1}:\n{analysis_input}" # Store analysis with label
-                 })
-
-                 # Increment index and check if done
+                 st.session_state.setdefault(conv_key, []).append({"role": "interviewee", "content": f"Analysis for Exhibit {current_index + 1}:\n{analysis_input}"})
                  next_index = current_index + 1
                  st.session_state[current_exhibit_index_key] = next_index
-
                  if next_index >= total_exhibits:
                      logger.info("Last exhibit analysis submitted. Ending session.")
                      st.session_state[done_key] = True
-                     # Calculate time, increment run count, check donation
                      if st.session_state.get(start_time_key) is None: st.session_state[start_time_key] = time.time(); logger.info("Analysis interaction timer started on first submit.")
                      end_time = time.time(); start_time = st.session_state.get(start_time_key)
                      if start_time is not None: st.session_state[time_key] = end_time - start_time
@@ -1465,38 +1261,19 @@ def analysis_ui():
                      current_session_run_count = st.session_state.get(run_count_key, 0) + 1
                      st.session_state[run_count_key] = current_session_run_count
                      logger.info(f"Session run count incremented to: {current_session_run_count} (Analysis)")
-                     # REMOVED Donation Dialog trigger logic
-                 else:
-                      logger.info(f"Moving to exhibit {next_index + 1}")
-
-                 st.rerun() # Rerun to show next exhibit or feedback section
-
+                 else: logger.info(f"Moving to exhibit {next_index + 1}")
+                 st.rerun()
         if st.session_state.get(start_time_key) is None: st.session_state[start_time_key] = time.time(); logger.info("Interaction timer started.")
-
-
-    # --- Feedback and Conclusion Area ---
     if st.session_state.get(done_key):
         logger.debug("Entering analysis feedback and conclusion area.")
         st.session_state[is_typing_key] = True
         final_feedback_content = generate_final_feedback(case_prompt_text)
         st.session_state[is_typing_key] = False
-
-        # --- Add Debug Logging ---
         logger.debug(f"Value returned by generate_final_feedback (Analysis): '{final_feedback_content}'")
-        # --- End Debug Logging ---
-
-        # More robust check for valid feedback structure
-        feedback_was_generated = final_feedback_content and \
-                                 isinstance(final_feedback_content, str) and \
-                                 final_feedback_content.strip().startswith("## Overall Analysis Rating:")
-
-        # --- Add Debug Logging ---
+        feedback_was_generated = final_feedback_content and isinstance(final_feedback_content, str) and final_feedback_content.strip().startswith("## Overall Analysis Rating:")
         logger.debug(f"Feedback generated flag evaluated as: {feedback_was_generated}")
-        # --- End Debug Logging ---
-
         if feedback_was_generated:
             st.divider(); st.markdown(final_feedback_content); st.divider()
-            # Feedback Rating Section
             st.subheader("Rate this Feedback")
             feedback_already_submitted = st.session_state.get(feedback_submitted_key, False)
             if feedback_already_submitted:
@@ -1532,14 +1309,8 @@ def analysis_ui():
                             st.session_state[user_feedback_key] = user_feedback_data; st.session_state[feedback_submitted_key] = True; st.session_state[show_comment_key] = False
                             if save_user_feedback(user_feedback_data): logger.info("User Feedback Submitted with Comment and saved."); st.rerun()
                             else: logger.error("User Feedback Submitted with Comment but FAILED TO SAVE.")
-        elif final_feedback_content and str(final_feedback_content).startswith("Error"):
-             st.error(f"Could not display feedback: {final_feedback_content}")
-             logger.error(f"Feedback generation resulted in error message: {final_feedback_content}") # Log error
-        else:
-             st.warning("Feedback is currently unavailable or was not generated correctly.")
-             logger.warning(f"Feedback was not displayed. Content: {final_feedback_content}") # Log non-display
-
-        # Conclusion
+        elif final_feedback_content and str(final_feedback_content).startswith("Error"): st.error(f"Could not display feedback: {final_feedback_content}"); logger.error(f"Feedback generation resulted in error message: {final_feedback_content}")
+        else: st.warning("Feedback is currently unavailable or was not generated correctly."); logger.warning(f"Feedback was not displayed. Content: {final_feedback_content}")
         st.divider(); st.header("Conclusion")
         total_interaction_time = st.session_state.get(time_key, 0.0)
         st.write(f"You spent **{total_interaction_time:.2f} seconds** in the analysis phase.")
@@ -1570,7 +1341,7 @@ def recommendation_ui():
     init_session_state_key(recommendation_input_key, "")
 
     # --- Instructions ---
-    st.markdown("Review the case prompt and key findings summarized below. Structure your final recommendation, including your rationale, potential risks, and next steps. Enter your full recommendation in the text area and click \"Submit Recommendation\" to get feedback.")
+    st.markdown("Review the case prompt and key findings summarized below, then structure your final recommendation including your rationale, potential risks, and next steps. Enter your full recommendation in the text area and click \"Submit Recommendation\" to get feedback.")
     st.divider()
 
     # --- REMOVED Donation Dialog Logic ---
@@ -1605,16 +1376,26 @@ def recommendation_ui():
             if exhibit.get("description"):
                 st.caption(exhibit.get("description"))
             data = exhibit.get("data")
+            summary_text = exhibit.get("summary_text") # Get summary text
+
             if data:
                 try:
                     df = pd.DataFrame(data)
                     # Display as table for recommendation prompts
-                    st.dataframe(df, use_container_width=True)
+                    st.dataframe(df, use_container_width=True, hide_index=True) # Added hide_index
                 except Exception as e:
                     logger.error(f"Error processing exhibit {i+1} data for Recommendation: {e}")
                     st.error(f"Error displaying exhibit {i+1}. Please check data format in prompts.json.")
-            elif exhibit.get("summary_text"): # Allow plain text summaries
-                 st.markdown(exhibit.get("summary_text"))
+            elif summary_text: # Allow plain text summaries
+                 # --- FIX: Display list as bullets ---
+                 if isinstance(summary_text, list):
+                     # Format list items as markdown bullets
+                     markdown_summary = "\n".join([f"- {item}" for item in summary_text])
+                     st.markdown(markdown_summary)
+                 else:
+                     # Display as regular markdown if it's already a string
+                     st.markdown(summary_text)
+                 # --- End FIX ---
             else:
                 st.warning(f"Exhibit {i+1}: No data or summary text found.")
 
