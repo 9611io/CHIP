@@ -962,7 +962,7 @@ def clarifying_questions_bot_ui():
 
 
 def framework_development_ui():
-    # [ This function remains unchanged from the previous version ]
+    # [ This function remains largely unchanged, but donation dialog logic removed ]
     logger.info("Loading Framework Development UI.")
     prefix = st.session_state.key_prefix
     done_key = f"{prefix}_done_asking"; time_key = f"{prefix}_total_time"; start_time_key = f"{prefix}_interaction_start_time"
@@ -987,7 +987,7 @@ def framework_development_ui():
         st.header("Develop Your Framework");
         with st.form(key=f"{prefix}_fw_input_form", clear_on_submit=False):
              framework_input = st.text_area("Enter your framework here:", height=200, key=f"{prefix}_fw_form_text_area", disabled=st.session_state.get(is_typing_key, False), placeholder="e.g.,\n1. Market Analysis...")
-             submitted = st.form_submit_button("Submit Framework for Feedback", disabled=st.session_state.get(is_typing_key, False) or not framework_input)
+             submitted = st.form_submit_button("Submit Framework for Feedback", disabled=st.session_state.get(is_typing_key, False) or not framework_input) # Corrected disabled logic
              if submitted and framework_input:
                  logger.info("User submitted framework for final feedback.")
                  st.session_state[conv_key] = [{"role": "interviewee", "content": framework_input}]
@@ -1237,7 +1237,7 @@ def analysis_ui():
                     if x_col and y_col: color_col = exhibit.get("color"); size_col = exhibit.get("size"); fig = px.scatter(df, x=x_col, y=y_col, title="", color=color_col, size=size_col)
                     else: st.warning(f"Exhibit {current_index + 1}: Scatter chart data needs 'x_axis' and 'y_axis' keys.")
                 elif chart_type == "table": st.dataframe(df, hide_index=True); fig = None
-                else: st.warning(f"Exhibit {current_index + 1}: Unsupported chart type '{chart_type}'. Displaying table."); st.dataframe(df, hide_index=True); fig = None
+                else: st.warning(f"Exhibit {current_index + 1}: Unsupported or unspecified chart type '{chart_type}'. Displaying table."); st.dataframe(df, hide_index=True); fig = None
                 if fig: fig.update_layout(margin=dict(l=20, r=20, t=30, b=20), height=400); st.plotly_chart(fig, use_container_width=True)
             except Exception as e: logger.error(f"Error processing exhibit {current_index + 1} data: {e}"); st.error(f"Error displaying exhibit {current_index + 1}.")
         else: st.warning(f"Exhibit {current_index + 1}: No data found.")
@@ -1391,7 +1391,8 @@ def recommendation_ui():
                  if isinstance(summary_text, list):
                      # Format list items as markdown bullets
                      markdown_summary = "\n".join([f"- {item}" for item in summary_text])
-                     st.markdown(markdown_summary)
+                     logger.debug(f"Formatted summary text for Exhibit {i+1}: {markdown_summary}") # DEBUG
+                     st.markdown(markdown_summary, unsafe_allow_html=True) # Added unsafe_allow_html
                  else:
                      # Display as regular markdown if it's already a string
                      st.markdown(summary_text)
