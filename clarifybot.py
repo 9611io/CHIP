@@ -962,7 +962,7 @@ def clarifying_questions_bot_ui():
 
 
 def framework_development_ui():
-    # [ This function remains largely unchanged, but donation dialog logic removed ]
+    # [ Code remains unchanged ]
     logger.info("Loading Framework Development UI.")
     prefix = st.session_state.key_prefix
     done_key = f"{prefix}_done_asking"; time_key = f"{prefix}_total_time"; start_time_key = f"{prefix}_interaction_start_time"
@@ -987,7 +987,9 @@ def framework_development_ui():
         st.header("Develop Your Framework");
         with st.form(key=f"{prefix}_fw_input_form", clear_on_submit=False):
              framework_input = st.text_area("Enter your framework here:", height=200, key=f"{prefix}_fw_form_text_area", disabled=st.session_state.get(is_typing_key, False), placeholder="e.g.,\n1. Market Analysis...")
-             submitted = st.form_submit_button("Submit Framework for Feedback", disabled=st.session_state.get(is_typing_key, False) or not framework_input) # Corrected disabled logic
+             # --- FIX: Corrected disabled logic ---
+             submitted = st.form_submit_button("Submit Framework for Feedback", disabled=st.session_state.get(is_typing_key, False))
+             # --- End FIX ---
              if submitted and framework_input:
                  logger.info("User submitted framework for final feedback.")
                  st.session_state[conv_key] = [{"role": "interviewee", "content": framework_input}]
@@ -1245,7 +1247,9 @@ def analysis_ui():
         with st.form(key=f"{prefix}_an_input_form_{current_index}", clear_on_submit=True):
              analysis_input = st.text_area(f"Enter your analysis for Exhibit {current_index + 1}:", height=200, key=f"{prefix}_an_form_text_area_{current_index}", disabled=st.session_state.get(is_typing_key, False), placeholder="Based on this exhibit, I observe...")
              button_label = "Submit Analysis & Next Exhibit" if current_index < total_exhibits - 1 else "Submit Final Analysis & Get Feedback"
-             submitted = st.form_submit_button(button_label, disabled=st.session_state.get(is_typing_key, False) or not analysis_input) # Corrected disabled logic
+             # --- FIX: Corrected disabled logic ---
+             submitted = st.form_submit_button(button_label, disabled=st.session_state.get(is_typing_key, False))
+             # --- End FIX ---
              if submitted and analysis_input:
                  logger.info(f"User submitted analysis for exhibit {current_index + 1}.")
                  st.session_state.setdefault(conv_key, []).append({"role": "interviewee", "content": f"Analysis for Exhibit {current_index + 1}:\n{analysis_input}"})
@@ -1389,8 +1393,8 @@ def recommendation_ui():
             elif summary_text: # Allow plain text summaries
                  # --- FIX: Display list as bullets ---
                  if isinstance(summary_text, list):
-                     # Format list items as markdown bullets
-                     markdown_summary = "\n".join([f"- {item}" for item in summary_text])
+                     # Format list items as markdown bullets - add two spaces for line breaks
+                     markdown_summary = "\n".join([f"- {item}  " for item in summary_text])
                      logger.debug(f"Formatted summary text for Exhibit {i+1}: {markdown_summary}") # DEBUG
                      st.markdown(markdown_summary, unsafe_allow_html=True) # Added unsafe_allow_html
                  else:
@@ -1409,12 +1413,14 @@ def recommendation_ui():
                  height=300, # Make taller for full recommendation
                  key=f"{prefix}_rec_form_text_area",
                  disabled=st.session_state.get(is_typing_key, False),
-                 placeholder="Enter your recommendation here"
+                 placeholder="please enter your recommendation here " # User requested change
              )
+             # --- FIX: Corrected disabled logic ---
              submitted = st.form_submit_button(
                  "Submit Recommendation",
-                 disabled=st.session_state.get(is_typing_key, False) or not recommendation_input
+                 disabled=st.session_state.get(is_typing_key, False)
              )
+             # --- End FIX ---
              if submitted and recommendation_input:
                  logger.info("User submitted recommendation.")
                  # Store the recommendation for feedback generation
