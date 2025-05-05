@@ -1409,7 +1409,7 @@ def recommendation_ui():
                  height=300, # Make taller for full recommendation
                  key=f"{prefix}_rec_form_text_area",
                  disabled=st.session_state.get(is_typing_key, False),
-                 placeholder="Start with your conclusion, followed by rationale, risks, and next steps..."
+                 placeholder="Enter your recommendation here"
              )
              submitted = st.form_submit_button(
                  "Submit Recommendation",
