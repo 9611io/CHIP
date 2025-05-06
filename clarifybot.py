@@ -588,10 +588,34 @@ def send_question(question, current_case_prompt_text, exhibit_context=None):
             temperature = 0.5
 
         elif selected_skill == "Hypothesis": # Use new skill name
-            prompt_for_llm = f"""... [Hypothesis Interaction Prompt v2 as before] ..."""
-            system_message = "You are a case interviewer. IMPORTANT: First, evaluate if the user's input is a reasonable hypothesis..."
+            # --- Refined Interaction Prompt v3 (Simplified) ---
+            prompt_for_llm = f"""
+            You are playing the role of a case interviewer providing data/information in response to a candidate's hypothesis.
+            The candidate is trying to diagnose an issue based on the case prompt.
+
+            **Your Task:** Respond to the "Candidate's Latest Hypothesis/Area to Investigate" below.
+
+            * **IF** the candidate's input looks like a reasonable attempt at a hypothesis related to the case ({current_case_prompt_text}):
+                * Provide a concise (1-2 sentences) piece of plausible information that *contradicts* their line of thinking or suggests it's not the primary driver.
+                * Maintain consistency with previous info provided in the history.
+                * Sound like a neutral source of data.
+            * **ELSE IF** the candidate's input is clearly nonsensical, irrelevant, or too vague to be a testable hypothesis:
+                * Politely ask them to state a clearer, testable hypothesis related to the case. (e.g., "Could you state a specific hypothesis related to the case problem?")
+
+            **CRITICAL:** Do NOT assess the quality of the hypothesis (e.g., don't say "Good idea"). Do NOT use ###ANSWER### or ###ASSESSMENT### tags. Just provide the direct response text.
+
+            Conversation History (Previous hypotheses and info provided):
+            {history_for_prompt}
+
+            Candidate's Latest Hypothesis/Area to Investigate:
+            {latest_input}
+
+            Your Response:
+            """
+            system_message = "You are a case interviewer responding to a candidate's hypothesis. If it's reasonable, provide concise contradictory info. If it's not reasonable (nonsensical, vague, irrelevant), ask for a clearer hypothesis related to the case. Be neutral, do not assess, do not use special formatting."
+            # --- End of Refined Prompt v3 ---
             max_tokens = 150
-            temperature = 0.4
+            temperature = 0.4 # Keep slightly lower temperature
 
         # Analysis, Framework Dev, Recommendation now handle interaction outside send_question
         elif selected_skill in ["Frameworks", "Analysis", "Recommendation"]:
@@ -659,6 +683,7 @@ def send_question(question, current_case_prompt_text, exhibit_context=None):
         st.rerun() # Rerun to display new message and potentially the feedback section if done_key was set
 
 def generate_final_feedback(current_case_prompt_text):
+    # [ This function remains unchanged from the previous version ]
     """
     Generates overall feedback markdown based on the conversation history.
     """
@@ -799,62 +824,37 @@ def generate_final_feedback(current_case_prompt_text):
 
 # --- Main Streamlit Application Function ---
 def main_app():
-    """Main function to control skill selection and display."""
-    st.title("CHIP") # Restored title
+    # [ Code remains unchanged ]
+    st.title("CHIP")
     logger.info("Main application UI rendered.")
     prefix = st.session_state.key_prefix
     skill_key = f"{prefix}_selected_skill"
-
-    # --- Sidebar Donation CTA ---
     with st.sidebar:
         st.subheader("Support CHIP!")
-        st.markdown(
-            "Love CHIP? Your support helps keep this tool free and improving! 🙏\n\n"
-            "Consider making a small donation (suggested $5) to help cover server and API costs."
-            # Alternative text: "$5 gives one hard-working human unlimited access to CHIP."
-        )
+        st.markdown("Love CHIP? Your support helps keep this tool free and improving! 🙏\n\nConsider making a small donation (suggested $5) to help cover server and API costs.")
         donate_url = "https://buymeacoffee.com/9611"
-        st.link_button("Buy Me a Coffee ☕", donate_url) # Uses CSS for styling
-        st.divider() # Add a divider below donation section
-    # --- End Sidebar ---
-
+        st.link_button("Buy Me a Coffee ☕", donate_url)
+        st.divider()
     st.write("Select Skill to Practice:")
     cols_row1 = st.columns(3); cols_row2 = st.columns(3)
     current_selection = st.session_state.get(skill_key, SKILLS[0])
     def handle_skill_click(skill_name):
-        if skill_name != st.session_state.get(skill_key):
-            logger.info(f"Skill selected: {skill_name}")
-            st.session_state[skill_key] = skill_name
-            reset_skill_state(); st.rerun()
+        if skill_name != st.session_state.get(skill_key): logger.info(f"Skill selected: {skill_name}"); st.session_state[skill_key] = skill_name; reset_skill_state(); st.rerun()
         else: logger.debug(f"Clicked already selected skill: {skill_name}")
-
-    # --- Updated Button Mapping ---
-    button_map = {
-        SKILLS[0]: cols_row1[0], # Clarifying
-        SKILLS[1]: cols_row1[1], # Hypothesis
-        SKILLS[2]: cols_row1[2], # Frameworks
-        SKILLS[3]: cols_row2[0], # Analysis
-        SKILLS[4]: cols_row2[1]  # Recommendation
-    }
-    # --- End Update ---
-
+    button_map = {SKILLS[0]: cols_row1[0], SKILLS[1]: cols_row1[1], SKILLS[2]: cols_row1[2], SKILLS[3]: cols_row2[0], SKILLS[4]: cols_row2[1]}
     for skill, col in button_map.items():
         with col:
             button_type = "primary" if skill == current_selection else "secondary"
-            # Use new skill names for keys if needed, ensure consistency
             if st.button(skill, key=f"skill_btn_{skill.replace(' ', '_')}", use_container_width=True, type=button_type): handle_skill_click(skill)
     st.divider()
     selected_skill = st.session_state.get(skill_key, SKILLS[0])
     logger.debug(f"Loading UI for skill: {selected_skill}")
-
-    # --- Updated Routing to Skill UI Functions ---
     if selected_skill == "Clarifying": clarifying_questions_bot_ui()
     elif selected_skill == "Frameworks": framework_development_ui()
     elif selected_skill == "Hypothesis": hypothesis_formulation_ui()
     elif selected_skill == "Analysis": analysis_ui()
-    elif selected_skill == "Recommendation": recommendation_ui() # Call new function
+    elif selected_skill == "Recommendation": recommendation_ui()
     else: logger.error(f"Invalid skill selected: {selected_skill}"); st.error("Invalid skill selected.")
-    # --- End Update ---
 
 # --- Skill-Specific UI Functions (clarifying_questions_bot_ui, framework_development_ui, hypothesis_formulation_ui, analysis_ui) ---
 
@@ -1061,7 +1061,7 @@ def framework_development_ui():
 
 # --- NEW: Skill-Specific UI Function (Hypothesis Formulation) ---
 def hypothesis_formulation_ui():
-    # [ This function remains unchanged from the previous version ]
+    # [ Code remains unchanged ]
     logger.info("Loading Hypothesis Formulation UI.")
     prefix = st.session_state.key_prefix
     done_key = f"{prefix}_done_asking"; time_key = f"{prefix}_total_time"; start_time_key = f"{prefix}_interaction_start_time"
@@ -1176,7 +1176,7 @@ def hypothesis_formulation_ui():
 
 # --- NEW: Skill-Specific UI Function (Analysis) ---
 def analysis_ui():
-    # [ This function remains unchanged from the previous version ]
+    # [ Code remains unchanged ]
     logger.info("Loading Analysis UI.")
     prefix = st.session_state.key_prefix
     done_key = f"{prefix}_done_asking"; time_key = f"{prefix}_total_time"; start_time_key = f"{prefix}_interaction_start_time"
