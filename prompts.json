@@ -5659,9 +5659,9 @@
     {"exhibit_title": "Key Finding 1: Return Rate by Period","chart_type": "table","description": "% returns by quarter","data": {"Quarter": ["Q1","Q2","Q3","Q4"],"Return %": [7,8,6,5]}},
     {"exhibit_title": "Key Finding 2: Refund Processing Time","chart_type": "table","description": "Avg days to refund","data": {"Quarter": ["Q1","Q2","Q3","Q4"],"Days": [5,6,4,3]}},
     {"exhibit_title": "Key Finding 3: Summary Insights","chart_type": "summary_text","summary_text": [
-      "Implementing prepaid return labels cut return processing times by 2 days.",
-      "Customer feedback integration reduced repeat return rates by 10%.",
-      "AI-based fraud detection decreased false returns by 30%."
+      "Size-related issues account for 42% of all returns, followed by product defects at 28% and other reasons at 30%.",
+      "Prepaid-label returns represent 55% of all return transactions and have a median processing time of 4 days.",
+      "Holiday period returns spike by 20%, comprising 18% of the annual return volume."
     ]}
   ]
 },
