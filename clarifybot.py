@@ -16,52 +16,56 @@ import plotly.express as px # Added for chart generation
 # from supabase import create_client, Client # No longer needed
 
 # --- Basic Logging Setup ---
-# [ Logging setup remains the same ]
 log_filename = f"chip_app_{datetime.datetime.now().strftime('%Y%m%d_%H%M%S')}.log"
+
+# Custom Filter to add session_id to all log records if not present
+class SessionIdFilter(logging.Filter):
+    def filter(self, record):
+        # Check if session_state is active and has the necessary keys
+        try:
+            if not hasattr(record, 'session_id'):
+                if hasattr(st, 'session_state') and st.session_state.get('key_prefix'):
+                    prefix = st.session_state.key_prefix
+                    record.session_id = st.session_state.get(f"{prefix}_session_id", "N/A_Filter_NoSessionID")
+                else:
+                    record.session_id = "N/A_Filter_NoPrefixOrSS"
+        except Exception: # Broad exception to catch issues if st.session_state is not available
+            record.session_id = "N/A_Filter_Exception"
+        return True
+
 logging.basicConfig(
     level=logging.INFO,
-    format='%(asctime)s - %(levelname)s - SessionID:%(session_id)s - Name:%(name)s - %(message)s', # Added name
+    format='%(asctime)s - %(levelname)s - SessionID:%(session_id)s - Name:%(name)s - %(message)s',
     handlers=[
         logging.FileHandler(log_filename),
         logging.StreamHandler()
     ]
 )
 
-# Custom Filter to add session_id to all log records if not present
-class SessionIdFilter(logging.Filter):
-    def filter(self, record):
-        if not hasattr(record, 'session_id'):
-            prefix = st.session_state.get('key_prefix')
-            if prefix:
-                record.session_id = st.session_state.get(f"{prefix}_session_id", "N/A_Filter")
-            else:
-                record.session_id = "N/A_Filter_NoPrefix"
-        return True
-
 root_logger = logging.getLogger()
-# Clear existing filters from root logger if any, before adding new one
-for h_filter in list(root_logger.filters): # Iterate over a copy
-    if isinstance(h_filter, SessionIdFilter):
-        root_logger.removeFilter(h_filter)
-root_logger.addFilter(SessionIdFilter())
+# Ensure the filter is added only once
+if not any(isinstance(f, SessionIdFilter) for f in root_logger.filters):
+    root_logger.addFilter(SessionIdFilter())
 
 
 class SessionLogAdapter(logging.LoggerAdapter):
     def process(self, msg, kwargs):
-        session_id = "N/A_Adapter" # Default if not found
-        prefix = st.session_state.get('key_prefix')
-        if prefix:
-            session_id = st.session_state.get(f"{prefix}_session_id", "N/A_Adapter_NoSession")
+        session_id = "N/A_Adapter"
+        try:
+            if hasattr(st, 'session_state') and st.session_state.get('key_prefix'):
+                prefix = st.session_state.key_prefix
+                session_id = st.session_state.get(f"{prefix}_session_id", "N/A_Adapter_NoSessionID")
+        except Exception:
+            pass # Keep default if session_state access fails
 
-        # Ensure 'extra' exists and add session_id to it
         if 'extra' not in kwargs:
             kwargs['extra'] = {}
         kwargs['extra']['session_id'] = session_id
         return msg, kwargs
 
-logger_raw = logging.getLogger(__name__) # Use the app's module name
+logger_raw = logging.getLogger(__name__)
 logger = SessionLogAdapter(logger_raw, {})
-logger.info("--- Application Started ---") # This will use the adapter
+logger.info("--- Application Started ---")
 
 
 # --- REMOVED: Supabase Connection Function ---
@@ -619,7 +623,7 @@ def send_question(question, current_case_prompt_text, exhibit_context=None):
 
             **Your Task:** Respond to the "Candidate's Latest Hypothesis/Area to Investigate" below.
 
-            * **IF** the candidate's input ("{latest_input}") is a reasonable, testable hypothesis related to the case context ({current_case_prompt_text}):
+            * **IF** the candidate's input ("{latest_input}") is a reasonable, testable hypothesis related to the case context ("{current_case_prompt_text}"):
                 * Provide a concise (1-2 sentences) piece of plausible, new information that *contradicts* their current line of thinking or suggests it's not the primary driver.
                 * This information should be consistent with any previous information you've provided.
                 * Sound like a neutral source of data.
@@ -762,7 +766,7 @@ def generate_final_feedback(current_case_prompt_text):
          history_string = "\n\n".join(formatted_history_parts)
     elif selected_skill == "Analysis": # Use new skill name
         analysis_parts = []
-        current_prompt_details = get_prompt_details(st.session_state.get(current_prompt_id_key))
+        current_prompt_details = get_prompt_details(st.session_state.get(f"{prefix}_current_prompt_id")) # Use full key
         exhibits_data_for_llm = []
         if current_prompt_details and current_prompt_details.get("exhibits"):
             for idx, ex in enumerate(current_prompt_details["exhibits"]):
@@ -788,7 +792,7 @@ def generate_final_feedback(current_case_prompt_text):
              logger.warning("Analysis: Could not extract analysis from conversation state.")
              return "[Could not generate feedback: Analysis not found in state]"
     elif selected_skill == "Recommendation": # Use new skill name
-        current_prompt_details = get_prompt_details(st.session_state.get(current_prompt_id_key))
+        current_prompt_details = get_prompt_details(st.session_state.get(f"{prefix}_current_prompt_id")) # Use full key
         exhibits_data_for_llm = []
         if current_prompt_details and current_prompt_details.get("exhibits"):
             for idx, ex in enumerate(current_prompt_details["exhibits"]):
@@ -1334,19 +1338,18 @@ def hypothesis_formulation_ui():
 
 # --- NEW: Skill-Specific UI Function (Analysis) ---
 def analysis_ui():
-    # [ Code remains unchanged ]
     logger.info("Loading Analysis UI.")
     prefix = st.session_state.key_prefix
     done_key = f"{prefix}_done_asking"; time_key = f"{prefix}_total_time"; start_time_key = f"{prefix}_interaction_start_time"
     conv_key = f"{prefix}_conversation"; feedback_key = f"{prefix}_feedback"; is_typing_key = f"{prefix}_is_typing"
     feedback_submitted_key = f"{prefix}_feedback_submitted"; user_feedback_key = f"{prefix}_user_feedback"
-    current_prompt_id_key = f"{prefix}_current_prompt_id"; run_count_key = f"{prefix}_run_count"
+    current_prompt_id_key = f"{prefix}_current_prompt_id"; run_count_key = f"{prefix}_run_count" # Ensure current_prompt_id_key is defined
     show_comment_key = f"{prefix}_show_comment_box"; feedback_rating_value_key = f"{prefix}_feedback_rating_value"
     analysis_input_key = f"{prefix}_analysis_input"; current_exhibit_index_key = f"{prefix}_current_exhibit_index"
     init_session_state_key('conversation', []); init_session_state_key('done_asking', False); init_session_state_key('feedback_submitted', False)
     init_session_state_key('is_typing', False); init_session_state_key('feedback', None); init_session_state_key('show_comment_box', False)
     init_session_state_key('feedback_rating_value', None); init_session_state_key('interaction_start_time', None)
-    init_session_state_key('total_time', 0.0); init_session_state_key('user_feedback', None); init_session_state_key('current_prompt_id', None)
+    init_session_state_key('total_time', 0.0); init_session_state_key('user_feedback', None); init_session_state_key('current_prompt_id', None) # Ensure current_prompt_id is initialized
     init_session_state_key('analysis_input', ""); init_session_state_key(current_exhibit_index_key, 0)
     st.markdown("Read the case prompt and examine the exhibit(s) below. Analyze the data presented in the exhibit(s) and explain its significance in relation to the case problem. Enter your analysis in the text area below and click \"Submit Analysis\" to get feedback.")
     st.divider()
@@ -1490,7 +1493,7 @@ def recommendation_ui():
     done_key = f"{prefix}_done_asking"; time_key = f"{prefix}_total_time"; start_time_key = f"{prefix}_interaction_start_time"
     conv_key = f"{prefix}_conversation"; feedback_key = f"{prefix}_feedback"; is_typing_key = f"{prefix}_is_typing"
     feedback_submitted_key = f"{prefix}_feedback_submitted"; user_feedback_key = f"{prefix}_user_feedback"
-    current_prompt_id_key = f"{prefix}_current_prompt_id"; run_count_key = f"{prefix}_run_count"
+    current_prompt_id_key = f"{prefix}_current_prompt_id"; run_count_key = f"{prefix}_run_count" # Ensure current_prompt_id_key is defined
     show_comment_key = f"{prefix}_show_comment_box"; feedback_rating_value_key = f"{prefix}_feedback_rating_value"
     # show_donation_dialog_key = f"{prefix}_show_donation_dialog" # REMOVED
     recommendation_input_key = f"{prefix}_recommendation_input" # Specific key
@@ -1499,7 +1502,7 @@ def recommendation_ui():
     init_session_state_key('conversation', []); init_session_state_key('done_asking', False); init_session_state_key('feedback_submitted', False)
     init_session_state_key('is_typing', False); init_session_state_key('feedback', None); init_session_state_key('show_comment_box', False)
     init_session_state_key('feedback_rating_value', None); init_session_state_key('interaction_start_time', None)
-    init_session_state_key('total_time', 0.0); init_session_state_key('user_feedback', None); init_session_state_key('current_prompt_id', None)
+    init_session_state_key('total_time', 0.0); init_session_state_key('user_feedback', None); init_session_state_key('current_prompt_id', None) # Ensure current_prompt_id is initialized
     init_session_state_key(recommendation_input_key, "")
 
     # --- Instructions ---
