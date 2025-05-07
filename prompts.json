@@ -1611,7 +1611,7 @@
               "Location": ["Downtown", "Uptown", "Suburbs"],
               "Share %": [50, 30, 20]
             },
-            "labels": "Location",
+            "names": "Location",
             "values": "Share %"
           }
         ]
@@ -1652,7 +1652,7 @@
               "Brand": ["FashionFiesta", "Competitor A", "Competitor B", "Others"],
               "Share %": [25, 30, 20, 25]
             },
-            "labels": "Brand",
+            "names": "Brand",
             "values": "Share %"
           }
         ]
@@ -1693,7 +1693,7 @@
               "Feature": ["Live TV","On-Demand","Downloads","Other"],
               "Share %": [30, 50, 15, 5]
             },
-            "labels": "Feature",
+            "names": "Feature",
             "values": "Share %"
           }
         ]
@@ -1774,7 +1774,7 @@
               "Item": ["Bowl","Wrap","Salad","Sandwich"],
               "Share %": [30, 25, 20, 25]
             },
-            "labels": "Item",
+            "names": "Item",
             "values": "Share %"
           }
         ]
@@ -1813,7 +1813,7 @@
               "Segment": ["Retirees","Families","Tech Enthusiasts","Renters"],
               "Share %": [25, 35, 20, 20]
             },
-            "labels": "Segment",
+            "names": "Segment",
             "values": "Share %"
           }
         ]
@@ -1893,7 +1893,7 @@
               "Menu": ["Standard","Premium","Deluxe"],
               "Share %": [40, 35, 25]
             },
-            "labels": "Menu",
+            "names": "Menu",
             "values": "Share %"
           }
         ]
@@ -1973,7 +1973,7 @@
               "Bus Type": ["Diesel","Hybrid","Electric"],
               "Share %": [60, 25, 15]
             },
-            "labels": "Bus Type",
+            "names": "Bus Type",
             "values": "Share %"
           }
         ]
@@ -2034,7 +2034,7 @@
           "Milestone": ["First Session", "First Week", "First Month"],
           "Completion %": [80, 60, 40]
         },
-        "labels": "Milestone",
+        "names": "Milestone",
         "values": "Completion %"
       },
       {
@@ -2084,7 +2084,7 @@
           "Channel": ["Organic Search", "Ads", "Referral"],
           "Share %": [50, 30, 20]
         },
-        "labels": "Channel",
+        "names": "Channel",
         "values": "Share %"
       },
       {
@@ -2173,7 +2173,7 @@
           "Feature": ["Gantt", "Reporting", "Cost Estimation"],
           "Share %": [40, 35, 25]
         },
-        "labels": "Feature",
+        "names": "Feature",
         "values": "Share %"
       }
     ]
@@ -2184,7 +2184,7 @@
     "skill_type": "Analysis",
     "prompt_text": "RetailRevamp, a retail chain, is seeking support to optimize its e-commerce performance. The company has asked for your support in conducting analysis of traffic sources, conversion rates by device, and average order value to interpret and identify performance improvement opportunities. Please review the following information and provide relevant insights for RetailRevamp.",
     "exhibits": [
-      {"exhibit_title": "Exhibit 1: Traffic Sources","chart_type": "pie","description": "Share %","data": {"Source": ["Organic", "Paid", "Direct"],"Share %": [60, 25, 15]},"labels": "Source","values": "Share %"},
+      {"exhibit_title": "Exhibit 1: Traffic Sources","chart_type": "pie","description": "Share %","data": {"Source": ["Organic", "Paid", "Direct"],"Share %": [60, 25, 15]},"names": "Source","values": "Share %"},
       {"exhibit_title": "Exhibit 2: Conversion Rate by Device","chart_type": "bar","description": "Conversion %","data": {"Device": ["Mobile","Desktop"],"Conversion %": [2.5, 3.5]},"x_axis": "Device","y-axis": ["Conversion %"]},
       {"exhibit_title": "Exhibit 3: Average Order Value Over Time","chart_type": "line","description": "AOV ($)","data": {"Month": ["Jan","Feb","Mar","Apr"],"AOV ($)": [80, 85, 90, 88]},"x_axis": "Month","y_axis": ["AOV ($)"]}
     ]
@@ -2196,7 +2196,7 @@
     "prompt_text": "GreenWave, a solar energy firm, is seeking support to accelerate solar adoption. The company has asked for your support in conducting analysis of incentive impact, adoption rates by region, and break-even payback period to interpret and identify adoption drivers and financial viability. Please review the following information and provide relevant insights for GreenWave.",
     "exhibits": [
       {"exhibit_title": "Exhibit 1: Incentive Impact","chart_type": "bar","description": "Effect on adoption %","data": {"Incentive": ["None","Low","High"],"Adoption %": [10, 30, 50]},"x_axis": "Incentive","y_axis": ["Adoption %"]},
-      {"exhibit_title": "Exhibit 2: Regional Adoption Rates","chart_type": "pie","description": "Share %","data": {"Region": ["North","South","East","West"],"Share %": [25,25,25,25]},"labels":"Region","values":"Share %"},
+      {"exhibit_title": "Exhibit 2: Regional Adoption Rates","chart_type": "pie","description": "Share %","data": {"Region": ["North","South","East","West"],"Share %": [25,25,25,25]},"names":"Region","values":"Share %"},
       {"exhibit_title": "Exhibit 3: Payback Period","chart_type": "line","description": "Months to payback","data": {"Scenario": ["Base","Optimistic","Pessimistic"],"Payback Months": [60, 50, 70]},"x_axis":"Scenario","y_axis":["Payback Months"]}
     ]
   },
@@ -2218,7 +2218,7 @@
     "prompt_text": "BioInnovate, a biotechnology startup, is seeking support to optimize its clinical trial enrollment. The company has asked for your support in conducting analysis of site enrollment rates, regional participation, and cost per enrollee to interpret and identify enrollment optimization strategies. Please review the following information and provide relevant insights for BioInnovate.",
     "exhibits": [
       {"exhibit_title": "Exhibit 1: Enrollment by Site","chart_type": "bar","description": "Participants","data": {"Site": ["A","B","C"],"Enrollees": [50,45,60]},"x_axis":"Site","y_axis":["Enrollees"]},
-      {"exhibit_title": "Exhibit 2: Regional Participation","chart_type": "pie","description": "Share %","data": {"Region": ["NA","EU","APAC"],"Share %": [40,35,25]},"labels":"Region","values":"Share %"},
+      {"exhibit_title": "Exhibit 2: Regional Participation","chart_type": "pie","description": "Share %","data": {"Region": ["NA","EU","APAC"],"Share %": [40,35,25]},"names":"Region","values":"Share %"},
       {"exhibit_title": "Exhibit 3: Cost per Enrollee","chart_type": "line","description": "USD","data": {"Phase": [1,2,3],"Cost ($)": [20000,25000,30000]},"x_axis":"Phase","y_axis":["Cost ($)"]}
     ]
   },
@@ -2230,7 +2230,7 @@
     "exhibits": [
       {"exhibit_title": "Exhibit 1: Partnerships by Store Type","chart_type": "bar","description": "Count","data": {"Store Type": ["Grocery","Restaurant","Farmers' Market"],"Count": [20,15,10]},"x_axis":"Store Type","y_axis":["Count"]},
       {"exhibit_title": "Exhibit 2: Price Sensitivity","chart_type": "line","description": "Orders vs Price","data": {"Price ($)": [2,3,4],"Orders": [100,80,60]},"x_axis":"Price ($)","y_axis":["Orders"]},
-      {"exhibit_title": "Exhibit 3: Profitability by Channel","chart_type": "pie","description": "Margin %","data": {"Channel": ["Direct","Wholesale","Online"],"Margin %": [30,25,20]},"labels":"Channel","values":"Margin %"}
+      {"exhibit_title": "Exhibit 3: Profitability by Channel","chart_type": "pie","description": "Margin %","data": {"Channel": ["Direct","Wholesale","Online"],"Margin %": [30,25,20]},"names":"Channel","values":"Margin %"}
     ]
   }
 ,
@@ -2268,7 +2268,7 @@
           "Order Type": ["Lunch","Dinner","Snacks","Beverages"],
           "Share %": [40, 45, 10, 5]
         },
-        "labels": "Order Type",
+        "names": "Order Type",
         "values": "Share %"
       }
     ]
@@ -2309,7 +2309,7 @@
           "Model": ["Lite","Pro","Ultra"],
           "Share %": [30, 50, 20]
         },
-        "labels": "Model",
+        "names": "Model",
         "values": "Share %"
       }
     ]
@@ -2367,7 +2367,7 @@
           "Recipe": ["Pasta","Stir-Fry","Salad","Tacos"],
           "Share %": [35, 25, 20, 20]
         },
-        "labels": "Recipe",
+        "names": "Recipe",
         "values": "Share %"
       },
       {
@@ -2428,7 +2428,7 @@
           "Age Group": ["18-24","25-34","35-44","45+"],
           "Share %": [50, 30, 15, 5]
         },
-        "labels": "Age Group",
+        "names": "Age Group",
         "values": "Share %"
       }
     ]
@@ -2469,7 +2469,7 @@
           "Category": ["Residential","Commercial","Industrial","Public"],
           "Share %": [45, 25, 20, 10]
         },
-        "labels": "Category",
+        "names": "Category",
         "values": "Share %"
       }
     ]
@@ -2508,7 +2508,7 @@
           "Material": ["Wood","Steel","Concrete","Brick"],
           "Share %": [30, 25, 30, 15]
         },
-        "labels": "Material",
+        "names": "Material",
         "values": "Share %"
       }
     ]
@@ -2521,7 +2521,7 @@
     "exhibits": [
       {"exhibit_title": "Exhibit 1: Monthly Sessions","chart_type": "line","description": "Sessions per month (000s)","data": {"Month": ["Jan","Feb","Mar","Apr","May","Jun"],"Sessions (000s)": [50, 55, 60, 65, 70, 75]},"x_axis": "Month","y_axis": ["Sessions (000s)"]},
       {"exhibit_title": "Exhibit 2: Adoption by Age Group","chart_type": "bar","description": "Users (000s)","data": {"Age Group": ["18-34","35-54","55+"],"Users (000s)": [30, 25, 20]},"x_axis": "Age Group","y_axis": ["Users (000s)"]},
-      {"exhibit_title": "Exhibit 3: Device Usage Share","chart_type": "pie","description": "Share by device","data": {"Device": ["Mobile","Desktop","Tablet"],"Share %": [60, 30, 10]},"labels": "Device","values": "Share %"}
+      {"exhibit_title": "Exhibit 3: Device Usage Share","chart_type": "pie","description": "Share by device","data": {"Device": ["Mobile","Desktop","Tablet"],"Share %": [60, 30, 10]},"names": "Device","values": "Share %"}
     ]
   },
   {
@@ -2532,7 +2532,7 @@
     "exhibits": [
       {"exhibit_title": "Exhibit 1: Claims by Type","chart_type": "bar","description": "Number of claims","data": {"Claim Type": ["Collision","Theft","Fire","Vandalism"],"Claims": [500, 150, 75, 50]},"x_axis": "Claim Type","y_axis": ["Claims"]},
       {"exhibit_title": "Exhibit 2: Monthly Claim Trend","chart_type": "line","description": "Claims per month","data": {"Month": ["Jan","Feb","Mar","Apr","May","Jun"],"Claims": [100, 120, 130, 110, 140, 150]},"x_axis": "Month","y_axis": ["Claims"]},
-      {"exhibit_title": "Exhibit 3: Claim Outcome Distribution","chart_type": "pie","description": "Share by outcome","data": {"Outcome": ["Paid","Denied","Pending"],"Share %": [70, 20, 10]},"labels": "Outcome","values": "Share %"}
+      {"exhibit_title": "Exhibit 3: Claim Outcome Distribution","chart_type": "pie","description": "Share by outcome","data": {"Outcome": ["Paid","Denied","Pending"],"Share %": [70, 20, 10]},"names": "Outcome","values": "Share %"}
     ]
   },
   {
@@ -2543,7 +2543,7 @@
     "exhibits": [
       {"exhibit_title": "Exhibit 1: Feature Usage Counts","chart_type": "table","description": "Uses per feature","data": {"Feature": ["Quizzes","Videos","Assignments","Forums"],"Uses": [5000, 4000, 3000, 2000]}},
       {"exhibit_title": "Exhibit 2: Active Users by Region","chart_type": "bar","description": "Users (000s)","data": {"Region": ["North America","Europe","Asia"],"Users (000s)": [50, 40, 30]},"x_axis": "Region","y_axis": ["Users (000s)"]},
-      {"exhibit_title": "Exhibit 3: Session Length Distribution","chart_type": "pie","description": "Share by session length","data": {"Session Length": ["<5min","5-10min","10-20min","20+min"],"Share %": [25, 35, 30, 10]},"labels": "Session Length","values": "Share %"}
+      {"exhibit_title": "Exhibit 3: Session Length Distribution","chart_type": "pie","description": "Share by session length","data": {"Session Length": ["<5min","5-10min","10-20min","20+min"],"Share %": [25, 35, 30, 10]},"names": "Session Length","values": "Share %"}
     ]
   },
   {
@@ -2554,7 +2554,7 @@
     "exhibits": [
       {"exhibit_title": "Exhibit 1: Sentiment Score Over Time","chart_type": "line","description": "Average score 1-5","data": {"Date": ["2025-01-01","2025-02-01","2025-03-01","2025-04-01"],"Score": [3.5, 3.7, 3.8, 3.9]},"x_axis": "Date","y_axis": ["Score"]},
       {"exhibit_title": "Exhibit 2: Sentiment by Demographic","chart_type": "bar","description": "Average score","data": {"Group": ["18-34","35-54","55+"],"Score": [3.8, 3.6, 3.4]},"x_axis": "Group","y_axis": ["Score"]},
-      {"exhibit_title": "Exhibit 3: Sentiment Category Distribution","chart_type": "pie","description": "Share by category","data": {"Category": ["Positive","Neutral","Negative"],"Share %": [50, 30, 20]},"labels": "Category","values": "Share %"}
+      {"exhibit_title": "Exhibit 3: Sentiment Category Distribution","chart_type": "pie","description": "Share by category","data": {"Category": ["Positive","Neutral","Negative"],"Share %": [50, 30, 20]},"names": "Category","values": "Share %"}
     ]
   },
   {
@@ -2574,7 +2574,7 @@
     "skill_type": "Analysis",
     "prompt_text": "WellnessNow, a mental health app based in Toronto, is seeking support to interpret user engagement patterns. The company has asked for your support in conducting analysis of session type distribution, average session duration, and daily sessions trend to interpret and identify key engagement insights. Please review the following information and provide relevant insights for WellnessNow.",
     "exhibits": [
-      {"exhibit_title": "Exhibit 1: Session Type Distribution","chart_type": "pie","description": "Share by type","data": {"Type": ["Meditation","Therapy","Journaling","Breathing"],"Share %": [40, 25, 20, 15]},"labels": "Type","values": "Share %"},
+      {"exhibit_title": "Exhibit 1: Session Type Distribution","chart_type": "pie","description": "Share by type","data": {"Type": ["Meditation","Therapy","Journaling","Breathing"],"Share %": [40, 25, 20, 15]},"names": "Type","values": "Share %"},
       {"exhibit_title": "Exhibit 2: Average Session Duration","chart_type": "bar","description": "Minutes per session","data": {"Type": ["Meditation","Therapy","Journaling","Breathing"],"Duration": [10, 50, 15, 5]},"x_axis": "Type","y_axis": ["Duration"]},
       {"exhibit_title": "Exhibit 3: Daily Sessions Trend","chart_type": "line","description": "Sessions per day (000s)","data": {"Date": ["2025-04-01","2025-04-02","2025-04-03","2025-04-04"],"Sessions (000s)": [20, 22, 21, 23]},"x_axis": "Date","y_axis": ["Sessions (000s)"]}
     ]
@@ -2587,7 +2587,7 @@
     "exhibits": [
       {"exhibit_title": "Exhibit 1: Monthly Booking Volume","chart_type": "line","description": "Bookings per month","data": {"Month": ["Jan","Feb","Mar","Apr","May","Jun"],"Bookings": [1000, 1100, 1200, 1150, 1300, 1400]},"x_axis": "Month","y_axis": ["Bookings"]},
       {"exhibit_title": "Exhibit 2: Destination Popularity","chart_type": "bar","description": "Trips booked","data": {"Destination": ["Beach","Mountain","City","Cruise"],"Trips": [500, 300, 400, 200]},"x_axis": "Destination","y_axis": ["Trips"]},
-      {"exhibit_title": "Exhibit 3: Booking Channel Share","chart_type": "pie","description": "Share by channel","data": {"Channel": ["Online","Agent","Mobile"],"Share %": [60, 30, 10]},"labels": "Channel","values": "Share %"}
+      {"exhibit_title": "Exhibit 3: Booking Channel Share","chart_type": "pie","description": "Share by channel","data": {"Channel": ["Online","Agent","Mobile"],"Share %": [60, 30, 10]},"names": "Channel","values": "Share %"}
     ]
   },
   {
@@ -2609,7 +2609,7 @@
     "exhibits": [
       {"exhibit_title": "Exhibit 1: Daily Ride Counts","chart_type": "line","description": "Rides per day (000s)","data": {"Day": ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"],"Rides": [30, 35, 40, 45, 50, 55, 60]},"x_axis": "Day","y_axis": ["Rides"]},
       {"exhibit_title": "Exhibit 2: Rides by Station","chart_type": "bar","description": "Total rides","data": {"Station": ["Central","East","West","North","South"],"Rides": [10000, 8000, 9000, 7000, 6000]},"x_axis": "Station","y_axis": ["Rides"]},
-      {"exhibit_title": "Exhibit 3: User Type Share","chart_type": "pie","description": "Share by user type","data": {"User Type": ["Subscriber","Casual"],"Share %": [70, 30]},"labels": "User Type","values": "Share %"}
+      {"exhibit_title": "Exhibit 3: User Type Share","chart_type": "pie","description": "Share by user type","data": {"User Type": ["Subscriber","Casual"],"Share %": [70, 30]},"names": "User Type","values": "Share %"}
     ]
   },
   {
@@ -2620,7 +2620,7 @@
     "exhibits": [
       {"exhibit_title": "Exhibit 1: Sales by Promotion","chart_type": "bar","description": "USD thousands","data": {"Promotion": ["BOGO","Discount","Coupon","Flash Sale"],"Sales": [200, 150, 100, 250]},"x_axis": "Promotion","y_axis": ["Sales"]},
       {"exhibit_title": "Exhibit 2: Sales Trend Over Time","chart_type": "line","description": "Sales per week (000s)","data": {"Week": [1,2,3,4],"Sales": [300, 320, 310, 330]},"x_axis": "Week","y_axis": ["Sales"]},
-      {"exhibit_title": "Exhibit 3: Promotion Channel Share","chart_type": "pie","description": "Share by channel","data": {"Channel": ["Email","Social","In-Store","App"],"Share %": [25, 35, 20, 20]},"labels": "Channel","values": "Share %"}
+      {"exhibit_title": "Exhibit 3: Promotion Channel Share","chart_type": "pie","description": "Share by channel","data": {"Channel": ["Email","Social","In-Store","App"],"Share %": [25, 35, 20, 20]},"names": "Channel","values": "Share %"}
     ]
   },
   {
@@ -2642,7 +2642,7 @@
     "exhibits": [
       {"exhibit_title": "Exhibit 1: 24-Hour Demand Pattern","chart_type": "line","description": "MW demand","data": {"Hour": [0,6,12,18,24],"Demand (MW)": [5000, 7000, 10000, 8000, 6000]},"x_axis": "Hour","y_axis": ["Demand (MW)"]},
       {"exhibit_title": "Exhibit 2: Sector Demand Comparison","chart_type": "bar","description": "MW demand","data": {"Sector": ["Residential","Commercial","Industrial"],"Demand": [4000, 3000, 2000]},"x_axis": "Sector","y_axis": ["Demand"]},
-      {"exhibit_title": "Exhibit 3: Energy Source Share","chart_type": "pie","description": "Percentage share","data": {"Source": ["Coal","Natural Gas","Renewables","Nuclear"],"Share %": [30, 40, 20, 10]},"labels": "Source","values": "Share %"}
+      {"exhibit_title": "Exhibit 3: Energy Source Share","chart_type": "pie","description": "Percentage share","data": {"Source": ["Coal","Natural Gas","Renewables","Nuclear"],"Share %": [30, 40, 20, 10]},"names": "Source","values": "Share %"}
     ]
   },
   {
@@ -2653,7 +2653,7 @@
     "exhibits": [
       {"exhibit_title": "Exhibit 1: Fraud Alerts by Type","chart_type": "bar","description": "Alerts per day","data": {"Type": ["Card Fraud","Identity Theft","Account Takeover"],"Alerts": [500, 200, 100]},"x_axis": "Type","y_axis": ["Alerts"]},
       {"exhibit_title": "Exhibit 2: False Positive Rate Over Time","chart_type": "line","description": "% False Positives","data": {"Month": ["Jan","Feb","Mar","Apr"],"False Positive %": [5, 4.5, 4.0, 3.8]},"x_axis": "Month","y_axis": ["False Positive %"]},
-      {"exhibit_title": "Exhibit 3: Detection Method Share","chart_type": "pie","description": "Share by method","data": {"Method": ["Machine Learning","Rules-Based","Hybrid"],"Share %": [50, 30, 20]},"labels": "Method","values": "Share %"}
+      {"exhibit_title": "Exhibit 3: Detection Method Share","chart_type": "pie","description": "Share by method","data": {"Method": ["Machine Learning","Rules-Based","Hybrid"],"Share %": [50, 30, 20]},"names": "Method","values": "Share %"}
     ]
   }
 ,
@@ -2693,7 +2693,7 @@
           "Charger Type": ["Fast","Standard","Ultra-Fast"],
           "Share %": [40, 45, 15]
         },
-        "labels": "Charger Type",
+        "names": "Charger Type",
         "values": "Share %"
       }
     ]
@@ -2732,7 +2732,7 @@
           "Device": ["Desktop","Mobile","Tablet"],
           "Share %": [50, 40, 10]
         },
-        "labels": "Device",
+        "names": "Device",
         "values": "Share %"
       }
     ]
@@ -2801,7 +2801,7 @@
           "Promo Type": ["Discount","BOGO","Coupon","Flash Sale"],
           "Share %": [40, 25, 20, 15]
         },
-        "labels": "Promo Type",
+        "names": "Promo Type",
         "values": "Share %"
       },
       {
@@ -2853,7 +2853,7 @@
           "Pass Type": ["Monthly","Weekly","Day"],
           "Share %": [50,30,20]
         },
-        "labels": "Pass Type",
+        "names": "Pass Type",
         "values": "Share %"
       }
     ]
@@ -2933,7 +2933,7 @@
           "Source": ["Coal","Gas","Renewables","Nuclear"],
           "Share %": [30, 35, 25, 10]
         },
-        "labels": "Source",
+        "names": "Source",
         "values": "Share %"
       }
     ]
@@ -3002,7 +3002,7 @@
           "Channel": ["Search","Social","Display","Video"],
           "Share %": [40, 30, 20, 10]
         },
-        "labels": "Channel",
+        "names": "Channel",
         "values": "Share %"
       },
       {
@@ -3052,7 +3052,7 @@
           "Product": ["A","B","C","D"],
           "Share %": [25, 30, 20, 25]
         },
-        "labels": "Product",
+        "names": "Product",
         "values": "Share %"
       }
     ]
@@ -3130,7 +3130,7 @@
           "Satisfaction": ["Very Satisfied", "Satisfied", "Neutral", "Dissatisfied"],
           "Share %": [50, 30, 15, 5]
         },
-        "labels": "Satisfaction",
+        "names": "Satisfaction",
         "values": "Share %"
       }
     ]
@@ -3212,7 +3212,7 @@
           "Application": ["Scientific Research", "Cryptography", "Optimization", "Machine Learning"],
           "Share %": [30, 25, 20, 25]
         },
-        "labels": "Application",
+        "names": "Application",
         "values": "Share %"
       }
     ]
@@ -3253,7 +3253,7 @@
           "Department": ["Assembly", "Maintenance", "Logistics", "QA"],
           "Share %": [40, 30, 20, 10]
         },
-        "labels": "Department",
+        "names": "Department",
         "values": "Share %"
       }
     ]
@@ -3294,7 +3294,7 @@
           "Department": ["Operations","Sales","R&D","Support"],
           "High Engagement %": [30, 25, 20, 25]
         },
-        "labels": "Department",
+        "names": "Department",
         "values": "High Engagement %"
       }
     ]
@@ -3333,7 +3333,7 @@
           "Module": ["Intro","Intermediate","Advanced"],
           "Avg Rating": [4.0, 3.7, 3.5]
         },
-        "labels": "Module",
+        "names": "Module",
         "values": "Avg Rating"
       }
     ]
@@ -3413,7 +3413,7 @@
           "Department": ["Sales Floor","Backroom","Warehouse"],
           "Share %": [60, 25, 15]
         },
-        "labels": "Department",
+        "names": "Department",
         "values": "Share %"
       }
     ]
@@ -3466,7 +3466,7 @@
     "exhibits": [
       {"exhibit_title": "Exhibit 1: Monthly Active Users","chart_type": "line","description": "Active users (000s)","data": {"Month": ["Jan","Feb","Mar","Apr","May","Jun"],"Users (000s)": [120,130,140,150,160,170]},"x_axis": "Month","y_axis": ["Users (000s)"]},
       {"exhibit_title": "Exhibit 2: Average Transaction Value","chart_type": "bar","description": "USD per transaction","data": {"Month": ["Jan","Feb","Mar","Apr","May","Jun"],"Value": [25,27,26,28,29,30]},"x_axis": "Month","y_axis": ["Value"]},
-      {"exhibit_title": "Exhibit 3: Regional Usage Share","chart_type": "pie","description": "Share by region","data": {"Region": ["NA","EU","APAC","LATAM"],"Share %": [40,30,20,10]},"labels": "Region","values": "Share %"}
+      {"exhibit_title": "Exhibit 3: Regional Usage Share","chart_type": "pie","description": "Share by region","data": {"Region": ["NA","EU","APAC","LATAM"],"Share %": [40,30,20,10]},"names": "Region","values": "Share %"}
     ]
   },
   {
@@ -3488,7 +3488,7 @@
     "exhibits": [
       {"exhibit_title": "Exhibit 1: Maintenance Cost by Model","chart_type": "bar","description": "USD per vehicle per month","data": {"Model": ["A","B","C"],"Cost": [150,200,180]},"x_axis": "Model","y_axis": ["Cost"]},
       {"exhibit_title": "Exhibit 2: Downtime Hours Over Time","chart_type": "line","description": "Total hours","data": {"Month": ["Jan","Feb","Mar","Apr","May","Jun"],"Downtime": [20,25,22,30,28,24]},"x_axis": "Month","y_axis": ["Downtime"]},
-      {"exhibit_title": "Exhibit 3: Issue Frequency by Category","chart_type": "pie","description": "% of incidents","data": {"Category": ["Engine","Brake","Electrical","Tires"],"Share %": [35,25,20,20]},"labels": "Category","values": "Share %"}
+      {"exhibit_title": "Exhibit 3: Issue Frequency by Category","chart_type": "pie","description": "% of incidents","data": {"Category": ["Engine","Brake","Electrical","Tires"],"Share %": [35,25,20,20]},"names": "Category","values": "Share %"}
     ]
   },
   {
@@ -3499,7 +3499,7 @@
     "exhibits": [
       {"exhibit_title":"Exhibit 1: Score Improvements Pre/Post","chart_type":"table","description":"Average percent change","data":{"Subject":["Math","Science","Reading"],"Improvement %":[10,8,12]}},
       {"exhibit_title":"Exhibit 2: Module Completion Rates","chart_type":"bar","description":"% of enrolled students","data":{"Module":["Intro","Mid","Final"],"Completion %":[90,75,60]},"x_axis":"Module","y_axis":["Completion %"]},
-      {"exhibit_title":"Exhibit 3: Feedback Category Share","chart_type":"pie","description":"% of comments","data":{"Sentiment":["Positive","Neutral","Negative"],"Share %":[60,25,15]},"labels":"Sentiment","values":"Share %"}
+      {"exhibit_title":"Exhibit 3: Feedback Category Share","chart_type":"pie","description":"% of comments","data":{"Sentiment":["Positive","Neutral","Negative"],"Share %":[60,25,15]},"names":"Sentiment","values":"Share %"}
     ]
   },
   {
@@ -3521,7 +3521,7 @@
     "exhibits": [
       {"exhibit_title":"Exhibit 1: Enrollment Timelines by Site","chart_type":"table","description":"Days to enroll 50 participants","data":{"Site":["A","B","C"],"Days":[30,45,40]}},
       {"exhibit_title":"Exhibit 2: Dropout Rate Over Time","chart_type":"line","description":"% of initial cohort","data":{"Week":[1,2,3,4,5,6],"Dropout %":[5,10,15,17,18,20]},"x_axis":"Week","y_axis":["Dropout %"]},
-      {"exhibit_title":"Exhibit 3: Demographic Mix","chart_type":"pie","description":"% by age group","data":{"Age Group":["18-34","35-54","55+"],"Share %":[40,35,25]},"labels":"Age Group","values":"Share %"}
+      {"exhibit_title":"Exhibit 3: Demographic Mix","chart_type":"pie","description":"% by age group","data":{"Age Group":["18-34","35-54","55+"],"Share %":[40,35,25]},"names":"Age Group","values":"Share %"}
     ]
   },
   {
@@ -3531,7 +3531,7 @@
     "prompt_text":"TechSecure, a cybersecurity vendor, is seeking support to improve response processes. The company has asked for your support in conducting analysis of incident response times, vulnerability severity distributions, and resolution rates to identify process improvement opportunities. Please review the following information and provide relevant insights for TechSecure.",
     "exhibits":[
       {"exhibit_title":"Exhibit 1: Response Time Distribution","chart_type":"bar","description":"% of incidents","data":{"Time (hrs)":["<1","1-4","4-8","8+"],"%": [30,40,20,10]},"x_axis":"Time (hrs)","y_axis":["%"]},
-      {"exhibit_title":"Exhibit 2: Severity Distribution","chart_type":"pie","description":"% of vulnerabilities","data":{"Severity":["Low","Medium","High","Critical"],"Share %":[25,35,25,15]},"labels":"Severity","values":"Share %"},
+      {"exhibit_title":"Exhibit 2: Severity Distribution","chart_type":"pie","description":"% of vulnerabilities","data":{"Severity":["Low","Medium","High","Critical"],"Share %":[25,35,25,15]},"names":"Severity","values":"Share %"},
       {"exhibit_title":"Exhibit 3: Resolution Rate Over Time","chart_type":"line","description":"% resolved within SLA","data":{"Month":["Jan","Feb","Mar","Apr","May"],"Rate %":[80,82,85,88,90]},"x_axis":"Month","y_axis":["Rate %"]}
     ]
   },
@@ -3543,7 +3543,7 @@
     "exhibits":[
       {"exhibit_title":"Exhibit 1: Seasonal Yield Trend","chart_type":"line","description":"Bushels per acre","data":{"Quarter":["Q1","Q2","Q3","Q4"],"Yield":[120,140,160,130]},"x_axis":"Quarter","y_axis":["Yield"]},
       {"exhibit_title":"Exhibit 2: Fertilizer Usage Correlation","chart_type":"scatter","description":"Yield vs fertilizer (lbs/acre)","data":{"Fertilizer":[50,60,70,80,90],"Yield":[110,130,150,145,135]},"x_axis":"Fertilizer","y_axis":["Yield"]},
-      {"exhibit_title":"Exhibit 3: Regional Performance","chart_type":"pie","description":"% of total yield","data":{"Region":["North","South","East","West"],"Share %":[25,25,30,20]},"labels":"Region","values":"Share %"}
+      {"exhibit_title":"Exhibit 3: Regional Performance","chart_type":"pie","description":"% of total yield","data":{"Region":["North","South","East","West"],"Share %":[25,25,30,20]},"names":"Region","values":"Share %"}
     ]
   },
   {
@@ -3553,7 +3553,7 @@
     "prompt_text":"ShopTrend, an e-commerce retailer, is seeking support to analyze product returns. The company has asked for your support in conducting analysis of return rates by category, reason distributions, and return time patterns to identify reduction strategies. Please review the following information and provide relevant insights for ShopTrend.",
     "exhibits":[
       {"exhibit_title":"Exhibit 1: Return Rate by Category","chart_type":"bar","description":"% of sold items","data":{"Category":["Electronics","Apparel","Home"],"Return %":[5,15,8]},"x_axis":"Category","y_axis":["Return %"]},
-      {"exhibit_title":"Exhibit 2: Return Reasons","chart_type":"pie","description":"% of returns","data":{"Reason":["Defect","Size","No Longer Needed","Other"],"Share %":[40,30,20,10]},"labels":"Reason","values":"Share %"},
+      {"exhibit_title":"Exhibit 2: Return Reasons","chart_type":"pie","description":"% of returns","data":{"Reason":["Defect","Size","No Longer Needed","Other"],"Share %":[40,30,20,10]},"names":"Reason","values":"Share %"},
       {"exhibit_title":"Exhibit 3: Time-to-Return Distribution","chart_type":"bar","description":"% of returns","data":{"Days":["<7","7-14","14-30","30+"],"%": [50,30,15,5]},"x_axis":"Days","y_axis":["%"]}
     ]
   },
@@ -3565,7 +3565,7 @@
     "exhibits":[
       {"exhibit_title":"Exhibit 1: Session Length Distribution","chart_type":"bar","description":"% of sessions","data":{"Length Min":["<15","15-30","30-60","60+"],"%": [20,40,30,10]},"x_axis":"Length Min","y_axis":["%"]},
       {"exhibit_title":"Exhibit 2: Repeat Viewership Rate","chart_type":"line","description":"% of users returning","data":{"Week":[1,2,3,4,5],"Repeat %":[30,35,40,45,50]},"x_axis":"Week","y_axis":["Repeat %"]},
-      {"exhibit_title":"Exhibit 3: Genre Preference","chart_type":"pie","description":"% of watch time","data":{"Genre":["Drama","Comedy","Doc","Action"],"Share %":[25,25,20,30]},"labels":"Genre","values":"Share %"}
+      {"exhibit_title":"Exhibit 3: Genre Preference","chart_type":"pie","description":"% of watch time","data":{"Genre":["Drama","Comedy","Doc","Action"],"Share %":[25,25,20,30]},"names":"Genre","values":"Share %"}
     ]
   },
   {
@@ -3576,7 +3576,7 @@
     "exhibits": [
       {"exhibit_title": "Exhibit 1: Filter Replacement Rate","chart_type": "line","description": "Replacements per month (000s)","data": {"Month": ["Jan","Feb","Mar","Apr","May","Jun"],"Replacements (000s)": [10,12,13,15,14,16]},"x_axis": "Month","y_axis": ["Replacements (000s)"]},
       {"exhibit_title": "Exhibit 2: Customer Satisfaction Trend","chart_type": "bar","description": "Average satisfaction score (1-5)","data": {"Quarter": ["Q1","Q2","Q3","Q4"],"Score": [4.1,4.3,4.4,4.2]},"x_axis": "Quarter","y_axis": ["Score"]},
-      {"exhibit_title": "Exhibit 3: Sales Share by Channel","chart_type": "pie","description": "Share by channel","data": {"Channel": ["Online","Retail","Wholesale"],"Share %": [50,30,20]},"labels": "Channel","values": "Share %"}
+      {"exhibit_title": "Exhibit 3: Sales Share by Channel","chart_type": "pie","description": "Share by channel","data": {"Channel": ["Online","Retail","Wholesale"],"Share %": [50,30,20]},"names": "Channel","values": "Share %"}
     ]
   },
   {
@@ -3587,7 +3587,7 @@
     "exhibits": [
       {"exhibit_title": "Exhibit 1: Fleet Utilization Rate","chart_type": "bar","description": "% of fleet in use","data": {"Month": ["Jan","Feb","Mar","Apr","May","Jun"],"Utilization %": [70,75,80,78,82,85]},"x_axis": "Month","y_axis": ["Utilization %"]},
       {"exhibit_title": "Exhibit 2: Booking Lead Time Distribution","chart_type": "line","description": "Average days before rental","data": {"Month": ["Jan","Feb","Mar","Apr","May","Jun"],"Lead Time": [3,3.5,3.2,3.8,4,4.1]},"x_axis": "Month","y_axis": ["Lead Time"]},
-      {"exhibit_title": "Exhibit 3: Customer Type Share","chart_type": "pie","description": "Share by type","data": {"Type": ["Business","Leisure"],"Share %": [60,40]},"labels": "Type","values": "Share %"}
+      {"exhibit_title": "Exhibit 3: Customer Type Share","chart_type": "pie","description": "Share by type","data": {"Type": ["Business","Leisure"],"Share %": [60,40]},"names": "Type","values": "Share %"}
     ]
   },
   {
@@ -3598,7 +3598,7 @@
     "exhibits": [
       {"exhibit_title": "Exhibit 1: Feature Activation Rate","chart_type": "bar","description": "% of devices with feature enabled","data": {"Feature": ["Voice","Remote","Automation"],"Activation %": [80,70,60]},"x_axis": "Feature","y_axis": ["Activation %"]},
       {"exhibit_title": "Exhibit 2: Support Requests by Feature","chart_type": "line","description": "Requests per month","data": {"Month": ["Jan","Feb","Mar","Apr"],"Voice": [20,22,18,15],"Remote": [10,12,11,10],"Automation": [5,7,6,4]},"x_axis": "Month","y_axis": ["Voice","Remote","Automation"]},
-      {"exhibit_title": "Exhibit 3: Device Model Share","chart_type": "pie","description": "Share by model","data": {"Model": ["Basic","Pro","Elite"],"Share %": [50,35,15]},"labels": "Model","values": "Share %"}
+      {"exhibit_title": "Exhibit 3: Device Model Share","chart_type": "pie","description": "Share by model","data": {"Model": ["Basic","Pro","Elite"],"Share %": [50,35,15]},"names": "Model","values": "Share %"}
     ]
   },
   {
@@ -3609,7 +3609,7 @@
     "exhibits": [
       {"exhibit_title": "Exhibit 1: Bookings by Channel","chart_type": "bar","description": "Bookings (000s)","data": {"Channel": ["Web","Mobile App","Call Center"],"Bookings (000s)": [80,60,20]},"x_axis": "Channel","y_axis": ["Bookings (000s)"]},
       {"exhibit_title": "Exhibit 2: Cancellation Rate Over Time","chart_type": "line","description": "% of bookings cancelled","data": {"Month": ["Jan","Feb","Mar","Apr"],"Cancellation %": [10,9,8,7]},"x_axis": "Month","y_axis": ["Cancellation %"]},
-      {"exhibit_title": "Exhibit 3: Destination Share","chart_type": "pie","description": "Share by top 3 destinations","data": {"Destination": ["Beach","City","Mountain"],"Share %": [40,35,25]},"labels": "Destination","values": "Share %"}
+      {"exhibit_title": "Exhibit 3: Destination Share","chart_type": "pie","description": "Share by top 3 destinations","data": {"Destination": ["Beach","City","Mountain"],"Share %": [40,35,25]},"names": "Destination","values": "Share %"}
     ]
   },
   {
@@ -3620,7 +3620,7 @@
     "exhibits": [
       {"exhibit_title": "Exhibit 1: Sessions by Specialty","chart_type": "bar","description": "Sessions per month (000s)","data": {"Specialty": ["GP","Derm","Psych","Peds"],"Sessions (000s)": [30,20,15,10]},"x_axis": "Specialty","y_axis": ["Sessions (000s)"]},
       {"exhibit_title": "Exhibit 2: Patient Satisfaction Trend","chart_type": "line","description": "Average score (1-5)","data": {"Month": ["Jan","Feb","Mar","Apr"],"Score": [4.2,4.3,4.4,4.5]},"x_axis": "Month","y_axis": ["Score"]},
-      {"exhibit_title": "Exhibit 3: Device Usage Share","chart_type": "pie","description": "Share by device","data": {"Device": ["Mobile","Desktop","Tablet"],"Share %": [55,35,10]},"labels": "Device","values": "Share %"}
+      {"exhibit_title": "Exhibit 3: Device Usage Share","chart_type": "pie","description": "Share by device","data": {"Device": ["Mobile","Desktop","Tablet"],"Share %": [55,35,10]},"names": "Device","values": "Share %"}
     ]
   },
   {
@@ -3642,7 +3642,7 @@
     "exhibits": [
       {"exhibit_title": "Exhibit 1: Detection Rate by Crop","chart_type": "bar","description": "% of cases detected","data": {"Crop": ["Wheat","Corn","Soy"],"Detection %": [85,80,90]},"x_axis": "Crop","y_axis": ["Detection %"]},
       {"exhibit_title": "Exhibit 2: Alert Frequency Over Time","chart_type": "line","description": "Alerts per week","data": {"Week": [1,2,3,4,5],"Alerts": [10,12,14,13,15]},"x_axis": "Week","y_axis": ["Alerts"]},
-      {"exhibit_title": "Exhibit 3: Crop Loss by Region","chart_type": "pie","description": "Share of total loss","data": {"Region": ["North","South","East","West"],"Share %": [30,25,25,20]},"labels": "Region","values": "Share %"}
+      {"exhibit_title": "Exhibit 3: Crop Loss by Region","chart_type": "pie","description": "Share of total loss","data": {"Region": ["North","South","East","West"],"Share %": [30,25,25,20]},"names": "Region","values": "Share %"}
     ]
   },
   {
@@ -3653,7 +3653,7 @@
     "exhibits": [
       {"exhibit_title": "Exhibit 1: Loyalty Member Growth","chart_type": "line","description": "Members (000s)","data": {"Month": ["Jan","Feb","Mar","Apr"],"Members (000s)": [50,55,60,65]},"x_axis": "Month","y_axis": ["Members (000s)"]},
       {"exhibit_title": "Exhibit 2: Redemption Rate Trend","chart_type": "bar","description": "% of points redeemed","data": {"Quarter": ["Q1","Q2","Q3","Q4"],"Redemption %": [30,35,40,45]},"x_axis": "Quarter","y_axis": ["Redemption %"]},
-      {"exhibit_title": "Exhibit 3: Spend Share by Segment","chart_type": "pie","description": "Share by segment","data": {"Segment": ["Silver","Gold","Platinum"],"Share %": [40,35,25]},"labels": "Segment","values": "Share %"}
+      {"exhibit_title": "Exhibit 3: Spend Share by Segment","chart_type": "pie","description": "Share by segment","data": {"Segment": ["Silver","Gold","Platinum"],"Share %": [40,35,25]},"names": "Segment","values": "Share %"}
     ]
   },
   {
@@ -3664,7 +3664,7 @@
     "exhibits": [
       {"exhibit_title": "Exhibit 1: Portal Logins by Month","chart_type": "line","description": "Logins (000s)","data": {"Month": ["Jan","Feb","Mar","Apr"],"Logins (000s)": [20,22,25,28]},"x_axis": "Month","y_axis": ["Logins (000s)"]},
       {"exhibit_title": "Exhibit 2: Feature Usage Trend","chart_type": "bar","description": "Uses per user","data": {"Feature": ["Appointments","Messaging","Lab Results"],"Uses": [5,3,2]},"x_axis": "Feature","y_axis": ["Uses"]},
-      {"exhibit_title": "Exhibit 3: Access by Age Group","chart_type": "pie","description": "Share by age group","data": {"Age Group": ["18-34","35-54","55+"],"Share %": [40,35,25]},"labels": "Age Group","values": "Share %"}
+      {"exhibit_title": "Exhibit 3: Access by Age Group","chart_type": "pie","description": "Share by age group","data": {"Age Group": ["18-34","35-54","55+"],"Share %": [40,35,25]},"names": "Age Group","values": "Share %"}
     ]
   },
   {
@@ -3675,7 +3675,7 @@
     "exhibits": [
       {"exhibit_title": "Exhibit 1: Maintenance Cost Trend","chart_type": "line","description": "Cost per month (000s USD)","data": {"Month": ["Jan","Feb","Mar","Apr"],"Cost (000s)": [15,16,18,17]},"x_axis": "Month","y_axis": ["Cost (000s)"]},
       {"exhibit_title": "Exhibit 2: Downtime by Vehicle Type","chart_type": "bar","description": "Hours per month","data": {"Type": ["Sedan","SUV","Truck"],"Hours": [40,50,60]},"x_axis": "Type","y_axis": ["Hours"]},
-      {"exhibit_title": "Exhibit 3: Repair Type Share","chart_type": "pie","description": "Share by repair type","data": {"Repair": ["Engine","Tires","Brakes"],"Share %": [50,30,20]},"labels": "Repair","values": "Share %"}
+      {"exhibit_title": "Exhibit 3: Repair Type Share","chart_type": "pie","description": "Share by repair type","data": {"Repair": ["Engine","Tires","Brakes"],"Share %": [50,30,20]},"names": "Repair","values": "Share %"}
     ]
   },
   {
@@ -3686,7 +3686,7 @@
     "exhibits": [
       {"exhibit_title": "Exhibit 1: Enrollment Trend","chart_type": "line","description": "Enrollments per semester","data": {"Semester": ["Fall","Winter","Spring","Summer"],"Enrollments": [100,110,120,115]},"x_axis": "Semester","y_axis": ["Enrollments"]},
       {"exhibit_title": "Exhibit 2: Activity Participation Rates","chart_type": "bar","description": "% of students by activity","data": {"Activity": ["Art","Sports","STEM"],"Participation %": [60,70,80]},"x_axis": "Activity","y_axis": ["Participation %"]},
-      {"exhibit_title": "Exhibit 3: Feedback Sentiment Share","chart_type": "pie","description": "Share by sentiment","data": {"Sentiment": ["Positive","Neutral","Negative"],"Share %": [70,20,10]},"labels": "Sentiment","values": "Share %"}
+      {"exhibit_title": "Exhibit 3: Feedback Sentiment Share","chart_type": "pie","description": "Share by sentiment","data": {"Sentiment": ["Positive","Neutral","Negative"],"Share %": [70,20,10]},"names": "Sentiment","values": "Share %"}
     ]
   },
   {
@@ -3697,7 +3697,7 @@
     "exhibits": [
       {"exhibit_title": "Exhibit 1: Adoption Rate by Region","chart_type": "bar","description": "% of homes with solar","data": {"Region": ["North","South","East","West"],"Adoption %": [20,25,15,30]},"x_axis": "Region","y_axis": ["Adoption %"]},
       {"exhibit_title": "Exhibit 2: Incentive Impact Trend","chart_type": "line","description": "Adoption % over time","data": {"Year": [2020,2021,2022,2023],"Adoption %": [10,15,20,25]},"x_axis": "Year","y_axis": ["Adoption %"]},
-      {"exhibit_title": "Exhibit 3: Market Share by Segment","chart_type": "pie","description": "Share by segment","data": {"Segment": ["Residential","Commercial"],"Share %": [60,40]},"labels": "Segment","values": "Share %"}
+      {"exhibit_title": "Exhibit 3: Market Share by Segment","chart_type": "pie","description": "Share by segment","data": {"Segment": ["Residential","Commercial"],"Share %": [60,40]},"names": "Segment","values": "Share %"}
     ]
   },
   {
@@ -3708,7 +3708,7 @@
     "exhibits": [
       {"exhibit_title": "Exhibit 1: Attendance by Time Slot","chart_type": "bar","description": "Average members per slot","data": {"Time Slot": ["Morning","Afternoon","Evening"],"Members": [50,40,60]},"x_axis": "Time Slot","y_axis": ["Members"]},
       {"exhibit_title": "Exhibit 2: Membership Type Trend","chart_type": "line","description": "Active members by type","data": {"Month": ["Jan","Feb","Mar","Apr"],"Standard": [100,105,110,112],"Premium": [40,45,48,50]},"x_axis": "Month","y_axis": ["Standard","Premium"]},
-      {"exhibit_title": "Exhibit 3: Class Popularity Share","chart_type": "pie","description": "Share by class","data": {"Class": ["Yoga","Spin","HIIT"],"Share %": [40,35,25]},"labels": "Class","values": "Share %"}
+      {"exhibit_title": "Exhibit 3: Class Popularity Share","chart_type": "pie","description": "Share by class","data": {"Class": ["Yoga","Spin","HIIT"],"Share %": [40,35,25]},"names": "Class","values": "Share %"}
     ]
   },
   {
@@ -3719,7 +3719,7 @@
     "exhibits": [
       {"exhibit_title": "Exhibit 1: Conversion Rate by Device","chart_type": "bar","description": "% conversion","data": {"Device": ["Desktop","Mobile","Tablet"],"Conversion %": [3.5,2.8,2.2]},"x_axis": "Device","y_axis": ["Conversion %"]},
       {"exhibit_title": "Exhibit 2: Abandoned Cart Trend","chart_type": "line","description": "Abandoned carts per month","data": {"Month": ["Jan","Feb","Mar","Apr"],"Abandoned": [200,220,210,205]},"x_axis": "Month","y_axis": ["Abandoned"]},
-      {"exhibit_title": "Exhibit 3: Sales Share by Category","chart_type": "pie","description": "Share by category","data": {"Category": ["Electronics","Clothing","Home"],"Share %": [40,35,25]},"labels": "Category","values": "Share %"}
+      {"exhibit_title": "Exhibit 3: Sales Share by Category","chart_type": "pie","description": "Share by category","data": {"Category": ["Electronics","Clothing","Home"],"Share %": [40,35,25]},"names": "Category","values": "Share %"}
     ]
   },
   {
@@ -3730,7 +3730,7 @@
     "exhibits": [
       {"exhibit_title": "Exhibit 1: No-Show Rate by Appointment Type","chart_type": "bar","description": "% no-shows","data": {"Type": ["Checkup","Follow-up","Specialist"],"No-Show %": [5,8,10]},"x_axis": "Type","y_axis": ["No-Show %"]},
       {"exhibit_title": "Exhibit 2: Reschedule Trend","chart_type": "line","description": "Reschedules per month","data": {"Month": ["Jan","Feb","Mar","Apr"],"Reschedules": [30,28,32,29]},"x_axis": "Month","y_axis": ["Reschedules"]},
-      {"exhibit_title": "Exhibit 3: Patient Age Group Share","chart_type": "pie","description": "Share by age group","data": {"Age Group": ["0-18","19-34","35-54","55+"],"Share %": [15,25,35,25]},"labels": "Age Group","values": "Share %"}
+      {"exhibit_title": "Exhibit 3: Patient Age Group Share","chart_type": "pie","description": "Share by age group","data": {"Age Group": ["0-18","19-34","35-54","55+"],"Share %": [15,25,35,25]},"names": "Age Group","values": "Share %"}
     ]
   },
   {
@@ -3741,7 +3741,7 @@
     "exhibits": [
       {"exhibit_title": "Exhibit 1: Average Trip Duration","chart_type": "bar","description": "Minutes per trip","data": {"Neighborhood": ["Central","East","West","South"],"Duration": [12,10,14,11]},"x_axis": "Neighborhood","y_axis": ["Duration"]},
       {"exhibit_title": "Exhibit 2: User Segment Trend","chart_type": "line","description": "Trips by segment","data": {"Month": ["Jan","Feb","Mar","Apr"],"Commuter": [1000,1100,1200,1250],"Tourist": [500,600,700,750]},"x_axis": "Month","y_axis": ["Commuter","Tourist"]},
-      {"exhibit_title": "Exhibit 3: Ride Share by Neighborhood","chart_type": "pie","description": "Share by neighborhood","data": {"Neighborhood": ["Central","East","West","South"],"Share %": [35,25,25,15]},"labels": "Neighborhood","values": "Share %"}
+      {"exhibit_title": "Exhibit 3: Ride Share by Neighborhood","chart_type": "pie","description": "Share by neighborhood","data": {"Neighborhood": ["Central","East","West","South"],"Share %": [35,25,25,15]},"names": "Neighborhood","values": "Share %"}
     ]
   },
   {
@@ -3752,7 +3752,7 @@
     "exhibits": [
       {"exhibit_title": "Exhibit 1: Route Efficiency","chart_type": "bar","description": "Avg deliveries/hour","data": {"Route": ["A","B","C","D"],"Deliveries/Hour": [8,9,7,10]},"x_axis": "Route","y_axis": ["Deliveries/Hour"]},
       {"exhibit_title": "Exhibit 2: Delivery Window Trend","chart_type": "line","description": "Orders by window","data": {"Window": ["Morning","Afternoon","Evening"],"Orders": [100,150,120]},"x_axis": "Window","y_axis": ["Orders"]},
-      {"exhibit_title": "Exhibit 3: Order Share by Category","chart_type": "pie","description": "Share by category","data": {"Category": ["Fresh","Pantry","Frozen"],"Share %": [50,30,20]},"labels": "Category","values": "Share %"}
+      {"exhibit_title": "Exhibit 3: Order Share by Category","chart_type": "pie","description": "Share by category","data": {"Category": ["Fresh","Pantry","Frozen"],"Share %": [50,30,20]},"names": "Category","values": "Share %"}
     ]
   },
   {
@@ -3763,7 +3763,7 @@
     "exhibits": [
       {"exhibit_title": "Exhibit 1: Enrollment by Plan","chart_type": "bar","description": "Members (000s)","data": {"Plan": ["Basic","Plus","Premium"],"Members (000s)": [70,50,30]},"x_axis": "Plan","y_axis": ["Members (000s)"]},
       {"exhibit_title": "Exhibit 2: Churn Trend","chart_type": "line","description": "Churn % by month","data": {"Month": ["Jan","Feb","Mar","Apr"],"Churn %": [2,2.5,2.2,2.1]},"x_axis": "Month","y_axis": ["Churn %"]},
-      {"exhibit_title": "Exhibit 3: Premium Share by Segment","chart_type": "pie","description": "Share by segment","data": {"Segment": ["Individual","Family","Group"],"Share %": [40,35,25]},"labels": "Segment","values": "Share %"}
+      {"exhibit_title": "Exhibit 3: Premium Share by Segment","chart_type": "pie","description": "Share by segment","data": {"Segment": ["Individual","Family","Group"],"Share %": [40,35,25]},"names": "Segment","values": "Share %"}
     ]
   },
   {
@@ -3774,7 +3774,7 @@
     "exhibits": [
       {"exhibit_title": "Exhibit 1: Occupancy by Building","chart_type": "bar","description": "% occupied","data": {"Building": ["A","B","C"],"Occupancy %": [95,90,92]},"x_axis": "Building","y_axis": ["Occupancy %"]},
       {"exhibit_title": "Exhibit 2: Lease Renewal Trend","chart_type": "line","description": "Renewals per quarter","data": {"Quarter": ["Q1","Q2","Q3","Q4"],"Renewals": [30,35,32,34]},"x_axis": "Quarter","y_axis": ["Renewals"]},
-      {"exhibit_title": "Exhibit 3: Tenant Age Group Share","chart_type": "pie","description": "Share by age group","data": {"Age Group": ["18-34","35-54","55+"],"Share %": [50,35,15]},"labels": "Age Group","values": "Share %"}
+      {"exhibit_title": "Exhibit 3: Tenant Age Group Share","chart_type": "pie","description": "Share by age group","data": {"Age Group": ["18-34","35-54","55+"],"Share %": [50,35,15]},"names": "Age Group","values": "Share %"}
     ]
   },
   {
@@ -3785,7 +3785,7 @@
     "exhibits": [
       {"exhibit_title": "Exhibit 1: Feedback Ratings by Course","chart_type": "bar","description": "Avg rating (1-5)","data": {"Course": ["Math","Science","History"],"Rating": [4.2,4.1,4.4]},"x_axis": "Course","y_axis": ["Rating"]},
       {"exhibit_title": "Exhibit 2: Completion Trend","chart_type": "line","description": "% complete per month","data": {"Month": ["Jan","Feb","Mar","Apr"],"Completion %": [60,62,65,68]},"x_axis": "Month","y_axis": ["Completion %"]},
-      {"exhibit_title": "Exhibit 3: Student Age Group Share","chart_type": "pie","description": "Share by age group","data": {"Age Group": ["18-24","25-34","35+"],"Share %": [55,30,15]},"labels": "Age Group","values": "Share %"}
+      {"exhibit_title": "Exhibit 3: Student Age Group Share","chart_type": "pie","description": "Share by age group","data": {"Age Group": ["18-24","25-34","35+"],"Share %": [55,30,15]},"names": "Age Group","values": "Share %"}
     ]
   },
   {
@@ -3796,7 +3796,7 @@
     "exhibits": [
       {"exhibit_title": "Exhibit 1: Trips by Mode","chart_type": "bar","description": "Trips (000s)","data": {"Mode": ["Bike","Scooter","Car"],"Trips (000s)": [40,30,20]},"x_axis": "Mode","y_axis": ["Trips (000s)"]},
       {"exhibit_title": "Exhibit 2: Usage Trend","chart_type": "line","description": "Total trips per month","data": {"Month": ["Jan","Feb","Mar","Apr"],"Trips": [80,90,100,110]},"x_axis": "Month","y_axis": ["Trips"]},
-      {"exhibit_title": "Exhibit 3: Neighborhood Share","chart_type": "pie","description": "Share by neighborhood","data": {"Neighborhood": ["Central","East","West"],"Share %": [45,35,20]},"labels": "Neighborhood","values": "Share %"}
+      {"exhibit_title": "Exhibit 3: Neighborhood Share","chart_type": "pie","description": "Share by neighborhood","data": {"Neighborhood": ["Central","East","West"],"Share %": [45,35,20]},"names": "Neighborhood","values": "Share %"}
     ]
   },
   {
@@ -3807,7 +3807,7 @@
     "exhibits": [
       {"exhibit_title": "Exhibit 1: Device Adherence Rate","chart_type": "line","description": "% of patients using device daily","data": {"Month": ["Jan","Feb","Mar","Apr"],"Adherence %": [70,72,75,77]},"x_axis": "Month","y_axis": ["Adherence %"]},
       {"exhibit_title": "Exhibit 2: Alert Trend","chart_type": "bar","description": "Alerts per week","data": {"Week": [1,2,3,4],"Alerts": [15,18,20,17]},"x_axis": "Week","y_axis": ["Alerts"]},
-      {"exhibit_title": "Exhibit 3: Patient Condition Share","chart_type": "pie","description": "Share by condition","data": {"Condition": ["Diabetes","Heart","Other"],"Share %": [50,30,20]},"labels": "Condition","values": "Share %"}
+      {"exhibit_title": "Exhibit 3: Patient Condition Share","chart_type": "pie","description": "Share by condition","data": {"Condition": ["Diabetes","Heart","Other"],"Share %": [50,30,20]},"names": "Condition","values": "Share %"}
     ]
   },
   {
@@ -3818,7 +3818,7 @@
     "exhibits": [
       {"exhibit_title": "Exhibit 1: Fulfillment Time by Warehouse","chart_type": "bar","description": "Avg hours to fulfill","data": {"Warehouse": ["A","B","C"],"Hours": [4,5,3]},"x_axis": "Warehouse","y_axis": ["Hours"]},
       {"exhibit_title": "Exhibit 2: Delay Trend","chart_type": "line","description": "Delayed orders per week","data": {"Week": [1,2,3,4],"Delays": [8,10,7,6]},"x_axis": "Week","y_axis": ["Delays"]},
-      {"exhibit_title": "Exhibit 3: Order Share by Category","chart_type": "pie","description": "Share by category","data": {"Category": ["Electronics","Groceries","Other"],"Share %": [40,50,10]},"labels": "Category","values": "Share %"}
+      {"exhibit_title": "Exhibit 3: Order Share by Category","chart_type": "pie","description": "Share by category","data": {"Category": ["Electronics","Groceries","Other"],"Share %": [40,50,10]},"names": "Category","values": "Share %"}
     ]
   },
   {
@@ -3829,7 +3829,7 @@
     "exhibits": [
       {"exhibit_title": "Exhibit 1: Delivery Frequency","chart_type": "bar","description": "Deliveries per week","data": {"Type": ["Single","Weekly","Biweekly"],"Deliveries": [30,50,20]},"x_axis": "Type","y_axis": ["Deliveries"]},
       {"exhibit_title": "Exhibit 2: Customer Satisfaction Trend","chart_type": "line","description": "Avg score (1-5)","data": {"Month": ["Jan","Feb","Mar","Apr"],"Score": [4.4,4.5,4.6,4.7]},"x_axis": "Month","y_axis": ["Score"]},
-      {"exhibit_title": "Exhibit 3: Produce Type Share","chart_type": "pie","description": "Share by type","data": {"Type": ["Fruit","Vegetable"],"Share %": [60,40]},"labels": "Type","values": "Share %"}
+      {"exhibit_title": "Exhibit 3: Produce Type Share","chart_type": "pie","description": "Share by type","data": {"Type": ["Fruit","Vegetable"],"Share %": [60,40]},"names": "Type","values": "Share %"}
     ]
   },
   {
@@ -3840,7 +3840,7 @@
     "exhibits": [
       {"exhibit_title": "Exhibit 1: Test Volume by Type","chart_type": "bar","description": "Tests per month (000s)","data": {"Type": ["Blood","Urine","Other"],"Tests (000s)": [40,30,10]},"x_axis": "Type","y_axis": ["Tests (000s)"]},
       {"exhibit_title": "Exhibit 2: Turnaround Time Trend","chart_type": "line","description": "Avg hours per test","data": {"Month": ["Jan","Feb","Mar","Apr"],"Hours": [24,22,20,18]},"x_axis": "Month","y_axis": ["Hours"]},
-      {"exhibit_title": "Exhibit 3: Revenue Share by Payer","chart_type": "pie","description": "Share by payer","data": {"Payer": ["Private","Public"],"Share %": [70,30]},"labels": "Payer","values": "Share %"}
+      {"exhibit_title": "Exhibit 3: Revenue Share by Payer","chart_type": "pie","description": "Share by payer","data": {"Payer": ["Private","Public"],"Share %": [70,30]},"names": "Payer","values": "Share %"}
     ]
   },
   {
@@ -3851,7 +3851,7 @@
     "exhibits": [
       {"exhibit_title": "Exhibit 1: Utilization by Lot","chart_type": "bar","description": "% used","data": {"Lot": ["A","B","C"],"Utilization %": [80,75,85]},"x_axis": "Lot","y_axis": ["Utilization %"]},
       {"exhibit_title": "Exhibit 2: Payment Method Trend","chart_type": "line","description": "Payments per method/month","data": {"Month": ["Jan","Feb","Mar","Apr"],"Card": [100,110,120,130],"App": [60,70,75,80]},"x_axis": "Month","y_axis": ["Card","App"]},
-      {"exhibit_title": "Exhibit 3: Vehicle Type Share","chart_type": "pie","description": "Share by type","data": {"Type": ["Car","Truck","Motorcycle"],"Share %": [70,25,5]},"labels": "Type","values": "Share %"}
+      {"exhibit_title": "Exhibit 3: Vehicle Type Share","chart_type": "pie","description": "Share by type","data": {"Type": ["Car","Truck","Motorcycle"],"Share %": [70,25,5]},"names": "Type","values": "Share %"}
     ]
   },
   {
@@ -3862,7 +3862,7 @@
     "exhibits": [
       {"exhibit_title": "Exhibit 1: Booking Volume by Tour Type","chart_type": "bar","description": "Bookings (000s)","data": {"Tour": ["Adventure","Culture","Relaxation"],"Bookings (000s)": [30,25,20]},"x_axis": "Tour","y_axis": ["Bookings (000s)"]},
       {"exhibit_title": "Exhibit 2: Lead Time Trend","chart_type": "line","description": "Days before tour","data": {"Month": ["Jan","Feb","Mar","Apr"],"Lead Time": [20,18,15,12]},"x_axis": "Month","y_axis": ["Lead Time"]},
-      {"exhibit_title": "Exhibit 3: Traveler Age Group Share","chart_type": "pie","description": "Share by age group","data": {"Age Group": ["18-34","35-54","55+"],"Share %": [45,40,15]},"labels": "Age Group","values": "Share %"}
+      {"exhibit_title": "Exhibit 3: Traveler Age Group Share","chart_type": "pie","description": "Share by age group","data": {"Age Group": ["18-34","35-54","55+"],"Share %": [45,40,15]},"names": "Age Group","values": "Share %"}
     ]
   },
   {
@@ -3873,7 +3873,7 @@
     "exhibits": [
       {"exhibit_title": "Exhibit 1: Incident Type Frequency","chart_type": "bar","description": "Incidents per month","data": {"Type": ["Slip","Equipment","Other"],"Incidents": [10,7,5]},"x_axis": "Type","y_axis": ["Incidents"]},
       {"exhibit_title": "Exhibit 2: Resolution Time Trend","chart_type": "line","description": "Avg days to resolve","data": {"Month": ["Jan","Feb","Mar","Apr"],"Days": [5,4.5,4,3.8]},"x_axis": "Month","y_axis": ["Days"]},
-      {"exhibit_title": "Exhibit 3: Department Share","chart_type": "pie","description": "Share by department","data": {"Department": ["Ops","Admin","Sales"],"Share %": [50,30,20]},"labels": "Department","values": "Share %"}
+      {"exhibit_title": "Exhibit 3: Department Share","chart_type": "pie","description": "Share by department","data": {"Department": ["Ops","Admin","Sales"],"Share %": [50,30,20]},"names": "Department","values": "Share %"}
     ]
   },
   {
@@ -3884,7 +3884,7 @@
     "exhibits": [
       {"exhibit_title": "Exhibit 1: Ridership by Route","chart_type": "bar","description": "Riders per day","data": {"Route": ["1","2","3"],"Riders": [500,600,400]},"x_axis": "Route","y_axis": ["Riders"]},
       {"exhibit_title": "Exhibit 2: Delay Trend","chart_type": "line","description": "Delays per month","data": {"Month": ["Jan","Feb","Mar","Apr"],"Delays": [15,12,10,8]},"x_axis": "Month","y_axis": ["Delays"]},
-      {"exhibit_title": "Exhibit 3: Fare Type Share","chart_type": "pie","description": "Share by fare type","data": {"Fare": ["Regular","Discount","Student"],"Share %": [70,20,10]},"labels": "Fare","values": "Share %"}
+      {"exhibit_title": "Exhibit 3: Fare Type Share","chart_type": "pie","description": "Share by fare type","data": {"Fare": ["Regular","Discount","Student"],"Share %": [70,20,10]},"names": "Fare","values": "Share %"}
     ]
   },
   {
@@ -3895,7 +3895,7 @@
     "exhibits": [
       {"exhibit_title": "Exhibit 1: AQI by Location","chart_type": "bar","description": "Avg AQI","data": {"Location": ["Downtown","Suburbs","Industrial"],"AQI": [80,60,100]},"x_axis": "Location","y_axis": ["AQI"]},
       {"exhibit_title": "Exhibit 2: Pollutant Trend","chart_type": "line","description": "PM2.5 over months","data": {"Month": ["Jan","Feb","Mar","Apr"],"PM2.5": [30,28,25,20]},"x_axis": "Month","y_axis": ["PM2.5"]},
-      {"exhibit_title": "Exhibit 3: Sensor Type Share","chart_type": "pie","description": "Share by sensor type","data": {"Type": ["Fixed","Mobile"],"Share %": [70,30]},"labels": "Type","values": "Share %"}
+      {"exhibit_title": "Exhibit 3: Sensor Type Share","chart_type": "pie","description": "Share by sensor type","data": {"Type": ["Fixed","Mobile"],"Share %": [70,30]},"names": "Type","values": "Share %"}
     ]
   }
   ,
