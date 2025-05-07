@@ -16,21 +16,10 @@ import plotly.express as px # Added for chart generation
 # from supabase import create_client, Client # No longer needed
 
 # --- Basic Logging Setup ---
-# [ Logging setup remains the same ]
 log_filename = f"chip_app_{datetime.datetime.now().strftime('%Y%m%d_%H%M%S')}.log"
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - %(levelname)s - SessionID:%(session_id)s - Name:%(name)s - %(message)s', # Added name
-    handlers=[
-        logging.FileHandler(log_filename),
-        logging.StreamHandler()
-    ]
-)
 
-# Custom Filter to add session_id to all log records if not present
 class SessionIdFilter(logging.Filter):
     def filter(self, record):
-        # Check if session_state is active and has the necessary keys
         try:
             if not hasattr(record, 'session_id'):
                 if hasattr(st, 'session_state') and st.session_state.get('key_prefix'):
@@ -38,15 +27,22 @@ class SessionIdFilter(logging.Filter):
                     record.session_id = st.session_state.get(f"{prefix}_session_id", "N/A_Filter_NoSessionID")
                 else:
                     record.session_id = "N/A_Filter_NoPrefixOrSS"
-        except Exception: # Broad exception to catch issues if st.session_state is not available
+        except Exception:
             record.session_id = "N/A_Filter_Exception"
         return True
 
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(levelname)s - SessionID:%(session_id)s - Name:%(name)s - %(message)s',
+    handlers=[
+        logging.FileHandler(log_filename),
+        logging.StreamHandler()
+    ]
+)
+
 root_logger = logging.getLogger()
-# Ensure the filter is added only once
 if not any(isinstance(f, SessionIdFilter) for f in root_logger.filters):
     root_logger.addFilter(SessionIdFilter())
-
 
 class SessionLogAdapter(logging.LoggerAdapter):
     def process(self, msg, kwargs):
@@ -56,7 +52,7 @@ class SessionLogAdapter(logging.LoggerAdapter):
                 prefix = st.session_state.key_prefix
                 session_id = st.session_state.get(f"{prefix}_session_id", "N/A_Adapter_NoSessionID")
         except Exception:
-            pass # Keep default if session_state access fails
+            pass
 
         if 'extra' not in kwargs:
             kwargs['extra'] = {}
@@ -108,7 +104,7 @@ st.set_page_config(
 )
 
 # --- Custom CSS ---
-# --- Restored ---
+# [ CSS remains unchanged ]
 st.markdown("""
 <style>
     /* --- Overall Theme --- */
@@ -610,48 +606,73 @@ def send_question(question, current_case_prompt_text, exhibit_context=None):
         temperature = 0.5 # Default
 
         if selected_skill == "Clarifying": # Use new skill name
-            prompt_for_llm = f"""... [Clarifying Questions Prompt as before] ..."""
-            system_message = "You are a strict case interview simulator for clarifying questions..."
+            prompt_for_llm = f"""
+            You are a **strict** case interviewer simulator focusing ONLY on the clarifying questions phase. Evaluate questions **rigorously**.
+
+            Current Case Prompt Context:
+            {current_case_prompt_text}
+
+            Conversation History So Far:
+            {history_for_prompt}
+
+            Interviewee's Latest Question:
+            {latest_input}
+
+            Your Task:
+            1. Provide a concise, helpful answer... [rest of Task 1 remains the same - plausible answers etc.] ...**Crucially, maintain consistency with any previous answers you've given in this conversation.**
+            2. Assess the quality of *this specific question* **rigorously** based on the following categories of effective clarifying questions:
+                * **Objective Clarification:** Does it clarify the case goal/problem statement?
+                * **Company Understanding:** Does it seek relevant info about the client/company structure, situation, or industry context?
+                * **Term Definition:** Does it clarify specific jargon or unfamiliar terms used in the case or prior answers?
+                * **Information Repetition/Confirmation:** Does it concisely ask to repeat or confirm specific crucial information potentially missed?
+                * **Question Quality:** Is the question concise, targeted, and NOT compound (asking multiple things at once)?
+               **Critically evaluate:** If the question is extremely vague (e.g., single words like 'why?', 'what?', 'how?'), generic, irrelevant to the case context, compound, or doesn't clearly fit the positive categories above, **assess it as Poor (1/5)** and state *why* it's poor (e.g., 'Too vague, doesn't specify what information is needed'). Otherwise, rate from 2-5 based on how well it fits the categories and quality criteria. Be brief but justify the assessment clearly.
+            3. Use the following exact format, including the delimiters on separate lines:
+
+            ###ANSWER###
+            [Your plausible answer here]
+            ###ASSESSMENT###
+            [Your brief but rigorous assessment of the question's quality based on the criteria above]
+            """
+            system_message = "You are a strict case interview simulator for clarifying questions. Evaluate questions rigorously based on specific categories (Objective, Company, Terms, Repetition, Quality). Provide plausible answers if needed. Use the specified response format."
+            # --- End of Reverted Prompt ---
             max_tokens = 350
             temperature = 0.5
 
         elif selected_skill == "Hypothesis": # Use new skill name
-            # --- Refined Interaction Prompt v3 (Simplified) ---
+            # --- Refined Interaction Prompt v4 (Hypothesis) ---
             prompt_for_llm = f"""
-            You are playing the role of a case interviewer providing data/information in response to a candidate's hypothesis.
-            The candidate is trying to diagnose an issue based on the case prompt.
-
-            **Your Task:** Respond to the "Candidate's Latest Hypothesis/Area to Investigate" below.
-
-            * **IF** the candidate's input ("{latest_input}") is a reasonable, testable hypothesis related to the case context ("{current_case_prompt_text}"):
-                * Provide a concise (1-2 sentences) piece of plausible, new information that *contradicts* their current line of thinking or suggests it's not the primary driver.
-                * This information should be consistent with any previous information you've provided.
-                * Sound like a neutral source of data.
-                * **Example of good contradictory info:** If hypothesis is "the issue is rising material costs", you could say "Recent supplier contracts indicate material costs have actually decreased by 5% this quarter."
-            * **ELSE IF** the candidate's input is clearly nonsensical, irrelevant, or too vague to be a testable hypothesis:
-                * **DO NOT provide contradictory case information.**
-                * Politely state that the input isn't a testable hypothesis for this case and ask them to provide a clearer one.
-                * Example responses: "I don't have data related to that. Could you propose a specific hypothesis about the potential cause of the issue described in the case?" OR "Could you clarify what specific area you'd like to investigate based on the case details?" OR "Please state a testable hypothesis related to the case."
-
-            **CRITICAL:**
-            * Your entire response should be ONLY the direct text for either option 1 or option 2 above.
-            * Do NOT assess the quality of the hypothesis (e.g., don't say "Good idea" or "That's incorrect").
-            * Do NOT use ###ANSWER### or ###ASSESSMENT### tags.
-            * Do NOT ask clarifying questions back to the candidate.
-            * Do NOT solve the case or reveal the true cause.
-
-            Conversation History (Previous hypotheses and info provided):
-            {history_for_prompt}
+            You are a case interviewer. The candidate is trying to diagnose an issue based on the case prompt:
+            "{current_case_prompt_text}"
 
             Candidate's Latest Hypothesis/Area to Investigate:
-            {latest_input}
+            "{latest_input}"
+
+            Previous Interaction History (if any):
+            {history_for_prompt}
+
+            **Your Task:**
+            Your primary goal is to provide a concise (1-2 sentences) piece of plausible, new information that *contradicts* the candidate's latest hypothesis or suggests it's not the primary driver of the issue. This information should be consistent with any previous information you've provided and sound like a neutral source of data.
+            **Example of good contradictory info:** If hypothesis is "the issue is rising material costs", you could say "Recent supplier contracts indicate material costs have actually decreased by 5% this quarter."
+
+            **However, IF AND ONLY IF the candidate's input ("{latest_input}") is clearly NOT a testable hypothesis related to the case** (e.g., it's nonsensical like "your mom lol", extremely vague like "wut", a generic question not proposing a cause, or completely unrelated to the case problem), then instead of providing contradictory data, you should politely ask them to state a clearer, testable hypothesis.
+            **Example of polite redirection for non-hypothesis:** "That doesn't seem to be a specific hypothesis related to the case. Could you please propose a testable hypothesis about the potential cause of the issue?"
+
+            **CRITICAL INSTRUCTIONS:**
+            - Prioritize providing contradictory information if the input is a reasonable hypothesis.
+            - Only resort to asking for a clearer hypothesis if the input is truly not a hypothesis.
+            - Do NOT assess the quality of the hypothesis (e.g., don't say "Good idea" or "That's incorrect").
+            - Do NOT use ###ANSWER### or ###ASSESSMENT### tags in your response.
+            - Do NOT ask clarifying questions back to the candidate.
+            - Do NOT solve the case or reveal the true cause.
+            - Your entire response must be ONLY the direct text of the contradictory information OR the polite redirection.
 
             Your Response:
             """
-            system_message = "You are a case interviewer. IMPORTANT: First, evaluate if the user's input is a reasonable hypothesis for the case. If yes, provide concise contradictory info. If no (e.g., nonsensical, vague, irrelevant), politely ask for a clearer, relevant hypothesis. Be neutral, do not assess, do not use special formatting."
-            # --- End of Refined Prompt v3 ---
+            system_message = "You are a case interviewer. If the user provides a reasonable hypothesis, give concise contradictory information. If the input is not a reasonable hypothesis (e.g., nonsensical, vague, irrelevant), politely ask for a clearer, relevant hypothesis. Be neutral, do not assess, do not use special formatting."
+            # --- End of Refined Prompt v4 ---
             max_tokens = 150
-            temperature = 0.3 # Further reduced temperature for more directness and less "creative" misinterpretation
+            temperature = 0.3
 
         # Analysis, Framework Dev, Recommendation now handle interaction outside send_question
         elif selected_skill in ["Frameworks", "Analysis", "Recommendation"]:
@@ -951,8 +972,54 @@ def generate_final_feedback(current_case_prompt_text):
                  max_tokens_feedback = 800
 
             elif selected_skill == "Recommendation": # Use new skill name
-                 feedback_prompt = f"""... [Recommendation Feedback Prompt as before - Rating First] ..."""
-                 system_message_feedback = "You are an expert case interview coach providing structured feedback on a final case recommendation..."
+                 # --- Refined Recommendation Final Feedback Prompt ---
+                 feedback_prompt = f"""
+                 You are an experienced case interview coach providing final summary feedback on the Recommendation phase.
+                 The candidate was presented with a case prompt and summary findings/exhibits and submitted their final recommendation.
+
+                 Case Prompt Context for this Session:
+                 {current_case_prompt_text}
+
+                 Summary of Exhibits/Key Findings Provided to Candidate:
+                 {exhibit_context_for_feedback}
+
+                 Candidate's Submitted Recommendation:
+                 {history_string}
+
+                 Your Task:
+                 Provide detailed, professional, final feedback on the candidate's submitted recommendation. Evaluate the structure (Pyramid Principle), synthesis of information (from case prompt and provided exhibits/findings), clarity, and inclusion of risks and next steps. Use markdown formatting effectively.
+
+                 **IMPORTANT:** Your response MUST start *directly* with the "## Overall Recommendation Rating:" heading on the first line, followed by the rating and justification. Do not include any introductory phrases like "Sure, here's the feedback..." or any text before the heading. Your entire response must strictly follow the specified markdown structure.
+
+                 Structure your feedback precisely as follows using Markdown:
+
+                 ## Overall Recommendation Rating: [1-5]/5
+                 *(Provide a brief justification for the rating here, considering the quality criteria below based on the candidate's recommendation and the provided case/exhibit context)*
+
+                 ---
+
+                 1.  **Structure (Pyramid Principle):** Did the recommendation start with a clear conclusion/answer to the main case question? Was it followed by logical supporting rationale and evidence (implicitly or explicitly referencing the provided exhibits/findings)?
+
+                 2.  **Synthesis & Logic:** How well did the candidate synthesize the information from the case prompt and provided exhibits/findings to arrive at their recommendation? Was the rationale sound and logical?
+
+                 3.  **Risks & Next Steps:** Did the candidate appropriately identify potential risks associated with their recommendation? Were the proposed next steps relevant and actionable?
+
+                 4.  **Clarity & Conciseness:** Was the recommendation communicated clearly, professionally, and concisely?
+
+                 5.  **Actionable Next Steps (for the candidate):** Provide at least two concrete, actionable steps the candidate can take to improve their recommendation structuring and delivery skills *for future cases*.
+
+
+                 **Rating Criteria Reference:**
+                 * 1: Poor. Recommendation missing or completely off-base. No clear structure, risks/next steps missing. Poor synthesis.
+                 * 2: Weak. Unclear conclusion or weak rationale. Poor structure (e.g., no Pyramid Principle). Risks/steps generic or missing. Weak synthesis.
+                 * 3: Fair. Recommendation addresses the prompt but structure could be better. Rationale is present but may lack depth or clear link to data. Risks/steps are basic. Adequate synthesis.
+                 * 4: Good. Clear recommendation, mostly follows structure. Good synthesis of information. Relevant risks and next steps identified. Generally clear language.
+                 * 5: Excellent. Clear, concise, actionable recommendation following Pyramid Principle. Strong synthesis of case facts/exhibits. Insightful risks and concrete next steps. Professional delivery.
+
+                 Ensure your response does **not** start with any other title besides "## Overall Recommendation Rating:". Use paragraph breaks between sections.
+                 """
+                 system_message_feedback = "You are an expert case interview coach providing structured feedback on a final case recommendation. IMPORTANT: Start your response *directly* with the '## Overall Recommendation Rating:' heading. Evaluate structure, synthesis of provided information, risks, and next steps. Use markdown effectively."
+                 # --- End of Refined Recommendation Final Feedback Prompt ---
                  max_tokens_feedback = 800
 
             else:
@@ -1688,3 +1755,4 @@ if __name__ == "__main__":
     init_session_state_key('session_id', str(uuid.uuid4()))
     main_app() # Calls the main_app with skill selection
     logger.info("--- Application Script Execution Finished ---")
+
