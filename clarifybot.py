@@ -1107,7 +1107,7 @@ def main_app():
     skill_key = f"{prefix}_selected_skill"
     with st.sidebar:
         st.subheader("Support CHIP!")
-        st.markdown("Love CHIP? Your support helps keep this tool free and improving! 🙏\n\nConsider making a small donation (suggested $5) to help cover server and API costs.")
+        st.markdown("Love CHIP? Your support helps keep this tool free and improving! 🙏\n\nConsider making a small donation to help with server and API costs.")
         donate_url = "https://buymeacoffee.com/9611"
         st.link_button("Buy Me a Coffee ☕", donate_url)
         st.divider()
