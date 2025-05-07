@@ -20,15 +20,16 @@ log_filename = f"chip_app_{datetime.datetime.now().strftime('%Y%m%d_%H%M%S')}.lo
 
 class SessionIdFilter(logging.Filter):
     def filter(self, record):
-        try:
-            if not hasattr(record, 'session_id'):
-                if hasattr(st, 'session_state') and st.session_state.get('key_prefix'):
-                    prefix = st.session_state.key_prefix
-                    record.session_id = st.session_state.get(f"{prefix}_session_id", "N/A_Filter_NoSessionID")
+        # Ensure session_id is always present on the record
+        if not hasattr(record, 'session_id'):
+            try:
+                # Attempt to get session_id only if session_state is available and has the necessary keys
+                if hasattr(st, 'session_state') and 'key_prefix' in st.session_state and f"{st.session_state.key_prefix}_session_id" in st.session_state:
+                    record.session_id = st.session_state.get(f"{st.session_state.key_prefix}_session_id", "N/A_Filter_Fallback")
                 else:
-                    record.session_id = "N/A_Filter_NoPrefixOrSS"
-        except Exception:
-            record.session_id = "N/A_Filter_Exception"
+                    record.session_id = "N/A_Filter_NoPrefixOrSS" # Default if session_state or keys are missing
+            except Exception:
+                record.session_id = "N/A_Filter_Exception" # Default on any error accessing session_state
         return True
 
 logging.basicConfig(
@@ -41,17 +42,22 @@ logging.basicConfig(
 )
 
 root_logger = logging.getLogger()
+# Ensure the filter is added only once to the root logger
 if not any(isinstance(f, SessionIdFilter) for f in root_logger.filters):
     root_logger.addFilter(SessionIdFilter())
 
+
 class SessionLogAdapter(logging.LoggerAdapter):
     def process(self, msg, kwargs):
-        session_id = "N/A_Adapter"
+        session_id = "N/A_Adapter" # Default
         try:
+            # Check if st.session_state exists and has the key_prefix
             if hasattr(st, 'session_state') and st.session_state.get('key_prefix'):
                 prefix = st.session_state.key_prefix
                 session_id = st.session_state.get(f"{prefix}_session_id", "N/A_Adapter_NoSessionID")
+            # If st.session_state is not available or key_prefix is missing, session_id remains "N/A_Adapter"
         except Exception:
+            # In case of any error accessing session_state, session_id remains "N/A_Adapter"
             pass
 
         if 'extra' not in kwargs:
@@ -59,9 +65,9 @@ class SessionLogAdapter(logging.LoggerAdapter):
         kwargs['extra']['session_id'] = session_id
         return msg, kwargs
 
-logger_raw = logging.getLogger(__name__)
-logger = SessionLogAdapter(logger_raw, {})
-logger.info("--- Application Started ---")
+logger_raw = logging.getLogger(__name__) # Use the app's module name
+logger = SessionLogAdapter(logger_raw, {}) # Initialize the adapter
+logger.info("--- Application Started ---") # This will use the adapter
 
 
 # --- REMOVED: Supabase Connection Function ---
@@ -674,7 +680,7 @@ def send_question(question, current_case_prompt_text, exhibit_context=None):
 
             Your Response:
             """
-            system_message = "You are a case interviewer. If the user provides a reasonable hypothesis, give concise contradictory information. If the input is not a reasonable hypothesis (e.g., nonsensical, vague, irrelevant), politely ask for a clearer, relevant hypothesis. Be neutral, do not assess, do not use special formatting."
+            system_message = "You are a case interviewer. If the user provides a reasonable hypothesis, give concise contradictory info. If the input is not a reasonable hypothesis (e.g., nonsensical, vague, irrelevant), politely ask for a clearer, relevant hypothesis. Be neutral, do not assess, do not use special formatting."
             # --- End of Refined Prompt v4 ---
             max_tokens = 150
             temperature = 0.3
@@ -872,7 +878,7 @@ def generate_final_feedback(current_case_prompt_text):
             max_tokens_feedback = 800 # Default
 
             if selected_skill == "Clarifying": # Use new skill name
-                # --- Refined Clarifying Feedback Prompt ---
+                # --- Refined Clarifying Feedback Prompt v2 ---
                 feedback_prompt = f"""
                 You are an experienced case interview coach providing feedback on the clarifying questions phase ONLY.
                 The candidate has finished asking questions. You must now provide overall feedback.
@@ -886,12 +892,12 @@ def generate_final_feedback(current_case_prompt_text):
                 Your Task:
                 Provide detailed, professional, and direct feedback on the interviewee's clarifying questions phase based *only* on the interaction history provided. Use markdown formatting effectively, including paragraph breaks for readability.
 
-                **IMPORTANT:** Your response MUST start *directly* with the "## Overall Rating:" heading on the first line, followed by the rating and justification. Do not include any introductory phrases like "Sure, here's the feedback..." or any text before the heading. Your entire response must strictly follow the specified markdown structure.
+                **IMPORTANT: Your response MUST start *directly* with the "## Overall Rating:" heading on the first line. Do not include any introductory phrases like "Sure, here's the feedback..." or any text before this heading. Your entire response must strictly follow the specified markdown structure.**
 
                 Structure your feedback precisely as follows using Markdown:
 
                 ## Overall Rating: [1-5]/5
-                *(Provide a brief justification for the rating here, referencing the conversation specifics or assessments. Be very critical and use the full range of scores based on the criteria below. Consider the number and quality of questions asked in relation to the case complexity.)*
+                *(Provide a brief justification for the rating here, referencing the conversation specifics or assessments. Be very critical and use the full range of scores based on the criteria below. Critically consider the number and quality of questions asked in relation to the case complexity and the information already provided in the case prompt or prior answers.)*
 
                 ---
 
@@ -899,28 +905,28 @@ def generate_final_feedback(current_case_prompt_text):
 
                 2.  **Strengths:** Identify 1-2 specific strengths demonstrated (e.g., good initial questions, logical flow, conciseness). Refer to specific question numbers or assessments if possible.
 
-                3.  **Areas for Improvement:** Identify 1-2 key areas where the interviewee could improve (e.g., question relevance, depth, avoiding compound questions, structure, digging deeper based on answers). Refer to specific question numbers or assessments.
+                3.  **Areas for Improvement:** Identify 1-2 key areas where the interviewee could improve (e.g., question relevance, depth, avoiding compound questions, structure, digging deeper based on answers, asking redundant questions). Refer to specific question numbers or assessments.
 
                 4.  **Actionable Next Steps:** Provide at least two concrete, actionable steps the interviewee can take to improve their clarifying questions skills *for future cases*.
 
                 5.  **Example Questions:** For *each* actionable next step that relates to the *content* or *quality* of the questions asked, provide 1-2 specific *alternative* example questions the interviewee *could have asked* in *this case* to demonstrate improvement in that area.
 
-                **Rating Criteria Reference:**
-                    * 1: **Must use this score** if questions were predominantly vague (like single words), irrelevant, unclear, compound, or demonstrated a fundamental lack of understanding of how to clarify effectively. Added little to no value. Insufficient number of questions for the case complexity.
-                    * 2: Significant issues remain. Many questions were poor, with only occasional relevant ones, or showed a consistent lack of focus/structure. May have asked too few questions.
-                    * 3: A mixed bag. Some decent questions fitting the ideal categories (Objective, Company, Terms, Repetition) but also notable lapses in quality, relevance, or efficiency. Number of questions might be borderline.
-                    * 4: Generally strong performance. Most questions were relevant, clear, targeted, and fit the ideal categories. Good progress made in clarifying the case, with only minor areas for refinement. Sufficient number of questions.
-                    * 5: Excellent. Consistently high-quality questions that were relevant, concise, targeted, and demonstrated a strong grasp of the ideal clarifying categories. Effectively and efficiently clarified key aspects of the case prompt. Comprehensive questioning.
+                **Rating Criteria Reference (Apply Strictly):**
+                    * 1: **Must use this score** if questions were predominantly vague (like single words), irrelevant, unclear, compound, or demonstrated a fundamental lack of understanding of how to clarify effectively. Added little to no value. Insufficient number of questions for the case complexity, or questions were mostly redundant.
+                    * 2: Significant issues remain. Many questions were poor, with only occasional relevant ones, or showed a consistent lack of focus/structure. May have asked too few questions or many redundant ones.
+                    * 3: A mixed bag. Some decent questions fitting the ideal categories (Objective, Company, Terms, Repetition) but also notable lapses in quality, relevance, or efficiency. Number of questions might be borderline or some redundancy.
+                    * 4: Generally strong performance. Most questions were relevant, clear, targeted, and fit the ideal categories. Good progress made in clarifying the case, with only minor areas for refinement. Sufficient number of quality questions.
+                    * 5: Excellent. Consistently high-quality questions that were relevant, concise, targeted, and demonstrated a strong grasp of the ideal clarifying categories. Effectively and efficiently clarified key aspects of the case prompt. Comprehensive and insightful questioning.
                    *(Remember to consider the per-question assessments provided in the history when assigning the overall rating.)*
 
                 Ensure your response does **not** start with any other title. Start directly with the '## Overall Rating:' heading. Use paragraph breaks between sections.
                 """
                 system_message_feedback = "You are an expert case interview coach providing structured feedback on clarifying questions. IMPORTANT: Start your response *directly* with the '## Overall Rating:' heading. Evaluate critically based on history and assessments, including the number and quality of questions. Use markdown effectively for readability."
-                # --- End of Refined Clarifying Feedback Prompt ---
+                # --- End of Refined Clarifying Feedback Prompt v2 ---
                 max_tokens_feedback = 800
 
             elif selected_skill == "Frameworks": # Use new skill name
-                 # --- Refined Framework Feedback Prompt ---
+                 # --- Refined Framework Feedback Prompt v2 ---
                  feedback_prompt = f"""
                  You are an experienced case interview coach providing final summary feedback on the framework development phase based on a single framework submission.
 
@@ -933,7 +939,7 @@ def generate_final_feedback(current_case_prompt_text):
                  Your Task:
                  Provide detailed, professional, final feedback on the candidate's submitted framework. Use markdown formatting effectively.
 
-                 **IMPORTANT:** Your response MUST start *directly* with the "## Overall Framework Rating:" heading on the first line, followed by the rating and justification. Do not include any introductory phrases like "Sure, here's the feedback..." or any text before the heading. Your entire response must strictly follow the specified markdown structure.
+                 **IMPORTANT: Your response MUST start *directly* with the "## Overall Framework Rating:" heading on the first line. Do not include any introductory phrases like "Sure, here's the feedback..." or any text before this heading. Your entire response must strictly follow the specified markdown structure.**
 
                  Structure your feedback precisely as follows using Markdown, starting DIRECTLY with the rating heading:
 
@@ -963,12 +969,53 @@ def generate_final_feedback(current_case_prompt_text):
                  Ensure your response does **not** start with any other title besides "## Overall Framework Rating:". Use paragraph breaks between sections.
                  """
                  system_message_feedback = "You are an expert case interview coach providing structured feedback on framework development based on a single submission. IMPORTANT: Start your response *directly* with the '## Overall Framework Rating:' heading. Evaluate critically based on the submitted framework. Use markdown effectively."
-                 # --- End of Refined Framework Feedback Prompt ---
+                 # --- End of Refined Framework Feedback Prompt v2 ---
                  max_tokens_feedback = 700
 
             elif selected_skill == "Hypothesis": # Use new skill name
-                 feedback_prompt = f"""... [Hypothesis Formulation Feedback Prompt as before - Rating First] ..."""
-                 system_message_feedback = "You are an expert case interview coach providing structured feedback on hypothesis formulation..."
+                 # --- Refined Hypothesis Feedback Prompt ---
+                 feedback_prompt = f"""
+                 You are an experienced case interview coach providing final summary feedback on the hypothesis formulation phase.
+                 The candidate attempted to form hypotheses, and you (as the interviewer) provided contradictory information after each attempt.
+
+                 Case Prompt Context for this Session:
+                 {current_case_prompt_text}
+
+                 Interaction History (Candidate hypotheses and info provided by interviewer):
+                 {history_string}
+
+                 Your Task:
+                 Provide detailed, professional, final feedback on the candidate's overall performance during the hypothesis formulation process based *only* on the interaction history. Use markdown formatting effectively.
+
+                 **IMPORTANT: Your response MUST start *directly* with the "## Overall Hypothesis Formulation Rating:" heading on the first line. Do not include any introductory phrases like "Sure, here's the feedback..." or any text before this heading. Your entire response must strictly follow the specified markdown structure.**
+
+                 Structure your feedback precisely as follows using Markdown, starting DIRECTLY with the rating heading:
+
+                 ## Overall Hypothesis Formulation Rating: [1-5]/5
+                 *(Provide a brief justification for the rating here, considering the quality, logic, and relevance of the hypotheses, and how well the candidate adapted to the new information provided. Use the criteria below)*
+
+                 ---
+
+                 1.  **Overall Summary:** Briefly summarize the candidate's approach to formulating and refining hypotheses in response to the information provided.
+
+                 2.  **Strengths:** Identify 1-2 specific strengths demonstrated (e.g., logical initial hypothesis, good adaptation to new data, clear articulation, relevant focus areas). Refer to specific hypothesis numbers (H1, H2, H3).
+
+                 3.  **Areas for Improvement:** Identify 1-2 key weaknesses (e.g., initial hypothesis too broad/narrow, poor adaptation to contradictory info, illogical jumps, sticking too long to a disproven path, unclear articulation). Refer to specific hypothesis numbers.
+
+                 4.  **Actionable Next Steps:** Provide at least two concrete, actionable steps the candidate can take to improve their hypothesis generation and testing skills *for future cases*.
+
+
+                 **Rating Criteria Reference:**
+                 * 1: Poor. Hypotheses were illogical, irrelevant, or candidate failed completely to adapt to new information.
+                 * 2: Weak. Significant issues with hypothesis logic/relevance, or very slow/poor adaptation to contradictory data.
+                 * 3: Fair. Some logical hypotheses but notable weaknesses in structure, relevance, or adaptation. Mixed performance.
+                 * 4: Good. Generally logical and relevant hypotheses, demonstrated reasonable adaptation to new information with only minor areas for improvement.
+                 * 5: Excellent. Consistently logical, relevant, well-articulated hypotheses. Showed strong ability to adapt and pivot based on new information effectively.
+
+                 Ensure your response does **not** start with any other title besides "## Overall Hypothesis Formulation Rating:". Use paragraph breaks between sections.
+                 """
+                 system_message_feedback = "You are an expert case interview coach providing structured feedback on hypothesis formulation. IMPORTANT: Start your response *directly* with the '## Overall Hypothesis Formulation Rating:' heading. Evaluate critically based on the interaction history. Use markdown effectively."
+                 # --- End of Refined Hypothesis Feedback Prompt ---
                  max_tokens_feedback = 700
 
             elif selected_skill == "Analysis": # Use new skill name
@@ -994,7 +1041,7 @@ def generate_final_feedback(current_case_prompt_text):
                  Your Task:
                  Provide detailed, professional, final feedback on the candidate's submitted recommendation. Evaluate the structure (Pyramid Principle), synthesis of information (from case prompt and provided exhibits/findings), clarity, and inclusion of risks and next steps. Use markdown formatting effectively.
 
-                 **IMPORTANT:** Your response MUST start *directly* with the "## Overall Recommendation Rating:" heading on the first line, followed by the rating and justification. Do not include any introductory phrases like "Sure, here's the feedback..." or any text before the heading. Your entire response must strictly follow the specified markdown structure.
+                 **IMPORTANT: Your response MUST start *directly* with the "## Overall Recommendation Rating:" heading on the first line. Do not include any introductory phrases like "Sure, here's the feedback..." or any text before this heading. Your entire response must strictly follow the specified markdown structure.**
 
                  Structure your feedback precisely as follows using Markdown:
 
