@@ -1688,4 +1688,3 @@ if __name__ == "__main__":
     init_session_state_key('session_id', str(uuid.uuid4()))
     main_app() # Calls the main_app with skill selection
     logger.info("--- Application Script Execution Finished ---")
-
