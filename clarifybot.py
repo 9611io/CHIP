@@ -16,28 +16,50 @@ import plotly.express as px # Added for chart generation
 # from supabase import create_client, Client # No longer needed
 
 # --- Basic Logging Setup ---
-# [ Logging setup remains the same ]
 log_filename = f"chip_app_{datetime.datetime.now().strftime('%Y%m%d_%H%M%S')}.log"
+
+# Custom Filter to add session_id to all log records if not present
+class SessionIdFilter(logging.Filter):
+    def filter(self, record):
+        if not hasattr(record, 'session_id'):
+            prefix = st.session_state.get('key_prefix')
+            if prefix:
+                record.session_id = st.session_state.get(f"{prefix}_session_id", "N/A_Filter")
+            else:
+                record.session_id = "N/A_Filter_NoPrefix"
+        return True
+
 logging.basicConfig(
     level=logging.INFO,
-    format='%(asctime)s - %(levelname)s - SessionID:%(session_id)s - %(message)s', # Added SessionID to format
+    format='%(asctime)s - %(levelname)s - SessionID:%(session_id)s - Name:%(name)s - %(message)s', # Added name
     handlers=[
         logging.FileHandler(log_filename),
         logging.StreamHandler()
     ]
 )
+
+# Apply the filter to the root logger to affect all loggers
+root_logger = logging.getLogger()
+root_logger.addFilter(SessionIdFilter())
+
+# Specific logger for the app, SessionLogAdapter might be redundant now
+# but kept for explicit session_id passing if desired in some app parts.
 class SessionLogAdapter(logging.LoggerAdapter):
     def process(self, msg, kwargs):
-        session_id = "N/A"
+        session_id = "N/A_Adapter" # Default if not found
         prefix = st.session_state.get('key_prefix')
         if prefix:
-            session_id = st.session_state.get(f"{prefix}_session_id", "N/A")
-        kwargs['extra'] = kwargs.get('extra', {})
+            session_id = st.session_state.get(f"{prefix}_session_id", "N/A_Adapter_NoSession")
+
+        # Ensure 'extra' exists and add session_id to it
+        if 'extra' not in kwargs:
+            kwargs['extra'] = {}
         kwargs['extra']['session_id'] = session_id
         return msg, kwargs
-logger_raw = logging.getLogger(__name__)
+
+logger_raw = logging.getLogger(__name__) # Use the app's module name
 logger = SessionLogAdapter(logger_raw, {})
-logger.info("--- Application Started ---")
+logger.info("--- Application Started ---") # This will use the adapter
 
 
 # --- REMOVED: Supabase Connection Function ---
@@ -590,32 +612,39 @@ def send_question(question, current_case_prompt_text, exhibit_context=None):
         elif selected_skill == "Hypothesis": # Use new skill name
             # --- Refined Interaction Prompt v3 (Simplified) ---
             prompt_for_llm = f"""
-            You are playing the role of a case interviewer providing data/information in response to a candidate's hypothesis.
-            The candidate is trying to diagnose an issue based on the case prompt.
-
-            **Your Task:** Respond to the "Candidate's Latest Hypothesis/Area to Investigate" below.
-
-            * **IF** the candidate's input looks like a reasonable attempt at a hypothesis related to the case ({current_case_prompt_text}):
-                * Provide a concise (1-2 sentences) piece of plausible information that *contradicts* their line of thinking or suggests it's not the primary driver.
-                * Maintain consistency with previous info provided in the history.
-                * Sound like a neutral source of data.
-            * **ELSE IF** the candidate's input is clearly nonsensical, irrelevant, or too vague to be a testable hypothesis:
-                * Politely ask them to state a clearer, testable hypothesis related to the case. (e.g., "Could you state a specific hypothesis related to the case problem?")
-
-            **CRITICAL:** Do NOT assess the quality of the hypothesis (e.g., don't say "Good idea"). Do NOT use ###ANSWER### or ###ASSESSMENT### tags. Just provide the direct response text.
-
-            Conversation History (Previous hypotheses and info provided):
-            {history_for_prompt}
+            You are playing the role of a case interviewer. Your primary task is to respond to the candidate's hypothesis about a case.
+            The case prompt is: "{current_case_prompt_text}"
 
             Candidate's Latest Hypothesis/Area to Investigate:
-            {latest_input}
+            "{latest_input}"
+
+            Previous Interaction History (if any):
+            {history_for_prompt}
+
+            **Instructions for Your Response:**
+            1.  **If the candidate's input ("{latest_input}") is a reasonable, testable hypothesis related to the case context:**
+                * Provide a concise (1-2 sentences) piece of plausible, new information that *contradicts* their current line of thinking or suggests it's not the primary driver of the issue.
+                * This information should be consistent with any previous information you've provided.
+                * Maintain a neutral, data-providing tone.
+                * **Example of good contradictory info:** If hypothesis is "the issue is rising material costs", you could say "Recent supplier contracts indicate material costs have actually decreased by 5% this quarter."
+            2.  **If the candidate's input is NOT a reasonable hypothesis** (e.g., it's nonsensical, a joke, extremely vague like "what about things?", or clearly unrelated to the case):
+                * **DO NOT** provide made-up case information.
+                * Politely state that the input isn't a testable hypothesis for this case and ask them to provide a clearer one.
+                * **Example of polite redirection:** "That doesn't seem to be a specific hypothesis related to the case. Could you please propose a testable hypothesis about the potential cause of the issue?" or "To help you, I need a clearer hypothesis about what you'd like to investigate in this case."
+
+            **CRITICAL:**
+            * Your entire response should be ONLY the direct text for either option 1 or option 2.
+            * Do NOT assess the quality of the hypothesis (e.g., don't say "Good idea" or "That's incorrect").
+            * Do NOT use ###ANSWER### or ###ASSESSMENT### tags.
+            * Do NOT ask clarifying questions back to the candidate.
+            * Do NOT solve the case or reveal the true cause.
 
             Your Response:
             """
-            system_message = "You are a case interviewer responding to a candidate's hypothesis. If it's reasonable, provide concise contradictory info. If it's not reasonable (nonsensical, vague, irrelevant), ask for a clearer hypothesis related to the case. Be neutral, do not assess, do not use special formatting."
+            system_message = "You are a case interviewer. If the user provides a reasonable hypothesis, give concise contradictory information. If the input is not a reasonable hypothesis (e.g., nonsensical, vague, irrelevant), politely ask for a clearer, relevant hypothesis. Be neutral, do not assess, do not use special formatting."
             # --- End of Refined Prompt v3 ---
             max_tokens = 150
-            temperature = 0.4 # Keep slightly lower temperature
+            temperature = 0.3 # Further reduced temperature for more directness
 
         # Analysis, Framework Dev, Recommendation now handle interaction outside send_question
         elif selected_skill in ["Frameworks", "Analysis", "Recommendation"]:
@@ -683,6 +712,7 @@ def send_question(question, current_case_prompt_text, exhibit_context=None):
         st.rerun() # Rerun to display new message and potentially the feedback section if done_key was set
 
 def generate_final_feedback(current_case_prompt_text):
+    # [ This function remains unchanged from the previous version ]
     """
     Generates overall feedback markdown based on the conversation history.
     """
@@ -1050,7 +1080,11 @@ def framework_development_ui():
         st.session_state[is_typing_key] = True
         final_feedback_content = generate_final_feedback(case_prompt_text)
         st.session_state[is_typing_key] = False
-        feedback_was_generated = final_feedback_content and not str(final_feedback_content).startswith("Error") and not str(final_feedback_content).startswith("[Feedback")
+        # --- FIX: Check for specific Frameworks feedback heading ---
+        feedback_was_generated = final_feedback_content and isinstance(final_feedback_content, str) and final_feedback_content.strip().startswith("## Overall Framework Rating:")
+        logger.debug(f"Framework feedback content: {final_feedback_content}")
+        logger.debug(f"Framework feedback_was_generated: {feedback_was_generated}")
+        # --- End FIX ---
         if feedback_was_generated:
             st.divider(); st.markdown(final_feedback_content); st.divider()
             st.subheader("Rate this Feedback")
@@ -1089,7 +1123,7 @@ def framework_development_ui():
                             if save_user_feedback(user_feedback_data): logger.info("User Framework Feedback Submitted with Comment and saved."); st.rerun()
                             else: logger.error("User Framework Feedback Submitted with Comment but FAILED TO SAVE.")
         elif final_feedback_content and str(final_feedback_content).startswith("Error"): st.error(f"Could not display feedback: {final_feedback_content}")
-        else: st.warning("Feedback is currently unavailable...")
+        else: st.warning("Feedback is currently unavailable or was not generated correctly."); logger.warning(f"Framework feedback was not displayed. Content: {final_feedback_content}")
         st.divider(); st.header("Conclusion")
         total_interaction_time = st.session_state.get(time_key, 0.0)
         st.write(f"You spent **{total_interaction_time:.2f} seconds** developing the framework for this case.")
