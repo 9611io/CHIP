@@ -16,7 +16,16 @@ import plotly.express as px # Added for chart generation
 # from supabase import create_client, Client # No longer needed
 
 # --- Basic Logging Setup ---
+# [ Logging setup remains the same ]
 log_filename = f"chip_app_{datetime.datetime.now().strftime('%Y%m%d_%H%M%S')}.log"
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(levelname)s - SessionID:%(session_id)s - Name:%(name)s - %(message)s', # Added name
+    handlers=[
+        logging.FileHandler(log_filename),
+        logging.StreamHandler()
+    ]
+)
 
 # Custom Filter to add session_id to all log records if not present
 class SessionIdFilter(logging.Filter):
@@ -29,21 +38,14 @@ class SessionIdFilter(logging.Filter):
                 record.session_id = "N/A_Filter_NoPrefix"
         return True
 
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - %(levelname)s - SessionID:%(session_id)s - Name:%(name)s - %(message)s', # Added name
-    handlers=[
-        logging.FileHandler(log_filename),
-        logging.StreamHandler()
-    ]
-)
-
-# Apply the filter to the root logger to affect all loggers
 root_logger = logging.getLogger()
+# Clear existing filters from root logger if any, before adding new one
+for h_filter in list(root_logger.filters): # Iterate over a copy
+    if isinstance(h_filter, SessionIdFilter):
+        root_logger.removeFilter(h_filter)
 root_logger.addFilter(SessionIdFilter())
 
-# Specific logger for the app, SessionLogAdapter might be redundant now
-# but kept for explicit session_id passing if desired in some app parts.
+
 class SessionLogAdapter(logging.LoggerAdapter):
     def process(self, msg, kwargs):
         session_id = "N/A_Adapter" # Default if not found
@@ -612,39 +614,40 @@ def send_question(question, current_case_prompt_text, exhibit_context=None):
         elif selected_skill == "Hypothesis": # Use new skill name
             # --- Refined Interaction Prompt v3 (Simplified) ---
             prompt_for_llm = f"""
-            You are playing the role of a case interviewer. Your primary task is to respond to the candidate's hypothesis about a case.
-            The case prompt is: "{current_case_prompt_text}"
+            You are playing the role of a case interviewer providing data/information in response to a candidate's hypothesis.
+            The candidate is trying to diagnose an issue based on the case prompt.
 
-            Candidate's Latest Hypothesis/Area to Investigate:
-            "{latest_input}"
+            **Your Task:** Respond to the "Candidate's Latest Hypothesis/Area to Investigate" below.
 
-            Previous Interaction History (if any):
-            {history_for_prompt}
-
-            **Instructions for Your Response:**
-            1.  **If the candidate's input ("{latest_input}") is a reasonable, testable hypothesis related to the case context:**
-                * Provide a concise (1-2 sentences) piece of plausible, new information that *contradicts* their current line of thinking or suggests it's not the primary driver of the issue.
+            * **IF** the candidate's input ("{latest_input}") is a reasonable, testable hypothesis related to the case context ({current_case_prompt_text}):
+                * Provide a concise (1-2 sentences) piece of plausible, new information that *contradicts* their current line of thinking or suggests it's not the primary driver.
                 * This information should be consistent with any previous information you've provided.
-                * Maintain a neutral, data-providing tone.
+                * Sound like a neutral source of data.
                 * **Example of good contradictory info:** If hypothesis is "the issue is rising material costs", you could say "Recent supplier contracts indicate material costs have actually decreased by 5% this quarter."
-            2.  **If the candidate's input is NOT a reasonable hypothesis** (e.g., it's nonsensical, a joke, extremely vague like "what about things?", or clearly unrelated to the case):
-                * **DO NOT** provide made-up case information.
+            * **ELSE IF** the candidate's input is clearly nonsensical, irrelevant, or too vague to be a testable hypothesis:
+                * **DO NOT provide contradictory case information.**
                 * Politely state that the input isn't a testable hypothesis for this case and ask them to provide a clearer one.
-                * **Example of polite redirection:** "That doesn't seem to be a specific hypothesis related to the case. Could you please propose a testable hypothesis about the potential cause of the issue?" or "To help you, I need a clearer hypothesis about what you'd like to investigate in this case."
+                * Example responses: "I don't have data related to that. Could you propose a specific hypothesis about the potential cause of the issue described in the case?" OR "Could you clarify what specific area you'd like to investigate based on the case details?" OR "Please state a testable hypothesis related to the case."
 
             **CRITICAL:**
-            * Your entire response should be ONLY the direct text for either option 1 or option 2.
+            * Your entire response should be ONLY the direct text for either option 1 or option 2 above.
             * Do NOT assess the quality of the hypothesis (e.g., don't say "Good idea" or "That's incorrect").
             * Do NOT use ###ANSWER### or ###ASSESSMENT### tags.
             * Do NOT ask clarifying questions back to the candidate.
             * Do NOT solve the case or reveal the true cause.
 
+            Conversation History (Previous hypotheses and info provided):
+            {history_for_prompt}
+
+            Candidate's Latest Hypothesis/Area to Investigate:
+            {latest_input}
+
             Your Response:
             """
-            system_message = "You are a case interviewer. If the user provides a reasonable hypothesis, give concise contradictory information. If the input is not a reasonable hypothesis (e.g., nonsensical, vague, irrelevant), politely ask for a clearer, relevant hypothesis. Be neutral, do not assess, do not use special formatting."
+            system_message = "You are a case interviewer. IMPORTANT: First, evaluate if the user's input is a reasonable hypothesis for the case. If yes, provide concise contradictory info. If no (e.g., nonsensical, vague, irrelevant), politely ask for a clearer, relevant hypothesis. Be neutral, do not assess, do not use special formatting."
             # --- End of Refined Prompt v3 ---
             max_tokens = 150
-            temperature = 0.3 # Further reduced temperature for more directness
+            temperature = 0.3 # Further reduced temperature for more directness and less "creative" misinterpretation
 
         # Analysis, Framework Dev, Recommendation now handle interaction outside send_question
         elif selected_skill in ["Frameworks", "Analysis", "Recommendation"]:
@@ -712,7 +715,6 @@ def send_question(question, current_case_prompt_text, exhibit_context=None):
         st.rerun() # Rerun to display new message and potentially the feedback section if done_key was set
 
 def generate_final_feedback(current_case_prompt_text):
-    # [ This function remains unchanged from the previous version ]
     """
     Generates overall feedback markdown based on the conversation history.
     """
@@ -727,6 +729,7 @@ def generate_final_feedback(current_case_prompt_text):
 
     # Format history based on skill
     history_string = ""
+    exhibit_context_for_feedback = "" # For Analysis and Recommendation
     conversation_history = st.session_state.get(conv_key, [])
 
     if not conversation_history:
@@ -739,7 +742,7 @@ def generate_final_feedback(current_case_prompt_text):
         return st.session_state[feedback_key]
 
     # Format history differently depending on the skill for the feedback prompt
-    formatted_history = []
+    formatted_history_parts = []
     if selected_skill == "Frameworks": # Use new skill name
         if conversation_history and conversation_history[0].get("role") == "interviewee":
              history_string = f"Candidate's Submitted Framework:\n{conversation_history[0].get('content', '[Framework not found]')}"
@@ -751,49 +754,85 @@ def generate_final_feedback(current_case_prompt_text):
             role = msg.get("role"); content = msg.get("content", "[missing content]")
             if role == 'interviewee':
                 h_num = (i // 2) + 1
-                formatted_history.append(f"Candidate Hypothesis {h_num}: {content}")
+                formatted_history_parts.append(f"Candidate Hypothesis {h_num}: {content}")
             elif role == 'interviewer':
                 h_num = (i // 2) + 1
                 if "(Maximum hypotheses reached. Moving to feedback.)" not in content:
-                    formatted_history.append(f"Interviewer Info Provided after H{h_num}: {content}")
-         history_string = "\n\n".join(formatted_history)
+                    formatted_history_parts.append(f"Interviewer Info Provided after H{h_num}: {content}")
+         history_string = "\n\n".join(formatted_history_parts)
     elif selected_skill == "Analysis": # Use new skill name
-        # History string needs to include all analyses submitted
         analysis_parts = []
-        exhibit_index = 0
+        current_prompt_details = get_prompt_details(st.session_state.get(current_prompt_id_key))
+        exhibits_data_for_llm = []
+        if current_prompt_details and current_prompt_details.get("exhibits"):
+            for idx, ex in enumerate(current_prompt_details["exhibits"]):
+                ex_title = ex.get("exhibit_title", f"Exhibit {idx+1}")
+                ex_desc = ex.get("description", "")
+                ex_data_summary = ""
+                if ex.get("data"):
+                    try:
+                        df = pd.DataFrame(ex.get("data"))
+                        ex_data_summary = f"Data for {ex_title}:\n{df.to_string(index=False)}\n"
+                    except Exception as e:
+                        ex_data_summary = f"Data for {ex_title}: Error processing data.\n"
+                elif ex.get("summary_text"):
+                    ex_data_summary = f"Summary Text for {ex_title}:\n{ex.get('summary_text')}\n"
+                exhibits_data_for_llm.append(f"{ex_title}\n{ex_desc}\n{ex_data_summary}")
+        exhibit_context_for_feedback = "\n\n".join(exhibits_data_for_llm)
+
         for i, msg in enumerate(conversation_history):
              if msg.get("role") == "interviewee":
-                 # Add exhibit number context to the analysis for the LLM
-                 analysis_parts.append(f"Candidate's Analysis for Exhibit {exhibit_index + 1}:\n{msg.get('content', '[Analysis not found]')}")
-                 exhibit_index += 1
-        history_string = "\n\n---\n\n".join(analysis_parts) # Separate analyses clearly
+                 analysis_parts.append(f"Candidate's Analysis for Exhibit {len(analysis_parts) + 1}:\n{msg.get('content', '[Analysis not found]')}")
+        history_string = "\n\n---\n\n".join(analysis_parts)
         if not history_string:
              logger.warning("Analysis: Could not extract analysis from conversation state.")
              return "[Could not generate feedback: Analysis not found in state]"
     elif selected_skill == "Recommendation": # Use new skill name
-        # History string is just the single recommendation submitted
+        current_prompt_details = get_prompt_details(st.session_state.get(current_prompt_id_key))
+        exhibits_data_for_llm = []
+        if current_prompt_details and current_prompt_details.get("exhibits"):
+            for idx, ex in enumerate(current_prompt_details["exhibits"]):
+                ex_title = ex.get("exhibit_title", f"Exhibit {idx+1}")
+                ex_desc = ex.get("description", "")
+                ex_data_summary = ""
+                if ex.get("data"):
+                    try:
+                        df = pd.DataFrame(ex.get("data"))
+                        ex_data_summary = f"Data for {ex_title}:\n{df.to_string(index=False)}\n"
+                    except Exception as e:
+                        ex_data_summary = f"Data for {ex_title}: Error processing data.\n"
+                elif ex.get("summary_text"):
+                     summary_text_content = ex.get("summary_text")
+                     if isinstance(summary_text_content, list):
+                         ex_data_summary = f"Summary Text for {ex_title}:\n" + "\n".join([f"- {item}" for item in summary_text_content]) + "\n"
+                     else:
+                         ex_data_summary = f"Summary Text for {ex_title}:\n{summary_text_content}\n"
+                exhibits_data_for_llm.append(f"{ex_title}\n{ex_desc}\n{ex_data_summary}")
+        exhibit_context_for_feedback = "\n\n".join(exhibits_data_for_llm)
+
         if conversation_history and conversation_history[0].get("role") == "interviewee":
              history_string = f"Candidate's Submitted Recommendation:\n{conversation_history[0].get('content', '[Recommendation not found]')}"
         else:
              logger.warning("Recommendation: Could not extract recommendation from conversation state.")
              return "[Could not generate feedback: Recommendation submission not found in state]"
-    else: # For Clarifying Questions (and potentially others later)
+    else: # For Clarifying Questions
         for i, msg in enumerate(conversation_history):
             role = msg.get("role"); content = msg.get("content", "[missing content]"); q_num = (i // 2) + 1
-            if role == 'interviewee': formatted_history.append(f"Interviewee Input {q_num}: {content}")
+            if role == 'interviewee': formatted_history_parts.append(f"Interviewee Input {q_num}: {content}")
             elif role == 'interviewer':
-                formatted_history.append(f"Interviewer Response to Input {q_num}: {content}")
+                formatted_history_parts.append(f"Interviewer Response to Input {q_num}: {content}")
                 assessment = msg.get('assessment')
-                if assessment: formatted_history.append(f" -> Interviewer's Assessment of Input {q_num}: {assessment}")
-        history_string = "\n\n".join(formatted_history)
+                if assessment: formatted_history_parts.append(f" -> Interviewer's Assessment of Input {q_num}: {assessment}")
+        history_string = "\n\n".join(formatted_history_parts)
 
     if not history_string:
          logger.warning("Skipping feedback gen: Formatted history string is empty.")
          return "[Could not generate feedback: Formatted history is empty]"
 
-    # --- Add Debug Logging ---
     logger.debug(f"Generating feedback for {selected_skill}. History string:\n{history_string}")
-    # --- End Debug Logging ---
+    if exhibit_context_for_feedback:
+        logger.debug(f"Exhibit context for feedback:\n{exhibit_context_for_feedback}")
+
 
     with st.spinner(f"Generating Final Feedback for {selected_skill}..."):
         try:
@@ -815,12 +854,13 @@ def generate_final_feedback(current_case_prompt_text):
                  Case Prompt Context for this Session:
                  {current_case_prompt_text}
 
-                 {history_string} # This now contains only the submitted framework text with a label
+                 Candidate's Submitted Framework:
+                 {history_string}
 
                  Your Task:
                  Provide detailed, professional, final feedback on the candidate's submitted framework. Use markdown formatting effectively.
 
-                 **IMPORTANT:** Your response MUST start *directly* with the "## Overall Framework Rating:" heading on the first line, followed by the rating and justification. Do not include any introductory phrases like "Sure, here's the feedback..." or any text before the heading.
+                 **IMPORTANT:** Your response MUST start *directly* with the "## Overall Framework Rating:" heading on the first line, followed by the rating and justification. Do not include any introductory phrases like "Sure, here's the feedback..." or any text before the heading. Your entire response must strictly follow the specified markdown structure.
 
                  Structure your feedback precisely as follows using Markdown, starting DIRECTLY with the rating heading:
 
@@ -859,9 +899,53 @@ def generate_final_feedback(current_case_prompt_text):
                  max_tokens_feedback = 700
 
             elif selected_skill == "Analysis": # Use new skill name
-                 feedback_prompt = f"""... [Analysis Feedback Prompt as before - Rating First] ..."""
-                 system_message_feedback = "You are an expert case interview coach providing structured feedback on exhibit analysis..."
-                 max_tokens_feedback = 800
+                 # --- Updated Analysis Final Feedback Prompt ---
+                 feedback_prompt = f"""
+                 You are an experienced case interview coach providing final summary feedback on the Analysis phase.
+                 The candidate was presented with a case prompt and one or more exhibits sequentially, submitting an analysis for each.
+
+                 Case Prompt Context for this Session:
+                 {current_case_prompt_text}
+
+                 Summary of Exhibits Presented to Candidate:
+                 {exhibit_context_for_feedback}
+
+                 Candidate's Submitted Analyses (for each exhibit shown):
+                 {history_string}
+
+                 Your Task:
+                 Provide detailed, professional, final feedback on the candidate's overall analysis performance across all exhibits. Evaluate their ability to interpret each exhibit correctly AND synthesize the findings based on the exhibit data you have been provided. Use markdown formatting effectively.
+
+                 **IMPORTANT:** Your response MUST start *directly* with the "## Overall Analysis Rating:" heading on the first line, followed by the rating and justification. Do not include any introductory phrases.
+
+                 Structure your feedback precisely as follows using Markdown:
+
+                 ## Overall Analysis Rating: [1-5]/5
+                 *(Provide a brief justification for the rating here, considering the quality criteria below across all exhibits analyzed)*
+
+                 ---
+
+                 1.  **Overall Summary:** Briefly summarize the quality and effectiveness of the candidate's analysis of the provided exhibit(s) in the context of the case. Did they connect the dots?
+
+                 2.  **Strengths:** Identify 1-2 specific strengths demonstrated across the analyses (e.g., identified key insight, used data correctly, drew clear implications, well-structured thinking). Refer to specific exhibit analyses if helpful.
+
+                 3.  **Areas for Improvement:** Identify 1-2 key weaknesses (e.g., missed key insight, misinterpreted data, weak implications/so-what, unclear structure, didn't use specific data, failed to synthesize findings). Refer to specific exhibit analyses if helpful.
+
+                 4.  **Actionable Next Steps:** Provide at least two concrete, actionable steps the candidate can take to improve their exhibit analysis and synthesis skills *for future cases*.
+
+
+                 **Rating Criteria Reference:**
+                 * 1: Poor. Completely missed the point, misinterpreted data badly, no structure or implications. Failed to synthesize.
+                 * 2: Weak. Missed major insights or made significant interpretation errors, weak connection to the case or synthesis across exhibits.
+                 * 3: Fair. Identified some insights but missed key ones or made minor errors; implications/synthesis could be stronger/clearer.
+                 * 4: Good. Identified key insights, interpreted data mostly correctly, drew reasonable implications relevant to the case, attempted synthesis. Generally clear.
+                 * 5: Excellent. Clearly identified all key insights, interpreted data accurately, drew strong implications directly addressing the case problem, effectively synthesized findings across exhibits, well-structured.
+
+                 Ensure your response does **not** start with any other title besides "## Overall Analysis Rating:". Use paragraph breaks between sections.
+                 """
+                 system_message_feedback = "You are an expert case interview coach providing structured feedback on exhibit analysis across multiple exhibits. IMPORTANT: Start your response *directly* with the '## Overall Analysis Rating:' heading. Evaluate critically based on the submitted analyses and provided exhibit summaries. Use markdown effectively."
+                 max_tokens_feedback = 800 # Allow more tokens for multi-exhibit feedback
+                 # --- End of Updated Analysis Final Feedback Prompt ---
 
             elif selected_skill == "Recommendation": # Use new skill name
                  feedback_prompt = f"""... [Recommendation Feedback Prompt as before - Rating First] ..."""
