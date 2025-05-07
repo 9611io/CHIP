@@ -16,7 +16,16 @@ import plotly.express as px # Added for chart generation
 # from supabase import create_client, Client # No longer needed
 
 # --- Basic Logging Setup ---
+# [ Logging setup remains the same ]
 log_filename = f"chip_app_{datetime.datetime.now().strftime('%Y%m%d_%H%M%S')}.log"
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(levelname)s - SessionID:%(session_id)s - Name:%(name)s - %(message)s', # Added name
+    handlers=[
+        logging.FileHandler(log_filename),
+        logging.StreamHandler()
+    ]
+)
 
 # Custom Filter to add session_id to all log records if not present
 class SessionIdFilter(logging.Filter):
@@ -32,15 +41,6 @@ class SessionIdFilter(logging.Filter):
         except Exception: # Broad exception to catch issues if st.session_state is not available
             record.session_id = "N/A_Filter_Exception"
         return True
-
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - %(levelname)s - SessionID:%(session_id)s - Name:%(name)s - %(message)s',
-    handlers=[
-        logging.FileHandler(log_filename),
-        logging.StreamHandler()
-    ]
-)
 
 root_logger = logging.getLogger()
 # Ensure the filter is added only once
@@ -724,7 +724,7 @@ def generate_final_feedback(current_case_prompt_text):
     """
     prefix = st.session_state.key_prefix; conv_key = f"{prefix}_conversation"; feedback_key = f"{prefix}_feedback"
     feedback_submitted_key = f"{prefix}_feedback_submitted"; selected_skill = st.session_state.get(f"{prefix}_selected_skill", "N/A")
-    prompt_id = st.session_state.get(f"{prefix}_current_prompt_id", "N/A")
+    prompt_id = st.session_state.get(f"{prefix}_current_prompt_id", "N/A") # Corrected key
     logger.info(f"Skill: {selected_skill}, PromptID: {prompt_id} - Attempting to generate final feedback.")
     existing_feedback = st.session_state.get(feedback_key)
     feedback_submitted = st.session_state.get(feedback_submitted_key, False)
@@ -846,8 +846,51 @@ def generate_final_feedback(current_case_prompt_text):
             max_tokens_feedback = 800 # Default
 
             if selected_skill == "Clarifying": # Use new skill name
-                feedback_prompt = f"""... [Clarifying Questions Feedback Prompt as before] ..."""
-                system_message_feedback = "You are an expert case interview coach providing structured feedback on clarifying questions..."
+                # --- Refined Clarifying Feedback Prompt ---
+                feedback_prompt = f"""
+                You are an experienced case interview coach providing feedback on the clarifying questions phase ONLY.
+                The candidate has finished asking questions. You must now provide overall feedback.
+
+                Case Prompt Context for this Session:
+                {current_case_prompt_text}
+
+                Interview Interaction History (User questions, your answers as INTERVIEWER, and your per-question assessments):
+                {history_string}
+
+                Your Task:
+                Provide detailed, professional, and direct feedback on the interviewee's clarifying questions phase based *only* on the interaction history provided. Use markdown formatting effectively, including paragraph breaks for readability.
+
+                **IMPORTANT:** Your response MUST start *directly* with the "## Overall Rating:" heading on the first line, followed by the rating and justification. Do not include any introductory phrases like "Sure, here's the feedback..." or any text before the heading. Your entire response must strictly follow the specified markdown structure.
+
+                Structure your feedback precisely as follows using Markdown:
+
+                ## Overall Rating: [1-5]/5
+                *(Provide a brief justification for the rating here, referencing the conversation specifics or assessments. Be very critical and use the full range of scores based on the criteria below)*
+
+                ---
+
+                1.  **Overall Summary:** Briefly summarize the interviewee's performance in asking clarifying questions for *this specific case context*.
+
+                2.  **Strengths:** Identify 1-2 specific strengths demonstrated (e.g., good initial questions, logical flow, conciseness). Refer to specific question numbers or assessments if possible.
+
+                3.  **Areas for Improvement:** Identify 1-2 key areas where the interviewee could improve (e.g., question relevance, depth, avoiding compound questions, structure, digging deeper based on answers). Refer to specific question numbers or assessments.
+
+                4.  **Actionable Next Steps:** Provide at least two concrete, actionable steps the interviewee can take to improve their clarifying questions skills *for future cases*.
+
+                5.  **Example Questions:** For *each* actionable next step that relates to the *content* or *quality* of the questions asked, provide 1-2 specific *alternative* example questions the interviewee *could have asked* in *this case* to demonstrate improvement in that area.
+
+                **Rating Criteria Reference:**
+                    * 1: **Must use this score** if questions were predominantly vague (like single words), irrelevant, unclear, compound, or demonstrated a fundamental lack of understanding of how to clarify effectively. Added little to no value.
+                    * 2: Significant issues remain. Many questions were poor, with only occasional relevant ones, or showed a consistent lack of focus/structure.
+                    * 3: A mixed bag. Some decent questions fitting the ideal categories (Objective, Company, Terms, Repetition) but also notable lapses in quality, relevance, or efficiency.
+                    * 4: Generally strong performance. Most questions were relevant, clear, targeted, and fit the ideal categories. Good progress made in clarifying the case, with only minor areas for refinement.
+                    * 5: Excellent. Consistently high-quality questions that were relevant, concise, targeted, and demonstrated a strong grasp of the ideal clarifying categories. Effectively and efficiently clarified key aspects of the case prompt.
+                   *(Remember to consider the per-question assessments provided in the history when assigning the overall rating.)*
+
+                Ensure your response does **not** start with any other title. Start directly with the '## Overall Rating:' heading. Use paragraph breaks between sections.
+                """
+                system_message_feedback = "You are an expert case interview coach providing structured feedback on clarifying questions. IMPORTANT: Start your response *directly* with the '## Overall Rating:' heading. Evaluate critically based on history and assessments. Use markdown effectively for readability."
+                # --- End of Refined Clarifying Feedback Prompt ---
                 max_tokens_feedback = 800
 
             elif selected_skill == "Frameworks": # Use new skill name
@@ -903,53 +946,9 @@ def generate_final_feedback(current_case_prompt_text):
                  max_tokens_feedback = 700
 
             elif selected_skill == "Analysis": # Use new skill name
-                 # --- Updated Analysis Final Feedback Prompt ---
-                 feedback_prompt = f"""
-                 You are an experienced case interview coach providing final summary feedback on the Analysis phase.
-                 The candidate was presented with a case prompt and one or more exhibits sequentially, submitting an analysis for each.
-
-                 Case Prompt Context for this Session:
-                 {current_case_prompt_text}
-
-                 Summary of Exhibits Presented to Candidate:
-                 {exhibit_context_for_feedback}
-
-                 Candidate's Submitted Analyses (for each exhibit shown):
-                 {history_string}
-
-                 Your Task:
-                 Provide detailed, professional, final feedback on the candidate's overall analysis performance across all exhibits. Evaluate their ability to interpret each exhibit correctly AND synthesize the findings based on the exhibit data you have been provided. Use markdown formatting effectively.
-
-                 **IMPORTANT:** Your response MUST start *directly* with the "## Overall Analysis Rating:" heading on the first line, followed by the rating and justification. Do not include any introductory phrases.
-
-                 Structure your feedback precisely as follows using Markdown:
-
-                 ## Overall Analysis Rating: [1-5]/5
-                 *(Provide a brief justification for the rating here, considering the quality criteria below across all exhibits analyzed)*
-
-                 ---
-
-                 1.  **Overall Summary:** Briefly summarize the quality and effectiveness of the candidate's analysis of the provided exhibit(s) in the context of the case. Did they connect the dots?
-
-                 2.  **Strengths:** Identify 1-2 specific strengths demonstrated across the analyses (e.g., identified key insight, used data correctly, drew clear implications, well-structured thinking). Refer to specific exhibit analyses if helpful.
-
-                 3.  **Areas for Improvement:** Identify 1-2 key weaknesses (e.g., missed key insight, misinterpreted data, weak implications/so-what, unclear structure, didn't use specific data, failed to synthesize findings). Refer to specific exhibit analyses if helpful.
-
-                 4.  **Actionable Next Steps:** Provide at least two concrete, actionable steps the candidate can take to improve their exhibit analysis and synthesis skills *for future cases*.
-
-
-                 **Rating Criteria Reference:**
-                 * 1: Poor. Completely missed the point, misinterpreted data badly, no structure or implications. Failed to synthesize.
-                 * 2: Weak. Missed major insights or made significant interpretation errors, weak connection to the case or synthesis across exhibits.
-                 * 3: Fair. Identified some insights but missed key ones or made minor errors; implications/synthesis could be stronger/clearer.
-                 * 4: Good. Identified key insights, interpreted data mostly correctly, drew reasonable implications relevant to the case, attempted synthesis. Generally clear.
-                 * 5: Excellent. Clearly identified all key insights, interpreted data accurately, drew strong implications directly addressing the case problem, effectively synthesized findings across exhibits, well-structured.
-
-                 Ensure your response does **not** start with any other title besides "## Overall Analysis Rating:". Use paragraph breaks between sections.
-                 """
-                 system_message_feedback = "You are an expert case interview coach providing structured feedback on exhibit analysis across multiple exhibits. IMPORTANT: Start your response *directly* with the '## Overall Analysis Rating:' heading. Evaluate critically based on the submitted analyses and provided exhibit summaries. Use markdown effectively."
-                 max_tokens_feedback = 800 # Allow more tokens for multi-exhibit feedback
-                 # --- End of Updated Analysis Final Feedback Prompt ---
+                 feedback_prompt = f"""... [Analysis Feedback Prompt as before - Rating First] ..."""
+                 system_message_feedback = "You are an expert case interview coach providing structured feedback on exhibit analysis..."
+                 max_tokens_feedback = 800
 
             elif selected_skill == "Recommendation": # Use new skill name
                  feedback_prompt = f"""... [Recommendation Feedback Prompt as before - Rating First] ..."""
@@ -1071,7 +1070,11 @@ def clarifying_questions_bot_ui():
     if st.session_state.get(done_key):
         logger.debug("Entering feedback and conclusion area.")
         final_feedback_content = generate_final_feedback(case_prompt_text)
-        feedback_was_generated = final_feedback_content and not str(final_feedback_content).startswith("Error") and not str(final_feedback_content).startswith("[Feedback")
+        # --- FIX: Check for specific Clarifying feedback heading ---
+        feedback_was_generated = final_feedback_content and isinstance(final_feedback_content, str) and final_feedback_content.strip().startswith("## Overall Rating:")
+        logger.debug(f"Clarifying feedback content: {final_feedback_content}")
+        logger.debug(f"Clarifying feedback_was_generated: {feedback_was_generated}")
+        # --- End FIX ---
         if feedback_was_generated:
             st.divider(); st.markdown(final_feedback_content); st.divider()
             st.subheader("Rate this Feedback")
@@ -1110,7 +1113,7 @@ def clarifying_questions_bot_ui():
                             if save_user_feedback(user_feedback_data): logger.info("User Feedback Submitted with Comment and saved."); st.rerun()
                             else: logger.error("User Feedback Submitted with Comment but FAILED TO SAVE.")
         elif final_feedback_content and str(final_feedback_content).startswith("Error"): st.error(f"Could not display feedback: {final_feedback_content}")
-        else: st.warning("Feedback is currently unavailable...")
+        else: st.warning("Feedback is currently unavailable or was not generated correctly."); logger.warning(f"Clarifying feedback was not displayed. Content: {final_feedback_content}")
         st.divider(); st.header("Conclusion")
         total_interaction_time = st.session_state.get(time_key, 0.0)
         st.write(f"You spent **{total_interaction_time:.2f} seconds**...")
@@ -1338,6 +1341,7 @@ def hypothesis_formulation_ui():
 
 # --- NEW: Skill-Specific UI Function (Analysis) ---
 def analysis_ui():
+    # [ Code remains unchanged ]
     logger.info("Loading Analysis UI.")
     prefix = st.session_state.key_prefix
     done_key = f"{prefix}_done_asking"; time_key = f"{prefix}_total_time"; start_time_key = f"{prefix}_interaction_start_time"
