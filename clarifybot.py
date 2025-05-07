@@ -683,7 +683,6 @@ def send_question(question, current_case_prompt_text, exhibit_context=None):
         st.rerun() # Rerun to display new message and potentially the feedback section if done_key was set
 
 def generate_final_feedback(current_case_prompt_text):
-    # [ This function remains unchanged from the previous version ]
     """
     Generates overall feedback markdown based on the conversation history.
     """
@@ -779,8 +778,49 @@ def generate_final_feedback(current_case_prompt_text):
                 max_tokens_feedback = 800
 
             elif selected_skill == "Frameworks": # Use new skill name
-                 feedback_prompt = f"""... [Framework Development Feedback Prompt as before - Rating First] ..."""
-                 system_message_feedback = "You are an expert case interview coach providing structured feedback on framework development..."
+                 # --- Refined Framework Feedback Prompt ---
+                 feedback_prompt = f"""
+                 You are an experienced case interview coach providing final summary feedback on the framework development phase based on a single framework submission.
+
+                 Case Prompt Context for this Session:
+                 {current_case_prompt_text}
+
+                 {history_string} # This now contains only the submitted framework text with a label
+
+                 Your Task:
+                 Provide detailed, professional, final feedback on the candidate's submitted framework. Use markdown formatting effectively.
+
+                 **IMPORTANT:** Your response MUST start *directly* with the "## Overall Framework Rating:" heading on the first line, followed by the rating and justification. Do not include any introductory phrases like "Sure, here's the feedback..." or any text before the heading.
+
+                 Structure your feedback precisely as follows using Markdown, starting DIRECTLY with the rating heading:
+
+                 ## Overall Framework Rating: [1-5]/5
+                 *(Provide a brief justification for the rating here, considering the quality of the submitted framework based on MECE, Relevance, Prioritization, Actionability, and Clarity criteria below)*
+
+                 ---
+
+                 1.  **Overall Summary:** Summarize the effectiveness and quality of the proposed framework for tackling *this specific case*. Did the candidate create a solid structure?
+
+                 2.  **Strengths:** Identify 1-2 specific strengths of the submitted framework (e.g., good structure, relevant buckets, clear logic).
+
+                 3.  **Areas for Improvement:** Identify 1-2 key weaknesses or areas for development based on the submitted framework (e.g., not MECE, missing key drivers from the prompt, poor prioritization, too generic, structure unclear).
+
+                 4.  **Actionable Next Steps:** Provide at least two concrete, actionable steps the candidate can take to improve their framework development skills *for future cases*.
+
+                 5.  **Example Refinement / Alternative:** Suggest one specific, significant refinement to the submitted framework *or* propose a concise alternative structure that might have been more effective for *this case*, explaining why briefly.
+
+
+                 **Rating Criteria Reference:**
+                 * 1: **Fundamentally flawed.** Not MECE, irrelevant to the case, unclear structure, unusable for analysis. Little understanding shown.
+                 * 2: **Major issues.** Significant gaps or overlaps (not MECE), poor structure, lacks relevance to key case issues, unclear or difficult to follow.
+                 * 3: **Partially effective.** Some relevant components, but structure could be significantly improved (e.g., not fully MECE, poor prioritization, some irrelevant buckets). Shows basic understanding but needs refinement.
+                 * 4: **Good framework.** Mostly MECE, relevant to the case, actionable, and reasonably prioritized. Structure is clear. Only minor refinements possible.
+                 * 5: **Excellent.** Clear, MECE, highly relevant to the core issues, well-prioritized, actionable, and tailored effectively to the case specifics. Demonstrates strong strategic thinking.
+
+                 Ensure your response does **not** start with any other title besides "## Overall Framework Rating:". Use paragraph breaks between sections.
+                 """
+                 system_message_feedback = "You are an expert case interview coach providing structured feedback on framework development based on a single submission. IMPORTANT: Start your response *directly* with the '## Overall Framework Rating:' heading. Evaluate critically based on the submitted framework. Use markdown effectively."
+                 # --- End of Refined Framework Feedback Prompt ---
                  max_tokens_feedback = 700
 
             elif selected_skill == "Hypothesis": # Use new skill name
